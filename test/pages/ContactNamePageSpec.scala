@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package models.requests
+package pages
 
-import play.api.mvc.{Request, WrappedRequest}
-import models.UserAnswers
-import uk.gov.hmrc.auth.core.AffinityGroup
+import pages.behaviours.PageBehaviours
 
-case class OptionalDataRequest[A](request: Request[A], userId: String, userAnswers: Option[UserAnswers], userType: AffinityGroup, subscriptionId: String)
-  extends WrappedRequest[A](request)
+class ContactNamePageSpec extends PageBehaviours {
 
-case class DataRequest[A](request: Request[A], userId: String, subscriptionId: String, userType: AffinityGroup, userAnswers: UserAnswers)
-  extends WrappedRequest[A](request)
+  "ContactNamePage" - {
+
+    beRetrievable[String](ContactNamePage)
+
+    beSettable[String](ContactNamePage)
+
+    beRemovable[String](ContactNamePage)
+  }
+}

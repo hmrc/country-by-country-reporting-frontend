@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package models.requests
+package pages
 
-import play.api.mvc.{Request, WrappedRequest}
-import models.UserAnswers
-import uk.gov.hmrc.auth.core.AffinityGroup
+import play.api.libs.json.JsPath
 
-case class OptionalDataRequest[A](request: Request[A], userId: String, userAnswers: Option[UserAnswers], userType: AffinityGroup, subscriptionId: String)
-  extends WrappedRequest[A](request)
+case object ContactNamePage extends QuestionPage[String] {
 
-case class DataRequest[A](request: Request[A], userId: String, subscriptionId: String, userType: AffinityGroup, userAnswers: UserAnswers)
-  extends WrappedRequest[A](request)
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "contactName"
+}

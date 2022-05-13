@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package models.requests
+package utils
 
-import play.api.mvc.{Request, WrappedRequest}
-import models.UserAnswers
-import uk.gov.hmrc.auth.core.AffinityGroup
+trait RegExConstants {
 
-case class OptionalDataRequest[A](request: Request[A], userId: String, userAnswers: Option[UserAnswers], userType: AffinityGroup, subscriptionId: String)
-  extends WrappedRequest[A](request)
-
-case class DataRequest[A](request: Request[A], userId: String, subscriptionId: String, userType: AffinityGroup, userAnswers: UserAnswers)
-  extends WrappedRequest[A](request)
+  final val emailRegex = "^(?:[a-zA-Z0-9!#$%&*+\\/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&*+\\/=?^_`{|}~-]+)*)" +
+    "@(?:[a-zA-Z0-9!#$%&*+\\/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&*+\\/=?^_`{|}~-]+)*)$"
+  final val digitsAndWhiteSpaceOnly = """^\+?[\d\s]+$"""
+  final val orgNameRegex            = """^[a-zA-Z0-9 &`\-\'\\\^]*$"""
+  final val phoneRegex              = """^[A-Z0-9 )/(\-*#+]*$""".stripMargin
+}
