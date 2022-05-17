@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.ContactNameFormProvider
-import models.{AffinityType, Mode}
+import models.Mode
 import navigation.ContactDetailsNavigator
 import pages.ContactNamePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -66,7 +66,7 @@ class ContactNameController @Inject()(
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ContactNamePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(ContactNamePage, AffinityType(request.userType), mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(ContactNamePage, mode, updatedAnswers))
         )
   }
 }

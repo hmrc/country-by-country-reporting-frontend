@@ -29,34 +29,33 @@ import scala.concurrent.Future
 
 class AuthControllerSpec extends SpecBase {
 
-//  "signOut" - {
+  "signOut" - {
 
-//    "must clear user answers and redirect to sign out, specifying the exit survey as the continue URL" in {
-//
-//      val mockSessionRepository = mock[SessionRepository]
-//      when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
-//
-//      val application =
-//        applicationBuilder(None)
-//          .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
-//          .build()
-//
-//      running(application) {
-//
-//        val appConfig = application.injector.instanceOf[FrontendAppConfig]
-//        val request   = FakeRequest(GET, routes.AuthController.signOut.url)
-//
-//        val result = route(application, request).value
-//
-//        val expectedRedirectUrl = s"${appConfig.signOutUrl}"
-//
-//        status(result) mustEqual SEE_OTHER
-//        redirectLocation(result).value mustEqual expectedRedirectUrl
-//        verify(mockSessionRepository, times(1)).clear(eqTo(userAnswersId))
-//      }
-//    }
-//  }
-//TODO add back in once signoutURL is sorted
+    "must clear user answers and redirect to sign out, specifying the exit survey as the continue URL" in {
+
+      val mockSessionRepository = mock[SessionRepository]
+      when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(None)
+          .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+          .build()
+
+      running(application) {
+
+        val appConfig = application.injector.instanceOf[FrontendAppConfig]
+        val request   = FakeRequest(GET, routes.AuthController.signOut.url)
+
+        val result = route(application, request).value
+
+        val expectedRedirectUrl = s"${appConfig.signOutUrl}"
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual expectedRedirectUrl
+        verify(mockSessionRepository, times(1)).clear(eqTo(userAnswersId))
+      }
+    }
+  }
 
   "signOutNoSurvey" - {
 

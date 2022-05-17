@@ -69,7 +69,7 @@ class AuthenticatedIdentifierAction @Inject() (
                                   ): Future[Result] = {
 
     val cbcEnrolment  = "HMRC-CBC-ORG"
-    val cbcIdentifier = "cbcid"
+    val cbcIdentifier = "cbcId"
 
     val subscriptionId: Option[String] = for {
       enrolment      <- enrolments.getEnrolment(cbcEnrolment)

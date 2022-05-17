@@ -31,11 +31,11 @@ class ContactDetailsNavigator @Inject()() {
 //    case _                     => _ => routes.IndexController.onPageLoad
 //  }
 
-  val checkRouteMap: (Page, AffinityType) => UserAnswers => Call = {
+  val checkRouteMap: Page => UserAnswers => Call = {
 //    case (ContactPhonePage, Individual)   => _ => routes.ChangeIndividualContactDetailsController.onPageLoad()
 //    case (ContactPhonePage, Organisation) => _ => routes.ChangeOrganisationContactDetailsController.onPageLoad()
 //    case (HaveTelephonePage, affinity)    => ua => haveTelephoneRoutes(CheckMode, affinity)(ua)
-    case (ContactNamePage, affinity)      => _ => routes.ContactNameController.onPageLoad()//TODO send to contact email page
+    case ContactNamePage      => _ => routes.ContactNameController.onPageLoad()//TODO send to contact email page
 //    case (ContactEmailPage, affinity)     => _ => routes.HaveTelephoneController.onPageLoad(affinity)
 //    case (HaveSecondContactPage, Organisation) =>
 //      ua =>
@@ -72,10 +72,10 @@ class ContactDetailsNavigator @Inject()() {
 //      .map(if (_) yesCall else noCall)
 //      .getOrElse(routes.ThereIsAProblemController.onPageLoad())
 //
-  def nextPage(page: Page, affinityType: AffinityType, mode: Mode, userAnswers: UserAnswers): Call = mode match {
+  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {
 //    case NormalMode =>
 //      normalRoutes(page, affinityType)(userAnswers)
     case CheckMode =>
-      checkRouteMap(page, affinityType)(userAnswers)
+      checkRouteMap(page)(userAnswers)
   }
 }
