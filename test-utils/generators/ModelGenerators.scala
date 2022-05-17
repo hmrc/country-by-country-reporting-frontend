@@ -16,9 +16,58 @@
 
 package generators
 
-import models._
+import models.subscription._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
+
+  implicit val arbitraryOrganisationDetails: Arbitrary[OrganisationDetails] = Arbitrary {
+    for {
+      orgName <- arbitrary[String]
+    } yield OrganisationDetails(orgName)
+  }
+
+  implicit val arbitraryIndividualDetails: Arbitrary[IndividualDetails] = Arbitrary {
+    for {
+      firstName  <- arbitrary[String]
+      middleName <- Gen.option(arbitrary[String])
+      lastName   <- arbitrary[String]
+    } yield IndividualDetails(firstName, middleName, lastName)
+  }
+
+  implicit val arbitraryContactType: Arbitrary[ContactType] = Arbitrary {
+    Gen.oneOf[ContactType](arbitrary[OrganisationDetails], arbitrary[IndividualDetails])
+  }
+
+  implicit val arbitraryContactInformation: Arbitrary[ContactInformation] = Arbitrary {
+    for {
+      contactType <- arbitrary[ContactType]
+      email       <- arbitrary[String]
+      phone       <- Gen.option(arbitrary[String])
+      mobile      <- Gen.option(arbitrary[String])
+    } yield ContactInformation(contactType, email, phone, mobile)
+  }
+
+  implicit val arbitraryRequestDetail: Arbitrary[RequestDetailForUpdate] = Arbitrary {
+    for {
+      idType           <- arbitrary[String]
+      idNumber         <- arbitrary[String]
+      tradingName      <- Gen.option(arbitrary[String])
+      isGBUser         <- arbitrary[Boolean]
+      primaryContact   <- arbitrary[ContactInformation]
+      secondaryContact <- Gen.option(arbitrary[ContactInformation])
+    } yield RequestDetailForUpdate(idType, idNumber, tradingName, isGBUser, primaryContact, secondaryContact)
+  }
+
+  implicit val arbitraryResponseDetail: Arbitrary[ResponseDetail] = Arbitrary {
+    for {
+      subscriptionID   <- arbitrary[String]
+      tradingName      <- Gen.option(arbitrary[String])
+      isGBUser         <- arbitrary[Boolean]
+      primaryContact   <- arbitrary[ContactInformation]
+      secondaryContact <- Gen.option(arbitrary[ContactInformation])
+    } yield ResponseDetail(subscriptionID, tradingName, isGBUser, primaryContact, secondaryContact)
+  }
+
 }
