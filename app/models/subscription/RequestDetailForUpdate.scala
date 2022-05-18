@@ -33,12 +33,12 @@ object RequestDetailForUpdate {
 
   def convertToRequestDetails(responseDetail: ResponseDetail, userAnswers: UserAnswers): Option[RequestDetailForUpdate] = {
     val primaryContact =
-      getContactInformation[PrimaryContactDetailsPages](responseDetail.primaryContact.contactType, responseDetail.primaryContact.mobile, userAnswers)
+      getContactInformation[PrimaryContactDetailsPages](responseDetail.primaryContact.organisationDetails, responseDetail.primaryContact.mobile, userAnswers)
 
     val secondaryContact = (userAnswers.get(HaveSecondContactPage), responseDetail.secondaryContact, userAnswers.get(SecondContactNamePage)) match {
       case (Some(true), _, Some(orgName)) => getContactInformation[SecondaryContactDetailsPages](OrganisationDetails(orgName), None, userAnswers)
       case (Some(true), Some(contactInformation), _) =>
-        getContactInformation[SecondaryContactDetailsPages](contactInformation.contactType, contactInformation.mobile, userAnswers)
+        getContactInformation[SecondaryContactDetailsPages](contactInformation.organisationDetails, contactInformation.mobile, userAnswers)
       case _ => None
     }
 
@@ -48,13 +48,13 @@ object RequestDetailForUpdate {
     }
   }
 
-  def getContactInformation[T <: ContactTypePage](contactType: ContactType, mobile: Option[String], userAnswers: UserAnswers)(implicit
-                                                                                                                              contactTypePage: T
+  def getContactInformation[T <: ContactTypePage](contactInfo: OrganisationDetails, mobile: Option[String], userAnswers: UserAnswers)(implicit
+                                                                                                                                      contactTypePage: T
   ): Option[ContactInformation] = {
 
     val contactTypeInfo = userAnswers.get(contactTypePage.contactNamePage) match {
       case Some(orgName) => OrganisationDetails(orgName)
-      case _             => contactType
+      case _             => contactInfo
     }
 
     for {

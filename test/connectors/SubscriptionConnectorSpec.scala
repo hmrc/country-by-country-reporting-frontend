@@ -49,9 +49,8 @@ class SubscriptionConnectorSpec extends Connector with ModelGenerators {
       |"email": "",
       |"phone": "",
       |"mobile": "",
-      |"individual": {
-      |"lastName": "Last",
-      |"firstName": "First"
+      |"organisation": {
+      |"organisationName": "orgName"
       |}
       |},
       |"secondaryContact":

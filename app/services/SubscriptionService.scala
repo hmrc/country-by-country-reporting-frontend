@@ -58,13 +58,13 @@ class SubscriptionService @Inject()(subscriptionConnector: SubscriptionConnector
         val secondaryContact = (userAnswers.get(HaveSecondContactPage), responseDetail.secondaryContact, userAnswers.get(SecondContactNamePage)) match {
           case (Some(true), _, Some(orgName)) => populateResponseDetails[SecondaryContactDetailsPages](userAnswers, OrganisationDetails(orgName), None)
           case (Some(true), Some(contactInformation), _) =>
-            populateResponseDetails[SecondaryContactDetailsPages](userAnswers, contactInformation.contactType, contactInformation.mobile)
+            populateResponseDetails[SecondaryContactDetailsPages](userAnswers, contactInformation.organisationDetails, contactInformation.mobile)
           case _ => None
         }
 
         for {
           primaryContact <- populateResponseDetails[PrimaryContactDetailsPages](userAnswers,
-                                                                                responseDetail.primaryContact.contactType,
+                                                                                responseDetail.primaryContact.organisationDetails,
                                                                                 responseDetail.primaryContact.mobile
           )
         } yield !responseDetail.copy(primaryContact = primaryContact, secondaryContact = secondaryContact).equals(responseDetail)
@@ -74,13 +74,13 @@ class SubscriptionService @Inject()(subscriptionConnector: SubscriptionConnector
         None
     }
 
-  private def populateResponseDetails[T <: ContactTypePage](userAnswers: UserAnswers, contactType: ContactType, mobile: Option[String])(implicit
-    contactTypePage: T
+  private def populateResponseDetails[T <: ContactTypePage](userAnswers: UserAnswers, contactInfo: OrganisationDetails, mobile: Option[String])(implicit
+                                                                                                                                                contactTypePage: T
   ): Option[ContactInformation] = {
 
-    val updatedContactType: ContactType = userAnswers.get(contactTypePage.contactNamePage) match {
+    val updatedContactType = userAnswers.get(contactTypePage.contactNamePage) match {
       case Some(orgName) => OrganisationDetails(orgName)
-      case _             => contactType
+      case _             => contactInfo
     }
 
     for {
@@ -107,17 +107,12 @@ class SubscriptionService @Inject()(subscriptionConnector: SubscriptionConnector
     contactTypePage: T
   ): Option[UserAnswers] = {
 
-    def updateOrgName(userAnswers: UserAnswers): Try[UserAnswers] = contactInformation.contactType match {
-      case organisationDetails: OrganisationDetails => userAnswers.set(contactTypePage.contactNamePage, organisationDetails.organisationName)
-      case _                                        => Try(userAnswers)
-    }
-
     (for {
       uaWithSecondContact <- userAnswers.set(HaveSecondContactPage, isSecondaryContact)
       uaWithEmail         <- uaWithSecondContact.set(contactTypePage.contactEmailPage, contactInformation.email)
       uaWithTelephone     <- uaWithEmail.set(contactTypePage.contactTelephonePage, contactInformation.phone.getOrElse(""))
       uaWithHaveTelephone <- uaWithTelephone.set(contactTypePage.haveTelephonePage, contactInformation.phone.exists(_.nonEmpty))
-      updatedAnswers      <- updateOrgName(uaWithHaveTelephone)
+      updatedAnswers      <- uaWithHaveTelephone.set(contactTypePage.contactNamePage, contactInformation.organisationDetails.organisationName)
     } yield updatedAnswers).toOption
 
   }

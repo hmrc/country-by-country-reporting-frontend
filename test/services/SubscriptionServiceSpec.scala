@@ -19,7 +19,7 @@ package services
 import base.SpecBase
 import connectors.SubscriptionConnector
 import generators.ModelGenerators
-import models.subscription.{ContactInformation, IndividualDetails, OrganisationDetails, ResponseDetail}
+import models.subscription.{ContactInformation, OrganisationDetails, ResponseDetail}
 import org.mockito.ArgumentMatchers.any
 import org.scalacheck.Arbitrary
 import pages._
@@ -84,42 +84,9 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
         ua.get(ContactEmailPage) mustBe Some("test@test.com")
         ua.get(ContactPhonePage) mustBe Some("99999")
       }
-
-      "must call the subscription connector and return a UserAnswers populated with returned contact details for Individual" in {
-        val responseDetailString: String =
-          """
-            |{
-            |"subscriptionID": "111111111",
-            |"tradingName": "",
-            |"isGBUser": true,
-            |"primaryContact":
-            |{
-            |"email": "test@test.com",
-            |"phone": "99999",
-            |"mobile": "",
-            |"individual": {
-            |"firstName" : "fname",
-            |"lastName" : "lname"
-            |}
-            |}
-            |
-            |}""".stripMargin
-
-        val responseDetail = Json.parse(responseDetailString).as[ResponseDetail]
-
-        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(Some(responseDetail)))
-
-        val result = service.getContactDetails(emptyUserAnswers)
-
-        val ua = result.futureValue.value
-
-        ua.get(ContactEmailPage) mustBe Some("test@test.com")
-        ua.get(ContactPhonePage) mustBe Some("99999")
-      }
     }
 
     "updateContactDetails" - {
-
       "must return true on updating contactDetails" in {
         val contactDetails = Arbitrary.arbitrary[ResponseDetail].sample.value
         val userAnswers = emptyUserAnswers
@@ -173,58 +140,6 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
     }
 
     "hasResponseDetailDataChanged" - {
-      "return false when ReadSubscription data is not changed for individual flow" in {
-        val responseDetail = ResponseDetail(
-          subscriptionID = "111111111",
-          tradingName = Some("name"),
-          isGBUser = true,
-          primaryContact = ContactInformation(IndividualDetails("fname", None, "lname"), "test@test.com", Some("+4411223344"), Some("4411223344")),
-          secondaryContact = None
-        )
-
-        val userAnswers = emptyUserAnswers
-          .set(ContactEmailPage, "test@test.com")
-          .success
-          .value
-          .set(HaveTelephonePage, true)
-          .success
-          .value
-          .set(ContactPhonePage, "+4411223344")
-          .success
-          .value
-
-        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(Some(responseDetail)))
-
-        val result = service.isContactInformationUpdated(userAnswers = userAnswers)
-        result.futureValue mustBe Some(false)
-      }
-
-      "return true when ReadSubscription data is changed for individual flow" in {
-        val responseDetail = ResponseDetail(
-          subscriptionID = "111111111",
-          tradingName = Some("name"),
-          isGBUser = true,
-          primaryContact = ContactInformation(IndividualDetails("fname", None, "lname"), "test@test.com", Some("+4411223344"), Some("4411223344")),
-          secondaryContact = None
-        )
-
-        val userAnswers = emptyUserAnswers
-          .set(ContactEmailPage, "changetest@test.com")
-          .success
-          .value
-          .set(HaveTelephonePage, true)
-          .success
-          .value
-          .set(ContactPhonePage, "+4411223344")
-          .success
-          .value
-
-        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(Some(responseDetail)))
-
-        val result = service.isContactInformationUpdated(userAnswers = userAnswers)
-        result.futureValue mustBe Some(true)
-      }
-
       "return false when ReadSubscription data is not changed for organisation flow" in {
         val responseDetail = ResponseDetail(
           subscriptionID = "111111111",

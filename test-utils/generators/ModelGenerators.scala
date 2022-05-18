@@ -28,21 +28,10 @@ trait ModelGenerators {
     } yield OrganisationDetails(orgName)
   }
 
-  implicit val arbitraryIndividualDetails: Arbitrary[IndividualDetails] = Arbitrary {
-    for {
-      firstName  <- arbitrary[String]
-      middleName <- Gen.option(arbitrary[String])
-      lastName   <- arbitrary[String]
-    } yield IndividualDetails(firstName, middleName, lastName)
-  }
-
-  implicit val arbitraryContactType: Arbitrary[ContactType] = Arbitrary {
-    Gen.oneOf[ContactType](arbitrary[OrganisationDetails], arbitrary[IndividualDetails])
-  }
 
   implicit val arbitraryContactInformation: Arbitrary[ContactInformation] = Arbitrary {
     for {
-      contactType <- arbitrary[ContactType]
+      contactType <- arbitrary[OrganisationDetails]
       email       <- arbitrary[String]
       phone       <- Gen.option(arbitrary[String])
       mobile      <- Gen.option(arbitrary[String])
