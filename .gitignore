@@ -32,4 +32,4 @@ bin
 /*.iml
 /*.ipr
 *.iws
-/.bsp/
+/.bsp
