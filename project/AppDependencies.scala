@@ -22,6 +22,7 @@ object AppDependencies {
     "com.typesafe.play"       %% "play-test"               % PlayVersion.current,
     "org.mockito"             %% "mockito-scala"           % "1.16.42",
     "org.scalacheck"          %% "scalacheck"              % "1.15.4",
+    "com.github.tomakehurst"  %  "wiremock-jre8"           % "2.26.0",
     "uk.gov.hmrc.mongo"       %% "hmrc-mongo-test-play-27" % "0.59.0",
     "com.vladsch.flexmark"    %  "flexmark-all"            % "0.62.2"
   ).map(_ % "test, it")
