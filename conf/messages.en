@@ -55,3 +55,12 @@ signedOut.guidance = We did not save your answers.
 
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
+
+contactName.title = Who can we contact if we have questions about your reports?
+contactName.heading = Who can we contact if we have questions about your reports?
+contactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
+contactName.checkYourAnswersLabel = Contact name
+contactName.error.required = Enter the name of the individual or team we should contact if we have any questions about your reports
+contactName.error.invalid = Name must only include letters a to z, apostrophes, grave accents, ampersands, hyphens, backslashes, carets and spaces
+contactName.error.length = Name must be 35 characters or less
+contactName.change.hidden = contact name

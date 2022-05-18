@@ -14,6 +14,9 @@ GET         /there-is-a-problem                          controllers.JourneyReco
 
 GET         /check-your-answers                          controllers.CheckYourAnswersController.onPageLoad
 
+GET         /change-contact/organisation/name            controllers.ContactNameController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-contact/organisation/name            controllers.ContactNameController.onSubmit(mode: Mode = CheckMode)
+
 GET         /account/sign-out-survey                     controllers.auth.AuthController.signOut
 GET         /account/sign-out                            controllers.auth.AuthController.signOutNoSurvey
 GET         /account/signed-out                          controllers.auth.SignedOutController.onPageLoad

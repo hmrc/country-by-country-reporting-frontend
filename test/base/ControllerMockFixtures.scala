@@ -16,50 +16,58 @@
 
 package base
 
+import config.FrontendAppConfig
 import controllers.actions._
 import models.UserAnswers
-import org.mockito.MockitoSugar
-import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
-import org.scalatest.freespec.AnyFreeSpec
+import org.mockito.{Mockito, MockitoSugar}
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.{OptionValues, TryValues}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, Call}
 import play.api.test.FakeRequest
 import repositories.SessionRepository
-import uk.gov.hmrc.http.HeaderCarrier
 
-trait SpecBase
-  extends AnyFreeSpec
-    with GuiceOneAppPerSuite
-    with Matchers
-    with MockitoSugar
-    with TryValues
-    with OptionValues
-    with ScalaFutures
-    with IntegrationPatience {
-
-  val userAnswersId: String = "id"
-
-  implicit val hc: HeaderCarrier = HeaderCarrier()
+trait ControllerMockFixtures extends Matchers with GuiceOneAppPerSuite with MockitoSugar with BeforeAndAfterEach {
+  self: SpecBase =>
 
   def onwardRoute: Call                                  = Call("GET", "/foo")
   final val mockDataRetrievalAction: DataRetrievalAction = mock[DataRetrievalAction]
   final val mockSessionRepository: SessionRepository     = mock[SessionRepository]
+  final val mockFrontendAppConfig                        = mock[FrontendAppConfig]
 
-  def emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
+  def fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("", "")
+  def messagesApi: MessagesApi                         = app.injector.instanceOf[MessagesApi]
+  implicit def messages: Messages                      = messagesApi.preferred(fakeRequest)
 
-  def messages(app: Application): Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
+  override def beforeEach: Unit = {
+    Mockito.reset(
+      mockSessionRepository,
+      mockDataRetrievalAction
+    )
+    super.beforeEach()
+  }
 
-  protected def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder =
+  protected def retrieveUserAnswersData(userAnswers: UserAnswers): Unit =
+    when(mockDataRetrievalAction.apply()).thenReturn(new FakeDataRetrievalAction(Some(userAnswers)))
+
+  protected def retrieveNoData(): Unit =
+    when(mockDataRetrievalAction.apply()).thenReturn(new FakeDataRetrievalAction(None))
+
+  override def fakeApplication(): Application =
+    guiceApplicationBuilder()
+      .build()
+
+  // Override to provide custom binding
+  def guiceApplicationBuilder(): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].to[FakeIdentifierAction],
-        bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(userAnswers))
+        bind[DataRetrievalAction].toInstance(mockDataRetrievalAction),
+        bind[SessionRepository].toInstance(mockSessionRepository)
       )
 }

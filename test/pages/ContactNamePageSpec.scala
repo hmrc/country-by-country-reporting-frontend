@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package navigation
+package pages
 
-import models.{Mode, UserAnswers}
-import pages._
-import play.api.mvc.Call
+import pages.behaviours.PageBehaviours
 
-class FakeNavigator(desiredRoute: Call) extends Navigator {
+class ContactNamePageSpec extends PageBehaviours {
 
-  override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call =
-    desiredRoute
-}
+  "ContactNamePage" - {
 
-class FakeContactDetailsNavigator(desiredRoute: Call) extends ContactDetailsNavigator {
+    beRetrievable[String](ContactNamePage)
 
-  override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = desiredRoute
+    beSettable[String](ContactNamePage)
+
+    beRemovable[String](ContactNamePage)
+  }
 }

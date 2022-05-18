@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package navigation
+package forms
 
-import models.{Mode, UserAnswers}
-import pages._
-import play.api.mvc.Call
+import forms.mappings.Mappings
+import play.api.data.Form
+import utils.RegExConstants
 
-class FakeNavigator(desiredRoute: Call) extends Navigator {
+import javax.inject.Inject
 
-  override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call =
-    desiredRoute
-}
+class ContactNameFormProvider @Inject() extends Mappings with RegExConstants {
 
-class FakeContactDetailsNavigator(desiredRoute: Call) extends ContactDetailsNavigator {
+  private val maxLength = 35
 
-  override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = desiredRoute
+  def apply(): Form[String] =
+    Form(
+      "value" -> validatedText("contactName.error.required", "contactName.error.invalid", "contactName.error.length", orgNameRegex, maxLength)
+    )
 }

@@ -16,25 +16,27 @@
 
 package controllers.actions
 
-import javax.inject.Inject
 import controllers.routes
+import models.UserAnswers
 import models.requests.{DataRequest, OptionalDataRequest}
+import play.api.Logging
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class DataRequiredActionImpl @Inject()(implicit val executionContext: ExecutionContext) extends DataRequiredAction {
+class DataRequiredActionImpl @Inject() (implicit val executionContext: ExecutionContext) extends DataRequiredAction with Logging {
 
-  override protected def refine[A](request: OptionalDataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
-
+  override protected def refine[A](request: OptionalDataRequest[A]): Future[Either[Result, DataRequest[A]]] =
     request.userAnswers match {
       case None =>
-        Future.successful(Left(Redirect(routes.JourneyRecoveryController.onPageLoad())))
+        logger.warn("DataRequiredAction: No UserAnswers found for request")
+        Future.successful(Right(DataRequest(request.request, request.userId, request.subscriptionId, request.userType, UserAnswers(request.userId))))//TODO remove "hack" when useranswers is implemented properly
+//        Future.successful(Left(Redirect(routes.IndexController.onPageLoad)))//TODO change to thereisaproblem once implemented
       case Some(data) =>
-        Future.successful(Right(DataRequest(request.request, request.userId, data)))
+        Future.successful(Right(DataRequest(request.request, request.userId, request.subscriptionId, request.userType, data)))
     }
-  }
 }
 
 trait DataRequiredAction extends ActionRefiner[OptionalDataRequest, DataRequest]

@@ -16,11 +16,10 @@
 
 package forms.mappings
 
-import java.time.LocalDate
-
 import play.api.data.FormError
 import play.api.data.format.Formatter
 
+import java.time.LocalDate
 import scala.util.{Failure, Success, Try}
 
 private[mappings] class LocalDateFormatter(
@@ -29,7 +28,8 @@ private[mappings] class LocalDateFormatter(
                                             twoRequiredKey: String,
                                             requiredKey: String,
                                             args: Seq[String] = Seq.empty
-                                          ) extends Formatter[LocalDate] with Formatters {
+                                          ) extends Formatter[LocalDate]
+  with Formatters {
 
   private val fieldKeys: List[String] = List("day", "month", "year")
 
@@ -86,8 +86,8 @@ private[mappings] class LocalDateFormatter(
 
   override def unbind(key: String, value: LocalDate): Map[String, String] =
     Map(
-      s"$key.day" -> value.getDayOfMonth.toString,
+      s"$key.day"   -> value.getDayOfMonth.toString,
       s"$key.month" -> value.getMonthValue.toString,
-      s"$key.year" -> value.getYear.toString
+      s"$key.year"  -> value.getYear.toString
     )
 }
