@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-package navigation
+package utils
 
-import models.{Mode, UserAnswers}
-import pages._
-import play.api.mvc.Call
+trait RegExConstants {
 
-class FakeNavigator(desiredRoute: Call) extends Navigator {
-
-  override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call =
-    desiredRoute
-}
-
-class FakeContactDetailsNavigator(desiredRoute: Call) extends ContactDetailsNavigator {
-
-  override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = desiredRoute
+  final val emailRegex = "^(?:[a-zA-Z0-9!#$%&*+\\/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&*+\\/=?^_`{|}~-]+)*)" +
+    "@(?:[a-zA-Z0-9!#$%&*+\\/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&*+\\/=?^_`{|}~-]+)*)$"
+  final val digitsAndWhiteSpaceOnly = """^\+?[\d\s]+$"""
+  final val orgNameRegex            = """^[a-zA-Z0-9 &`\-\'\\\^]*$"""
+  final val phoneRegex              = """^[A-Z0-9 )/(\-*#+]*$""".stripMargin
 }

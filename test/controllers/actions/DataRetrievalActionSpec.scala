@@ -21,13 +21,14 @@ import models.UserAnswers
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 import play.api.test.FakeRequest
 import repositories.SessionRepository
+import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class DataRetrievalActionSpec extends SpecBase {
 
-  class Harness(sessionRepository: SessionRepository) extends DataRetrievalActionImpl(sessionRepository) {
+  class Harness(sessionRepository: SessionRepository) extends DataRetrievalActionProvider(sessionRepository) {
     def callTransform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] = transform(request)
   }
 
@@ -41,7 +42,7 @@ class DataRetrievalActionSpec extends SpecBase {
         when(sessionRepository.get("id")) thenReturn Future(None)
         val action = new Harness(sessionRepository)
 
-        val result = action.callTransform(IdentifierRequest(FakeRequest(), "id")).futureValue
+        val result = action.callTransform(IdentifierRequest(FakeRequest(), "id", "subscriptionId", Organisation)).futureValue
 
         result.userAnswers must not be defined
       }
@@ -55,7 +56,7 @@ class DataRetrievalActionSpec extends SpecBase {
         when(sessionRepository.get("id")) thenReturn Future(Some(UserAnswers("id")))
         val action = new Harness(sessionRepository)
 
-        val result = action.callTransform(new IdentifierRequest(FakeRequest(), "id")).futureValue
+        val result = action.callTransform(new IdentifierRequest(FakeRequest(), "id", "subscriptionId", Organisation)).futureValue
 
         result.userAnswers mustBe defined
       }
