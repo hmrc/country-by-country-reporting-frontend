@@ -59,7 +59,7 @@ class HaveSecondContactControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[HaveSecondContactView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(false), name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, name)(request, messages(application)).toString
       }
     }
 

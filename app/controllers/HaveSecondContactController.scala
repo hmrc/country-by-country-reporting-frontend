@@ -50,11 +50,7 @@ class HaveSecondContactController @Inject()(
     implicit request =>
       val preparedForm = request.userAnswers.get(HaveSecondContactPage) match {
         case Some(value) => form.fill(value)
-        case None =>
-          request.userAnswers.get(SecondContactNamePage) match {
-            case Some(_) => form.fill(true)
-            case _       => form.fill(false)
-          }
+        case None => form
       }
 
       Ok(view(preparedForm, getContactName(request.userAnswers)))
