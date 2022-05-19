@@ -14,18 +14,32 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import pages.behaviours.PageBehaviours
+import forms.behaviours.BooleanFieldBehaviours
+import play.api.data.FormError
 
-class HaveTelephonePageSpec extends PageBehaviours {
+class HaveTelephoneFormProviderSpec extends BooleanFieldBehaviours {
 
-  "HaveTelephonePage" - {
+  val requiredKey = "haveTelephone.error.required"
+  val invalidKey = "error.boolean"
 
-    beRetrievable[Boolean](HaveTelephonePage)
+  val form = new HaveTelephoneFormProvider()()
 
-    beSettable[Boolean](HaveTelephonePage)
+  ".value" - {
 
-    beRemovable[Boolean](HaveTelephonePage)
+    val fieldName = "value"
+
+    behave like booleanField(
+      form,
+      fieldName,
+      invalidError = FormError(fieldName, invalidKey)
+    )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
   }
 }

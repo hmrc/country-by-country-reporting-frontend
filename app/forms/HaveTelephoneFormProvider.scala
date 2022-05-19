@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import pages.behaviours.PageBehaviours
+import forms.mappings.Mappings
 
-class HaveTelephonePageSpec extends PageBehaviours {
+import javax.inject.Inject
+import play.api.data.Form
 
-  "HaveTelephonePage" - {
+class HaveTelephoneFormProvider @Inject() extends Mappings {
 
-    beRetrievable[Boolean](HaveTelephonePage)
-
-    beSettable[Boolean](HaveTelephonePage)
-
-    beRemovable[Boolean](HaveTelephonePage)
-  }
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("haveTelephone.error.required")
+    )
 }
