@@ -17,6 +17,8 @@
 package pages
 
 import pages.behaviours.PageBehaviours
+import models.UserAnswers
+import org.scalacheck.Arbitrary.arbitrary
 
 class HaveTelephonePageSpec extends PageBehaviours {
 
@@ -27,5 +29,41 @@ class HaveTelephonePageSpec extends PageBehaviours {
     beSettable[Boolean](HaveTelephonePage)
 
     beRemovable[Boolean](HaveTelephonePage)
+
+
+  }
+
+  "cleanup" - {
+
+    "must remove ContactPhonePage when there is a change of the answer from 'Yes' to 'No'" in {
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val result = userAnswers
+            .set(ContactPhonePage, "name")
+            .success
+            .value
+            .set(HaveTelephonePage, false)
+            .success
+            .value
+
+          result.get(ContactPhonePage) must not be defined
+      }
+    }
+
+    "must retain ContactPhonePage when there is a change of the answer to 'Yes'" in {
+
+      forAll(arbitrary[UserAnswers]) {
+        userAnswers =>
+          val result = userAnswers
+            .set(ContactPhonePage, "name")
+            .success
+            .value
+            .set(HaveTelephonePage, true)
+            .success
+            .value
+
+          result.get(ContactPhonePage) mustBe defined
+      }
+    }
   }
 }
