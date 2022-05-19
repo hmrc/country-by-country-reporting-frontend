@@ -68,6 +68,12 @@ contactName.change.hidden = contact name
 default.firstContact.name = your first contact
 default.secondContact.name = your second contact
 
+haveTelephone.title = Can we contact them by telephone?
+haveTelephone.heading = Can we contact {0} by telephone?
+haveTelephone.checkYourAnswersLabel = Telephone number
+haveTelephone.hint = We will use this to keep in touch and if we have any questions about your reports.
+haveTelephone.error.required = Select yes if they can be contacted by telephone
+
 haveSecondContact.title = Is there someone else we can contact if your first contact is not available?
 haveSecondContact.heading = Is there someone else we can contact if {0} is not available?
 haveSecondContact.hint = This can be a team mailbox or another contact.

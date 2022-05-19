@@ -14,21 +14,32 @@
  * limitations under the License.
  */
 
-package generators
+package forms
 
-import models._
-import org.scalacheck.Arbitrary
-import org.scalacheck.Arbitrary.arbitrary
-import pages._
-import play.api.libs.json.{JsValue, Json}
+import forms.behaviours.BooleanFieldBehaviours
+import play.api.data.FormError
 
-trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
+class HaveTelephoneFormProviderSpec extends BooleanFieldBehaviours {
 
-  implicit lazy val arbitraryHaveTelephoneUserAnswersEntry: Arbitrary[(HaveTelephonePage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[HaveTelephonePage.type]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
+  val requiredKey = "haveTelephone.error.required"
+  val invalidKey = "error.boolean"
+
+  val form = new HaveTelephoneFormProvider()()
+
+  ".value" - {
+
+    val fieldName = "value"
+
+    behave like booleanField(
+      form,
+      fieldName,
+      invalidError = FormError(fieldName, invalidKey)
+    )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }
