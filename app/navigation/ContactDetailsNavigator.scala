@@ -37,14 +37,13 @@ class ContactDetailsNavigator @Inject()() {
 //    case (HaveTelephonePage, affinity)    => ua => haveTelephoneRoutes(CheckMode, affinity)(ua)
     case ContactNamePage      => _ => routes.ContactNameController.onPageLoad()//TODO send to contact email page
 //    case (ContactEmailPage, affinity)     => _ => routes.HaveTelephoneController.onPageLoad(affinity)
-//    case (HaveSecondContactPage, Organisation) =>
-//      ua =>
-//        yesNoPage(
-//          ua,
-//          HaveSecondContactPage,
-//          routes.SecondContactNameController.onPageLoad(),
-//          routes.ChangeOrganisationContactDetailsController.onPageLoad()
-//        )
+    case HaveSecondContactPage => ua =>
+        yesNoPage(
+          ua,
+          HaveSecondContactPage,
+          routes.SecondContactNameController.onPageLoad(),
+          routes.HaveSecondContactController.onPageLoad()   //TODO: Change to  routes.ChangeOrganisationContactDetailsController.onPageLoad()
+        )
     case SecondContactNamePage  => _ => routes.SecondContactNameController.onPageLoad() //TODO: Change to routes.SecondContactEmailController.onPageLoad()
 //    case (SecondContactEmailPage, Organisation) => _ => routes.SecondContactHavePhoneController.onPageLoad()
 //    case (SecondContactHavePhonePage, Organisation) =>
@@ -66,12 +65,12 @@ class ContactDetailsNavigator @Inject()() {
 //      case _ =>
 //        nextPage(ContactPhonePage, affinityType, mode, ua)
 //    }
-//
-//  def yesNoPage(ua: UserAnswers, fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call =
-//    ua.get(fromPage)
-//      .map(if (_) yesCall else noCall)
-//      .getOrElse(routes.ThereIsAProblemController.onPageLoad())
-//
+
+  def yesNoPage(ua: UserAnswers, fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call =
+    ua.get(fromPage)
+      .map(if (_) yesCall else noCall)
+      .getOrElse(routes.IndexController.onPageLoad) //TODO: Change to routes.ThereIsAProblemController.onPageLoad() when implemented
+
   def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {
 //    case NormalMode =>
 //      normalRoutes(page, affinityType)(userAnswers)
