@@ -24,20 +24,15 @@ import play.api.data.{Form, FormError}
 
 trait FieldBehaviours extends FormSpec with ScalaCheckPropertyChecks with Generators {
 
-  def fieldThatBindsValidData(form: Form[_],
-                              fieldName: String,
-                              validDataGenerator: Gen[String]): Unit = {
-
-    "bind valid data" in {
+  def fieldThatBindsValidData(form: Form[_], fieldName: String, validDataGenerator: Gen[String]): Unit =
+    "must bind valid data" in {
 
       forAll(validDataGenerator -> "validDataItem") {
         dataItem: String =>
           val result = form.bind(Map(fieldName -> dataItem)).apply(fieldName)
           result.value.value mustBe dataItem
-          result.errors mustBe empty
       }
     }
-  }
 
   def mandatoryField(form: Form[_],
                      fieldName: String,
@@ -55,4 +50,10 @@ trait FieldBehaviours extends FormSpec with ScalaCheckPropertyChecks with Genera
       result.errors mustEqual Seq(requiredError)
     }
   }
+
+  def fieldWithInvalidData(form: Form[_], fieldName: String, invalidString: String, error: FormError): Unit =
+    "not bind invalid data" in {
+      val result = form.bind(Map(fieldName -> invalidString)).apply(fieldName)
+      result.errors mustEqual Seq(error)
+    }
 }

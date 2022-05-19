@@ -17,12 +17,13 @@
 package generators
 
 import java.time.{Instant, LocalDate, ZoneOffset}
-
 import org.scalacheck.Arbitrary._
 import org.scalacheck.Gen._
 import org.scalacheck.{Gen, Shrink}
+import utils.RegExConstants
+import wolfendale.scalacheck.regexp.RegexpGen
 
-trait Generators extends UserAnswersGenerator with PageGenerators with ModelGenerators with UserAnswersEntryGenerators {
+trait Generators extends UserAnswersGenerator with PageGenerators with ModelGenerators with UserAnswersEntryGenerators with RegExConstants {
 
   implicit val dontShrink: Shrink[String] = Shrink.shrinkAny
 
@@ -96,6 +97,12 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
     chars     <- listOfN(length, arbitrary[Char])
   } yield chars.mkString
 
+  def stringsLongerThanAlpha(minLength: Int): Gen[String] = for {
+    maxLength <- (minLength * 2).max(100)
+    length    <- Gen.chooseNum(minLength + 1, maxLength)
+    chars     <- listOfN(length, Gen.alphaChar)
+  } yield chars.mkString
+
   def stringsExceptSpecificValues(excluded: Seq[String]): Gen[String] =
     nonEmptyString suchThat (!excluded.contains(_))
 
@@ -117,4 +124,6 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
         Instant.ofEpochMilli(millis).atOffset(ZoneOffset.UTC).toLocalDate
     }
   }
+
+  def validOrganisationName: Gen[String] = RegexpGen.from(orgNameRegex)
 }

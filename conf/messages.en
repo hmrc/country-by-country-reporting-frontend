@@ -64,3 +64,13 @@ contactName.error.required = Enter the name of the individual or team we should 
 contactName.error.invalid = Name must only include letters a to z, apostrophes, grave accents, ampersands, hyphens, backslashes, carets and spaces
 contactName.error.length = Name must be 35 characters or less
 contactName.change.hidden = contact name
+
+default.firstContact.name = your first contact
+default.secondContact.name = your second contact
+
+haveSecondContact.title = Is there someone else we can contact if your first contact is not available?
+haveSecondContact.heading = Is there someone else we can contact if {0} is not available?
+haveSecondContact.hint = This can be a team mailbox or another contact.
+haveSecondContact.checkYourAnswersLabel = Do you have a second contact?
+haveSecondContact.error.required = Select yes if there is someone else we can contact
+haveSecondContact.change.hidden = if you have a second contact
