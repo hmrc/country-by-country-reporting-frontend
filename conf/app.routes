@@ -25,3 +25,6 @@ GET         /account/sign-out                                       controllers.
 GET         /account/signed-out                                     controllers.auth.SignedOutController.onPageLoad
 
 GET         /unauthorised                                           controllers.UnauthorisedController.onPageLoad
+
+GET        /change-contact/organisation/have-phone                  controllers.HaveTelephoneController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-contact/organisation/have-phone                  controllers.HaveTelephoneController.onSubmit(mode: Mode = CheckMode)

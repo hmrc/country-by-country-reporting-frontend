@@ -74,3 +74,9 @@ haveSecondContact.hint = This can be a team mailbox or another contact.
 haveSecondContact.checkYourAnswersLabel = Do you have a second contact?
 haveSecondContact.error.required = Select yes if there is someone else we can contact
 haveSecondContact.change.hidden = if you have a second contact
+
+haveTelephone.title = Can we contact them by telephone?
+haveTelephone.heading = Can we contact {0} by telephone?
+haveTelephone.checkYourAnswersLabel = Telephone number
+haveTelephone.hint = We will use this to keep in touch and if we have any questions about your reports.
+haveTelephone.error.required = Select yes if they can be contacted by telephone

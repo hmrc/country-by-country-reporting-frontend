@@ -16,9 +16,9 @@
 
 package pages
 
+import pages.behaviours.PageBehaviours
 import models.UserAnswers
 import org.scalacheck.Arbitrary.arbitrary
-import pages.behaviours.PageBehaviours
 
 class HaveTelephonePageSpec extends PageBehaviours {
 
@@ -29,6 +29,8 @@ class HaveTelephonePageSpec extends PageBehaviours {
     beSettable[Boolean](HaveTelephonePage)
 
     beRemovable[Boolean](HaveTelephonePage)
+
+
   }
 
   "cleanup" - {

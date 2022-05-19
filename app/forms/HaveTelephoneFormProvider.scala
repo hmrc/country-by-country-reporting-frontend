@@ -14,21 +14,17 @@
  * limitations under the License.
  */
 
-package generators
+package forms
 
-import models._
-import org.scalacheck.Arbitrary
-import org.scalacheck.Arbitrary.arbitrary
-import pages._
-import play.api.libs.json.{JsValue, Json}
+import forms.mappings.Mappings
 
-trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
+import javax.inject.Inject
+import play.api.data.Form
 
-  implicit lazy val arbitraryHaveTelephoneUserAnswersEntry: Arbitrary[(HaveTelephonePage.type, JsValue)] =
-    Arbitrary {
-      for {
-        page  <- arbitrary[HaveTelephonePage.type]
-        value <- arbitrary[Boolean].map(Json.toJson(_))
-      } yield (page, value)
-    }
+class HaveTelephoneFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("haveTelephone.error.required")
+    )
 }
