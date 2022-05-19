@@ -31,7 +31,7 @@ class ContactEmailFormProviderSpec extends StringFieldBehaviours {
   ".value" - {
 
     val fieldName = "value"
-    
+
     behave like fieldWithInvalidData(
       form,
       fieldName,
