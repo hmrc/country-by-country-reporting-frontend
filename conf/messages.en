@@ -64,3 +64,12 @@ contactName.error.required = Enter the name of the individual or team we should 
 contactName.error.invalid = Name must only include letters a to z, apostrophes, grave accents, ampersands, hyphens, backslashes, carets and spaces
 contactName.error.length = Name must be 35 characters or less
 contactName.change.hidden = contact name
+
+secondContactName.title = What is the name of the individual or team we should contact?
+secondContactName.heading = What is the name of the individual or team we should contact?
+secondContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
+secondContactName.checkYourAnswersLabel = Second contact name
+secondContactName.error.required = Enter the name of the individual or team we should contact
+secondContactName.error.invalid = Name of the individual or team must only include letters a to z, numbers 0 to 9, apostrophes, grave accents, ampersands, hyphens, backslashes, carets and spaces
+secondContactName.error.length = Individual or team must be 35 characters or less
+secondContactName.change.hidden = second contact name

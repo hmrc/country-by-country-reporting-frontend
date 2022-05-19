@@ -17,6 +17,9 @@ GET         /check-your-answers                          controllers.CheckYourAn
 GET         /change-contact/organisation/name            controllers.ContactNameController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-contact/organisation/name            controllers.ContactNameController.onSubmit(mode: Mode = CheckMode)
 
+GET         /change-contact/organisation/second-contact-name        controllers.SecondContactNameController.onPageLoad()
+POST        /change-contact/organisation/second-contact-name        controllers.SecondContactNameController.onSubmit()
+
 GET         /account/sign-out-survey                     controllers.auth.AuthController.signOut
 GET         /account/sign-out                            controllers.auth.AuthController.signOutNoSurvey
 GET         /account/signed-out                          controllers.auth.SignedOutController.onPageLoad

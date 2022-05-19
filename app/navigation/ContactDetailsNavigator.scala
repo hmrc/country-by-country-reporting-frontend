@@ -45,7 +45,7 @@ class ContactDetailsNavigator @Inject()() {
 //          routes.SecondContactNameController.onPageLoad(),
 //          routes.ChangeOrganisationContactDetailsController.onPageLoad()
 //        )
-//    case (SecondContactNamePage, Organisation)  => _ => routes.SecondContactEmailController.onPageLoad()
+    case SecondContactNamePage  => _ => routes.SecondContactNameController.onPageLoad() //TODO: Change to routes.SecondContactEmailController.onPageLoad()
 //    case (SecondContactEmailPage, Organisation) => _ => routes.SecondContactHavePhoneController.onPageLoad()
 //    case (SecondContactHavePhonePage, Organisation) =>
 //      ua =>
