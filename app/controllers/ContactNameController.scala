@@ -53,7 +53,6 @@ class ContactNameController @Inject()(
         case None        => form
         case Some(value) => form.fill(value)
       }
-
       Ok(view(preparedForm, mode))
   }
 
@@ -67,7 +66,7 @@ class ContactNameController @Inject()(
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ContactNamePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(ContactNamePage, AffinityType(request.userType), mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(ContactNamePage, mode, updatedAnswers))
         )
   }
 }
