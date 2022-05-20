@@ -31,3 +31,6 @@ GET         /unauthorised                                           controllers.
 
 GET        /change-contact/organisation/have-phone                  controllers.HaveTelephoneController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-contact/organisation/have-phone                  controllers.HaveTelephoneController.onSubmit(mode: Mode = CheckMode)
+
+GET        /change-contact/organisation/email                  controllers.ContactEmailController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-contact/organisation/email                  controllers.ContactEmailController.onSubmit(mode: Mode = CheckMode)

@@ -74,6 +74,15 @@ haveTelephone.checkYourAnswersLabel = Telephone number
 haveTelephone.hint = We will use this to keep in touch and if we have any questions about your reports.
 haveTelephone.error.required = Select yes if they can be contacted by telephone
 
+contactEmail.title = What is their email address?
+contactEmail.heading = What is the email address for {0}?
+contactEmail.hint = We will use this to send confirmation of your reports or if we have any questions about them.
+contactEmail.checkYourAnswersLabel = Email address
+contactEmail.error.required = Enter an email address
+contactEmail.error.length = Email address must be 132 characters or less
+contactEmail.error.invalid = Enter an email address in the correct format, like name@example.com
+contactEmail.change.hidden = ContactEmail
+
 haveSecondContact.title = Is there someone else we can contact if your first contact is not available?
 haveSecondContact.heading = Is there someone else we can contact if {0} is not available?
 haveSecondContact.hint = This can be a team mailbox or another contact.
