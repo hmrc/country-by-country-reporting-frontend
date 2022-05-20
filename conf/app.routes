@@ -20,8 +20,8 @@ POST        /change-contact/organisation/name                       controllers.
 GET        /change-contact/organisation/have-phone                  controllers.HaveTelephoneController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-contact/organisation/have-phone                  controllers.HaveTelephoneController.onSubmit(mode: Mode = CheckMode)
 
-GET        /change-contact/organisation/email                  controllers.ContactEmailController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-contact/organisation/email                  controllers.ContactEmailController.onSubmit(mode: Mode = CheckMode)
+GET        /change-contact/organisation/email                       controllers.ContactEmailController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-contact/organisation/email                       controllers.ContactEmailController.onSubmit(mode: Mode = CheckMode)
 
 GET         /change-contact/organisation/have-second-contact        controllers.HaveSecondContactController.onPageLoad()
 POST        /change-contact/organisation/have-second-contact        controllers.HaveSecondContactController.onSubmit()
@@ -31,6 +31,8 @@ POST        /change-contact/organisation/second-contact-name        controllers.
 
 GET         /change-contact/organisation/second-contact-have-phone  controllers.SecondContactHavePhoneController.onPageLoad()
 POST        /change-contact/organisation/second-contact-have-phone  controllers.SecondContactHavePhoneController.onSubmit()
+
+GET         /change-contact/details-updated                         controllers.DetailsUpdatedController.onPageLoad()
 
 GET         /account/sign-out-survey                                controllers.auth.AuthController.signOut
 GET         /account/sign-out                                       controllers.auth.AuthController.signOutNoSurvey
