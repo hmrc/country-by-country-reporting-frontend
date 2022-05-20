@@ -83,6 +83,15 @@ contactEmail.error.length = Email address must be 132 characters or less
 contactEmail.error.invalid = Enter an email address in the correct format, like name@example.com
 contactEmail.change.hidden = ContactEmail
 
+contactPhone.checkYourAnswersLabel = Telephone number
+contactPhone.title = What is their telephone number?
+contactPhone.heading = What is the telephone number for {0}?
+contactPhone.hint = Enter a telephone number, like&nbsp;01632&nbsp;960&nbsp;001, 07700&nbsp;900&nbsp;982 or +44&nbsp;808&nbsp;157&nbsp;0192.
+contactPhone.error.required = Enter a telephone number
+contactPhone.error.invalid = Enter a telephone number in the correct format
+contactPhone.error.length = Telephone number must be 24 characters or less
+contactPhone.change.hidden = telephone number
+
 haveSecondContact.title = Is there someone else we can contact if your first contact is not available?
 haveSecondContact.heading = Is there someone else we can contact if {0} is not available?
 haveSecondContact.hint = This can be a team mailbox or another contact.

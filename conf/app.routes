@@ -17,6 +17,9 @@ GET         /check-your-answers                                     controllers.
 GET         /change-contact/organisation/name                       controllers.ContactNameController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-contact/organisation/name                       controllers.ContactNameController.onSubmit(mode: Mode = CheckMode)
 
+GET         /change-contact/organisation/phone                      controllers.ContactPhoneController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-contact/organisation/phone                      controllers.ContactPhoneController.onSubmit(mode: Mode = CheckMode)
+
 GET         /change-contact/organisation/have-second-contact        controllers.HaveSecondContactController.onPageLoad()
 POST        /change-contact/organisation/have-second-contact        controllers.HaveSecondContactController.onSubmit()
 
