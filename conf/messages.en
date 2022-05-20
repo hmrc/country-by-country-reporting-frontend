@@ -103,3 +103,8 @@ secondContactHavePhone.title = Can we contact them by telephone?
 secondContactHavePhone.heading = Can we contact {0} by telephone?
 secondContactHavePhone.hint = We will use this to keep in touch and if we have any questions about your reports.
 secondContactHavePhone.error.required = Select yes if they can be contacted by telephone
+
+detailsUpdated.title = Contact details updated
+detailsUpdated.heading = Contact details updated
+detailsUpdated.p1 = We will use your new details if we need to contact you.
+detailsUpdated.link = Back to report cross-border arrangements
