@@ -52,7 +52,6 @@ class ContactNameController @Inject()(
         case None        => form
         case Some(value) => form.fill(value)
       }
-
       Ok(view(preparedForm, mode))
   }
 
