@@ -46,14 +46,13 @@ class ContactDetailsNavigator @Inject()() {
         )
     case SecondContactNamePage  => _ => routes.SecondContactNameController.onPageLoad() //TODO: Change to routes.SecondContactEmailController.onPageLoad()
 //    case (SecondContactEmailPage, Organisation) => _ => routes.SecondContactHavePhoneController.onPageLoad()
-//    case (SecondContactHavePhonePage, Organisation) =>
-//      ua =>
-//        yesNoPage(
-//          ua,
-//          SecondContactHavePhonePage,
-//          routes.SecondContactPhoneController.onPageLoad(),
-//          routes.ChangeOrganisationContactDetailsController.onPageLoad()
-//        )
+    case SecondContactHavePhonePage => ua =>
+        yesNoPage(
+          ua,
+          SecondContactHavePhonePage,
+          routes.SecondContactHavePhoneController.onPageLoad(), //TODO: Change to  routes.SecondContactPhoneController.onPageLoad(),
+          routes.SecondContactHavePhoneController.onPageLoad(), //TODO: Change to  routes.ChangeOrganisationContactDetailsController.onPageLoad()
+        )
 //    case (SecondContactPhonePage, Organisation) => _ => routes.ChangeOrganisationContactDetailsController.onPageLoad()
 //    case _                                      => _ => routes.ThereIsAProblemController.onPageLoad()
   }
