@@ -126,4 +126,10 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
   }
 
   def validOrganisationName: Gen[String] = RegexpGen.from(orgNameRegex)
+
+  def validEmailAddressToLong(maxLength: Int): Gen[String] = {
+    val validEmailAddress: Gen[String] = RegexpGen.from(emailRegex)
+    validEmailAddress suchThat (_.length > maxLength)
+  }
+
 }
