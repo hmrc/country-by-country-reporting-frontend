@@ -98,3 +98,8 @@ secondContactName.error.required = Enter the name of the individual or team we s
 secondContactName.error.invalid = Name of the individual or team must only include letters a to z, numbers 0 to 9, apostrophes, grave accents, ampersands, hyphens, backslashes, carets and spaces
 secondContactName.error.length = Individual or team must be 35 characters or less
 secondContactName.change.hidden = second contact name
+
+secondContactHavePhone.title = Can we contact them by telephone?
+secondContactHavePhone.heading = Can we contact {0} by telephone?
+secondContactHavePhone.hint = We will use this to keep in touch and if we have any questions about your reports.
+secondContactHavePhone.error.required = Select yes if they can be contacted by telephone
