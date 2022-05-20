@@ -24,18 +24,18 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class DataRetrievalActionImpl @Inject() (
-                                          val sessionRepository: SessionRepository
-                                        )(implicit val executionContext: ExecutionContext)
-  extends DataRetrievalAction {
+  val sessionRepository: SessionRepository
+)(implicit val executionContext: ExecutionContext)
+    extends DataRetrievalAction {
 
   override def apply(): ActionTransformer[IdentifierRequest, OptionalDataRequest] =
     new DataRetrievalActionProvider(sessionRepository)
 }
 
 class DataRetrievalActionProvider @Inject() (
-                                              val sessionRepository: SessionRepository
-                                            )(implicit val executionContext: ExecutionContext)
-  extends ActionTransformer[IdentifierRequest, OptionalDataRequest] {
+  val sessionRepository: SessionRepository
+)(implicit val executionContext: ExecutionContext)
+    extends ActionTransformer[IdentifierRequest, OptionalDataRequest] {
 
   override protected def transform[A](request: IdentifierRequest[A]): Future[OptionalDataRequest[A]] =
     sessionRepository.get(request.userId).map {

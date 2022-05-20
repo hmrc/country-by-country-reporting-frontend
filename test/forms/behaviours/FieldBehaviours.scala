@@ -34,9 +34,7 @@ trait FieldBehaviours extends FormSpec with ScalaCheckPropertyChecks with Genera
       }
     }
 
-  def mandatoryField(form: Form[_],
-                     fieldName: String,
-                     requiredError: FormError): Unit = {
+  def mandatoryField(form: Form[_], fieldName: String, requiredError: FormError): Unit = {
 
     "not bind when key is not present at all" in {
 

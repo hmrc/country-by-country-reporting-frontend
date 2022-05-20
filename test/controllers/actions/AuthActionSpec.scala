@@ -34,7 +34,10 @@ import scala.concurrent.{ExecutionContext, Future}
 class AuthActionSpec extends SpecBase {
 
   class Harness(authAction: IdentifierAction) {
-    def onPageLoad() = authAction { _ => Results.Ok }
+
+    def onPageLoad() = authAction {
+      _ => Results.Ok
+    }
   }
 
   "Auth Action" - {
@@ -51,7 +54,7 @@ class AuthActionSpec extends SpecBase {
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new MissingBearerToken), appConfig, bodyParsers)
           val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+          val result     = controller.onPageLoad()(FakeRequest())
 
           status(result) mustBe SEE_OTHER
           redirectLocation(result).value must startWith(appConfig.loginUrl)
@@ -71,7 +74,7 @@ class AuthActionSpec extends SpecBase {
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new BearerTokenExpired), appConfig, bodyParsers)
           val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+          val result     = controller.onPageLoad()(FakeRequest())
 
           status(result) mustBe SEE_OTHER
           redirectLocation(result).value must startWith(appConfig.loginUrl)
@@ -91,7 +94,7 @@ class AuthActionSpec extends SpecBase {
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new InsufficientEnrolments), appConfig, bodyParsers)
           val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+          val result     = controller.onPageLoad()(FakeRequest())
 
           status(result) mustBe SEE_OTHER
           redirectLocation(result).value mustBe routes.UnauthorisedController.onPageLoad.url
@@ -111,7 +114,7 @@ class AuthActionSpec extends SpecBase {
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new InsufficientConfidenceLevel), appConfig, bodyParsers)
           val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+          val result     = controller.onPageLoad()(FakeRequest())
 
           status(result) mustBe SEE_OTHER
           redirectLocation(result).value mustBe routes.UnauthorisedController.onPageLoad.url
@@ -131,7 +134,7 @@ class AuthActionSpec extends SpecBase {
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new UnsupportedAuthProvider), appConfig, bodyParsers)
           val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+          val result     = controller.onPageLoad()(FakeRequest())
 
           status(result) mustBe SEE_OTHER
           redirectLocation(result).value mustBe routes.UnauthorisedController.onPageLoad.url
@@ -151,7 +154,7 @@ class AuthActionSpec extends SpecBase {
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new UnsupportedAffinityGroup), appConfig, bodyParsers)
           val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+          val result     = controller.onPageLoad()(FakeRequest())
 
           status(result) mustBe SEE_OTHER
           redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad.url)
@@ -171,7 +174,7 @@ class AuthActionSpec extends SpecBase {
 
           val authAction = new AuthenticatedIdentifierAction(new FakeFailingAuthConnector(new UnsupportedCredentialRole), appConfig, bodyParsers)
           val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+          val result     = controller.onPageLoad()(FakeRequest())
 
           status(result) mustBe SEE_OTHER
           redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad.url)
@@ -181,7 +184,7 @@ class AuthActionSpec extends SpecBase {
   }
 }
 
-class FakeFailingAuthConnector @Inject()(exceptionToReturn: Throwable) extends AuthConnector {
+class FakeFailingAuthConnector @Inject() (exceptionToReturn: Throwable) extends AuthConnector {
   val serviceUrl: String = ""
 
   override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[A] =

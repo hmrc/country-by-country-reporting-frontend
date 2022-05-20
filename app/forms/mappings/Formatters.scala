@@ -28,9 +28,9 @@ trait Formatters {
 
     override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
       data.get(key) match {
-        case None => Left(Seq(FormError(key, errorKey, args)))
+        case None                      => Left(Seq(FormError(key, errorKey, args)))
         case Some(s) if s.trim.isEmpty => Left(Seq(FormError(key, errorKey, args)))
-        case Some(s) => Right(s)
+        case Some(s)                   => Right(s)
       }
 
     override def unbind(key: String, value: String): Map[String, String] =
@@ -47,9 +47,9 @@ trait Formatters {
           .bind(key, data)
           .right
           .flatMap {
-            case "true" => Right(true)
+            case "true"  => Right(true)
             case "false" => Right(false)
-            case _ => Left(Seq(FormError(key, invalidKey, args)))
+            case _       => Left(Seq(FormError(key, invalidKey, args)))
           }
 
       def unbind(key: String, value: Boolean) = Map(key -> value.toString)
@@ -85,7 +85,7 @@ trait Formatters {
     }
 
   private[mappings] def enumerableFormatter[A](requiredKey: String, invalidKey: String, args: Seq[String] = Seq.empty)(implicit
-                                                                                                                       ev: Enumerable[A]
+    ev: Enumerable[A]
   ): Formatter[A] =
     new Formatter[A] {
 
@@ -109,14 +109,14 @@ trait Formatters {
       data.get(key) match {
         case None =>
           msgArg.isEmpty match {
-            case true => Left(Seq(FormError(key, errorKey)))
+            case true  => Left(Seq(FormError(key, errorKey)))
             case false => Left(Seq(FormError(key, errorKey, Seq(msgArg))))
           }
         case Some(s) =>
           s.trim match {
             case "" =>
               msgArg.isEmpty match {
-                case true => Left(Seq(FormError(key, errorKey)))
+                case true  => Left(Seq(FormError(key, errorKey)))
                 case false => Left(Seq(FormError(key, errorKey, Seq(msgArg))))
               }
             case s1 => Right(s1)
@@ -133,7 +133,7 @@ trait Formatters {
                                        regex: String,
                                        maxLength: Int,
                                        msgArg: String = ""
-                                      ): Formatter[String] =
+  ): Formatter[String] =
     new Formatter[String] {
       private val dataFormatter: Formatter[String] = stringTrimFormatter(requiredKey, msgArg)
 
@@ -142,9 +142,9 @@ trait Formatters {
           .bind(key, data)
           .right
           .flatMap {
-            case str if !str.matches(regex) => Left(Seq(FormError(key, invalidKey)))
+            case str if !str.matches(regex)    => Left(Seq(FormError(key, invalidKey)))
             case str if str.length > maxLength => Left(Seq(FormError(key, lengthKey)))
-            case str => Right(str)
+            case str                           => Right(str)
           }
 
       override def unbind(key: String, value: String): Map[String, String] =

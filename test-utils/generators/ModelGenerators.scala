@@ -28,7 +28,6 @@ trait ModelGenerators {
     } yield OrganisationDetails(orgName)
   }
 
-
   implicit val arbitraryContactInformation: Arbitrary[ContactInformation] = Arbitrary {
     for {
       contactType <- arbitrary[OrganisationDetails]

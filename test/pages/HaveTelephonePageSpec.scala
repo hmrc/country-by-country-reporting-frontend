@@ -30,7 +30,6 @@ class HaveTelephonePageSpec extends PageBehaviours {
 
     beRemovable[Boolean](HaveTelephonePage)
 
-
   }
 
   "cleanup" - {

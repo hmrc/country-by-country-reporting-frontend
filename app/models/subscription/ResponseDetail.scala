@@ -23,7 +23,7 @@ case class ResponseDetail(subscriptionID: String,
                           isGBUser: Boolean,
                           primaryContact: ContactInformation,
                           secondaryContact: Option[ContactInformation]
-                         )
+)
 
 object ResponseDetail {
 

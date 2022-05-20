@@ -34,7 +34,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.http.HeaderCarrier
 
 trait SpecBase
-  extends AnyFreeSpec
+    extends AnyFreeSpec
     with GuiceOneAppPerSuite
     with Matchers
     with MockitoSugar

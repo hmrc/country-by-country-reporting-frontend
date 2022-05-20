@@ -26,7 +26,7 @@ case class RequestDetailForUpdate(IDType: String,
                                   isGBUser: Boolean,
                                   primaryContact: ContactInformation,
                                   secondaryContact: Option[ContactInformation]
-                                 )
+)
 
 object RequestDetailForUpdate {
   implicit lazy val writes: Writes[RequestDetailForUpdate] = Json.writes[RequestDetailForUpdate]
@@ -49,7 +49,7 @@ object RequestDetailForUpdate {
   }
 
   def getContactInformation[T <: ContactTypePage](contactInfo: OrganisationDetails, mobile: Option[String], userAnswers: UserAnswers)(implicit
-                                                                                                                                      contactTypePage: T
+    contactTypePage: T
   ): Option[ContactInformation] = {
 
     val contactTypeInfo = userAnswers.get(contactTypePage.contactNamePage) match {

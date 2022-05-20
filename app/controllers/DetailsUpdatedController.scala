@@ -24,7 +24,7 @@ import views.html.DetailsUpdatedView
 
 import javax.inject.Inject
 
-class DetailsUpdatedController @Inject()(
+class DetailsUpdatedController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,

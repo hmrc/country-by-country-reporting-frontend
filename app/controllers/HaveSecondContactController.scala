@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.HaveSecondContactFormProvider
 import models.{CheckMode, UserAnswers}
 import navigation.ContactDetailsNavigator
-import pages.{ContactNamePage, HaveSecondContactPage, SecondContactNamePage}
+import pages.{ContactNamePage, HaveSecondContactPage}
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -30,7 +30,7 @@ import views.html.HaveSecondContactView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class HaveSecondContactController @Inject()(
+class HaveSecondContactController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: ContactDetailsNavigator,
@@ -50,7 +50,7 @@ class HaveSecondContactController @Inject()(
     implicit request =>
       val preparedForm = request.userAnswers.get(HaveSecondContactPage) match {
         case Some(value) => form.fill(value)
-        case None => form
+        case None        => form
       }
 
       Ok(view(preparedForm, getContactName(request.userAnswers)))

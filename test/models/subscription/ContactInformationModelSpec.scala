@@ -56,10 +56,8 @@ class ContactInformationModelSpec extends SpecBase {
           |}""".stripMargin
 
       Json.parse(contactInformationJson).validate[ContactInformation] mustBe
-          JsError(
-            List((JsPath \ "organisation" \ "organisationName",
-              List(JsonValidationError(List("error.path.missing"))))))
+        JsError(List((JsPath \ "organisation" \ "organisationName", List(JsonValidationError(List("error.path.missing"))))))
 
-}
+    }
   }
 }

@@ -31,24 +31,24 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SessionRepository @Inject()(
-                                   mongoComponent: MongoComponent,
-                                   appConfig: FrontendAppConfig,
-                                   clock: Clock
-                                 )(implicit ec: ExecutionContext)
-  extends PlayMongoRepository[UserAnswers](
-    collectionName = "user-answers",
-    mongoComponent = mongoComponent,
-    domainFormat   = UserAnswers.format,
-    indexes        = Seq(
-      IndexModel(
-        Indexes.ascending("lastUpdated"),
-        IndexOptions()
-          .name("lastUpdatedIdx")
-          .expireAfter(appConfig.cacheTtl, TimeUnit.SECONDS)
+class SessionRepository @Inject() (
+  mongoComponent: MongoComponent,
+  appConfig: FrontendAppConfig,
+  clock: Clock
+)(implicit ec: ExecutionContext)
+    extends PlayMongoRepository[UserAnswers](
+      collectionName = "user-answers",
+      mongoComponent = mongoComponent,
+      domainFormat = UserAnswers.format,
+      indexes = Seq(
+        IndexModel(
+          Indexes.ascending("lastUpdated"),
+          IndexOptions()
+            .name("lastUpdatedIdx")
+            .expireAfter(appConfig.cacheTtl, TimeUnit.SECONDS)
+        )
       )
-    )
-  ) {
+    ) {
 
   implicit val instantFormat: Format[Instant] = MongoJavatimeFormats.instantFormat
 
@@ -58,10 +58,12 @@ class SessionRepository @Inject()(
     collection
       .updateOne(
         filter = byId(id),
-        update = Updates.set("lastUpdated", Instant.now(clock)),
+        update = Updates.set("lastUpdated", Instant.now(clock))
       )
       .toFuture
-      .map(_ => true)
+      .map(
+        _ => true
+      )
 
   def get(id: String): Future[Option[UserAnswers]] =
     keepAlive(id).flatMap {
@@ -77,17 +79,21 @@ class SessionRepository @Inject()(
 
     collection
       .replaceOne(
-        filter      = byId(updatedAnswers.id),
+        filter = byId(updatedAnswers.id),
         replacement = updatedAnswers,
-        options     = ReplaceOptions().upsert(true)
+        options = ReplaceOptions().upsert(true)
       )
       .toFuture
-      .map(_ => true)
+      .map(
+        _ => true
+      )
   }
 
   def clear(id: String): Future[Boolean] =
     collection
       .deleteOne(byId(id))
       .toFuture
-      .map(_ => true)
+      .map(
+        _ => true
+      )
 }

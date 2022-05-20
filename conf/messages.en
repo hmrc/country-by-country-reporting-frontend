@@ -6,10 +6,14 @@ site.change = Change
 site.no = No
 site.yes = Yes
 site.continue = Continue
+site.confirmAndSend = Confirm and send
 site.start = Start now
 site.startAgain = Start again
 site.signIn = Sign in
 site.govuk = GOV.UK
+site.backToReportPage = Back to report cross-border arrangements
+
+no.phone = None
 
 date.day = Day
 date.month = Month
@@ -108,3 +112,10 @@ detailsUpdated.title = Contact details updated
 detailsUpdated.heading = Contact details updated
 detailsUpdated.p1 = We will use your new details if we need to contact you.
 detailsUpdated.link = Back to report cross-border arrangements
+
+changeOrganisationContactDetails.title = Contact details at your organisation
+changeOrganisationContactDetails.heading = Contact details at your organisation
+changeOrganisationContactDetails.primary.heading = First contact
+changeOrganisationContactDetails.secondary.heading = Second contact
+changeOrganisationContactDetails.nowSendContactDetails = Now send your new contact details
+changeOrganisationContactDetails.confirmingInformation = By sending these details, you are confirming that the information is correct and complete to the best of your knowledge.

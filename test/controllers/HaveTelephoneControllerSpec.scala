@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import forms.HaveTelephoneFormProvider
 import models.{CheckMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import pages.HaveTelephonePage
 import play.api.inject.bind
@@ -52,7 +52,7 @@ class HaveTelephoneControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[HaveTelephoneView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, "", CheckMode )(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, "", CheckMode)(request, messages(application)).toString
       }
     }
 
@@ -70,7 +70,7 @@ class HaveTelephoneControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true),  "", CheckMode )(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), "", CheckMode)(request, messages(application)).toString
       }
     }
 
@@ -83,7 +83,7 @@ class HaveTelephoneControllerSpec extends SpecBase {
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[ContactDetailsNavigator].toInstance(new FakeContactDetailsNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
@@ -116,7 +116,7 @@ class HaveTelephoneControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, "", CheckMode )(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, "", CheckMode)(request, messages(application)).toString
       }
     }
   }
