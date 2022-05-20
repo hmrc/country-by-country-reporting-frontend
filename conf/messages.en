@@ -117,3 +117,12 @@ detailsUpdated.title = Contact details updated
 detailsUpdated.heading = Contact details updated
 detailsUpdated.p1 = We will use your new details if we need to contact you.
 detailsUpdated.link = Back to report cross-border arrangements
+
+secondContactPhone.title = What is their telephone number?
+secondContactPhone.heading = What is the telephone number for {0}?
+secondContactPhone.hint = Enter a telephone number, like&nbsp;01632&nbsp;960&nbsp;001, 07700&nbsp;900&nbsp;982 or +44&nbsp;808&nbsp;157&nbsp;0192.
+secondContactPhone.checkYourAnswersLabel = Second contact telephone number
+secondContactPhone.error.required = Enter a telephone number
+secondContactPhone.error.invalid = Enter a telephone number in the correct format
+secondContactPhone.error.length = Telephone number must be 24 characters or less
+secondContactPhone.change.hidden = second contact telephone number
