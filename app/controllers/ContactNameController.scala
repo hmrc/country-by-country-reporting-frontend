@@ -19,7 +19,6 @@ package controllers
 import controllers.actions._
 import forms.ContactNameFormProvider
 import models.Mode
-import models.{AffinityType, Mode}
 import navigation.ContactDetailsNavigator
 import pages.ContactNamePage
 import play.api.i18n.{I18nSupport, MessagesApi}
