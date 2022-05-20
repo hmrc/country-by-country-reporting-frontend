@@ -132,4 +132,15 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
     validEmailAddress suchThat (_.length > maxLength)
   }
 
+  def validPhoneNumberWithinLength(maxlength: Int): Gen[String] = RegexpGen.from(phoneRegex) retryUntil
+    (
+      phoneNumber => phoneNumber.length < maxlength
+    )
+
+  def validPhoneNumberTooLong(minLength: Int): Gen[String] = for {
+    maxLength <- (minLength * 2).max(100)
+    length    <- Gen.chooseNum(minLength + 1, maxLength)
+    chars     <- listOfN(length, arbitrary[Byte])
+  } yield chars.map(math.abs(_)).mkString
+
 }
