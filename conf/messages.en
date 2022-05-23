@@ -72,12 +72,6 @@ contactName.change.hidden = contact name
 default.firstContact.name = your first contact
 default.secondContact.name = your second contact
 
-haveTelephone.title = Can we contact them by telephone?
-haveTelephone.heading = Can we contact {0} by telephone?
-haveTelephone.checkYourAnswersLabel = Telephone number
-haveTelephone.hint = We will use this to keep in touch and if we have any questions about your reports.
-haveTelephone.error.required = Select yes if they can be contacted by telephone
-
 contactEmail.title = What is their email address?
 contactEmail.heading = What is the email address for {0}?
 contactEmail.hint = We will use this to send confirmation of your reports or if we have any questions about them.
@@ -86,6 +80,21 @@ contactEmail.error.required = Enter an email address
 contactEmail.error.length = Email address must be 132 characters or less
 contactEmail.error.invalid = Enter an email address in the correct format, like name@example.com
 contactEmail.change.hidden = ContactEmail
+
+haveTelephone.title = Can we contact them by telephone?
+haveTelephone.heading = Can we contact {0} by telephone?
+haveTelephone.checkYourAnswersLabel = Telephone number
+haveTelephone.hint = We will use this to keep in touch and if we have any questions about your reports.
+haveTelephone.error.required = Select yes if they can be contacted by telephone
+
+contactPhone.checkYourAnswersLabel = Telephone number
+contactPhone.title = What is their telephone number?
+contactPhone.heading = What is the telephone number for {0}?
+contactPhone.hint = Enter a telephone number, like&nbsp;01632&nbsp;960&nbsp;001, 07700&nbsp;900&nbsp;982 or +44&nbsp;808&nbsp;157&nbsp;0192.
+contactPhone.error.required = Enter a telephone number
+contactPhone.error.invalid = Enter a telephone number in the correct format
+contactPhone.error.length = Telephone number must be 24 characters or less
+contactPhone.change.hidden = telephone number
 
 haveSecondContact.title = Is there someone else we can contact if your first contact is not available?
 haveSecondContact.heading = Is there someone else we can contact if {0} is not available?
@@ -107,6 +116,15 @@ secondContactHavePhone.title = Can we contact them by telephone?
 secondContactHavePhone.heading = Can we contact {0} by telephone?
 secondContactHavePhone.hint = We will use this to keep in touch and if we have any questions about your reports.
 secondContactHavePhone.error.required = Select yes if they can be contacted by telephone
+
+secondContactPhone.title = What is their telephone number?
+secondContactPhone.heading = What is the telephone number for {0}?
+secondContactPhone.hint = Enter a telephone number, like&nbsp;01632&nbsp;960&nbsp;001, 07700&nbsp;900&nbsp;982 or +44&nbsp;808&nbsp;157&nbsp;0192.
+secondContactPhone.checkYourAnswersLabel = Second contact telephone number
+secondContactPhone.error.required = Enter a telephone number
+secondContactPhone.error.invalid = Enter a telephone number in the correct format
+secondContactPhone.error.length = Telephone number must be 24 characters or less
+secondContactPhone.change.hidden = second contact telephone number
 
 detailsUpdated.title = Contact details updated
 detailsUpdated.heading = Contact details updated

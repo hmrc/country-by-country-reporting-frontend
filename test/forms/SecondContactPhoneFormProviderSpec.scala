@@ -18,38 +18,41 @@ package forms
 
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
+import utils.RegExConstants
+import wolfendale.scalacheck.regexp.RegexpGen
 
-class ContactEmailFormProviderSpec extends StringFieldBehaviours {
+class SecondContactPhoneFormProviderSpec extends StringFieldBehaviours with RegExConstants {
 
-  val requiredKey = "contactEmail.error.required"
-  val invalidKey  = "contactEmail.error.invalid"
-  val lengthKey   = "contactEmail.error.length"
-  val maxLength   = 132
+  val requiredKey = "secondContactPhone.error.required"
+  val lengthKey   = "secondContactPhone.error.length"
+  val invalidKey  = "secondContactPhone.error.invalid"
+  val maxLength   = 24
 
-  val form = new ContactEmailFormProvider()()
+  val form = new SecondContactPhoneFormProvider()()
 
   ".value" - {
 
     val fieldName = "value"
 
-    behave like fieldThatBindsValidData(
+    behave like fieldThatBindsValidDataWithoutInvalidError(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      RegexpGen.from(phoneRegex),
+      invalidKey
+    )
+
+    behave like fieldWithMaxLengthPhoneNumber(
+      form,
+      fieldName,
+      maxLength = maxLength,
+      lengthError = FormError(fieldName, lengthKey, Seq())
     )
 
     behave like fieldWithInvalidData(
       form,
       fieldName,
-      invalidString = "not a valid email",
+      invalidString = "not a phone number",
       error = FormError(fieldName, invalidKey)
-    )
-
-    behave like fieldWithMaxLengthEmail(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey)
     )
 
     behave like mandatoryField(

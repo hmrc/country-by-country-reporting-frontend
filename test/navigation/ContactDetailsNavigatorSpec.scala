@@ -31,36 +31,6 @@ class ContactDetailsNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks
 
     "in Check mode" - {
 
-//      "must go from Contact Phone page to Change Individual Details page" in {
-//        forAll(arbitrary[UserAnswers]) {
-//          answers =>
-//            navigator
-//              .nextPage(ContactPhonePage, CheckMode, answers)
-//              .mustBe(routes.ChangeIndividualContactDetailsController.onPageLoad())
-//        }
-//      }
-
-      "must go from Contact Phone page to Change Organisation Details page" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            navigator
-              .nextPage(ContactPhonePage, CheckMode, answers)
-              .mustBe(routes.ChangeOrganisationContactDetailsController.onPageLoad())
-        }
-      }
-
-      "must go from Have Telephone Page to Change Organisation Details page" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            val updatedAnswers =
-              answers.set(HaveTelephonePage, false).success.value
-
-            navigator
-              .nextPage(ContactPhonePage, CheckMode, updatedAnswers)
-              .mustBe(routes.ChangeOrganisationContactDetailsController.onPageLoad())
-        }
-      }
-
       "must go from Contact Name page to Contact Email page" in {
         forAll(arbitrary[UserAnswers]) {
           answers =>
@@ -76,6 +46,39 @@ class ContactDetailsNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks
             navigator
               .nextPage(ContactEmailPage, CheckMode, answers)
               .mustBe(routes.HaveTelephoneController.onPageLoad())
+        }
+      }
+
+      "must go from Have Phone page to Phone page when 'YES' is selected" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            val updatedAnswers =
+              answers.set(HaveTelephonePage, true).success.value
+
+            navigator
+              .nextPage(HaveTelephonePage, CheckMode, updatedAnswers)
+              .mustBe(routes.ContactPhoneController.onPageLoad())
+        }
+      }
+
+      "must go from Have Phone page to Have Second Contact page when 'NO' is selected" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            val updatedAnswers =
+              answers.set(HaveTelephonePage, false).success.value
+
+            navigator
+              .nextPage(HaveTelephonePage, CheckMode, updatedAnswers)
+              .mustBe(routes.HaveSecondContactController.onPageLoad())
+        }
+      }
+
+      "must go from Contact Phone page to Have Second Contact page" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            navigator
+              .nextPage(ContactPhonePage, CheckMode, answers)
+              .mustBe(routes.HaveSecondContactController.onPageLoad())
         }
       }
 
@@ -121,17 +124,17 @@ class ContactDetailsNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks
         }
       }
 
-//      "must go from Second Contact Have Phone page to Second Contact Phone page when 'YES' is selected" in {
-//        forAll(arbitrary[UserAnswers]) {
-//          answers =>
-//            val updatedAnswers =
-//              answers.set(SecondContactHavePhonePage, true).success.value
-//
-//            navigator
-//              .nextPage(SecondContactHavePhonePage, CheckMode, updatedAnswers)
-//              .mustBe(routes.SecondContactPhoneController.onPageLoad())
-//        }
-//      }
+      "must go from Second Contact Have Phone page to Second Contact Phone page when 'YES' is selected" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            val updatedAnswers =
+              answers.set(SecondContactHavePhonePage, true).success.value
+
+            navigator
+              .nextPage(SecondContactHavePhonePage, CheckMode, updatedAnswers)
+              .mustBe(routes.SecondContactPhoneController.onPageLoad())
+        }
+      }
 
       "must go from Second Contact Have Phone page to Change Organisation Details page when 'NO' is selected" in {
         forAll(arbitrary[UserAnswers]) {
