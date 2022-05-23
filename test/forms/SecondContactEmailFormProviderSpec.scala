@@ -19,19 +19,18 @@ package forms
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 
-class ContactEmailFormProviderSpec extends StringFieldBehaviours {
+class SecondContactEmailFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "contactEmail.error.required"
-  val invalidKey  = "contactEmail.error.invalid"
-  val lengthKey = "contactEmail.error.length"
-  val maxLength = 131
+  val requiredKey = "secondContactEmail.error.required"
+  val lengthKey = "secondContactEmail.error.length"
+  val invalidKey = "secondContactEmail.error.invalid"
+  val maxLength = 132
 
-  val form = new ContactEmailFormProvider()()
+  val form = new SecondContactEmailFormProvider()()
 
   ".value" - {
 
     val fieldName = "value"
-
 
     behave like fieldThatBindsValidData(
       form,

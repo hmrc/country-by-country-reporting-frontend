@@ -45,3 +45,6 @@ GET         /unauthorised                                           controllers.
 
 GET        /change-contact/organisation/second-contact-phone        controllers.SecondContactPhoneController.onPageLoad(mode: Mode = CheckMode)
 POST       /change-contact/organisation/second-contact-phone        controllers.SecondContactPhoneController.onSubmit(mode: Mode = CheckMode)
+
+GET        /change-contact/organisation/second-contact-email                  controllers.SecondContactEmailController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-contact/organisation/second-contact-email                  controllers.SecondContactEmailController.onSubmit(mode: Mode = CheckMode)

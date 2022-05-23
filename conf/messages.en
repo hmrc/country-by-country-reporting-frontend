@@ -126,3 +126,12 @@ secondContactPhone.error.required = Enter a telephone number
 secondContactPhone.error.invalid = Enter a telephone number in the correct format
 secondContactPhone.error.length = Telephone number must be 24 characters or less
 secondContactPhone.change.hidden = second contact telephone number
+
+secondContactEmail.title = What is their email address?
+secondContactEmail.heading = What is the email address for {0}?
+secondContactEmail.hint = We will use this to send confirmation of your reports and if we have any questions about them.
+secondContactEmail.checkYourAnswersLabel = secondContactEmail
+secondContactEmail.error.required = Enter an email address
+secondContactEmail.error.length = Email address must be 132 characters or less
+secondContactEmail.error.invalid = Enter an email address in the correct format, like name@example.com
+secondContactEmail.change.hidden = SecondContactEmail
