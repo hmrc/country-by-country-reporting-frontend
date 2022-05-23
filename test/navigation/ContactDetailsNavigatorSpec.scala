@@ -31,6 +31,27 @@ class ContactDetailsNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks
 
     "in Check mode" - {
 
+      "must go from Contact Phone page to Change Organisation Details page" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            navigator
+              .nextPage(ContactPhonePage, CheckMode, answers)
+              .mustBe(routes.ChangeOrganisationContactDetailsController.onPageLoad())
+        }
+      }
+
+      "must go from Have Telephone Page to Change Organisation Details page" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            val updatedAnswers =
+              answers.set(HaveTelephonePage, false).success.value
+
+            navigator
+              .nextPage(ContactPhonePage, CheckMode, updatedAnswers)
+              .mustBe(routes.ChangeOrganisationContactDetailsController.onPageLoad())
+        }
+      }
+
       "must go from Contact Name page to Contact Email page" in {
         forAll(arbitrary[UserAnswers]) {
           answers =>
@@ -58,27 +79,6 @@ class ContactDetailsNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks
             navigator
               .nextPage(HaveTelephonePage, CheckMode, updatedAnswers)
               .mustBe(routes.ContactPhoneController.onPageLoad())
-        }
-      }
-
-      "must go from Have Phone page to Have Second Contact page when 'NO' is selected" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            val updatedAnswers =
-              answers.set(HaveTelephonePage, false).success.value
-
-            navigator
-              .nextPage(HaveTelephonePage, CheckMode, updatedAnswers)
-              .mustBe(routes.HaveSecondContactController.onPageLoad())
-        }
-      }
-
-      "must go from Contact Phone page to Have Second Contact page" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            navigator
-              .nextPage(ContactPhonePage, CheckMode, answers)
-              .mustBe(routes.HaveSecondContactController.onPageLoad())
         }
       }
 
