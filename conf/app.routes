@@ -14,26 +14,26 @@ GET         /there-is-a-problem                                     controllers.
 
 GET         /check-your-answers                                     controllers.CheckYourAnswersController.onPageLoad
 
-GET         /change-contact/organisation/name                       controllers.ContactNameController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-contact/organisation/name                       controllers.ContactNameController.onSubmit(mode: Mode = CheckMode)
+GET         /change-contact/name                                    controllers.ContactNameController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-contact/name                                    controllers.ContactNameController.onSubmit(mode: Mode = CheckMode)
 
-GET         /change-contact/organisation/phone                      controllers.ContactPhoneController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-contact/organisation/phone                      controllers.ContactPhoneController.onSubmit(mode: Mode = CheckMode)
+GET         /change-contact/phone                                   controllers.ContactPhoneController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-contact/phone                                   controllers.ContactPhoneController.onSubmit(mode: Mode = CheckMode)
 
-GET        /change-contact/organisation/have-phone                  controllers.HaveTelephoneController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-contact/organisation/have-phone                  controllers.HaveTelephoneController.onSubmit(mode: Mode = CheckMode)
+GET         /change-contact/have-phone                              controllers.HaveTelephoneController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-contact/have-phone                              controllers.HaveTelephoneController.onSubmit(mode: Mode = CheckMode)
 
-GET        /change-contact/organisation/email                       controllers.ContactEmailController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-contact/organisation/email                       controllers.ContactEmailController.onSubmit(mode: Mode = CheckMode)
+GET         /change-contact/email                                   controllers.ContactEmailController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-contact/email                                   controllers.ContactEmailController.onSubmit(mode: Mode = CheckMode)
 
-GET         /change-contact/organisation/have-second-contact        controllers.HaveSecondContactController.onPageLoad()
-POST        /change-contact/organisation/have-second-contact        controllers.HaveSecondContactController.onSubmit()
+GET         /change-contact/have-second-contact                     controllers.HaveSecondContactController.onPageLoad()
+POST        /change-contact/have-second-contact                     controllers.HaveSecondContactController.onSubmit()
 
-GET         /change-contact/organisation/second-contact-name        controllers.SecondContactNameController.onPageLoad()
-POST        /change-contact/organisation/second-contact-name        controllers.SecondContactNameController.onSubmit()
+GET         /change-contact/second-contact-name                     controllers.SecondContactNameController.onPageLoad()
+POST        /change-contact/second-contact-name                     controllers.SecondContactNameController.onSubmit()
 
-GET         /change-contact/organisation/second-contact-have-phone  controllers.SecondContactHavePhoneController.onPageLoad()
-POST        /change-contact/organisation/second-contact-have-phone  controllers.SecondContactHavePhoneController.onSubmit()
+GET         /change-contact/second-contact-have-phone               controllers.SecondContactHavePhoneController.onPageLoad()
+POST        /change-contact/second-contact-have-phone               controllers.SecondContactHavePhoneController.onSubmit()
 
 GET         /change-contact/details-updated                         controllers.DetailsUpdatedController.onPageLoad()
 
@@ -43,8 +43,8 @@ GET         /account/signed-out                                     controllers.
 
 GET         /unauthorised                                           controllers.UnauthorisedController.onPageLoad
 
-GET        /change-contact/organisation/second-contact-phone        controllers.SecondContactPhoneController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-contact/organisation/second-contact-phone        controllers.SecondContactPhoneController.onSubmit(mode: Mode = CheckMode)
+GET         /change-contact/second-contact-phone                    controllers.SecondContactPhoneController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-contact/second-contact-phone                    controllers.SecondContactPhoneController.onSubmit(mode: Mode = CheckMode)
 
-GET        /change-contact/organisation/second-contact-email                  controllers.SecondContactEmailController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-contact/organisation/second-contact-email                  controllers.SecondContactEmailController.onSubmit(mode: Mode = CheckMode)
+GET         /change-contact/second-contact-email                    controllers.SecondContactEmailController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-contact/second-contact-email                    controllers.SecondContactEmailController.onSubmit(mode: Mode = CheckMode)
