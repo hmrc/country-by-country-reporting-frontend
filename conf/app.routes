@@ -20,26 +20,29 @@ POST        /change-contact/organisation/details                    controllers.
 GET         /change-contact/organisation/name                       controllers.ContactNameController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-contact/organisation/name                       controllers.ContactNameController.onSubmit(mode: Mode = CheckMode)
 
-GET         /change-contact/organisation/phone                      controllers.ContactPhoneController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-contact/organisation/phone                      controllers.ContactPhoneController.onSubmit(mode: Mode = CheckMode)
-
-GET         /change-contact/organisation/have-phone                  controllers.HaveTelephoneController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-contact/organisation/have-phone                  controllers.HaveTelephoneController.onSubmit(mode: Mode = CheckMode)
-
 GET         /change-contact/organisation/email                      controllers.ContactEmailController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-contact/organisation/email                      controllers.ContactEmailController.onSubmit(mode: Mode = CheckMode)
 
-GET         /change-contact/organisation/have-second-contact        controllers.HaveSecondContactController.onPageLoad()
-POST        /change-contact/organisation/have-second-contact        controllers.HaveSecondContactController.onSubmit()
+GET         /change-contact/organisation/have-phone                 controllers.HaveTelephoneController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-contact/organisation/have-phone                 controllers.HaveTelephoneController.onSubmit(mode: Mode = CheckMode)
 
-GET         /change-contact/organisation/second-contact-name        controllers.SecondContactNameController.onPageLoad()
-POST        /change-contact/organisation/second-contact-name        controllers.SecondContactNameController.onSubmit()
+GET         /change-contact/organisation/phone                      controllers.ContactPhoneController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-contact/organisation/phone                      controllers.ContactPhoneController.onSubmit(mode: Mode = CheckMode)
 
-GET         /change-contact/organisation/second-contact-have-phone  controllers.SecondContactHavePhoneController.onPageLoad()
-POST        /change-contact/organisation/second-contact-have-phone  controllers.SecondContactHavePhoneController.onSubmit()
+GET         /change-contact/organisation/have-second-contact        controllers.HaveSecondContactController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-contact/organisation/have-second-contact        controllers.HaveSecondContactController.onSubmit(mode: Mode = CheckMode)
 
-GET         /change-contact/organisation/second-contact-phone        controllers.SecondContactPhoneController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-contact/organisation/second-contact-phone        controllers.SecondContactPhoneController.onSubmit(mode: Mode = CheckMode)
+GET         /change-contact/organisation/second-contact-name        controllers.SecondContactNameController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-contact/organisation/second-contact-name        controllers.SecondContactNameController.onSubmit(mode: Mode = CheckMode)
+
+GET         /change-contact/organisation/second-contact-email       controllers.SecondContactEmailController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-contact/organisation/second-contact-email       controllers.SecondContactEmailController.onSubmit(mode: Mode = CheckMode)
+
+GET         /change-contact/organisation/second-contact-have-phone  controllers.SecondContactHavePhoneController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-contact/organisation/second-contact-have-phone  controllers.SecondContactHavePhoneController.onSubmit(mode: Mode = CheckMode)
+
+GET         /change-contact/organisation/second-contact-phone       controllers.SecondContactPhoneController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-contact/organisation/second-contact-phone       controllers.SecondContactPhoneController.onSubmit(mode: Mode = CheckMode)
 
 GET         /change-contact/details-updated                         controllers.DetailsUpdatedController.onPageLoad()
 

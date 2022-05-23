@@ -22,7 +22,7 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], SecondContactName: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, SecondContactName: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("secondContactHavePhone.title"))) {
 

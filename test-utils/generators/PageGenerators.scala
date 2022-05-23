@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitrarySecondContactEmailPage: Arbitrary[SecondContactEmailPage.type] =
+    Arbitrary(SecondContactEmailPage)
+
   implicit lazy val arbitraryContactNamePage: Arbitrary[ContactNamePage.type] =
     Arbitrary(ContactNamePage)
 
@@ -44,8 +47,5 @@ trait PageGenerators {
 
   implicit lazy val arbitrarySecondContactPhonePage: Arbitrary[SecondContactPhonePage.type] =
     Arbitrary(SecondContactPhonePage)
-
-  implicit lazy val arbitrarySecondContactEmailPage: Arbitrary[SecondContactEmailPage.type] =
-    Arbitrary(SecondContactEmailPage)
 
 }

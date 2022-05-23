@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.ContactPhoneFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{CheckMode, NormalMode, UserAnswers}
 import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
@@ -55,7 +55,7 @@ class ContactPhoneControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[ContactPhoneView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, "", NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, "", CheckMode)(request, messages(application)).toString
       }
     }
 
@@ -73,7 +73,7 @@ class ContactPhoneControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), "", NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), "", CheckMode)(request, messages(application)).toString
       }
     }
 

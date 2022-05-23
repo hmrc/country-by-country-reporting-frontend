@@ -125,7 +125,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit request: DataReq
         key = "secondContactEmail.checkYourAnswersLabel",
         value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
         actions = Seq(
-          ActionItemViewModel("site.change", "") //TODO: Change to ActionItemViewModel("site.change", routes.SecondContactEmailController.onPageLoad().url)
+          ActionItemViewModel("site.change", routes.SecondContactEmailController.onPageLoad().url)
             .withAttribute(("id", "snd-contact-email"))
             .withVisuallyHiddenText(messages("secondContactEmail.change.hidden"))
         )
