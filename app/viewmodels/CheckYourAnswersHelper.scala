@@ -17,17 +17,14 @@
 package viewmodels
 
 import controllers.routes
-import models.requests.DataRequest
 import models.UserAnswers
 import pages._
 import play.api.i18n.Messages
-import play.api.mvc.AnyContent
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.govuk.all.stringToText
 import viewmodels.govuk.summarylist._
 
-class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit request: DataRequest[AnyContent], messages: Messages) {
+class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
   def getPrimaryContactDetails: Seq[SummaryListRow] =
     Seq(contactNamePage(), contactEmailPage(), contactPhonePage()).flatten
@@ -159,6 +156,6 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit request: DataReq
 
 object CheckYourAnswersHelper {
 
-  def apply(userAnswers: UserAnswers)(implicit request: DataRequest[AnyContent], messages: Messages) =
+  def apply(userAnswers: UserAnswers)(implicit messages: Messages) =
     new CheckYourAnswersHelper(userAnswers)
 }

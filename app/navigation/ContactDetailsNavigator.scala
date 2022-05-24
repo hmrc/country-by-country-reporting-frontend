@@ -34,14 +34,14 @@ class ContactDetailsNavigator @Inject() () {
     case ContactNamePage   => _ => routes.ContactEmailController.onPageLoad()
     case ContactEmailPage  => _ => routes.HaveTelephoneController.onPageLoad()
     case HaveTelephonePage => ua => haveTelephoneRoutes(CheckMode)(ua)
-    case ContactPhonePage  => _ => routes.ChangeOrganisationContactDetailsController.onPageLoad()
+    case ContactPhonePage  => _ => routes.ChangeContactDetailsController.onPageLoad()
     case HaveSecondContactPage =>
       ua =>
         yesNoPage(
           ua,
           HaveSecondContactPage,
           routes.SecondContactNameController.onPageLoad(),
-          routes.ChangeOrganisationContactDetailsController.onPageLoad()
+          routes.ChangeContactDetailsController.onPageLoad()
         )
     case SecondContactNamePage  => _ => routes.SecondContactEmailController.onPageLoad()
     case SecondContactEmailPage => _ => routes.SecondContactHavePhoneController.onPageLoad()
@@ -51,9 +51,9 @@ class ContactDetailsNavigator @Inject() () {
           ua,
           SecondContactHavePhonePage,
           routes.SecondContactPhoneController.onPageLoad(),
-          routes.ChangeOrganisationContactDetailsController.onPageLoad()
+          routes.ChangeContactDetailsController.onPageLoad()
         )
-    case SecondContactPhonePage => _ => routes.ChangeOrganisationContactDetailsController.onPageLoad()
+    case SecondContactPhonePage => _ => routes.ChangeContactDetailsController.onPageLoad()
     case _                      => _ => routes.JourneyRecoveryController.onPageLoad() //TODO: Change to routes.ThereIsAProblemController.onPageLoad() when implemented
   }
 

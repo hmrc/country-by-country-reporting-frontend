@@ -140,9 +140,9 @@ detailsUpdated.heading = Contact details updated
 detailsUpdated.p1 = We will use your new details if we need to contact you.
 detailsUpdated.link = Back to report cross-border arrangements
 
-changeOrganisationContactDetails.title = Contact details at your organisation
-changeOrganisationContactDetails.heading = Contact details at your organisation
-changeOrganisationContactDetails.primary.heading = First contact
-changeOrganisationContactDetails.secondary.heading = Second contact
-changeOrganisationContactDetails.nowSendContactDetails = Now send your new contact details
-changeOrganisationContactDetails.confirmingInformation = By sending these details, you are confirming that the information is correct and complete to the best of your knowledge.
+ChangeContactDetails.title = Contact details at your organisation
+ChangeContactDetails.heading = Contact details at your organisation
+ChangeContactDetails.primary.heading = First contact
+ChangeContactDetails.secondary.heading = Second contact
+ChangeContactDetails.nowSendContactDetails = Now send your new contact details
+ChangeContactDetails.confirmingInformation = By sending these details, you are confirming that the information is correct and complete to the best of your knowledge.

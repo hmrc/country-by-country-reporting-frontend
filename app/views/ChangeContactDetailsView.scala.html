@@ -25,22 +25,22 @@
 
 @(primary: SummaryList, secondary: SummaryList, frontendAppConfig: FrontendAppConfig, hasChanged: Boolean)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("changeOrganisationContactDetails.title"))) {
-    @formHelper(action = routes.ChangeOrganisationContactDetailsController.onSubmit()) {
-        <h1 class="govuk-heading-l">@messages("changeOrganisationContactDetails.heading")</h1>
+@layout(pageTitle = titleNoForm(messages("ChangeContactDetails.title"))) {
+    @formHelper(action = routes.ChangeContactDetailsController.onSubmit()) {
+        <h1 class="govuk-heading-l">@messages("ChangeContactDetails.heading")</h1>
 
-        <h2 class="govuk-heading-m">@messages("changeOrganisationContactDetails.primary.heading")</h2>
+        <h2 class="govuk-heading-m">@messages("ChangeContactDetails.primary.heading")</h2>
 
         @govukSummaryList(primary)
 
-        <h2 class="govuk-heading-m govuk-!-padding-top-5">@messages("changeOrganisationContactDetails.secondary.heading")</h2>
+        <h2 class="govuk-heading-m govuk-!-padding-top-5">@messages("ChangeContactDetails.secondary.heading")</h2>
 
         @govukSummaryList(secondary)
 
         @if(hasChanged) {
-            <h2 class="govuk-heading-m govuk-!-padding-top-5">@messages("changeOrganisationContactDetails.nowSendContactDetails")</h2>
+            <h2 class="govuk-heading-m govuk-!-padding-top-5">@messages("ChangeContactDetails.nowSendContactDetails")</h2>
 
-            <p class="govuk-body">@messages("changeOrganisationContactDetails.confirmingInformation")</p>
+            <p class="govuk-body">@messages("ChangeContactDetails.confirmingInformation")</p>
             @govukButton(ButtonViewModel(Text(messages("site.confirmAndSend"))).withAttribute( "id" -> "submit"))
         }
     }

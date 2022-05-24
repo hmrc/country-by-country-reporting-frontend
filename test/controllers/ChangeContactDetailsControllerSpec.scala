@@ -29,7 +29,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.Future
 
-class ChangeOrganisationContactDetailsControllerSpec extends SpecBase with BeforeAndAfterEach {
+class ChangeContactDetailsControllerSpec extends SpecBase with BeforeAndAfterEach {
 
   val mockSubscriptionService: SubscriptionService = mock[SubscriptionService]
 
@@ -38,7 +38,7 @@ class ChangeOrganisationContactDetailsControllerSpec extends SpecBase with Befor
     super.beforeEach
   }
 
-  "ChangeOrganisationContactDetails Controller" - {
+  "ChangeContactDetails Controller" - {
 
     "onPageLoad" - {
 
@@ -54,7 +54,7 @@ class ChangeOrganisationContactDetailsControllerSpec extends SpecBase with Befor
           .build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.ChangeOrganisationContactDetailsController.onPageLoad().url)
+          val request = FakeRequest(GET, routes.ChangeContactDetailsController.onPageLoad().url)
 
           val result = route(application, request).value
 
@@ -76,7 +76,7 @@ class ChangeOrganisationContactDetailsControllerSpec extends SpecBase with Befor
           .build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.ChangeOrganisationContactDetailsController.onPageLoad().url)
+          val request = FakeRequest(GET, routes.ChangeContactDetailsController.onPageLoad().url)
 
           val result = route(application, request).value
 
@@ -98,7 +98,7 @@ class ChangeOrganisationContactDetailsControllerSpec extends SpecBase with Befor
           .build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.ChangeOrganisationContactDetailsController.onPageLoad().url)
+          val request = FakeRequest(GET, routes.ChangeContactDetailsController.onPageLoad().url)
 
           val result = route(application, request).value
 
@@ -120,7 +120,7 @@ class ChangeOrganisationContactDetailsControllerSpec extends SpecBase with Befor
           .build()
 
         running(application) {
-          val request = FakeRequest(POST, routes.ChangeOrganisationContactDetailsController.onSubmit().url)
+          val request = FakeRequest(POST, routes.ChangeContactDetailsController.onSubmit().url)
 
           val result = route(application, request).value
 
@@ -140,7 +140,7 @@ class ChangeOrganisationContactDetailsControllerSpec extends SpecBase with Befor
           .build()
 
         running(application) {
-          val request = FakeRequest(POST, routes.ChangeOrganisationContactDetailsController.onSubmit().url)
+          val request = FakeRequest(POST, routes.ChangeContactDetailsController.onSubmit().url)
 
           val result = route(application, request).value
 

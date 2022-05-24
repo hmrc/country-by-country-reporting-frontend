@@ -14,8 +14,8 @@ GET         /there-is-a-problem                                     controllers.
 
 GET         /check-your-answers                                     controllers.CheckYourAnswersController.onPageLoad
 
-GET         /change-contact/details                    controllers.ChangeOrganisationContactDetailsController.onPageLoad()
-POST        /change-contact/details                    controllers.ChangeOrganisationContactDetailsController.onSubmit()
+GET         /change-contact/details                    controllers.ChangeContactDetailsController.onPageLoad()
+POST        /change-contact/details                    controllers.ChangeContactDetailsController.onSubmit()
 
 GET         /change-contact/name                       controllers.ContactNameController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-contact/name                       controllers.ContactNameController.onSubmit(mode: Mode = CheckMode)

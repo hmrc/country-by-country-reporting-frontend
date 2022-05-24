@@ -36,7 +36,7 @@ class ContactDetailsNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks
           answers =>
             navigator
               .nextPage(ContactPhonePage, CheckMode, answers)
-              .mustBe(routes.ChangeOrganisationContactDetailsController.onPageLoad())
+              .mustBe(routes.ChangeContactDetailsController.onPageLoad())
         }
       }
 
@@ -48,7 +48,7 @@ class ContactDetailsNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks
 
             navigator
               .nextPage(ContactPhonePage, CheckMode, updatedAnswers)
-              .mustBe(routes.ChangeOrganisationContactDetailsController.onPageLoad())
+              .mustBe(routes.ChangeContactDetailsController.onPageLoad())
         }
       }
 
@@ -102,7 +102,7 @@ class ContactDetailsNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks
 
             navigator
               .nextPage(HaveSecondContactPage, CheckMode, updatedAnswers)
-              .mustBe(routes.ChangeOrganisationContactDetailsController.onPageLoad())
+              .mustBe(routes.ChangeContactDetailsController.onPageLoad())
         }
       }
 
@@ -144,7 +144,7 @@ class ContactDetailsNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks
 
             navigator
               .nextPage(SecondContactHavePhonePage, CheckMode, updatedAnswers)
-              .mustBe(routes.ChangeOrganisationContactDetailsController.onPageLoad())
+              .mustBe(routes.ChangeContactDetailsController.onPageLoad())
         }
       }
 
@@ -153,7 +153,7 @@ class ContactDetailsNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks
           answers =>
             navigator
               .nextPage(SecondContactPhonePage, CheckMode, answers)
-              .mustBe(routes.ChangeOrganisationContactDetailsController.onPageLoad())
+              .mustBe(routes.ChangeContactDetailsController.onPageLoad())
         }
       }
     }
