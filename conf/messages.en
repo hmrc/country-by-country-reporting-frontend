@@ -115,11 +115,11 @@ secondContactName.change.hidden = second contact name
 secondContactEmail.title = What is their email address?
 secondContactEmail.heading = What is the email address for {0}?
 secondContactEmail.hint = We will use this to send confirmation of your reports and if we have any questions about them.
-secondContactEmail.checkYourAnswersLabel = secondContactEmail
+secondContactEmail.checkYourAnswersLabel = Second contact email address
 secondContactEmail.error.required = Enter an email address
 secondContactEmail.error.length = Email address must be 132 characters or less
 secondContactEmail.error.invalid = Enter an email address in the correct format, like name@example.com
-secondContactEmail.change.hidden = SecondContactEmail
+secondContactEmail.change.hidden = second contact email address
 
 secondContactHavePhone.title = Can we contact them by telephone?
 secondContactHavePhone.heading = Can we contact {0} by telephone?
