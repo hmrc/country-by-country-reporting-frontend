@@ -14,32 +14,17 @@
  * limitations under the License.
  */
 
-package forms
+import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.Key
 
-import forms.behaviours.BooleanFieldBehaviours
-import play.api.data.FormError
+import scala.language.implicitConversions
 
-class HaveTelephoneFormProviderSpec extends BooleanFieldBehaviours {
+package object viewmodels {
 
-  val requiredKey = "haveTelephone.error.required"
-  val invalidKey  = "error.boolean"
+  implicit def stringToText(string: String)(implicit messages: Messages): Text =
+    Text(messages(string))
 
-  val form = new HaveTelephoneFormProvider()()
-
-  ".value" - {
-
-    val fieldName = "value"
-
-    behave like booleanField(
-      form,
-      fieldName,
-      invalidError = FormError(fieldName, invalidKey)
-    )
-
-    behave like mandatoryField(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
-  }
+  implicit def stringToKey(string: String)(implicit messages: Messages): Key =
+    Key(content = Text(messages(string)))
 }

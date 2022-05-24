@@ -6,10 +6,14 @@ site.change = Change
 site.no = No
 site.yes = Yes
 site.continue = Continue
+site.confirmAndSend = Confirm and send
 site.start = Start now
 site.startAgain = Start again
 site.signIn = Sign in
 site.govuk = GOV.UK
+site.backToReportPage = Back to report cross-border arrangements
+
+no.phone = None
 
 date.day = Day
 date.month = Month
@@ -68,12 +72,6 @@ contactName.change.hidden = contact name
 default.firstContact.name = your first contact
 default.secondContact.name = your second contact
 
-haveTelephone.title = Can we contact them by telephone?
-haveTelephone.heading = Can we contact {0} by telephone?
-haveTelephone.checkYourAnswersLabel = Telephone number
-haveTelephone.hint = We will use this to keep in touch and if we have any questions about your reports.
-haveTelephone.error.required = Select yes if they can be contacted by telephone
-
 contactEmail.title = What is their email address?
 contactEmail.heading = What is the email address for {0}?
 contactEmail.hint = We will use this to send confirmation of your reports or if we have any questions about them.
@@ -82,6 +80,12 @@ contactEmail.error.required = Enter an email address
 contactEmail.error.length = Email address must be 132 characters or less
 contactEmail.error.invalid = Enter an email address in the correct format, like name@example.com
 contactEmail.change.hidden = ContactEmail
+
+haveTelephone.title = Can we contact them by telephone?
+haveTelephone.heading = Can we contact {0} by telephone?
+haveTelephone.checkYourAnswersLabel = Telephone number
+haveTelephone.hint = We will use this to keep in touch and if we have any questions about your reports.
+haveTelephone.error.required = Select yes if they can be contacted by telephone
 
 contactPhone.checkYourAnswersLabel = Telephone number
 contactPhone.title = What is their telephone number?
@@ -108,15 +112,19 @@ secondContactName.error.invalid = Name of the individual or team must only inclu
 secondContactName.error.length = Individual or team must be 35 characters or less
 secondContactName.change.hidden = second contact name
 
+secondContactEmail.title = What is their email address?
+secondContactEmail.heading = What is the email address for {0}?
+secondContactEmail.hint = We will use this to send confirmation of your reports and if we have any questions about them.
+secondContactEmail.checkYourAnswersLabel = Second contact email address
+secondContactEmail.error.required = Enter an email address
+secondContactEmail.error.length = Email address must be 132 characters or less
+secondContactEmail.error.invalid = Enter an email address in the correct format, like name@example.com
+secondContactEmail.change.hidden = second contact email address
+
 secondContactHavePhone.title = Can we contact them by telephone?
 secondContactHavePhone.heading = Can we contact {0} by telephone?
 secondContactHavePhone.hint = We will use this to keep in touch and if we have any questions about your reports.
 secondContactHavePhone.error.required = Select yes if they can be contacted by telephone
-
-detailsUpdated.title = Contact details updated
-detailsUpdated.heading = Contact details updated
-detailsUpdated.p1 = We will use your new details if we need to contact you.
-detailsUpdated.link = Back to report cross-border arrangements
 
 secondContactPhone.title = What is their telephone number?
 secondContactPhone.heading = What is the telephone number for {0}?
@@ -127,11 +135,14 @@ secondContactPhone.error.invalid = Enter a telephone number in the correct forma
 secondContactPhone.error.length = Telephone number must be 24 characters or less
 secondContactPhone.change.hidden = second contact telephone number
 
-secondContactEmail.title = What is their email address?
-secondContactEmail.heading = What is the email address for {0}?
-secondContactEmail.hint = We will use this to send confirmation of your reports and if we have any questions about them.
-secondContactEmail.checkYourAnswersLabel = secondContactEmail
-secondContactEmail.error.required = Enter an email address
-secondContactEmail.error.length = Email address must be 132 characters or less
-secondContactEmail.error.invalid = Enter an email address in the correct format, like name@example.com
-secondContactEmail.change.hidden = SecondContactEmail
+detailsUpdated.title = Contact details updated
+detailsUpdated.heading = Contact details updated
+detailsUpdated.p1 = We will use your new details if we need to contact you.
+detailsUpdated.link = Back to report cross-border arrangements
+
+ChangeContactDetails.title = Contact details at your organisation
+ChangeContactDetails.heading = Contact details at your organisation
+ChangeContactDetails.primary.heading = First contact
+ChangeContactDetails.secondary.heading = Second contact
+ChangeContactDetails.nowSendContactDetails = Now send your new contact details
+ChangeContactDetails.confirmingInformation = By sending these details, you are confirming that the information is correct and complete to the best of your knowledge.

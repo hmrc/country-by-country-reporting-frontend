@@ -30,16 +30,16 @@ import views.html.ContactPhoneView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ContactPhoneController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: ContactDetailsNavigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: ContactPhoneFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: ContactPhoneView
+class ContactPhoneController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  navigator: ContactDetailsNavigator,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: ContactPhoneFormProvider,
+  val controllerComponents: MessagesControllerComponents,
+  view: ContactPhoneView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -56,10 +56,10 @@ class ContactPhoneController @Inject()(
       Ok(view(preparedForm, getContactName(request.userAnswers), mode))
   }
 
-  private def getContactName(userAnswers: UserAnswers)=
+  private def getContactName(userAnswers: UserAnswers) =
     userAnswers.get(ContactNamePage) match {
       case Some(contactName) => contactName
-      case _                                 => ""
+      case _                 => ""
     }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {

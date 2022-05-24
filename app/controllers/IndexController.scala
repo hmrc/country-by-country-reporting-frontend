@@ -16,20 +16,41 @@
 
 package controllers
 
-import controllers.actions.IdentifierAction
-import javax.inject.Inject
+import controllers.actions.{DataRetrievalAction, IdentifierAction}
+import models.UserAnswers
+import play.api.Logging
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
+import services.SubscriptionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.IndexView
 
-class IndexController @Inject()(
-                                 val controllerComponents: MessagesControllerComponents,
-                                 identify: IdentifierAction,
-                                 view: IndexView
-                               ) extends FrontendBaseController with I18nSupport {
+import javax.inject.Inject
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
-  def onPageLoad: Action[AnyContent] = identify { implicit request =>
-    Ok(view())
+class IndexController @Inject() (
+  val controllerComponents: MessagesControllerComponents,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  sessionRepository: SessionRepository,
+  subscriptionService: SubscriptionService,
+  view: IndexView
+) extends FrontendBaseController
+    with I18nSupport
+    with Logging {
+
+  def onPageLoad: Action[AnyContent] = (identify andThen getData.apply) async {
+    implicit request =>
+      subscriptionService.getContactDetails(UserAnswers(request.userId)) flatMap {
+        case Some(userAnswers) =>
+          sessionRepository.set(userAnswers) map {
+            _ =>
+              Ok(view())
+          }
+        case _ =>
+          Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad())) //TODO: Redirect to ThereIsAProblemController when implemented
+      }
   }
 }

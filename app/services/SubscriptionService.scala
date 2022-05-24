@@ -25,9 +25,8 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.Try
 
-class SubscriptionService @Inject()(subscriptionConnector: SubscriptionConnector)(implicit ec: ExecutionContext) extends Logging {
+class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnector)(implicit ec: ExecutionContext) extends Logging {
 
   def getContactDetails(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] =
     subscriptionConnector.readSubscription map {
@@ -75,7 +74,7 @@ class SubscriptionService @Inject()(subscriptionConnector: SubscriptionConnector
     }
 
   private def populateResponseDetails[T <: ContactTypePage](userAnswers: UserAnswers, contactInfo: OrganisationDetails, mobile: Option[String])(implicit
-                                                                                                                                                contactTypePage: T
+    contactTypePage: T
   ): Option[ContactInformation] = {
 
     val updatedContactType = userAnswers.get(contactTypePage.contactNamePage) match {
@@ -105,8 +104,7 @@ class SubscriptionService @Inject()(subscriptionConnector: SubscriptionConnector
 
   private def populateContactInfo[T <: ContactTypePage](userAnswers: UserAnswers, contactInformation: ContactInformation, isSecondaryContact: Boolean)(implicit
     contactTypePage: T
-  ): Option[UserAnswers] = {
-
+  ): Option[UserAnswers] =
     (for {
       uaWithSecondContact <- userAnswers.set(HaveSecondContactPage, isSecondaryContact)
       uaWithEmail         <- uaWithSecondContact.set(contactTypePage.contactEmailPage, contactInformation.email)
@@ -114,7 +112,5 @@ class SubscriptionService @Inject()(subscriptionConnector: SubscriptionConnector
       uaWithHaveTelephone <- uaWithTelephone.set(contactTypePage.haveTelephonePage, contactInformation.phone.exists(_.nonEmpty))
       updatedAnswers      <- uaWithHaveTelephone.set(contactTypePage.contactNamePage, contactInformation.organisationDetails.organisationName)
     } yield updatedAnswers).toOption
-
-  }
 
 }

@@ -18,9 +18,9 @@ package controllers
 
 import controllers.actions._
 import forms.HaveSecondContactFormProvider
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, Mode, UserAnswers}
 import navigation.ContactDetailsNavigator
-import pages.{ContactNamePage, HaveSecondContactPage, SecondContactNamePage}
+import pages.{ContactNamePage, HaveSecondContactPage}
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -30,7 +30,7 @@ import views.html.HaveSecondContactView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class HaveSecondContactController @Inject()(
+class HaveSecondContactController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: ContactDetailsNavigator,
@@ -46,14 +46,14 @@ class HaveSecondContactController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(HaveSecondContactPage) match {
         case Some(value) => form.fill(value)
-        case None => form
+        case None        => form
       }
 
-      Ok(view(preparedForm, getContactName(request.userAnswers)))
+      Ok(view(preparedForm, mode, getContactName(request.userAnswers)))
   }
 
   private def getContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
@@ -62,12 +62,12 @@ class HaveSecondContactController @Inject()(
       case _                 => messages("default.firstContact.name")
     }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, getContactName(request.userAnswers)))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getContactName(request.userAnswers)))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(HaveSecondContactPage, value))

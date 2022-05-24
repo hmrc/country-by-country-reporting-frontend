@@ -29,13 +29,13 @@ case class PrimaryContactDetailsPages(contactNamePage: QuestionPage[String],
                                       contactEmailPage: QuestionPage[String],
                                       contactTelephonePage: QuestionPage[String],
                                       haveTelephonePage: QuestionPage[Boolean]
-                                     ) extends ContactTypePage
+) extends ContactTypePage
 
 case class SecondaryContactDetailsPages(contactNamePage: QuestionPage[String],
                                         contactEmailPage: QuestionPage[String],
                                         contactTelephonePage: QuestionPage[String],
                                         haveTelephonePage: QuestionPage[Boolean]
-                                       ) extends ContactTypePage
+) extends ContactTypePage
 
 object ContactTypePage {
 

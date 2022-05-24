@@ -24,9 +24,9 @@ import wolfendale.scalacheck.regexp.RegexpGen
 class SecondContactPhoneFormProviderSpec extends StringFieldBehaviours with RegExConstants {
 
   val requiredKey = "secondContactPhone.error.required"
-  val lengthKey = "secondContactPhone.error.length"
-  val invalidKey = "secondContactPhone.error.invalid"
-  val maxLength = 24
+  val lengthKey   = "secondContactPhone.error.length"
+  val invalidKey  = "secondContactPhone.error.invalid"
+  val maxLength   = 24
 
   val form = new SecondContactPhoneFormProvider()()
 

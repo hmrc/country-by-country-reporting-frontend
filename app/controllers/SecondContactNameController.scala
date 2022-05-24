@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.SecondContactNameFormProvider
-import models.CheckMode
+import models.{CheckMode, Mode}
 import navigation.ContactDetailsNavigator
 import pages.SecondContactNamePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,7 +30,7 @@ import views.html.SecondContactNameView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class SecondContactNameController @Inject()(
+class SecondContactNameController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: ContactDetailsNavigator,
@@ -46,22 +46,22 @@ class SecondContactNameController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(SecondContactNamePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm))
+      Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(SecondContactNamePage, value))

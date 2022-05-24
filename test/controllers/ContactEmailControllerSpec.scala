@@ -18,8 +18,8 @@ package controllers
 
 import base.SpecBase
 import forms.ContactEmailFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import models.{CheckMode, NormalMode, UserAnswers}
+import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{ContactEmailPage, ContactNamePage}
@@ -34,9 +34,8 @@ import scala.concurrent.Future
 class ContactEmailControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new ContactEmailFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
   val name         = "name"
-
 
   lazy val contactEmailRoute = routes.ContactEmailController.onPageLoad().url
 
@@ -59,7 +58,7 @@ class ContactEmailControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[ContactEmailView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, CheckMode, name)(request, messages(application)).toString
       }
     }
 
@@ -73,7 +72,6 @@ class ContactEmailControllerSpec extends SpecBase with MockitoSugar {
         .success
         .value
 
-
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
@@ -84,7 +82,7 @@ class ContactEmailControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), CheckMode, name)(request, messages(application)).toString
       }
     }
 
@@ -95,7 +93,7 @@ class ContactEmailControllerSpec extends SpecBase with MockitoSugar {
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[ContactDetailsNavigator].toInstance(new FakeContactDetailsNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()

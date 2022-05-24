@@ -22,9 +22,9 @@ import play.api.data.FormError
 class SecondContactEmailFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "secondContactEmail.error.required"
-  val lengthKey = "secondContactEmail.error.length"
-  val invalidKey = "secondContactEmail.error.invalid"
-  val maxLength = 132
+  val lengthKey   = "secondContactEmail.error.length"
+  val invalidKey  = "secondContactEmail.error.invalid"
+  val maxLength   = 132
 
   val form = new SecondContactEmailFormProvider()()
 

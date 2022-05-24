@@ -23,15 +23,14 @@ class ContactEmailFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "contactEmail.error.required"
   val invalidKey  = "contactEmail.error.invalid"
-  val lengthKey = "contactEmail.error.length"
-  val maxLength = 131
+  val lengthKey   = "contactEmail.error.length"
+  val maxLength   = 132
 
   val form = new ContactEmailFormProvider()()
 
   ".value" - {
 
     val fieldName = "value"
-
 
     behave like fieldThatBindsValidData(
       form,

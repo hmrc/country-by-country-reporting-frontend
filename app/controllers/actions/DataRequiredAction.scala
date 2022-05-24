@@ -17,7 +17,6 @@
 package controllers.actions
 
 import controllers.routes
-import models.UserAnswers
 import models.requests.{DataRequest, OptionalDataRequest}
 import play.api.Logging
 import play.api.mvc.Results.Redirect
@@ -32,8 +31,7 @@ class DataRequiredActionImpl @Inject() (implicit val executionContext: Execution
     request.userAnswers match {
       case None =>
         logger.warn("DataRequiredAction: No UserAnswers found for request")
-        Future.successful(Right(DataRequest(request.request, request.userId, request.subscriptionId, request.userType, UserAnswers(request.userId))))//TODO remove "hack" when useranswers is implemented properly
-//        Future.successful(Left(Redirect(routes.IndexController.onPageLoad)))//TODO change to thereisaproblem once implemented
+        Future.successful(Left(Redirect(routes.JourneyRecoveryController.onPageLoad()))) //TODO Redirect to ThereIsAProblemController when implemented
       case Some(data) =>
         Future.successful(Right(DataRequest(request.request, request.userId, request.subscriptionId, request.userType, data)))
     }

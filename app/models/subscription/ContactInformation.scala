@@ -35,7 +35,6 @@ object OrganisationDetails {
     contactName.map(OrganisationDetails(_))
 }
 
-
 case class ContactInformation(organisationDetails: OrganisationDetails, email: String, phone: Option[String], mobile: Option[String])
 
 object ContactInformation {
@@ -47,7 +46,7 @@ object ContactInformation {
         (__ \ "email").read[String] and
         (__ \ "phone").readNullable[String] and
         (__ \ "mobile").readNullable[String]
-      )(ContactInformation.apply _)
+    )(ContactInformation.apply _)
   }
 
   implicit lazy val writes: OWrites[ContactInformation] = {
@@ -57,6 +56,6 @@ object ContactInformation {
         (__ \ "email").write[String] and
         (__ \ "phone").writeNullable[String] and
         (__ \ "mobile").writeNullable[String]
-      )(unlift(ContactInformation.unapply))
+    )(unlift(ContactInformation.unapply))
   }
 }

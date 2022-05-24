@@ -24,55 +24,55 @@ import controllers.routes
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class ContactDetailsNavigator @Inject()() {
-//
-//  val normalRoutes: (Page, AffinityType) => UserAnswers => Call = {
-//    case (ContactEmailPage, _) => _ => routes.IndexController.onPageLoad //TODO GOTO Telephone
-//    case _                     => _ => routes.IndexController.onPageLoad
-//  }
+class ContactDetailsNavigator @Inject() () {
+
+  val normalRoutes: (Page) => UserAnswers => Call = {
+    case _ => _ => routes.IndexController.onPageLoad
+  }
 
   val checkRouteMap: Page => UserAnswers => Call = {
-//    case (ContactPhonePage, Individual)   => _ => routes.ChangeIndividualContactDetailsController.onPageLoad()
-//    case (ContactPhonePage, Organisation) => _ => routes.ChangeOrganisationContactDetailsController.onPageLoad()
-//    case (HaveTelephonePage, affinity)    => ua => haveTelephoneRoutes(CheckMode, affinity)(ua)
-    case ContactNamePage      => _ => routes.ContactNameController.onPageLoad()//TODO send to contact email page
-//    case (ContactEmailPage, affinity)     => _ => routes.HaveTelephoneController.onPageLoad(affinity)
-    case HaveSecondContactPage => ua =>
+    case ContactNamePage   => _ => routes.ContactEmailController.onPageLoad()
+    case ContactEmailPage  => _ => routes.HaveTelephoneController.onPageLoad()
+    case HaveTelephonePage => ua => haveTelephoneRoutes(CheckMode)(ua)
+    case ContactPhonePage  => _ => routes.ChangeContactDetailsController.onPageLoad()
+    case HaveSecondContactPage =>
+      ua =>
         yesNoPage(
           ua,
           HaveSecondContactPage,
           routes.SecondContactNameController.onPageLoad(),
-          routes.HaveSecondContactController.onPageLoad()   //TODO: Change to  routes.ChangeOrganisationContactDetailsController.onPageLoad()
+          routes.ChangeContactDetailsController.onPageLoad()
         )
-    case SecondContactNamePage  => _ => routes.SecondContactNameController.onPageLoad() //TODO: Change to routes.SecondContactEmailController.onPageLoad()
+    case SecondContactNamePage  => _ => routes.SecondContactEmailController.onPageLoad()
     case SecondContactEmailPage => _ => routes.SecondContactHavePhoneController.onPageLoad()
-    case SecondContactHavePhonePage => ua =>
+    case SecondContactHavePhonePage =>
+      ua =>
         yesNoPage(
           ua,
           SecondContactHavePhonePage,
-          routes.SecondContactHavePhoneController.onPageLoad(), //TODO: Change to  routes.SecondContactPhoneController.onPageLoad(),
-          routes.SecondContactHavePhoneController.onPageLoad(), //TODO: Change to  routes.ChangeOrganisationContactDetailsController.onPageLoad()
+          routes.SecondContactPhoneController.onPageLoad(),
+          routes.ChangeContactDetailsController.onPageLoad()
         )
-//    case (SecondContactPhonePage, Organisation) => _ => routes.ChangeOrganisationContactDetailsController.onPageLoad()
-//    case _                                      => _ => routes.ThereIsAProblemController.onPageLoad()
+    case SecondContactPhonePage => _ => routes.ChangeContactDetailsController.onPageLoad()
+    case _                      => _ => routes.JourneyRecoveryController.onPageLoad() //TODO: Change to routes.ThereIsAProblemController.onPageLoad() when implemented
   }
 
-//  private def haveTelephoneRoutes(mode: Mode, affinityType: AffinityType)(ua: UserAnswers): Call =
-//    ua.get(HaveTelephonePage) match {
-//      case Some(hasPhone) if hasPhone =>
-//        routes.ContactPhoneController.onPageLoad(affinityType)
-//      case _ =>
-//        nextPage(ContactPhonePage, affinityType, mode, ua)
-//    }
+  private def haveTelephoneRoutes(mode: Mode)(ua: UserAnswers): Call =
+    ua.get(HaveTelephonePage) match {
+      case Some(hasPhone) if hasPhone =>
+        routes.ContactPhoneController.onPageLoad()
+      case _ =>
+        nextPage(ContactPhonePage, mode, ua)
+    }
 
   def yesNoPage(ua: UserAnswers, fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call =
     ua.get(fromPage)
       .map(if (_) yesCall else noCall)
-      .getOrElse(routes.IndexController.onPageLoad) //TODO: Change to routes.ThereIsAProblemController.onPageLoad() when implemented
+      .getOrElse(routes.JourneyRecoveryController.onPageLoad()) //TODO: Change to routes.ThereIsAProblemController.onPageLoad() when implemented
 
   def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {
-//    case NormalMode =>
-//      normalRoutes(page, affinityType)(userAnswers)
+    case NormalMode =>
+      normalRoutes(page)(userAnswers)
     case CheckMode =>
       checkRouteMap(page)(userAnswers)
   }

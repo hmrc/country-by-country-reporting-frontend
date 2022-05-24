@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.SecondContactHavePhoneFormProvider
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, Mode, UserAnswers}
 import navigation.ContactDetailsNavigator
 import pages.{SecondContactHavePhonePage, SecondContactNamePage}
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
@@ -30,7 +30,7 @@ import views.html.SecondContactHavePhoneView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class SecondContactHavePhoneController @Inject()(
+class SecondContactHavePhoneController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: ContactDetailsNavigator,
@@ -46,14 +46,14 @@ class SecondContactHavePhoneController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(SecondContactHavePhonePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, getSecondContactName(request.userAnswers)))
+      Ok(view(preparedForm, mode, getSecondContactName(request.userAnswers)))
   }
 
   private def getSecondContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
@@ -62,12 +62,12 @@ class SecondContactHavePhoneController @Inject()(
       case _                 => messages("default.secondContact.name")
     }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, getSecondContactName(request.userAnswers)))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getSecondContactName(request.userAnswers)))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(SecondContactHavePhonePage, value))
