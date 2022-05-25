@@ -1,4 +1,4 @@
-service.name = country-by-country-reporting-frontend
+service.name = Send a country-by-country report
 
 site.back = Back
 site.remove = Remove
