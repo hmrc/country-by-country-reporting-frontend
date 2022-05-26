@@ -44,6 +44,8 @@ POST        /change-contact/second-contact-have-phone  controllers.SecondContact
 GET         /change-contact/second-contact-phone       controllers.SecondContactPhoneController.onPageLoad(mode: Mode = CheckMode)
 POST        /change-contact/second-contact-phone       controllers.SecondContactPhoneController.onSubmit(mode: Mode = CheckMode)
 
+GET        /report/change-contact/contact-details-needed            controllers.ContactDetailsNeededController.onPageLoad()
+
 GET         /change-contact/details-updated                         controllers.DetailsUpdatedController.onPageLoad()
 
 GET         /account/sign-out-survey                                controllers.auth.AuthController.signOut
@@ -51,3 +53,4 @@ GET         /account/sign-out                                       controllers.
 GET         /account/signed-out                                     controllers.auth.SignedOutController.onPageLoad
 
 GET         /unauthorised                                           controllers.UnauthorisedController.onPageLoad
+
