@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.HaveTelephoneFormProvider
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, NormalMode, UserAnswers}
 import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import pages.HaveTelephonePage
@@ -36,7 +36,7 @@ class HaveTelephoneControllerSpec extends SpecBase {
 
   val form = formProvider()
 
-  lazy val haveTelephoneRoute = routes.HaveTelephoneController.onPageLoad().url
+  lazy val haveTelephoneRoute = routes.HaveTelephoneController.onPageLoad(NormalMode).url
 
   "HaveTelephone Controller" - {
 
@@ -52,7 +52,7 @@ class HaveTelephoneControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[HaveTelephoneView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, "", CheckMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, "", NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -70,7 +70,7 @@ class HaveTelephoneControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), "", CheckMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), "", NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -116,7 +116,7 @@ class HaveTelephoneControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, "", CheckMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, "", NormalMode)(request, messages(application)).toString
       }
     }
   }

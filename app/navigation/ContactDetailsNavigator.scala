@@ -27,12 +27,35 @@ import javax.inject.{Inject, Singleton}
 class ContactDetailsNavigator @Inject() () {
 
   val normalRoutes: (Page) => UserAnswers => Call = {
-    case _ => _ => routes.IndexController.onPageLoad
+    case ContactNamePage   => _ => routes.ContactEmailController.onPageLoad(NormalMode)
+    case ContactEmailPage  => _ => routes.HaveTelephoneController.onPageLoad(NormalMode)
+    case HaveTelephonePage => ua => haveTelephoneRoutes(NormalMode)(ua)
+    case ContactPhonePage  => _ => routes.HaveSecondContactController.onPageLoad(NormalMode)
+    case HaveSecondContactPage =>
+      ua =>
+        yesNoPage(
+          ua,
+          HaveSecondContactPage,
+          routes.SecondContactNameController.onPageLoad(NormalMode),
+          routes.ChangeContactDetailsController.onPageLoad()
+        )
+    case SecondContactNamePage  => _ => routes.SecondContactEmailController.onPageLoad(NormalMode)
+    case SecondContactEmailPage => _ => routes.SecondContactHavePhoneController.onPageLoad(NormalMode)
+    case SecondContactHavePhonePage =>
+      ua =>
+        yesNoPage(
+          ua,
+          SecondContactHavePhonePage,
+          routes.SecondContactPhoneController.onPageLoad(NormalMode),
+          routes.ChangeContactDetailsController.onPageLoad()
+        )
+    case SecondContactPhonePage => _ => routes.ChangeContactDetailsController.onPageLoad()
+    case _                      => _ => routes.JourneyRecoveryController.onPageLoad() //TODO: Change to routes.ThereIsAProblemController.onPageLoad() when implemented
   }
 
   val checkRouteMap: Page => UserAnswers => Call = {
-    case ContactNamePage   => _ => routes.ContactEmailController.onPageLoad()
-    case ContactEmailPage  => _ => routes.HaveTelephoneController.onPageLoad()
+    case ContactNamePage   => _ => routes.ContactEmailController.onPageLoad(CheckMode)
+    case ContactEmailPage  => _ => routes.HaveTelephoneController.onPageLoad(CheckMode)
     case HaveTelephonePage => ua => haveTelephoneRoutes(CheckMode)(ua)
     case ContactPhonePage  => _ => routes.ChangeContactDetailsController.onPageLoad()
     case HaveSecondContactPage =>
@@ -40,17 +63,17 @@ class ContactDetailsNavigator @Inject() () {
         yesNoPage(
           ua,
           HaveSecondContactPage,
-          routes.SecondContactNameController.onPageLoad(),
+          routes.SecondContactNameController.onPageLoad(CheckMode),
           routes.ChangeContactDetailsController.onPageLoad()
         )
-    case SecondContactNamePage  => _ => routes.SecondContactEmailController.onPageLoad()
-    case SecondContactEmailPage => _ => routes.SecondContactHavePhoneController.onPageLoad()
+    case SecondContactNamePage  => _ => routes.SecondContactEmailController.onPageLoad(CheckMode)
+    case SecondContactEmailPage => _ => routes.SecondContactHavePhoneController.onPageLoad(CheckMode)
     case SecondContactHavePhonePage =>
       ua =>
         yesNoPage(
           ua,
           SecondContactHavePhonePage,
-          routes.SecondContactPhoneController.onPageLoad(),
+          routes.SecondContactPhoneController.onPageLoad(CheckMode),
           routes.ChangeContactDetailsController.onPageLoad()
         )
     case SecondContactPhonePage => _ => routes.ChangeContactDetailsController.onPageLoad()
@@ -60,7 +83,7 @@ class ContactDetailsNavigator @Inject() () {
   private def haveTelephoneRoutes(mode: Mode)(ua: UserAnswers): Call =
     ua.get(HaveTelephonePage) match {
       case Some(hasPhone) if hasPhone =>
-        routes.ContactPhoneController.onPageLoad()
+        routes.ContactPhoneController.onPageLoad(mode)
       case _ =>
         nextPage(ContactPhonePage, mode, ua)
     }

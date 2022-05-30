@@ -16,10 +16,12 @@
 
 package controllers
 
+import connectors.SubscriptionConnector
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import models.UserAnswers
 import play.api.Logging
 import play.api.i18n.I18nSupport
+import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import services.SubscriptionService
@@ -35,6 +37,7 @@ class IndexController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   sessionRepository: SessionRepository,
+  subscriptionConnector: SubscriptionConnector,
   subscriptionService: SubscriptionService,
   view: IndexView
 ) extends FrontendBaseController
@@ -47,7 +50,11 @@ class IndexController @Inject() (
         case Some(userAnswers) =>
           sessionRepository.set(userAnswers) map {
             _ =>
-              Ok(view())
+              if (userAnswers.data == Json.obj()) {
+                Redirect(routes.ContactDetailsNeededController.onPageLoad())
+              } else {
+                Ok(view())
+              }
           }
         case _ =>
           Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad())) //TODO: Redirect to ThereIsAProblemController when implemented

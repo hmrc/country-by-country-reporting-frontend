@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.ContactEmailFormProvider
-import models.{CheckMode, NormalMode, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
@@ -37,7 +37,7 @@ class ContactEmailControllerSpec extends SpecBase with MockitoSugar {
   val form         = formProvider()
   val name         = "name"
 
-  lazy val contactEmailRoute = routes.ContactEmailController.onPageLoad().url
+  lazy val contactEmailRoute = routes.ContactEmailController.onPageLoad(NormalMode).url
 
   "ContactEmail Controller" - {
 
@@ -58,7 +58,7 @@ class ContactEmailControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[ContactEmailView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, CheckMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, name)(request, messages(application)).toString
       }
     }
 
@@ -82,7 +82,7 @@ class ContactEmailControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), CheckMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode, name)(request, messages(application)).toString
       }
     }
 

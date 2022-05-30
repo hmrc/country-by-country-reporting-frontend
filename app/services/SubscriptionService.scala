@@ -28,12 +28,21 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnector)(implicit ec: ExecutionContext) extends Logging {
 
+  private val placeholder: String = "*****"
+
+  private def isUserVisitingAfterMigration(responseDetail: ResponseDetail): Boolean =
+    responseDetail.primaryContact.email.contains(placeholder) || responseDetail.primaryContact.organisationDetails.organisationName.contains(placeholder)
+
   def getContactDetails(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] =
     subscriptionConnector.readSubscription map {
       responseOpt =>
         responseOpt.flatMap {
           responseDetail =>
-            populateUserAnswers(responseDetail, userAnswers)
+            if (isUserVisitingAfterMigration(responseDetail)) {
+              Some(userAnswers)
+            } else {
+              populateUserAnswers(responseDetail, userAnswers)
+            }
         }
     }
 

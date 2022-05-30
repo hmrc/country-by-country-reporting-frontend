@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.SecondContactHavePhoneFormProvider
-import models.{CheckMode, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
@@ -41,7 +41,7 @@ class SecondContactHavePhoneControllerSpec extends SpecBase with MockitoSugar {
 
   private val name = "First Contact Name"
 
-  lazy val secondContactHavePhoneRoute = routes.SecondContactHavePhoneController.onPageLoad().url
+  lazy val secondContactHavePhoneRoute = routes.SecondContactHavePhoneController.onPageLoad(NormalMode).url
 
   "SecondContactHavePhone Controller" - {
 
@@ -59,7 +59,7 @@ class SecondContactHavePhoneControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[SecondContactHavePhoneView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, CheckMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, name)(request, messages(application)).toString
       }
     }
 
@@ -83,7 +83,7 @@ class SecondContactHavePhoneControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), CheckMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode, name)(request, messages(application)).toString
       }
     }
 
@@ -131,7 +131,7 @@ class SecondContactHavePhoneControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, CheckMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, name)(request, messages(application)).toString
       }
     }
 

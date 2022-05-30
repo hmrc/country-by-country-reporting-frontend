@@ -19,6 +19,7 @@ package controllers
 import base.SpecBase
 import models.UserAnswers
 import org.mockito.ArgumentMatchers.any
+import pages.HaveTelephonePage
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -44,7 +45,7 @@ class IndexControllerSpec extends SpecBase {
         )
         .build()
 
-      val userAnswers = UserAnswers("id")
+      val userAnswers = UserAnswers("id").set(HaveTelephonePage, false).success.value
       when(mockSubscriptionService.getContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
         .thenReturn(Future.successful(Some(userAnswers)))
       when(mockSessionRepository.set(any[UserAnswers]())).thenReturn(Future.successful(true))
@@ -59,6 +60,31 @@ class IndexControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual view()(request, messages(application)).toString
+      }
+    }
+
+    "must return SEE_OTHER and redirect to 'Contact details needed' page for returning user after migration" in {
+      val userAnswers             = UserAnswers("id")
+      val mockSubscriptionService = mock[SubscriptionService]
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SubscriptionService].toInstance(mockSubscriptionService),
+          bind[SessionRepository].toInstance(mockSessionRepository)
+        )
+        .build()
+
+      when(mockSubscriptionService.getContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
+        .thenReturn(Future.successful(Some(userAnswers)))
+      when(mockSessionRepository.set(any[UserAnswers]())).thenReturn(Future.successful(true))
+
+      running(application) {
+        val request = FakeRequest(GET, routes.IndexController.onPageLoad.url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result) mustBe Some(routes.ContactDetailsNeededController.onPageLoad().url)
       }
     }
   }

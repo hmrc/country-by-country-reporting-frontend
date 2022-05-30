@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.SecondContactNameFormProvider
-import models.{CheckMode, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
@@ -39,7 +39,7 @@ class SecondContactNameControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new SecondContactNameFormProvider()
   val form         = formProvider()
 
-  lazy val secondContactNameRoute = routes.SecondContactNameController.onPageLoad().url
+  lazy val secondContactNameRoute = routes.SecondContactNameController.onPageLoad(NormalMode).url
 
   "SecondContactName Controller" - {
 
@@ -55,7 +55,7 @@ class SecondContactNameControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[SecondContactNameView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, CheckMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -73,7 +73,7 @@ class SecondContactNameControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), CheckMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -117,7 +117,7 @@ class SecondContactNameControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, CheckMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
       }
     }
 

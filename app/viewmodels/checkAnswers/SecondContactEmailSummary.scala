@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers
 
 import controllers.routes
-import models.UserAnswers
+import models.{CheckMode, UserAnswers}
 import pages.SecondContactEmailPage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
@@ -34,7 +34,7 @@ object SecondContactEmailSummary {
           key = "secondContactEmail.checkYourAnswersLabel",
           value = ValueViewModel(HtmlFormat.escape(answer).toString),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.SecondContactEmailController.onPageLoad().url)
+            ActionItemViewModel("site.change", routes.SecondContactEmailController.onPageLoad(CheckMode).url)
               .withVisuallyHiddenText(messages("secondContactEmail.change.hidden"))
           )
         )
