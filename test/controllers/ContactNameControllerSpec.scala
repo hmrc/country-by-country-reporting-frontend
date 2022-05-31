@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.ContactNameFormProvider
-import models.{CheckMode, NormalMode, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
@@ -39,7 +39,7 @@ class ContactNameControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new ContactNameFormProvider()
   val form         = formProvider()
 
-  lazy val contactNameRoute = routes.ContactNameController.onPageLoad().url
+  lazy val contactNameRoute = routes.ContactNameController.onPageLoad(NormalMode).url
 
   "ContactName Controller" - {
 
@@ -55,7 +55,7 @@ class ContactNameControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[ContactNameView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, CheckMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -73,7 +73,7 @@ class ContactNameControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), CheckMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(request, messages(application)).toString
       }
     }
 

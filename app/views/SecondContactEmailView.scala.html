@@ -28,7 +28,7 @@
 
 @layout(pageTitle = title(form, messages("secondContactEmail.title"))) {
 
-    @formHelper(action = routes.SecondContactEmailController.onSubmit()) {
+    @formHelper(action = routes.SecondContactEmailController.onSubmit(mode)) {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.SecondContactEmailFormProvider
-import models.{CheckMode, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
@@ -37,7 +37,7 @@ class SecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
   val form         = formProvider()
   val name         = "name"
 
-  lazy val secondContactEmailRoute: String = routes.SecondContactEmailController.onPageLoad().url
+  lazy val secondContactEmailRoute: String = routes.SecondContactEmailController.onPageLoad(NormalMode).url
 
   "SecondContactEmail Controller" - {
 
@@ -58,7 +58,7 @@ class SecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[SecondContactEmailView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, CheckMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, name)(request, messages(application)).toString
       }
     }
 
@@ -82,7 +82,7 @@ class SecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("email@email.com"), CheckMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("email@email.com"), NormalMode, name)(request, messages(application)).toString
       }
     }
 
@@ -131,7 +131,7 @@ class SecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, CheckMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, name)(request, messages(application)).toString
       }
     }
 

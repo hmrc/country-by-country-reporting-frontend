@@ -28,7 +28,7 @@
 
 @layout(pageTitle = title(form, messages("contactName.title"))) {
 
-    @formHelper(action = routes.ContactNameController.onSubmit()) {
+    @formHelper(action = routes.ContactNameController.onSubmit(mode)) {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

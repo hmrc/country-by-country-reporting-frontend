@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.SecondContactPhoneFormProvider
-import models.{CheckMode, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import pages.{SecondContactNamePage, SecondContactPhonePage}
@@ -37,7 +37,7 @@ class SecondContactPhoneControllerSpec extends SpecBase {
 
   private val name = "your second contact"
 
-  lazy val secondContactPhoneRoute = routes.SecondContactPhoneController.onPageLoad().url
+  lazy val secondContactPhoneRoute = routes.SecondContactPhoneController.onPageLoad(NormalMode).url
 
   "SecondContactPhone Controller" - {
 
@@ -58,7 +58,7 @@ class SecondContactPhoneControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[SecondContactPhoneView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, "CBC Company", CheckMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, "CBC Company", NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -76,7 +76,7 @@ class SecondContactPhoneControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), name, CheckMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), name, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -122,7 +122,7 @@ class SecondContactPhoneControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, name, CheckMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, name, NormalMode)(request, messages(application)).toString
       }
     }
   }

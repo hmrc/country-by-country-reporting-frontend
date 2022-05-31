@@ -28,7 +28,7 @@
 
     <p class="govuk-body">@messages("contactDetailsNeeded.p2")</p>
 
-    <a href=@controllers.routes.ContactNameController.onPageLoad() id="submit" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+    <a href=@controllers.routes.ContactNameController.onPageLoad(NormalMode) id="submit" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
             @messages("site.continue")
     </a>
 }

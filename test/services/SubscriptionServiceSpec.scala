@@ -84,6 +84,44 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
         ua.get(ContactEmailPage) mustBe Some("test@test.com")
         ua.get(ContactPhonePage) mustBe Some("99999")
       }
+
+      "must call the subscription connector and return a empty user answers for the returning user coming for the first time after migration" in {
+        val responseDetailString: String =
+          """
+            |{
+            |"subscriptionID": "111111111",
+            |"tradingName": "",
+            |"isGBUser": true,
+            |"primaryContact":
+            |{
+            |"email": "*****",
+            |"phone": "99999",
+            |"mobile": "",
+            |"organisation": {
+            |"organisationName": "*****"
+            |}
+            |},
+            |"secondaryContact":
+            |{
+            |"email": "test@test.com",
+            |"phone": "99999",
+            |"mobile": "",
+            |"organisation": {
+            |"organisationName": "wer"
+            |}
+            |}
+            |}""".stripMargin
+
+        val responseDetail = Json.parse(responseDetailString).as[ResponseDetail]
+
+        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(Some(responseDetail)))
+
+        val result = service.getContactDetails(emptyUserAnswers)
+
+        val ua = result.futureValue.value
+
+        ua.data mustBe Json.obj()
+      }
     }
 
     "updateContactDetails" - {
