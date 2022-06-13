@@ -11,7 +11,7 @@ site.start = Start now
 site.startAgain = Start again
 site.signIn = Sign in
 site.govuk = GOV.UK
-site.backToReportPage = Back to report cross-border arrangements
+site.backToReportPage = Back to send a CBC report
 
 no.phone = None
 
@@ -138,7 +138,7 @@ secondContactPhone.change.hidden = second contact telephone number
 detailsUpdated.title = Contact details updated
 detailsUpdated.heading = Contact details updated
 detailsUpdated.p1 = We will use your new details if we need to contact you.
-detailsUpdated.link = Back to report cross-border arrangements
+detailsUpdated.link = Back to send a CBC report
 
 ChangeContactDetails.title = Contact details at your organisation
 ChangeContactDetails.heading = Contact details at your organisation
