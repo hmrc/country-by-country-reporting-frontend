@@ -66,7 +66,7 @@ GET         /change-contact/details-updated                        controllers.D
 
 GET         /account/sign-out-survey                               controllers.auth.AuthController.signOut
 GET         /account/sign-out                                      controllers.auth.AuthController.signOutNoSurvey
-GET         /account/signed-out                                    controllers.auth.SignedOutController.onPageLoad
+GET         /problem/signed-out                                    controllers.auth.SignedOutController.onPageLoad
 
 GET         /unauthorised                                          controllers.UnauthorisedController.onPageLoad
 
