@@ -151,3 +151,8 @@ contactDetailsNeeded.title = We need your contact details
 contactDetailsNeeded.heading = We need your contact details
 contactDetailsNeeded.p1 = We have made changes to this service and need additional contact details. The details can be of one or two people, or up to two team contacts from your organisation if you prefer. This is so we can ask them if we have any questions about the reports you send.
 contactDetailsNeeded.p2 = You cannot send a CBC report without providing these details.
+
+thereIsAProblem.title = Sorry, there is a problem with the service
+thereIsAProblem.heading = Sorry, there is a problem with the service
+thereIsAProblem.p1 = Try again later.
+thereIsAProblem.p2 = You can email {0} if you have any questions about this service.

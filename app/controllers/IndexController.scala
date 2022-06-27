@@ -57,7 +57,7 @@ class IndexController @Inject() (
               }
           }
         case _ =>
-          Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad())) //TODO: Redirect to ThereIsAProblemController when implemented
+          Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
       }
   }
 }
