@@ -70,3 +70,5 @@ GET         /account/signed-out                                    controllers.a
 
 GET         /unauthorised                                          controllers.UnauthorisedController.onPageLoad
 
+
+GET         /problem/there-is-a-problem                            controllers.ThereIsAProblemController.onPageLoad()

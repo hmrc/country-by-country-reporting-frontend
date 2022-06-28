@@ -40,6 +40,8 @@ class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig:
   val signOutUrl: String       = configuration.get[String]("urls.signOut")
   val registerUrl: String      = configuration.get[String]("urls.register")
 
+  val emailEnquiries: String = configuration.get[String]("urls.emailEnquiries")
+
   private val exitSurveyBaseUrl: String = configuration.get[Service]("microservice.services.feedback-frontend").baseUrl
   val exitSurveyUrl: String             = s"$exitSurveyBaseUrl/feedback/country-by-country-reporting-frontend"
 

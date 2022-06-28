@@ -24,7 +24,7 @@ import services.SubscriptionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.CheckYourAnswersHelper
 import viewmodels.govuk.summarylist._
-import views.html.{ChangeContactDetailsView, IndexView}
+import views.html.{ChangeContactDetailsView, ThereIsAProblemView}
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -38,7 +38,7 @@ class ChangeContactDetailsController @Inject() (
   subscriptionService: SubscriptionService,
   val controllerComponents: MessagesControllerComponents,
   view: ChangeContactDetailsView,
-  errorView: IndexView //TODO: Change to ThereIsAProblemView when implemented
+  errorView: ThereIsAProblemView
 ) extends FrontendBaseController
     with I18nSupport {
 
