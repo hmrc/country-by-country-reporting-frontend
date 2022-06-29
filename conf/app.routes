@@ -10,8 +10,6 @@ GET         /language/:lang                                         controllers.
 
 GET         /refresh-session                                        controllers.KeepAliveController.keepAlive
 
-GET         /there-is-a-problem                                     controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
-
 GET         /change-contact/details                                 controllers.ChangeContactDetailsController.onPageLoad()
 POST        /change-contact/details                                 controllers.ChangeContactDetailsController.onSubmit()
 
