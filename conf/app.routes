@@ -72,3 +72,5 @@ GET         /unauthorised                                          controllers.U
 
 
 GET         /problem/there-is-a-problem                            controllers.ThereIsAProblemController.onPageLoad()
+
+GET        /problem/virus-found                        controllers.FileProblemVirusController.onPageLoad()

@@ -155,3 +155,10 @@ thereIsAProblem.title = Sorry, there is a problem with the service
 thereIsAProblem.heading = Sorry, there is a problem with the service
 thereIsAProblem.p1 = Try again later.
 thereIsAProblem.p2 = You can email {0} if you have any questions about this service.
+
+fileProblemVirus.title = There is a problem with your file
+fileProblemVirus.heading = There is a problem with your file
+fileProblemVirus.p1 = The selected file could not be uploaded. It contains a virus.
+
+problemPage.uploadLink = Upload a different file
+problemPage.CBC.guidanceLink = Read the CBC technical guidance for XML files (opens in new tab)
