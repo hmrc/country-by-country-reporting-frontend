@@ -162,3 +162,9 @@ fileProblemVirus.p1 = The selected file could not be uploaded. It contains a vir
 
 problemPage.uploadLink = Upload a different file
 problemPage.CBC.guidanceLink = Read the CBC technical guidance for XML files (opens in new tab)
+
+fileProblemTooLarge.title = There is a problem with your file
+fileProblemTooLarge.heading = There is a problem with your file
+fileProblemTooLarge.p1 = The selected file could not be uploaded. The file must be 20MB or less.
+
+

@@ -19,22 +19,22 @@ package controllers
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.FileProblemVirusView
+import views.html.FileProblemTooLargeView
 
-class FileProblemVirusControllerSpec extends SpecBase {
+class FileProblemTooLargeControllerSpec extends SpecBase {
 
-  "FileProblemVirus Controller" - {
+  "FileProblemTooLarge Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.FileProblemVirusController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.FileProblemTooLargeController.onPageLoad().url)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[FileProblemVirusView]
+        val view = application.injector.instanceOf[FileProblemTooLargeView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view()(request, messages(application)).toString
