@@ -24,7 +24,6 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 
-import java.net.URLEncoder
 import scala.concurrent.Future
 
 class AuthControllerSpec extends SpecBase {
