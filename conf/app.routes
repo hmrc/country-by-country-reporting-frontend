@@ -72,3 +72,9 @@ GET         /unauthorised                                          controllers.U
 
 
 GET         /problem/there-is-a-problem                            controllers.ThereIsAProblemController.onPageLoad()
+
+GET        /problem/virus-found                        controllers.FileProblemVirusController.onPageLoad()
+
+GET        /problem/file-too-large                   controllers.FileProblemTooLargeController.onPageLoad()
+
+GET        /problem/not-xml                       controllers.FileProblemNotXmlController.onPageLoad()

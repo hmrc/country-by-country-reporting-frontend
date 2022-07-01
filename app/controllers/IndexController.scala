@@ -16,7 +16,6 @@
 
 package controllers
 
-import connectors.SubscriptionConnector
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import models.UserAnswers
 import play.api.Logging
@@ -37,7 +36,6 @@ class IndexController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   sessionRepository: SessionRepository,
-  subscriptionConnector: SubscriptionConnector,
   subscriptionService: SubscriptionService,
   view: IndexView
 ) extends FrontendBaseController
