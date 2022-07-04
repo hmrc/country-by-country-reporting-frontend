@@ -30,15 +30,10 @@ class AuthControllerSpec extends SpecBase {
 
   "signOut" - {
 
-    "must clear user answers and redirect to sign out, specifying the exit survey as the continue URL" in {
-
-      val mockSessionRepository = mock[SessionRepository]
-      when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
+    "must redirect to sign out, specifying the exit survey as the continue URL" in {
 
       val application =
-        applicationBuilder(None)
-          .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
-          .build()
+        applicationBuilder(None).build()
 
       running(application) {
 
@@ -51,7 +46,6 @@ class AuthControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual expectedRedirectUrl
-        verify(mockSessionRepository, times(1)).clear(eqTo(userAnswersId))
       }
     }
   }
@@ -60,13 +54,8 @@ class AuthControllerSpec extends SpecBase {
 
     "must clear users answers and redirect to sign out URL" in {
 
-      val mockSessionRepository = mock[SessionRepository]
-      when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
-
       val application =
-        applicationBuilder(None)
-          .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
-          .build()
+        applicationBuilder(None).build()
 
       running(application) {
 
@@ -78,7 +67,6 @@ class AuthControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual expectedRedirectUrl
-        verify(mockSessionRepository, times(1)).clear(eqTo(userAnswersId))
       }
     }
   }
