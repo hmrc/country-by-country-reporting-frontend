@@ -79,3 +79,8 @@ GET        /problem/virus-found                                     controllers.
 GET        /problem/file-too-large                                  controllers.FileProblemTooLargeController.onPageLoad()
 
 GET        /problem/not-xml                                         controllers.FileProblemNotXmlController.onPageLoad()
+
+GET        /uploadFile                        controllers.UploadFileController.onPageLoad()
+POST       /uploadFile                        controllers.UploadFileController.onSubmit()
+GET        /changeUploadFile                  controllers.UploadFileController.onPageLoad()
+POST       /changeUploadFile                  controllers.UploadFileController.onSubmit()
