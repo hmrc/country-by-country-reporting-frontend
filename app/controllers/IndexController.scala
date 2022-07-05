@@ -51,7 +51,7 @@ class IndexController @Inject() (
               if (userAnswers.data == Json.obj()) {
                 Redirect(routes.ContactDetailsNeededController.onPageLoad())
               } else {
-                Ok(view())
+                Ok(view(request.subscriptionId))
               }
           }
         case _ =>

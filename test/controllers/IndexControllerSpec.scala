@@ -18,6 +18,7 @@ package controllers
 
 import base.SpecBase
 import models.UserAnswers
+import models.requests.OptionalDataRequest
 import org.mockito.ArgumentMatchers.any
 import pages.HaveTelephonePage
 import play.api.inject.bind
@@ -25,6 +26,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import services.SubscriptionService
+import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.IndexView
 
@@ -59,7 +61,7 @@ class IndexControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view()(request, messages(application)).toString
+        contentAsString(result) mustEqual view("subscriptionId")(request, messages(application)).toString
       }
     }
 
