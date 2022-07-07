@@ -14,11 +14,15 @@
  * limitations under the License.
  *@
 
+@import config.FrontendAppConfig
+
 @this(
-    layout: templates.Layout
+    layout: templates.Layout,
+    link: components.Link,
+    appConfig: FrontendAppConfig
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@(cbcID: String)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle    = titleNoForm(messages("index.title")),
@@ -27,5 +31,19 @@
 
     <h1 class="govuk-heading-l">@messages("index.heading")</h1>
 
-    <p class="govuk-body">@messages("index.guidance")</p>
+    <p class="govuk-body">@Html(messages("index.p1", link("#", "index.p1.link")))</p> @*TODO: update link href to routes.UploadFileController.onPageLoad().url when DAC6-1871 is complete*@
+
+    <p class="govuk-body">@messages("index.p2", cbcID)</p>
+
+    <p class="govuk-body">@messages("index.p3")</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+
+        <li>@link("#", "index.bullet1", openInNewWindow = true)</li>@*Todo: update link href when known*@
+
+        <li>@link(controllers.routes.ChangeContactDetailsController.onPageLoad().url, "index.bullet2")</li>
+
+    </ul>
+
+    <p class="govuk-body">@Html(messages("index.p4", link(s"mailto:${appConfig.emailEnquiries}", appConfig.emailEnquiries)))</p>
 }

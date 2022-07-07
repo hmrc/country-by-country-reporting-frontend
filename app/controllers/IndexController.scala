@@ -44,14 +44,14 @@ class IndexController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData.apply) async {
     implicit request =>
-      subscriptionService.getContactDetails(UserAnswers(request.userId)) flatMap {
+      subscriptionService.getContactDetails(request.userAnswers.getOrElse(UserAnswers(request.userId))) flatMap {
         case Some(userAnswers) =>
           sessionRepository.set(userAnswers) map {
             _ =>
               if (userAnswers.data == Json.obj()) {
                 Redirect(routes.ContactDetailsNeededController.onPageLoad())
               } else {
-                Ok(view())
+                Ok(view(request.subscriptionId))
               }
           }
         case _ =>
