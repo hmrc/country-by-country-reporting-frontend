@@ -31,7 +31,7 @@
 
     <h1 class="govuk-heading-l">@messages("index.heading")</h1>
 
-    <p class="govuk-body">@Html(messages("index.p1", link("#", "index.p1.link")))</p> @*TODO: update link href to routes.UploadFileController.onPageLoad().url when DAC6-1871 is complete*@
+    <p class="govuk-body">@Html(messages("index.p1", link(routes.UploadFileController.onPageLoad().url, "index.p1.link")))</p> @*TODO: update link href to routes.UploadFileController.onPageLoad().url when DAC6-1871 is complete*@
 
     <p class="govuk-body">@messages("index.p2", cbcID)</p>
 
