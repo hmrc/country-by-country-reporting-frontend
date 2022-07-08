@@ -44,7 +44,7 @@ class FileReceivedController @Inject() (
 
   def onPageLoad(conversationId: ConversationId): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
-      Future.successful(Some(FileDetails("fileName.xml", "messageRefId", LocalDateTime.now(), LocalDateTime.now(), FileAccepted, conversationId))) map {
+      Future.successful(Some(FileDetails("fileName.xml", "messageRefId", LocalDateTime.now(), LocalDateTime.now(), FileAccepted, conversationId))) map { //TODO: Delete this line and get from FileDetailsConnector when implemented
 //      fileDetailsConnector.getFileDetails(conversationId) map {
         fileDetails =>
           (for {
