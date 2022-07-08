@@ -170,6 +170,15 @@ fileProblemNotXml.title = There is a problem with your file
 fileProblemNotXml.heading = There is a problem with your file
 fileProblemNotXml.p1 = The selected file could not be uploaded. The file type must be XML.
 
+checkYourFileDetails.title = Check your file details are correct
+checkYourFileDetails.heading = Check your file details are correct
+checkYourFileDetails.uploadedFile = Uploaded file
+checkYourFileDetails.uploadedFile.change.hidden = your file
+checkYourFileDetails.messageRefId = MessageRefId
+checkYourFileDetails.messageTypeIndic = MessageTypeIndic
+checkYourFileDetails.messageTypeIndic.CBC401 = New information
+checkYourFileDetails.messageTypeIndic.CBC402 = Correction or deletion
+
 fileReceived.title = Your file passed our automatic checks
 fileReceived.heading = Your file passed our automatic checks
 fileReceived.messageRefId.key = File MessageRefId
