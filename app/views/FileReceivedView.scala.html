@@ -1,0 +1,67 @@
+@*
+ * Copyright 2022 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import config.FrontendAppConfig
+
+@this(
+        layout: templates.Layout,
+        govukInsetText: GovukInsetText,
+        link: components.Link,
+        govukPanel: GovukPanel,
+        govukSummaryList: GovukSummaryList,
+        govukButton: GovukButton,
+        appConfig: FrontendAppConfig
+)
+
+@(messageRefId: String, timeSubmitted: String, dateSubmitted: String, firstContactEmail: String, secondContactEmail:Option[String])(implicit request: Request[_], messages: Messages)
+
+ @secondContactMessage = {
+ @if(secondContactEmail.isDefined){@messages("fileReceived.p1.5", secondContactEmail.get)}
+ }
+
+ @layout(pageTitle = titleNoForm(messages("fileReceived.title")), showBackLink = false) {
+
+  @govukPanel(Panel(
+   title = Text(messages("fileReceived.heading"))
+  ))
+
+  @govukSummaryList(
+   SummaryList(
+    Seq(
+     SummaryListRow(
+      key = Key(messages("fileReceived.messageRefId.key")),
+      value = Value(messageRefId)
+     ),
+     SummaryListRow(
+      key = Key(messages("fileReceived.ChecksCompleted.key")),
+      value = Value(messages("fileReceived.ChecksCompleted.time", dateSubmitted, timeSubmitted))
+     )
+    )
+   )
+  )
+
+  <p class="govuk-body">@messages("fileReceived.p1", firstContactEmail, secondContactMessage)</p>
+
+  <h2 class="govuk-heading-m">@messages("fileReceived.subheading")</h2>
+
+  <p class="govuk-body">@messages("fileReceived.p2")</p>
+
+  <ul class="govuk-list">
+   <li>@link("javascript:window.print()", "fileReceived.print")</li>
+   <li>@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</li>
+   <li>@link(appConfig.feedbackUrl, "fileReceived.thoughts", openInNewWindow = true)</li>
+  </ul>
+ }

@@ -9,7 +9,9 @@ object AppDependencies {
     "uk.gov.hmrc"       %% "play-conditional-form-mapping"  % "1.9.0-play-28",
     "uk.gov.hmrc"       %% "bootstrap-frontend-play-28"     % "5.18.0",
     "uk.gov.hmrc"       %% "play-language"                  % "5.1.0-play-28",
-    "uk.gov.hmrc.mongo" %% "hmrc-mongo-play-28"             % "0.59.0"
+    "uk.gov.hmrc.mongo" %% "hmrc-mongo-play-28"             % "0.59.0",
+    "com.typesafe.play" %% "play-json-joda"                 % "2.7.4",
+    "org.julienrf"      %% "play-json-derived-codecs"       % "10.0.2"
   )
 
   val test = Seq(

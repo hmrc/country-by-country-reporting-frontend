@@ -62,6 +62,8 @@ GET        /change-contact/contact-details-needed                   controllers.
 
 GET        /change-contact/details-updated                          controllers.DetailsUpdatedController.onPageLoad()
 
+GET        /file-confirmation/:conversationId                       controllers.FileReceivedController.onPageLoad(conversationId: ConversationId)
+
 GET        /account/sign-out-survey                                 controllers.auth.AuthController.signOut
 GET        /account/sign-out                                        controllers.auth.AuthController.signOutNoSurvey
 GET        /problem/signed-out                                      controllers.auth.SignedOutController.onPageLoad
