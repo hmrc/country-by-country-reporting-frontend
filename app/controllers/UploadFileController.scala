@@ -18,17 +18,14 @@ package controllers
 
 import controllers.actions._
 import forms.UploadFileFormProvider
-
-import javax.inject.Inject
-import models.{Mode, NormalMode}
 import navigation.Navigator
-import pages.UploadFilePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.UploadFileView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class UploadFileController @Inject() (
@@ -49,25 +46,14 @@ class UploadFileController @Inject() (
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(UploadFilePage) match {
-        case None        => form
-        case Some(value) => form.fill(value)
-      }
+      val preparedForm = form
 
       Ok(view(preparedForm))
   }
 
+  //Todo remove when upscan models available
   def onSubmit(): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(UploadFilePage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(UploadFilePage, NormalMode, updatedAnswers))
-        )
+      Future.successful(Redirect(routes.IndexController.onPageLoad))
   }
 }
