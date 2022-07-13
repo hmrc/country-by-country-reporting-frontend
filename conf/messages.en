@@ -190,3 +190,9 @@ fileReceived.subheading = What happens next
 fileReceived.p2 = If we have any questions about your report, we will contact you.
 fileReceived.print = Print or save this page
 fileReceived.thoughts = What did you think of this service? (opens in new tab)
+
+uploadFile.title = Upload an XML file
+uploadFile.heading = Upload an XML file
+uploadFile.p1 = We will run two sets of automatic checks to make sure your file meets the CBC XML requirements.
+uploadFile.error.file.invalid = The selected file must be an XML
+uploadFile.error.file.empty = Select a file to upload
