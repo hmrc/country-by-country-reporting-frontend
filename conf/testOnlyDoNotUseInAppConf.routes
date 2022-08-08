@@ -11,7 +11,5 @@
 
 # Add all the application routes to the prod.routes file
 
-GET     /testInvalidXml         controllers.FileErrorController.testInvalidXMLPage()
-
 ->         /                          prod.Routes
 

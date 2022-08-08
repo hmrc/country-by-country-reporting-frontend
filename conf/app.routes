@@ -86,3 +86,6 @@ GET        /uploadFile                        controllers.UploadFileController.o
 POST       /uploadFile                        controllers.UploadFileController.onSubmit()
 GET        /changeUploadFile                  controllers.UploadFileController.onPageLoad()
 POST       /changeUploadFile                  controllers.UploadFileController.onSubmit()
+
+#ToDo remove when file verification in place
+GET /testInvalidXml         controllers.FileErrorController.testInvalidXMLPage()
