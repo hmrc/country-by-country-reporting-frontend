@@ -207,3 +207,4 @@ invalidXMLFile.bullet3 = all tags are correctly nested
 invalidXMLFile.p3 = To ensure your XML is structured correctly, {0}.
 invalidXMLFile.p3.link = read the country-by-country technical guidance for XML files (opens in new tab)
 invalidXMLFile.uploadLink = Upload a different file
+invalidXMLFile.print = Print or save this page

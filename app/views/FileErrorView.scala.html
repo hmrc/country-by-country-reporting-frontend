@@ -38,7 +38,8 @@
 <p class="govuk-body">@Html(messages("invalidXMLFile.p3", link("#", "invalidXMLFile.p3.link")))</p> @*Todo: update link href*@
 
 <ul class="govuk-list">
-  <li>@link(routes.UploadFileController.onPageLoad().url, "invalidXMLFile.uploadLink")</li>
+    <li>@link("javascript:window.print()", "invalidXMLFile.print")</li>
+    <li>@link(routes.UploadFileController.onPageLoad().url, "invalidXMLFile.uploadLink")</li>
   <li>@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</li>
 </ul>
 }
