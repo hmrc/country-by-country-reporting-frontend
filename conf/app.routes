@@ -80,7 +80,12 @@ GET        /problem/file-too-large                                  controllers.
 
 GET        /problem/not-xml                                         controllers.FileProblemNotXmlController.onPageLoad()
 
+GET         /problem/invalid-xml                                    controllers.FileErrorController.onPageLoad()
+
 GET        /uploadFile                        controllers.UploadFileController.onPageLoad()
 POST       /uploadFile                        controllers.UploadFileController.onSubmit()
 GET        /changeUploadFile                  controllers.UploadFileController.onPageLoad()
 POST       /changeUploadFile                  controllers.UploadFileController.onSubmit()
+
+#ToDo remove when file verification in place
+GET /testInvalidXml         controllers.FileErrorController.testInvalidXMLPage()

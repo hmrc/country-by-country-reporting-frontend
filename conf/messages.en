@@ -196,3 +196,15 @@ uploadFile.heading = Upload an XML file
 uploadFile.p1 = We will run two sets of automatic checks to make sure your file meets the CBC XML requirements.
 uploadFile.error.file.invalid = The selected file must be an XML
 uploadFile.error.file.empty = Select a file to upload
+
+invalidXMLFile.title = There is a problem with your file
+invalidXMLFile.heading = There is a problem with your file
+invalidXMLFile.p1 = We cannot accept the file {0} because it has not been formatted correctly.
+invalidXMLFile.p2 = Check that:
+invalidXMLFile.bullet1 = if provided, the <?xml> element only has an attribute of version="1.0" and, optionally, encoding and standalone attributes with valid values
+invalidXMLFile.bullet2 = all elements have an opening and a closing tag
+invalidXMLFile.bullet3 = all tags are correctly nested
+invalidXMLFile.p3 = To ensure your XML is structured correctly, {0}.
+invalidXMLFile.p3.link = read the country-by-country technical guidance for XML files (opens in new tab)
+invalidXMLFile.uploadLink = Upload a different file
+invalidXMLFile.print = Print or save this page
