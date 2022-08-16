@@ -215,3 +215,6 @@ sendYourFile.p1 = We will automatically check if your file meets our requirement
 sendYourFile.p2 = By sending this file, you are confirming that the information is correct and complete to the best of your knowledge.
 sendYourFile.warning = This will permanently change your reported information.
 sendYourFile.status.heading = We are checking your file
+
+fileCheck.title = We are checking your file
+fileCheck.heading = We are checking your file

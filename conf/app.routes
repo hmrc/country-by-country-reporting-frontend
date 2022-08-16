@@ -85,9 +85,9 @@ GET        /problem/invalid-xml                                     controllers.
 #ToDo confirm url for FileController methods
 GET        /uploadFile                                              controllers.UploadFileController.onPageLoad()
 
-GET         /report/status                                          controllers.UploadFileController.getStatus()
+GET         /status                                          controllers.UploadFileController.getStatus()
 
-GET         /report/error                                           controllers.UploadFileController.showError(errorCode: String, errorMessage: String, errorRequestId: String)
+GET         /error                                           controllers.UploadFileController.showError(errorCode: String, errorMessage: String, errorRequestId: String)
 
 
 #ToDo remove when file verification in place
