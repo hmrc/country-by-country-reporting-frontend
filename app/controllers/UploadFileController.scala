@@ -101,7 +101,7 @@ class UploadFileController @Inject() (
                 Future.successful(Ok(Json.toJson(URL(routes.UploadFileController.showError("OctetStream", errorReason, "").url))))
               } else {
                 logger.warn(s"Upload rejected. Error details: ${r.details}")
-                Future.successful(Ok(Json.toJson(URL(routes.FileProblemTooLargeController.onPageLoad().url))))
+                Future.successful(Ok(Json.toJson(URL(routes.FileProblemNotXmlController.onPageLoad().url))))
               }
             case Some(Quarantined) =>
               Future.successful(Ok(Json.toJson(URL(routes.FileProblemVirusController.onPageLoad().url))))
