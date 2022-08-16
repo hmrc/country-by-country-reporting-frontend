@@ -88,7 +88,6 @@ class UploadFileController @Inject() (
 
   def getStatus: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
-      println("\n\n\n\nBeing called\n\n\n\n\n")
       request.userAnswers.get(UploadIDPage) match {
         case Some(uploadId) =>
           upscanConnector.getUploadStatus(uploadId) flatMap {
