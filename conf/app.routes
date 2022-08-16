@@ -82,12 +82,13 @@ GET        /problem/not-xml                                         controllers.
 
 GET        /problem/invalid-xml                                     controllers.FileErrorController.onPageLoad()
 
+#ToDo confirm url for FileController methods
 GET        /uploadFile                                              controllers.UploadFileController.onPageLoad()
-POST       /uploadFile                                              controllers.UploadFileController.onSubmit()
-GET        /changeUploadFile                                        controllers.UploadFileController.onPageLoad()
-POST       /changeUploadFile                                        controllers.UploadFileController.onSubmit()
 
-GET        /send-your-file                                          controllers.SendYourFileController.onPageLoad()
+GET         /report/status                                          controllers.UploadFileController.getStatus()
+
+GET         /report/error                                           controllers.UploadFileController.showError(errorCode: String, errorMessage: String, errorRequestId: String)
+
 
 #ToDo remove when file verification in place
 GET /testInvalidXml         controllers.FileErrorController.testInvalidXMLPage()

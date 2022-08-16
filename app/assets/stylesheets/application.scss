@@ -1,0 +1,17 @@
+$govuk-assets-path: "/disclose-cross-border-arrangements/upload/assets/lib/govuk-frontend/govuk/assets/";
+$hmrc-assets-path: "/disclose-cross-border-arrangements/upload/assets/lib/hmrc-frontend/hmrc/assets";
+
+@import "lib/govuk-frontend/govuk/base";
+@import "partials/spinner";
+@import "partials/summary";
+
+.text-overflow{
+    word-wrap: break-word;
+}
+
+body:not(.js-enabled) .js-enabled {
+        display: none;
+        visibility: hidden;
+        width: 0;
+        height: 0;
+}

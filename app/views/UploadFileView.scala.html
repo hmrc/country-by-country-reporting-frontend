@@ -17,50 +17,57 @@
 @import models.upscan.UpscanInitiateResponse
 
 @this(
-    layout: templates.Layout,
-    errorSummary: components.ErrorSummary,
-    govukFileUpload: GovukFileUpload,
-    govukButton: GovukButton
+layout: templates.Layout,
+errorSummary: components.ErrorSummary,
+govukFileUpload: GovukFileUpload,
+govukButton: GovukButton
 )
 
 @(form: Form[_], upscanInitiateResponse: UpscanInitiateResponse)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("uploadFile.title"))) {
 
-    <form action="@routes.UploadFileController.onSubmit()" method="post" id="uploadForm" enctype="multipart/form-data" novalidate>
+<form action="@upscanInitiateResponse.postTarget" method="post" id="uploadForm" enctype="multipart/form-data" novalidate>
 
-        @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-        <h1 class="govuk-label-wrapper">
-            <label class="govuk-label govuk-label--l" for="file-upload">
-                @messages("uploadFile.heading")
-            </label>
-        </h1>
+    <h1 class="govuk-label-wrapper">
+        <label class="govuk-label govuk-label--l" for="file-upload">
+            @messages("uploadFile.heading")
+        </label>
+    </h1>
 
-        <p class="govuk-body">@messages("uploadFile.p1")</p>
+    <p class="govuk-body">@messages("uploadFile.p1")</p>
 
-        <div id="file-upload-container" class="js-visible mt-3">
-            @govukFileUpload(
-                FileUpload(
-                    name = "file",
-                    id = "file-upload",
-                    classes = "hmrc-file-upload",
-                    errorMessage = form("file-upload").error.map(x => ErrorMessage(content = x.message)),
-                    attributes = Map(
-                    "accept" -> ".xml,application/xml",
-                    "required" -> "required")
-                )
-            )
-        </div>
+    @for((key, value) <- upscanInitiateResponse.formFields){
+    <input type="hidden" name="@key" value="@value" />
+    }
+    <input type="hidden" id="fileUploadRefreshUrl" value="@routes.UploadFileController.getStatus().url" />
+    <input type="hidden" id="upScanErrorRedirectUrl" value="/report-under-mandatory-disclosure-rules/report/error" />
+    <input type="hidden" id="processingMessage" value="@messages("fileCheck.heading")" />
+    <div id="file-upload-container" class="js-visible mt-3">
 
-        <div id="processing" aria-live="polite" role="status" class="govuk-!-margin-bottom-5 govuk-!-margin-top-5">
-        </div>
+        @govukFileUpload(
+        FileUpload(
+        name = "file",
+        id = "file-upload",
+        classes = "hmrc-file-upload",
+        errorMessage = form("file-upload").error.map(x => ErrorMessage(content = x.message)),
+        attributes = Map(
+        "accept" -> ".xml,application/xml",
+        "required" -> "required")
+        )
+        )
 
-        <p class="govuk-body">
-                @govukButton(
-                    ButtonViewModel(messages("site.continue")).withAttribute( "id" -> "submit").preventingDoubleClick()
-                )
-        </p>
-    </form>
+    </div>
 
+    <div id="processing" aria-live="polite" role="status" class="govuk-!-margin-bottom-5 govuk-!-margin-top-5">
+    </div>
+
+    <p class="govuk-body">
+        @govukButton(
+        ButtonViewModel(messages("site.continue")).withAttribute( "id" -> "submit").preventingDoubleClick()
+        )
+    </p>
+</form>
 }
