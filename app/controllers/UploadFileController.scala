@@ -16,12 +16,18 @@
 
 package controllers
 
+import connectors.UpscanConnector
 import controllers.actions._
 import forms.UploadFileFormProvider
+import models.requests.DataRequest
 import navigation.Navigator
+import pages.UploadIDPage
+import play.api.Logging
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.UploadFileView
 
@@ -36,20 +42,33 @@ class UploadFileController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   formProvider: UploadFileFormProvider,
+  upscanConnector: UpscanConnector,
   val controllerComponents: MessagesControllerComponents,
   view: UploadFileView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
-    with I18nSupport {
+    with I18nSupport
+    with Logging {
 
   val form = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData) {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
-      val preparedForm = form
-
-      Ok(view(preparedForm))
+      toResponse(form)
   }
+
+  private def toResponse(preparedForm: Form[String])(implicit request: DataRequest[AnyContent], hc: HeaderCarrier): Future[Result] =
+    (for {
+      upscanInitiateResponse <- upscanConnector.getUpscanFormData
+      uploadId               <- upscanConnector.requestUpload(upscanInitiateResponse.fileReference)
+      updatedAnswers         <- Future.fromTry(request.userAnswers.set(UploadIDPage, uploadId))
+      _                      <- sessionRepository.set(updatedAnswers)
+    } yield Ok(view(preparedForm, upscanInitiateResponse)))
+      .recover {
+        case e: Exception =>
+          logger.warn(s"UploadFileController: An exception occurred when contacting Upscan: $e")
+          Redirect(routes.ThereIsAProblemController.onPageLoad())
+      }
 
   //Todo remove when upscan models available
   def onSubmit(): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
