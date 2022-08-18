@@ -93,3 +93,4 @@ GET        /report/file-passed-checks                                controllers
 
 #ToDo remove when file verification in place
 GET /testInvalidXml         controllers.FileErrorController.testInvalidXMLPage()
+GET /testFilePassedChecks   controllers.FilePassedChecksController.testInvalidFileChecksPassed
