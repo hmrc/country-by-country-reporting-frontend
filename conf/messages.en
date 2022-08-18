@@ -208,3 +208,10 @@ invalidXMLFile.p3 = To ensure your XML is structured correctly, {0}.
 invalidXMLFile.p3.link = read the country-by-country technical guidance for XML files (opens in new tab)
 invalidXMLFile.uploadLink = Upload a different file
 invalidXMLFile.print = Print or save this page
+
+sendYourFile.title = Send your file
+sendYourFile.heading = Send your file
+sendYourFile.p1 = We will automatically check if your file meets our requirements. If it does not, we will tell you what is wrong with it. The checks could take a few minutes.
+sendYourFile.p2 = By sending this file, you are confirming that the information is correct and complete to the best of your knowledge.
+sendYourFile.warning = This will permanently change your reported information.
+sendYourFile.status.heading = We are checking your file
