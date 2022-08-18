@@ -89,5 +89,7 @@ POST       /changeUploadFile                                        controllers.
 
 GET        /send-your-file                                          controllers.SendYourFileController.onPageLoad()
 
+GET        /report/file-passed-checks                                controllers.FilePassedChecksController.onPageLoad()
+
 #ToDo remove when file verification in place
 GET /testInvalidXml         controllers.FileErrorController.testInvalidXMLPage()
