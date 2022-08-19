@@ -70,6 +70,8 @@ GET        /problem/signed-out                                      controllers.
 
 GET        /unauthorised                                            controllers.UnauthorisedController.onPageLoad
 
+GET        /file-validation                                         controllers.FileValidationController.onPageLoad()
+
 GET        /check-your-file-details                                 controllers.CheckYourFileDetailsController.onPageLoad()
 
 GET        /problem/there-is-a-problem                              controllers.ThereIsAProblemController.onPageLoad()
@@ -82,10 +84,15 @@ GET        /problem/not-xml                                         controllers.
 
 GET         /problem/invalid-xml                                    controllers.FileErrorController.onPageLoad()
 
-GET        /uploadFile                        controllers.UploadFileController.onPageLoad()
-POST       /uploadFile                        controllers.UploadFileController.onSubmit()
-GET        /changeUploadFile                  controllers.UploadFileController.onPageLoad()
-POST       /changeUploadFile                  controllers.UploadFileController.onSubmit()
+GET        /problem/data-errors                                     controllers.FileDataErrorController.onPageLoad()
+
+GET        /upload-file                                             controllers.UploadFileController.onPageLoad()
+
+GET        /status                                                  controllers.UploadFileController.getStatus()
+
+GET        /error                                                   controllers.UploadFileController.showError(errorCode: String, errorMessage: String, errorRequestId: String)
+
+
 
 #ToDo remove when file verification in place
 GET /testInvalidXml         controllers.FileErrorController.testInvalidXMLPage()

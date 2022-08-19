@@ -40,6 +40,12 @@ class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig:
   val signOutUrl: String       = configuration.get[String]("urls.signOut")
   val registerUrl: String      = configuration.get[String]("urls.register")
 
+  val upscanInitiateHost: String = servicesConfig.baseUrl("upscan")
+  val upscanBucketHost: String   = servicesConfig.baseUrl("upscan")
+  val upscanProtocol: String     = servicesConfig.getConfString("upscan.protocol", "https")
+  val upscanRedirectBase: String = configuration.get[String]("microservice.services.upscan.redirect-base")
+  val upscanMaxFileSize: Int     = configuration.get[Int]("microservice.services.upscan.max-file-size-in-mb")
+
   val emailEnquiries: String = configuration.get[String]("urls.emailEnquiries")
 
   private val exitSurveyBaseUrl: String = configuration.get[Service]("microservice.services.feedback-frontend").baseUrl
