@@ -23,11 +23,11 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.FileCheckViewModel
-import views.html.ThereIsAProblemView
+import views.html.{FileFailedChecksView, ThereIsAProblemView}
 
 import javax.inject.Inject
 
-class FileFailedChecksController @Inject()(
+class FileFailedChecksController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
