@@ -1,0 +1,57 @@
+@*
+ * Copyright 2022 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import config.FrontendAppConfig
+
+@this(
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukWarningText: GovukWarningText,
+        govukButton: GovukButton
+)
+
+@(displayWarning:  Boolean, appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = titleNoForm(messages("sendYourFile.title"))) {
+
+    @formHelper(action = routes.SendYourFileController.onPageLoad(), args= 'id -> "sendYourFileForm") { @*TODO:Change action to onSubmit when implemented*@
+        <input type="hidden" id="fileStatusRefreshUrl" value="#" /> @*TODO:Change value to @routes.SendYourFileController.getStatus().url when implemented*@
+        <input type="hidden" id="technicalDifficultiesRedirectUrl" value="@routes.ThereIsAProblemController.onPageLoad().url" />
+        <input type="hidden" id="slowJourneyUrl" value="#" /> @*TODO:Change value to @routes.FilePendingChecksController.onPageLoad().url when implemented*@
+        <input type="hidden" id="spinner-counter" value="@appConfig.spinnerCounter" />
+        <input type="hidden" id="processingMessage" value="@messages("sendYourFile.status.heading")" />
+
+        <h1 class="govuk-heading-l">@messages("sendYourFile.heading")</h1>
+
+
+        <p class="govuk-body" id ="information" >@messages("sendYourFile.p1")</p>
+        <p class="govuk-body">@messages("sendYourFile.p2")</p>
+
+        @if(displayWarning){
+            @govukWarningText(WarningText(
+                iconFallbackText = "site.warning",
+                content = Text(messages("sendYourFile.warning"))
+            ))
+        }
+
+        <div id="processing" aria-live="polite" role="status" class="govuk-!-margin-bottom-5 govuk-!-margin-top-5">
+        </div>
+
+        @govukButton(
+            ButtonViewModel(Text(messages("site.confirmAndSend"))).withAttribute( "id" -> "submit").preventingDoubleClick()
+        )
+    }
+}
