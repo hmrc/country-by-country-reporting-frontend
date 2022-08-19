@@ -17,25 +17,30 @@
 package controllers
 
 import controllers.actions._
+import models.{CBC401, ConversationId, MessageSpecData, ValidatedFileData}
 import pages.{ConversationIdPage, ValidXMLPage}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.FileCheckViewModel
 import views.html.{FileFailedChecksView, ThereIsAProblemView}
 
 import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
 class FileFailedChecksController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
   val controllerComponents: MessagesControllerComponents,
   view: FileFailedChecksView,
   errorView: ThereIsAProblemView
-) extends FrontendBaseController
+)(implicit executionContext: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport
     with Logging {
 
@@ -43,6 +48,8 @@ class FileFailedChecksController @Inject() (
     implicit request =>
       (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(ConversationIdPage)) match {
         case (Some(xmlDetails), Some(conversationId)) =>
+          //ToDo Uncomment and delete test action when FileRejectedController is ready
+          //val action  = routes.FileRejectedController.onPageLoad(conversationId).url
           val action  = routes.IndexController.onPageLoad.url
           val summary = FileCheckViewModel.createFileSummary(xmlDetails.fileName, "Rejected")
           Ok(view(summary, action))
@@ -50,5 +57,17 @@ class FileFailedChecksController @Inject() (
           logger.warn("FileFailedChecksController: Unable to retrieve either XML information or ConversationId from UserAnswers")
           InternalServerError(errorView())
       }
+  }
+
+  //ToDo remove when no longer necessary and remove routes
+  def testInvalidFileFailedChecks = (identify andThen getData() andThen requireData).async {
+    implicit request =>
+      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401))
+      val conversationId  = ConversationId("conversationId")
+      for {
+        updatedAnswers             <- Future.fromTry(request.userAnswers.set(ValidXMLPage, validXmlDetails))
+        updatedAnswersConversation <- Future.fromTry(updatedAnswers.set(ConversationIdPage, conversationId))
+        _                          <- sessionRepository.set(updatedAnswersConversation)
+      } yield Redirect(routes.FileFailedChecksController.onPageLoad.url)
   }
 }
