@@ -38,7 +38,7 @@ class FileCheckViewModelSpec extends SpecBase {
 
       val expectedSummary = Seq(
         SummaryListRow(Key(Text("File name")), Value(Text("name1.xml")), "", None),
-        SummaryListRow(Key(Text("Result of automatic checks")), Value(HtmlContent("<strong class='govuk-tag govuk-tag--green'>Passed</strong>")), "", None)
+        SummaryListRow(Key(Text("Result of automatic checks")), Value(HtmlContent("<strong class='govuk-tag govuk-tag--green'>Sent</strong>")), "", None)
       )
 
       FileCheckViewModel.createFileSummary("name1.xml", "Accepted")(messages(app)) mustBe expectedSummary
