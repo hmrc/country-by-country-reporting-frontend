@@ -96,8 +96,3 @@ GET        /send-your-file                                          controllers.
 
 GET        /file-passed-checks                                      controllers.FilePassedChecksController.onPageLoad()
 GET        /file-failed-checks                                      controllers.FileFailedChecksController.onPageLoad()
-
-#ToDo remove when file verification in place
-GET /testInvalidXml         controllers.FileErrorController.testInvalidXMLPage()
-GET /testFilePassedChecks   controllers.FilePassedChecksController.testInvalidFileChecksPassed
-GET /testInvalidFileFailedChecks   controllers.FileFailedChecksController.testInvalidFileFailedChecks

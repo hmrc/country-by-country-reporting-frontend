@@ -17,30 +17,25 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models._
 import pages.{ConversationIdPage, ValidXMLPage}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.FileCheckViewModel
 import views.html.{FilePassedChecksView, ThereIsAProblemView}
-import models.{CBC401, ConversationId, MessageSpecData, ValidatedFileData}
+
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
 
 class FilePassedChecksController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
-  sessionRepository: SessionRepository,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: FilePassedChecksView,
   errorView: ThereIsAProblemView
-)(implicit ec: ExecutionContext)
-    extends FrontendBaseController
+) extends FrontendBaseController
     with I18nSupport
     with Logging {
 
@@ -56,17 +51,5 @@ class FilePassedChecksController @Inject() (
           logger.warn("FilePassedChecksController: Unable to retrieve either XML information or ConversationId from UserAnswers")
           InternalServerError(errorView())
       }
-  }
-
-  //ToDo remove when no longer necessary and remove routes
-  def testInvalidFileChecksPassed = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401))
-      val conversationId  = ConversationId("conversationId")
-      for {
-        updatedAnswers             <- Future.fromTry(request.userAnswers.set(ValidXMLPage, validXmlDetails))
-        updatedAnswersConversation <- Future.fromTry(updatedAnswers.set(ConversationIdPage, conversationId))
-        _                          <- sessionRepository.set(updatedAnswersConversation)
-      } yield Redirect(routes.FilePassedChecksController.onPageLoad.url)
   }
 }
