@@ -28,7 +28,7 @@
     <p class="govuk-body">@messages("fileProblemVirus.p1")</p>
 
     <ul class="govuk-list">
-       <li>@link("#", "problemPage.uploadLink")</li>
+       <li>@link(routes.UploadFileController.onPageLoad().url, "problemPage.uploadLink")</li>
        <li>@link("#", "problemPage.CBC.guidanceLink")</li>
        <li>@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</li>
     </ul>
