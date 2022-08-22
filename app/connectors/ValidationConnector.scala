@@ -49,10 +49,10 @@ class ValidationConnector @Inject() (http: HttpClient, config: FrontendAppConfig
       .recover {
         case NonFatal(e) =>
           if (e.getMessage contains "Invalid XML") {
-            logger.warn(s"XML parsing failed. The XML parser in mandatory-disclosure-rules backend has thrown the exception: $e")
+            logger.warn(s"XML parsing failed. The XML parser in country-by-country-reporting backend has thrown the exception: $e")
             Left(InvalidXmlError(e.getMessage))
           } else {
-            logger.warn(s"Remote service timed out. The XML parser in mandatory-disclosure-rules backend backend has thrown the exception: $e")
+            logger.warn(s"Remote service timed out. The XML parser in country-by-country-reporting backend backend has thrown the exception: $e")
             Left(NonFatalErrors(e.getMessage))
           }
       }
