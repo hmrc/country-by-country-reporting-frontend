@@ -74,6 +74,8 @@ GET        /check-your-file-details                                 controllers.
 
 GET        /problem/there-is-a-problem                              controllers.ThereIsAProblemController.onPageLoad()
 
+GET        /problem/file-not-accepted                               controllers.FileProblemController.onPageLoad()
+
 GET        /problem/virus-found                                     controllers.FileProblemVirusController.onPageLoad()
 
 GET        /problem/file-too-large                                  controllers.FileProblemTooLargeController.onPageLoad()
