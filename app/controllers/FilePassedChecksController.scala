@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import models.{CBC401, ConversationId, MessageSpecData, ValidatedFileData}
 import pages.{ConversationIdPage, ValidXMLPage}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -41,7 +42,8 @@ class FilePassedChecksController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(ConversationIdPage)) match {
+      (Some(ValidatedFileData("test.xml", MessageSpecData("messageRefId", CBC401))), Some(ConversationId("conversationId"))) match { //TODO: Delete this line and replace with commented code below when file can be submitted
+//      (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(ConversationIdPage)) match {
         case (Some(xmlDetails), Some(conversationId)) =>
           val action  = routes.FileReceivedController.onPageLoad(conversationId).url
           val summary = FileCheckViewModel.createFileSummary(xmlDetails.fileName, "Accepted")

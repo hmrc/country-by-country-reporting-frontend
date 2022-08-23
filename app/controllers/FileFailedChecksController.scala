@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import models.{CBC401, ConversationId, MessageSpecData, ValidatedFileData}
 import pages.{ConversationIdPage, ValidXMLPage}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -41,7 +42,8 @@ class FileFailedChecksController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(ConversationIdPage)) match {
+      (Some(ValidatedFileData("test.xml", MessageSpecData("messageRefId", CBC401))), Some(ConversationId("conversationId"))) match { //TODO: Delete this line and replace with commented code below when file can be submitted
+//      (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(ConversationIdPage)) match {
         case (Some(xmlDetails), Some(conversationId)) =>
           //ToDo Uncomment and delete test action when FileRejectedController is ready
           //val action  = routes.FileRejectedController.onPageLoad(conversationId).url
