@@ -219,6 +219,12 @@ sendYourFile.p2 = By sending this file, you are confirming that the information 
 sendYourFile.warning = This will permanently change your reported information.
 sendYourFile.status.heading = We are checking your file
 
+fileProblem.title = Sorry, there is a problem with the service
+fileProblem.heading = Sorry, there is a problem with the service
+fileProblem.p1 = We have not accepted your file.
+fileProblem.p2 = You must email {0} so we can investigate the problem.
+fileProblem.link = enquiries.aeoi@hmrc.gov.uk
+
 cssColour.Rejected = red
 cssColour.Accepted = green
 cssColour.Pending = blue
