@@ -29,11 +29,10 @@
         @govukSummaryList(fileDetails)
         <hr>
 
-        @* TODO: Change link to routes.SendYourFileController.onPageLoad().url when implemented *@
         @govukButton(
             ButtonViewModel(Text(messages("site.continue")))
                     .withAttribute( "id" -> "submit")
-                    .asLink("#")
+                    .asLink(routes.SendYourFileController.onPageLoad().url)
                     .withCssClass("govuk-!-margin-top-7")
         )
     }

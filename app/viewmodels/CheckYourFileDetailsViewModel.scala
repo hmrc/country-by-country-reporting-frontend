@@ -41,7 +41,7 @@ object CheckYourFileDetailsViewModel {
         key = "checkYourFileDetails.messageTypeIndic",
         value = ValueViewModel(HtmlFormat.escape(s"${displayTypeIndictator(vfd.messageSpecData.messageTypeIndic)}").toString),
         actions = Seq(
-          ActionItemViewModel("site.change", "#") //TODO: Change to routes.UploadFileController.onPageLoad().url when implemented
+          ActionItemViewModel("site.change", routes.UploadFileController.onPageLoad().url)
             .withAttribute(("id", "your-file"))
             .withVisuallyHiddenText(messages("checkYourFileDetails.uploadedFile.change.hidden"))
         )

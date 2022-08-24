@@ -21,24 +21,21 @@ import pages.InvalidXMLPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository //ToDo remove when test routes no longer needed
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.{FileErrorView, ThereIsAProblemView}
 
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 class FileErrorController @Inject() (
   override val messagesApi: MessagesApi,
-  sessionRepository: SessionRepository,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: FileErrorView,
   errorView: ThereIsAProblemView
-)(implicit ec: ExecutionContext)
-    extends FrontendBaseController
+) extends FrontendBaseController
     with I18nSupport
     with Logging {
 
@@ -51,14 +48,5 @@ class FileErrorController @Inject() (
           logger.error("File name missing for file error page")
           Future.successful(InternalServerError(errorView()))
       }
-  }
-
-  //ToDo remove when no longer necessary and remove routes
-  def testInvalidXMLPage = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      for {
-        updatedAnswers <- Future.fromTry(request.userAnswers.set(InvalidXMLPage, "InvalidXml.xml"))
-        _              <- sessionRepository.set(updatedAnswers)
-      } yield Redirect(routes.FileErrorController.onPageLoad.url)
   }
 }

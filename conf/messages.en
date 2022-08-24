@@ -209,6 +209,9 @@ invalidXMLFile.p3.link = read the country-by-country technical guidance for XML 
 invalidXMLFile.uploadLink = Upload a different file
 invalidXMLFile.print = Print or save this page
 
+fileCheck.title = We are checking your file
+fileCheck.heading = We are checking your file 
+
 sendYourFile.title = Send your file
 sendYourFile.heading = Send your file
 sendYourFile.p1 = We will automatically check if your file meets our requirements. If it does not, we will tell you what is wrong with it. The checks could take a few minutes.
@@ -221,3 +224,69 @@ fileProblem.heading = Sorry, there is a problem with the service
 fileProblem.p1 = We have not accepted your file.
 fileProblem.p2 = You must email {0} so we can investigate the problem.
 fileProblem.link = enquiries.aeoi@hmrc.gov.uk
+
+cssColour.Rejected = red
+cssColour.Accepted = green
+cssColour.Pending = blue
+cssColour.Problem = purple
+status.Rejected = Failed
+status.Accepted = Sent
+status.Pending = Pending
+status.Problem = Problem
+
+filePassedChecks.title = Your file has passed our checks
+filePassedChecks.heading = Your file has passed our checks
+
+fileSummary.fileName = File name
+fileSummary.result = Result of automatic checks
+fileSummary.viewConfirmation = View confirmation
+fileSummary.refresh = Refresh for updates
+fileSummary.viewErrors = View file errors
+
+
+filePendingChecks.title = We need a few more minutes to check your file
+filePendingChecks.heading = We need a few more minutes to check your file
+filePendingChecks.p1 = If you have been refreshing for more than 10 minutes, {0}. We will email you to tell you if your file has passed the checks or not.
+filePendingChecks.link = you can sign out
+
+fileFailedChecks.title = Your file has failed our checks
+fileFailedChecks.heading = Your file has failed our checks
+fileFailedChecks.warning = You may be fined if you do not send another version.
+
+fileDataError.title = There is a problem with your file
+fileDataError.heading = There is a problem with your file
+fileDataError.p1 = We cannot accept the file {0} because it does not meet the CBC data requirements.
+fileDataError.subheading1 = What you can do next
+fileDataError.bullet1 = Print or save this page
+fileDataError.bullet2 = View the errors on this page
+fileDataError.bullet3 = Refer to the {0} and use it to update your file
+fileDataError.bullet3.link = CBC technical guidance for XML files (opens in new tab)
+fileDataError.bullet4 = Upload your updated file
+fileDataError.p2 = Be aware there could be further problems with submitting your XML file because we have not checked it against our business rules.
+fileDataError.tableCaption = Errors
+fileDataError.tableHeading1 = Line
+fileDataError.tableHeading2 = Error
+
+xml.defaultMessage = There is a problem with this line number
+xml.must.have.element.declaration = The {0} field must have an XML namespace (xmlns), which must be {1}
+xml.add.an.element = Add an {0}
+xml.add.a.element = Add a {0}
+xml.add.element = Add {0}
+xml.not.ISO.code = {0} must contain one of the ISO country codes
+xml.not.ISO.language.code = If added, {0} must contain an ISO language code
+xml.not.ISO.currency.code = {0} must contain an ISO currency code
+xml.not.allowed.value = {0} is not one of the allowed values
+xml.not.allowed.length = {0} must be {1} characters or less
+xml.not.allowed.length.repeatable = Each {0} element must be {1} characters or less
+xml.must.be.whole.number = {0} must be a whole number such as 123 or 1229
+xml.dateTime.format = Add a {0} in the format YYYY-MM-DDThh:mm:ss or YYYY-MM-DDThh:mm:ss.nnn
+xml.date.format = Add a {0} in the format YYYY-MM-DD
+xml.date.format.real = Add a real {0}
+xml.add.line = Add a line for {0}
+xml.add.cbc = Add a MessageType of CBC
+xml.empty.tag = {0} is missing one or more elements, including {1}
+xml.add.line.messageType = Add a {0} that must always be CBC
+xml.add.one.or.more.elements = Add one or more {0}
+xml.not.valid.percentage = {0} must be a whole number between 0 and 100
+xml.optional.field.empty = If provided, {0} must have a value
+xml.addressFix.error = AddressFix must be placed before AddressFree
