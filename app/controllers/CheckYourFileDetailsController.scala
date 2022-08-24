@@ -17,7 +17,6 @@
 package controllers
 
 import controllers.actions._
-import models.{CBC401, MessageSpecData, MessageTypeIndic, ValidatedFileData}
 import pages.ValidXMLPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -43,11 +42,7 @@ class CheckYourFileDetailsController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      val validXmlData: Option[ValidatedFileData] = Some(
-        ValidatedFileData("filename.xml", MessageSpecData("messageRefId", CBC401))
-      ) //TODO: Delete this line and match on actual page value when file upload is implemented
-//      request.userAnswers.get(ValidXMLPage) match {
-      validXmlData match {
+      request.userAnswers.get(ValidXMLPage) match {
         case Some(details) =>
           val detailsList = SummaryListViewModel(CheckYourFileDetailsViewModel.getSummaryRows(details))
             .withoutBorders()

@@ -53,11 +53,14 @@ lazy val root = (project in file("."))
     Concat.groups := Seq(
       "javascripts/application.js" ->
         group(Seq(
-          "javascripts/app.js"
+          "javascripts/app.js",
+          "javascripts/jquery-3.6.0.min.js",
+          "javascripts/upload-spinner.js",
+          "javascripts/second-spinner.js"
         ))
     ),
     // prevent removal of unused code which generates warning errors due to use of third-party libs
-    uglifyCompressOptions := Seq("unused=false", "dead_code=false"),
+    uglifyCompressOptions := Seq("unused=false", "dead_code=false", "warnings=false"),
     pipelineStages := Seq(digest),
     // below line required to force asset pipeline to operate in dev rather than only prod
     pipelineStages in Assets := Seq(concat,uglify),

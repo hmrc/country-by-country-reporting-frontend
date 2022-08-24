@@ -24,16 +24,22 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 
+import java.net.URLEncoder
 import scala.concurrent.Future
 
 class AuthControllerSpec extends SpecBase {
 
   "signOut" - {
 
-    "must redirect to sign out, specifying the exit survey as the continue URL" in {
+    "must clear user answers and redirect to sign out, specifying the exit survey as the continue URL" in {
+
+      val mockSessionRepository = mock[SessionRepository]
+      when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(None).build()
+        applicationBuilder(None)
+          .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+          .build()
 
       running(application) {
 
@@ -46,27 +52,36 @@ class AuthControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual expectedRedirectUrl
+        verify(mockSessionRepository, times(1)).clear(eqTo(userAnswersId))
       }
     }
   }
 
   "signOutNoSurvey" - {
 
-    "must clear users answers and redirect to sign out URL" in {
+    "must clear users answers and redirect to sign out, specifying SignedOut as the continue URL" in {
+
+      val mockSessionRepository = mock[SessionRepository]
+      when(mockSessionRepository.clear(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(None).build()
+        applicationBuilder(None)
+          .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+          .build()
 
       running(application) {
 
-        val request = FakeRequest(GET, routes.AuthController.signOutNoSurvey.url)
+        val appConfig = application.injector.instanceOf[FrontendAppConfig]
+        val request   = FakeRequest(GET, routes.AuthController.signOutNoSurvey.url)
 
         val result = route(application, request).value
 
-        val expectedRedirectUrl = controllers.auth.routes.SignedOutController.onPageLoad.url
+        val encodedContinueUrl  = URLEncoder.encode(routes.SignedOutController.onPageLoad.url, "UTF-8")
+        val expectedRedirectUrl = s"${appConfig.signOutUrl}?continue=$encodedContinueUrl"
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual expectedRedirectUrl
+        verify(mockSessionRepository, times(1)).clear(eqTo(userAnswersId))
       }
     }
   }
