@@ -24,6 +24,7 @@ if(fileLength === 0){
        $(".govuk-form-group--error").removeClass("govuk-form-group--error")
        $("#file-upload-error").remove()
        $("#error-summary").remove()
+       $("#submit").remove()
        $("#processing").append('<h2 class="govuk-heading-m">'+$("#processingMessage").val()+'</h2><div><div class="ccms-loader"></div></div>')
        $("#file-upload").attr('disabled', 'disabled')
    };
