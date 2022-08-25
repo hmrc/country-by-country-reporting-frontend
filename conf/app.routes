@@ -95,6 +95,8 @@ GET        /status                                                  controllers.
 GET        /error                                                   controllers.UploadFileController.showError(errorCode: String, errorMessage: String, errorRequestId: String)
 
 GET        /send-your-file                                          controllers.SendYourFileController.onPageLoad()
+POST       /send-your-file                                          controllers.SendYourFileController.onSubmit()
+GET        /check-status                                            controllers.SendYourFileController.getStatus()
 
 GET        /file-passed-checks                                      controllers.FilePassedChecksController.onPageLoad()
 GET        /file-failed-checks                                      controllers.FileFailedChecksController.onPageLoad()

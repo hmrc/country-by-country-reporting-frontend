@@ -27,8 +27,8 @@
 
 @layout(pageTitle = titleNoForm(messages("sendYourFile.title"))) {
 
-    @formHelper(action = routes.SendYourFileController.onPageLoad(), args= 'id -> "sendYourFileForm") { @*TODO:Change action to onSubmit when implemented*@
-        <input type="hidden" id="fileStatusRefreshUrl" value="#" /> @*TODO:Change value to @routes.SendYourFileController.getStatus().url when implemented*@
+    @formHelper(action = routes.SendYourFileController.onSubmit(), args= 'id -> "sendYourFileForm") {
+        <input type="hidden" id="fileStatusRefreshUrl" value="@routes.SendYourFileController.getStatus().url" />
         <input type="hidden" id="technicalDifficultiesRedirectUrl" value="@routes.ThereIsAProblemController.onPageLoad().url" />
         <input type="hidden" id="slowJourneyUrl" value="#" /> @*TODO:Change value to @routes.FilePendingChecksController.onPageLoad().url when implemented*@
         <input type="hidden" id="spinner-counter" value="@appConfig.spinnerCounter" />

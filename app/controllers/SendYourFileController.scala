@@ -17,16 +17,23 @@
 package controllers
 
 import config.FrontendAppConfig
+import connectors.SubmissionConnector
 import controllers.actions._
-import models.CBC402
-import pages.ValidXMLPage
+import handlers.XmlHandler
+import models.fileDetails.{Pending, Rejected, ValidationErrors}
+import models.upscan.URL
+import models.{CBC402, ValidatedFileData}
+import pages.{ConversationIdPage, URLPage, ValidXMLPage}
+import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.libs.json.Json
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SendYourFileView
 
 import javax.inject.Inject
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class SendYourFileController @Inject() (
   override val messagesApi: MessagesApi,
@@ -34,9 +41,13 @@ class SendYourFileController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   appConfig: FrontendAppConfig,
+  submissionConnector: SubmissionConnector,
+  sessionRepository: SessionRepository,
+  xmlHandler: XmlHandler,
   val controllerComponents: MessagesControllerComponents,
   view: SendYourFileView
-) extends FrontendBaseController
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
@@ -47,6 +58,35 @@ class SendYourFileController @Inject() (
           validatedFileData => validatedFileData.messageSpecData.messageTypeIndic.equals(CBC402)
         )
       Future.successful(Ok(view(displayWarning, appConfig)))
+  }
+
+  def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
+    implicit request =>
+      (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(URLPage)) match {
+        case (Some(ValidatedFileData(filename, _)), Some(fileUrl)) =>
+          val xml = xmlHandler.load(fileUrl)
+          submissionConnector.submitDocument(filename, request.subscriptionId, xml) flatMap {
+            case Some(conversationId) =>
+              for {
+                userAnswers <- Future.fromTry(request.userAnswers.set(ConversationIdPage, conversationId))
+                _           <- sessionRepository.set(userAnswers)
+              } yield Ok
+            case _ => Future.successful(InternalServerError)
+          }
+        case _ =>
+          Future.successful(InternalServerError)
+      }
+  }
+
+  //TODO when fileDetailsconnector is implemented
+  def getStatus: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
+    implicit request =>
+      request.userAnswers.get(ConversationIdPage) match {
+        case Some(conversationId) => Future.successful(Ok(Json.toJson(URL(routes.FileReceivedController.onPageLoad(conversationId).url))))
+        case _ =>
+          logger.warn("UserAnswers.ConversationId is empty")
+          Future.successful(InternalServerError)
+      }
   }
 
 }
