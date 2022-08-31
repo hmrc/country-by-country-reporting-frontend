@@ -291,14 +291,16 @@ xml.not.valid.percentage = {0} must be a whole number between 0 and 100
 xml.optional.field.empty = If provided, {0} must have a value
 xml.addressFix.error = AddressFix must be placed before AddressFree
 
+label.file = File
+
 fileRejected.title = There is a problem with your file
 fileRejected.heading = There is a problem with your file
 fileRejected.p1 = We cannot accept the file {0} because it does not meet the CBC business rules.
 fileRejected.subheading1 = What you can do next
 fileRejected.bullet1 = Print or save this page
 fileRejected.bullet2 = View the errors on this page
-fileRejected.bullet3 = Refer to the {0} and use it to update your file
-fileRejected.bullet3.link = business rules guidance (opens in new tab)
+fileRejected.bullet3 = Read the {0} and use it to update your file
+fileRejected.bullet3.link = XML user guide
 fileRejected.bullet4 = Upload your updated file
 fileRejected.tableCaption = Errors
 fileRejected.code = Code

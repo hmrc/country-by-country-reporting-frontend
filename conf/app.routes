@@ -88,6 +88,8 @@ GET        /problem/invalid-xml                                     controllers.
 
 GET        /problem/data-errors                                     controllers.FileDataErrorController.onPageLoad()
 
+GET        /problem/rules-errors/:conversationId                    controllers.FileRejectedController.onPageLoad(conversationId: ConversationId)
+
 GET        /upload-file                                             controllers.UploadFileController.onPageLoad()
 
 GET        /status                                                  controllers.UploadFileController.getStatus()
