@@ -13,3 +13,9 @@
 
 ->         /                          prod.Routes
 
++nocsrf
+POST       /send-a-country-by-country-report/test-only/process-eis-response                     controllers.testOnlyDoNotUseInAppConf.TestProcessEISResponseController.processEISResponse()
+
++nocsrf
+POST       /send-a-country-by-country-report/test-only/insert-test-submission/:fileName         controllers.testOnlyDoNotUseInAppConf.TestSubmissionController.insertTestSubmission(fileName)
+
