@@ -16,25 +16,25 @@
 
 package controllers
 
+import connectors.FileDetailsConnector
 import controllers.actions._
 import models.ConversationId
-import models.fileDetails.FileDetails
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.ContactEmailHelper.getContactEmails
 import utils.DateTimeFormatUtil._
 import views.html.{FileReceivedView, ThereIsAProblemView}
-import models.fileDetails.{Accepted => FileAccepted}
-import java.time.LocalDateTime
+
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 class FileReceivedController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
+  fileDetailsConnector: FileDetailsConnector,
   val controllerComponents: MessagesControllerComponents,
   view: FileReceivedView,
   errorView: ThereIsAProblemView
@@ -44,8 +44,7 @@ class FileReceivedController @Inject() (
 
   def onPageLoad(conversationId: ConversationId): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
-      Future.successful(Some(FileDetails("fileName.xml", "messageRefId", LocalDateTime.now(), LocalDateTime.now(), FileAccepted, conversationId))) map { //TODO: Delete this line and get from FileDetailsConnector when implemented
-//      fileDetailsConnector.getFileDetails(conversationId) map {
+      fileDetailsConnector.getFileDetails(conversationId) map {
         fileDetails =>
           (for {
             emails  <- getContactEmails
