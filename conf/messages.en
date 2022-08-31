@@ -290,3 +290,57 @@ xml.add.one.or.more.elements = Add one or more {0}
 xml.not.valid.percentage = {0} must be a whole number between 0 and 100
 xml.optional.field.empty = If provided, {0} must have a value
 xml.addressFix.error = AddressFix must be placed before AddressFree
+
+fileRejected.title = There is a problem with your file
+fileRejected.heading = There is a problem with your file
+fileRejected.p1 = We cannot accept the file {0} because it does not meet the CBC business rules.
+fileRejected.subheading1 = What you can do next
+fileRejected.bullet1 = Print or save this page
+fileRejected.bullet2 = View the errors on this page
+fileRejected.bullet3 = Refer to the {0} and use it to update your file
+fileRejected.bullet3.link = business rules guidance (opens in new tab)
+fileRejected.bullet4 = Upload your updated file
+fileRejected.tableCaption = Errors
+fileRejected.code = Code
+fileRejected.docRefId = DocRefId
+fileRejected.error = Error
+
+#TODO: Update these messages when CBC business rules are known
+fileRejected.50009.key = 509
+fileRejected.50009.value = The MessageRefId has already been used in a file previously received, it must be unique
+fileRejected.50010.key = 510
+fileRejected.50010.value = We cannot accept test data so each DocTypeIndic must have a value of either OECD0, OECD1, OECD2 or OECD3
+fileRejected.80000.key = 800
+fileRejected.80000.value = The DocRefId has already been used in this file or a file previously received, it must be unique
+fileRejected.80002.key = 802
+fileRejected.80002.value = The CorrDocRefId does not match any DocRefId previously received
+fileRejected.80003.key = 803
+fileRejected.80003.value = The CorrDocRefId is for a section that has already been corrected or deleted
+fileRejected.80004.key = 804
+fileRejected.80004.value = Sections that contain new or resent information must not have a CorrDocRefId
+fileRejected.80005.key = 805
+fileRejected.80005.value = This section contains a correction or deletion so it must contain a CorrDocRefId
+fileRejected.80008.key = 808
+fileRejected.80008.value = Resend option (OECD0) must only be used for the Disclosing element, not for the MdrReport element. Ensure the MdrReport DocTypeIndic contains one of the allowed values
+fileRejected.80009.key = 809
+fileRejected.80009.value = This Disclosing section can only be deleted if the MdrReport section linked to it is also deleted
+fileRejected.80010.key = 810
+fileRejected.80010.value = The file cannot contain a combination of new information (DocTypeIndic = OECD1) and corrections or deletions (DocTypeIndic = OECD2 or OECD3)
+fileRejected.80011.key = 811
+fileRejected.80011.value = A CorrDocRefId value must not be used more than once in the same file
+fileRejected.80013.key = 813
+fileRejected.80013.value = The Disclosing DocTypeIndic of OECD0 indicates this section contains resent information, but the DocRefId does not match any we have received
+fileRejected.80014.key = 814
+fileRejected.80014.value = The Disclosing DocTypeIndic of OECD0 shows this section contains resent information, but the DocRefId is for information that has since been corrected or deleted. Provide the DocRefId of the section you want to correct
+fileRejected.901.value = The CorrDocRefId does not match a DocRefId from the same type of section (either Disclosing or MdrReport). It must refer to the same element
+fileRejected.902.value = The MdrReport CorrDocRefId does not refer to the same previously sent MdrBody as the Disclosing element
+fileRejected.903.value = The Disclosing section contains resent data (DocTypeIndic = OECD0) so it must not have a CorrDocRefId
+fileRejected.904.value = MdrReport CrsAvoidance or OOS Reason is not one of the allowed values for the Disclosing Capacity provided
+fileRejected.905.value = Since the DocTypeIndic of Disclosing is OECD0, the DocTypeIndic of MdrReport must be OECD2
+fileRejected.906.value = Since the MdrReport has a DocTypeIndic of OECD3, indicating this section must be deleted, this Disclosing section must be deleted too
+fileRejected.907.value = Since the MessageTypeIndic contains the value of MDR401 for new information, the Disclosing DocTypeIndic must contain the value of OECD1 for new information
+fileRejected.908.value = Since the MessageTypeIndic contains the value of MDR401 for new information, an MdrReport section must be provided with a DocTypeIndic of OECD1 for new information
+fileRejected.909.value = DocRefId must be 100 characters or less, start with your 15-character MDR ID and include up to 85 other characters of your choice
+fileRejected.910.value = MessageRefId must be 85 characters or less, start with your 15-character MDR ID and include up to 70 other characters of your choice
+fileRejected.911.value = Provide an issuedBy for every TIN that has a value other than NOTIN
+fileRejected.912.value = The top level of the StructureChart must not have an Ownership or InvestAmount
