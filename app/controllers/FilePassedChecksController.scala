@@ -42,8 +42,7 @@ class FilePassedChecksController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      (Some(ValidatedFileData("test.xml", MessageSpecData("messageRefId", CBC401))), Some(ConversationId("conversationId"))) match { //TODO: Delete this line and replace with commented code below when file can be submitted
-//      (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(ConversationIdPage)) match {
+      (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(ConversationIdPage)) match {
         case (Some(xmlDetails), Some(conversationId)) =>
           val action  = routes.FileReceivedController.onPageLoad(conversationId).url
           val summary = FileCheckViewModel.createFileSummary(xmlDetails.fileName, "Accepted")

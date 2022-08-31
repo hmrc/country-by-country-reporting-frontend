@@ -17,10 +17,10 @@
 package controllers
 
 import config.FrontendAppConfig
-import connectors.SubmissionConnector
+import connectors.{FileDetailsConnector, SubmissionConnector}
 import controllers.actions._
 import handlers.XmlHandler
-import models.fileDetails.{Pending, Rejected, ValidationErrors}
+import models.fileDetails.{Pending, Rejected, ValidationErrors, Accepted => FileStatusAccepted}
 import models.upscan.URL
 import models.{CBC402, ValidatedFileData}
 import pages.{ConversationIdPage, URLPage, ValidXMLPage}
@@ -30,6 +30,7 @@ import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import utils.FileProblemHelper.isProblemStatus
 import views.html.SendYourFileView
 
 import javax.inject.Inject
@@ -42,6 +43,7 @@ class SendYourFileController @Inject() (
   requireData: DataRequiredAction,
   appConfig: FrontendAppConfig,
   submissionConnector: SubmissionConnector,
+  fileDetailsConnector: FileDetailsConnector,
   sessionRepository: SessionRepository,
   xmlHandler: XmlHandler,
   val controllerComponents: MessagesControllerComponents,
@@ -78,15 +80,37 @@ class SendYourFileController @Inject() (
       }
   }
 
-  //TODO when fileDetailsconnector is implemented
   def getStatus: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
       request.userAnswers.get(ConversationIdPage) match {
-        case Some(conversationId) => Future.successful(Ok(Json.toJson(URL(routes.FileReceivedController.onPageLoad(conversationId).url))))
-        case _ =>
+        case Some(conversationId) =>
+          fileDetailsConnector.getStatus(conversationId) flatMap {
+            case Some(FileStatusAccepted) =>
+              Future.successful(Ok(Json.toJson(URL(routes.FileReceivedController.onPageLoad(conversationId).url))))
+            case Some(Rejected(errors)) =>
+              fastJourneyErrorRoute(
+                errors,
+                Future.successful(
+                  Ok(Json.toJson(URL(routes.ThereIsAProblemController.onPageLoad.url)))
+                ) //TODO: Change to routes.FileRejectedController.onPageLoad(conversationId).url when implemented
+              )
+            case Some(Pending) =>
+              Future.successful(NoContent)
+            case None =>
+              logger.warn("getStatus: no status returned")
+              Future.successful(InternalServerError)
+          }
+        case None =>
           logger.warn("UserAnswers.ConversationId is empty")
           Future.successful(InternalServerError)
       }
   }
+
+  private def fastJourneyErrorRoute(errors: ValidationErrors, result: Future[Result]): Future[Result] =
+    if (isProblemStatus(errors)) {
+      Future.successful(Ok(Json.toJson(URL(routes.FileProblemController.onPageLoad().url))))
+    } else {
+      result
+    }
 
 }
