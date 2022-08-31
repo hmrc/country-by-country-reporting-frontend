@@ -128,20 +128,20 @@ object FileRejectedViewModel {
   val error_details_901  = "CorrDocRefID element type does not match original DocRefID element type"
   val error_details_902  = "Correction is not for the relevant Disclosing element"
   val error_details_903  = "CorrDocRefID must not be present for OECD0 at Disclosing Element"
-  val error_details_904a = "If the only Capacity entry is MDR501 the Reason must be either MDR701 or MDR901"
-  val error_details_904b = "If the only Capacity entry is MDR502 the Reason must be either MDR702 or MDR902"
-  val error_details_904c = "If the only Capacity entry is MDR503 the Reason must be either MDR701, MDR702, MDR901 or MDR902"
-  val error_details_904d = "If the only Capacity entry is MDR504 then Reason must not be provided"
-  val error_details_905  = "If DocTypeIndic of Disclosing is OECD0 the DocTypeIndic of MdrReport must OECD2"
-  val error_details_906  = "If DocTypeIndic of MdrReport is OECD3 the DocTypeIndic of Disclosing must be OECD3"
-  val error_details_907  = "If MessageTypeIndic is MDR401, Disclosing DocTypeIndic can only be OECD1"
-  val error_details_908  = "If MessageTypeIndic is MDR401 and Diclosing DocTypeIndic is OECD1, the MdrReport must be present and have DocTypeIndic of OECD1"
-  val error_details_909  = "DocRefID format does not match the format as set out in the HMRC MDR user guide"
-  val error_details_910  = "MessageRefID format does not match the format as set out in the HMRC MDR user guide"
+  val error_details_904a = "If the only Capacity entry is CBC501 the Reason must be either CBC701 or CBC901"
+  val error_details_904b = "If the only Capacity entry is CBC502 the Reason must be either CBC702 or CBC902"
+  val error_details_904c = "If the only Capacity entry is CBC503 the Reason must be either CBC701, CBC702, CBC901 or CBC902"
+  val error_details_904d = "If the only Capacity entry is CBC504 then Reason must not be provided"
+  val error_details_905  = "If DocTypeIndic of Disclosing is OECD0 the DocTypeIndic of CbcReport must OECD2"
+  val error_details_906  = "If DocTypeIndic of CbcReport is OECD3 the DocTypeIndic of Disclosing must be OECD3"
+  val error_details_907  = "If MessageTypeIndic is CBC401, Disclosing DocTypeIndic can only be OECD1"
+  val error_details_908  = "If MessageTypeIndic is CBC401 and Diclosing DocTypeIndic is OECD1, the CbcReport must be present and have DocTypeIndic of OECD1"
+  val error_details_909  = "DocRefID format does not match the format as set out in the HMRC CBC user guide"
+  val error_details_910  = "MessageRefID format does not match the format as set out in the HMRC CBC user guide"
   val error_details_911  = """TIN issuedby must be provided where a TIN has been reported. The only exception is where "NOTIN" has been reported"""
 
   val error_details_912 =
-    "The top level of the structure chart must not include the elements: mdr:ownership and mdr:InvestAmount. These should only be provided in the  mdr:ListChilds tag"
+    "The top level of the structure chart must not include the elements: cbc:ownership and cbc:InvestAmount. These should only be provided in the  cbc:ListChilds tag"
 
   val errorList: Seq[String] = Seq(
     error_details_901,
