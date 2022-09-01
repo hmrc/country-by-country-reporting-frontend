@@ -39,15 +39,17 @@ error.number = Please enter a valid number
 error.required = Please enter a value
 error.summary.title = There is a problem
 
-index.title = Report cross-border arrangements for CBC
-index.heading = Report cross-border arrangements for CBC
-index.p1 = You can {0} to tell us about a cross-border arrangement.
-index.p1.link = upload an XML file
-index.p2 = The file must be 20MB or less and include your CBC ID, which is {0}
-index.p3 = You can also:
-index.bullet1 = find out more about CBC XML files (opens in new tab)
-index.bullet2 = change your contact details
-index.p4 = If you’re having problems with the service, you can email {0}
+index.title = Send a country-by-country (CBC) report
+index.heading = Send a country-by-country (CBC) report
+index.p1 = You can {0}.
+index.p1.link = upload an XML file to send a CBC report
+index.p2 = The file must be 20MB or less and include your CBC ID
+index.p3 = Your CBC ID is {0}
+index.p4.without_details = You can also {0}.
+index.p4.with_details = You can also:
+index.change_details = change your contact details
+index.view_file_details = view details about your recently sent files
+index.p5 = Email {0} if you’re having problems with the service.
 
 checkYourAnswers.title = Check Your Answers
 checkYourAnswers.heading = Check Your Answers
