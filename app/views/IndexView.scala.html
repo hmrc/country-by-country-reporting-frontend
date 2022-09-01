@@ -48,7 +48,7 @@
 
         </ul>
     } else {
-        @Html(messages("index.p4.without_details", link(routes.ChangeContactDetailsController.onPageLoad().url, "index.change_details")))
+        <p class="govuk-body">@Html(messages("index.p4.without_details", link(routes.ChangeContactDetailsController.onPageLoad().url, "index.change_details")))</p>
     }
 
     <p class="govuk-body">@Html(messages("index.p5", link(s"mailto:${appConfig.emailEnquiries}", appConfig.emailEnquiries)))</p>
