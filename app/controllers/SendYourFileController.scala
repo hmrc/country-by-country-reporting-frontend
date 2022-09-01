@@ -90,9 +90,7 @@ class SendYourFileController @Inject() (
             case Some(Rejected(errors)) =>
               fastJourneyErrorRoute(
                 errors,
-                Future.successful(
-                  Ok(Json.toJson(URL(routes.ThereIsAProblemController.onPageLoad.url)))
-                ) //TODO: Change to routes.FileRejectedController.onPageLoad(conversationId).url when implemented
+                Future.successful(Ok(Json.toJson(URL(routes.FileRejectedController.onPageLoad(conversationId).url))))
               )
             case Some(Pending) =>
               Future.successful(NoContent)

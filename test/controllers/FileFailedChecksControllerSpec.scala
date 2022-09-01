@@ -46,12 +46,10 @@ class FileFailedChecksControllerSpec extends SpecBase {
       running(application) {
 
         val fileSummaryList = FileCheckViewModel.createFileSummary(validXmlDetails.fileName, "Rejected")(messages(application))
-        //ToDo Point action to FilejectedController when it is available
-        //val action          = routes.FileRejectedController.onPageLoad(conversationId).url
-        val action  = routes.IndexController.onPageLoad.url
-        val request = FakeRequest(GET, routes.FileFailedChecksController.onPageLoad().url)
-        val result  = route(application, request).value
-        val view    = application.injector.instanceOf[FileFailedChecksView]
+        val action          = routes.FileRejectedController.onPageLoad(conversationId).url
+        val request         = FakeRequest(GET, routes.FileFailedChecksController.onPageLoad().url)
+        val result          = route(application, request).value
+        val view            = application.injector.instanceOf[FileFailedChecksView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(fileSummaryList, action)(request, messages(application)).toString

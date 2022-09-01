@@ -16,39 +16,42 @@
 
 package controllers
 
+import connectors.FileDetailsConnector
 import controllers.actions._
-import pages.{ConversationIdPage, ValidXMLPage}
-import play.api.Logging
+import models.ConversationId
+import models.fileDetails.Rejected
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.FileCheckViewModel
-import views.html.{FileFailedChecksView, ThereIsAProblemView}
+import viewmodels.FileRejectedViewModel
+import views.html.{FileRejectedView, ThereIsAProblemView}
 
 import javax.inject.Inject
+import scala.concurrent.ExecutionContext
 
-class FileFailedChecksController @Inject() (
+class FileRejectedController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: FileFailedChecksView,
-  errorView: ThereIsAProblemView
-) extends FrontendBaseController
-    with I18nSupport
-    with Logging {
+  view: FileRejectedView,
+  errorView: ThereIsAProblemView,
+  fileDetailsConnector: FileDetailsConnector
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController
+    with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) {
+  def onPageLoad(conversationId: ConversationId): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
-      (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(ConversationIdPage)) match {
-        case (Some(xmlDetails), Some(conversationId)) =>
-          val action  = routes.FileRejectedController.onPageLoad(conversationId).url
-          val summary = FileCheckViewModel.createFileSummary(xmlDetails.fileName, "Rejected")
-          Ok(view(summary, action))
-        case _ =>
-          logger.warn("FileFailedChecksController: Unable to retrieve either XML information or ConversationId from UserAnswers")
-          InternalServerError(errorView())
+      fileDetailsConnector.getFileDetails(conversationId) map {
+        case Some(details) =>
+          details.status match {
+            case Rejected(validationErrors) =>
+              Ok(view(details.name, FileRejectedViewModel.createTable(validationErrors)))
+            case _ => InternalServerError(errorView())
+          }
+        case _ => InternalServerError(errorView())
       }
   }
 }
