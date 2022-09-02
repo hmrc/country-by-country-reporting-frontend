@@ -17,6 +17,7 @@
 package controllers
 
 import base.SpecBase
+import connectors.FileDetailsConnector
 import models.UserAnswers
 import org.mockito.ArgumentMatchers.any
 import pages.HaveTelephonePage
@@ -28,7 +29,7 @@ import services.SubscriptionService
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.IndexView
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class IndexControllerSpec extends SpecBase {
 
@@ -36,11 +37,13 @@ class IndexControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET" in {
 
-      val mockSubscriptionService = mock[SubscriptionService]
+      val mockSubscriptionService  = mock[SubscriptionService]
+      val mockFileDetailsConnector = mock[FileDetailsConnector]
 
       val application = applicationBuilder(userAnswers = None)
         .overrides(
           bind[SubscriptionService].toInstance(mockSubscriptionService),
+          bind[FileDetailsConnector].toInstance(mockFileDetailsConnector),
           bind[SessionRepository].toInstance(mockSessionRepository)
         )
         .build()
@@ -48,6 +51,7 @@ class IndexControllerSpec extends SpecBase {
       val userAnswers = UserAnswers("id").set(HaveTelephonePage, false).success.value
       when(mockSubscriptionService.getContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
         .thenReturn(Future.successful(Some(userAnswers)))
+      when(mockFileDetailsConnector.getAllFileDetails(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(None))
       when(mockSessionRepository.set(any[UserAnswers]())).thenReturn(Future.successful(true))
 
       running(application) {
@@ -59,7 +63,7 @@ class IndexControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view("subscriptionId")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(showRecentFiles = false, "subscriptionId")(request, messages(application)).toString
       }
     }
 

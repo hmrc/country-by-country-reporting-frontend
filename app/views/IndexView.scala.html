@@ -22,7 +22,7 @@
     appConfig: FrontendAppConfig
 )
 
-@(cbcID: String)(implicit request: Request[_], messages: Messages)
+@(showRecentFiles: Boolean, cbcID: String)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle    = titleNoForm(messages("index.title")),
@@ -33,17 +33,23 @@
 
     <p class="govuk-body">@Html(messages("index.p1", link(routes.UploadFileController.onPageLoad().url, "index.p1.link")))</p>
 
-    <p class="govuk-body">@messages("index.p2", cbcID)</p>
+    <p class="govuk-body">@messages("index.p2")</p>
 
-    <p class="govuk-body">@messages("index.p3")</p>
+    <p class="govuk-body">@messages("index.p3", cbcID)</p>
 
-    <ul class="govuk-list govuk-list--bullet">
+    @if(showRecentFiles){
+        <p class="govuk-body">@messages("index.p4.with_details")</p>
 
-        <li>@link("#", "index.bullet1", openInNewWindow = true)</li>@*Todo: update link href when known*@
+        <ul class="govuk-list govuk-list--bullet">
 
-        <li>@link(controllers.routes.ChangeContactDetailsController.onPageLoad().url, "index.bullet2")</li>
+            <li>@link("#", "index.view_file_details", openInNewWindow = true)</li>@*Todo: update link href when known*@
 
-    </ul>
+            <li>@link(controllers.routes.ChangeContactDetailsController.onPageLoad().url, "index.change_details")</li>
 
-    <p class="govuk-body">@Html(messages("index.p4", link(s"mailto:${appConfig.emailEnquiries}", appConfig.emailEnquiries)))</p>
+        </ul>
+    } else {
+        <p class="govuk-body">@Html(messages("index.p4.without_details", link(routes.ChangeContactDetailsController.onPageLoad().url, "index.change_details")))</p>
+    }
+
+    <p class="govuk-body">@Html(messages("index.p5", link(s"mailto:${appConfig.emailEnquiries}", appConfig.emailEnquiries)))</p>
 }
