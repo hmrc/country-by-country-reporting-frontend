@@ -45,10 +45,10 @@ index.p1 = You can {0}.
 index.p1.link = upload an XML file to send a CBC report
 index.p2 = The file must be 20MB or less and include your CBC ID.
 index.p3 = Your CBC ID is {0}
-index.p4.without_details = You can also {0}.
-index.p4.with_details = You can also:
-index.change_details = change your contact details
-index.view_file_details = view details about your recently sent files
+index.p4.withoutDetails = You can also {0}.
+index.p4.withDetails = You can also:
+index.changeDetails = change your contact details
+index.viewFileDetails = view details about your recently sent files
 index.p5 = Email {0} if you’re having problems with the service.
 
 checkYourAnswers.title = Check Your Answers
