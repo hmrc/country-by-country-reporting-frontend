@@ -16,6 +16,7 @@
 
 package controllers
 
+import connectors.FileDetailsConnector
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import models.UserAnswers
 import play.api.Logging
@@ -37,6 +38,7 @@ class IndexController @Inject() (
   getData: DataRetrievalAction,
   sessionRepository: SessionRepository,
   subscriptionService: SubscriptionService,
+  fileConnector: FileDetailsConnector,
   view: IndexView
 ) extends FrontendBaseController
     with I18nSupport
@@ -46,12 +48,15 @@ class IndexController @Inject() (
     implicit request =>
       subscriptionService.getContactDetails(request.userAnswers.getOrElse(UserAnswers(request.userId))) flatMap {
         case Some(userAnswers) =>
-          sessionRepository.set(userAnswers) map {
+          sessionRepository.set(userAnswers) flatMap {
             _ =>
               if (userAnswers.data == Json.obj()) {
-                Redirect(routes.ContactDetailsNeededController.onPageLoad())
+                Future.successful(Redirect(routes.ContactDetailsNeededController.onPageLoad()))
               } else {
-                Ok(view(request.subscriptionId))
+                fileConnector.getAllFileDetails map {
+                  fileDetails =>
+                    Ok(view(fileDetails.isDefined, request.subscriptionId))
+                }
               }
           }
         case _ =>
