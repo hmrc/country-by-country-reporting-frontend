@@ -38,17 +38,17 @@
     <p class="govuk-body">@messages("index.p3", cbcID)</p>
 
     @if(showRecentFiles){
-        <p class="govuk-body">@messages("index.p4.with_details")</p>
+        <p class="govuk-body">@messages("index.p4.withDetails")</p>
 
         <ul class="govuk-list govuk-list--bullet">
 
-            <li>@link("#", "index.view_file_details", openInNewWindow = true)</li>@*Todo: update link href when known*@
+            <li>@link(routes.FileStatusController.onPageLoad().url, "index.viewFileDetails")</li>
 
-            <li>@link(controllers.routes.ChangeContactDetailsController.onPageLoad().url, "index.change_details")</li>
+            <li>@link(controllers.routes.ChangeContactDetailsController.onPageLoad().url, "index.changeDetails")</li>
 
         </ul>
     } else {
-        <p class="govuk-body">@Html(messages("index.p4.without_details", link(routes.ChangeContactDetailsController.onPageLoad().url, "index.change_details")))</p>
+        <p class="govuk-body">@Html(messages("index.p4.withoutDetails", link(routes.ChangeContactDetailsController.onPageLoad().url, "index.changeDetails")))</p>
     }
 
     <p class="govuk-body">@Html(messages("index.p5", link(s"mailto:${appConfig.emailEnquiries}", appConfig.emailEnquiries)))</p>
