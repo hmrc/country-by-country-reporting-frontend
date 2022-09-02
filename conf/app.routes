@@ -104,3 +104,5 @@ GET        /file-passed-checks                                      controllers.
 GET        /file-failed-checks                                      controllers.FileFailedChecksController.onPageLoad()
 
 GET        /still-checking-your-file                                controllers.FilePendingChecksController.onPageLoad()
+
+GET        /result-of-automatic-checks                              controllers.FileStatusController.onPageLoad()

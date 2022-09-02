@@ -225,6 +225,16 @@ fileProblem.p1 = We have not accepted your file.
 fileProblem.p2 = You must email {0} so we can investigate the problem.
 fileProblem.link = enquiries.aeoi@hmrc.gov.uk
 
+fileStatus.title = Result of automatic checks
+fileStatus.heading = Result of automatic checks
+fileStatus.p1 = This information will be available for 28 days from the date you uploaded the file.
+fileStatus.file = File
+fileStatus.uploaded = Uploaded
+fileStatus.result = Result
+fileStatus.nextSteps = Next steps
+fileStatus.rejected = View errors
+fileStatus.accepted = View confirmation
+fileStatus.problem = Contact us
 cssColour.Rejected = red
 cssColour.Accepted = green
 cssColour.Pending = blue
