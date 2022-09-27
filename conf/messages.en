@@ -373,3 +373,10 @@ fileRejected.909.value = DocRefId must be 100 characters or less, start with you
 fileRejected.910.value = MessageRefId must be 85 characters or less, start with your 15-character CBC ID and include up to 70 other characters of your choice
 fileRejected.911.value = Provide an issuedBy for every TIN that has a value other than NOTIN
 fileRejected.912.value = The top level of the StructureChart must not have an Ownership or InvestAmount
+
+firstContactName.title = firstContactName
+firstContactName.heading = firstContactName
+firstContactName.checkYourAnswersLabel = firstContactName
+firstContactName.error.required = Enter firstContactName
+firstContactName.error.length = FirstContactName must be 17010 characters or less
+firstContactName.change.hidden = FirstContactName
