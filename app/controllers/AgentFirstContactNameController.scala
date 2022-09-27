@@ -17,31 +17,31 @@
 package controllers
 
 import controllers.actions._
-import forms.FirstContactNameFormProvider
+import forms.AgentFirstContactNameFormProvider
 
 import javax.inject.Inject
 import models.Mode
 import navigation.ContactDetailsNavigator
-import pages.FirstContactNamePage
+import pages.AgentFirstContactNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.FirstContactNameView
+import views.html.AgentFirstContactNameView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FirstContactNameController @Inject() (
+class AgentFirstContactNameController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: ContactDetailsNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: FirstContactNameFormProvider,
+  formProvider: AgentFirstContactNameFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: FirstContactNameView
+  view: AgentFirstContactNameView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -50,7 +50,7 @@ class FirstContactNameController @Inject() (
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(FirstContactNamePage) match {
+      val preparedForm = request.userAnswers.get(AgentFirstContactNamePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -66,9 +66,9 @@ class FirstContactNameController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(FirstContactNamePage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentFirstContactNamePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(FirstContactNamePage, mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(AgentFirstContactNamePage, mode, updatedAnswers))
         )
   }
 }

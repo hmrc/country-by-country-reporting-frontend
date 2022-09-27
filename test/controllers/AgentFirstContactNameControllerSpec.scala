@@ -17,42 +17,41 @@
 package controllers
 
 import base.SpecBase
-import forms.FirstContactNameFormProvider
+import forms.AgentFirstContactNameFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator, FakeNavigator}
+import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
-import org.scalacheck.Prop.True
-import pages.FirstContactNamePage
+import pages.AgentFirstContactNamePage
 import play.api.inject
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.FirstContactNameView
+import views.html.AgentFirstContactNameView
 
 import scala.concurrent.Future
 
-class FirstContactNameControllerSpec extends SpecBase {
-  val formProvider                       = new FirstContactNameFormProvider()
+class AgentFirstContactNameControllerSpec extends SpecBase {
+  val formProvider                       = new AgentFirstContactNameFormProvider()
   val form                               = formProvider()
-  lazy val firstContactNameRoute: String = controllers.routes.FirstContactNameController.onPageLoad(NormalMode).url
+  lazy val firstContactNameRoute: String = controllers.routes.AgentFirstContactNameController.onPageLoad(NormalMode).url
   "FirstContactNameController" - {
     "Must return OK and correct view for GET" in {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
       running(application) {
         val request = FakeRequest(GET, firstContactNameRoute)
         val result  = route(application, request).value
-        val view    = application.injector.instanceOf[FirstContactNameView]
+        val view    = application.injector.instanceOf[AgentFirstContactNameView]
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString()
       }
     }
     "Must populate view correctly on a GET, when the questions has previously been answered" in {
-      val userAnswers = emptyUserAnswers.set(FirstContactNamePage, "answer").success.value
+      val userAnswers = emptyUserAnswers.set(AgentFirstContactNamePage, "answer").success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
       running(application) {
         val request = FakeRequest(GET, firstContactNameRoute)
         val result  = route(application, request).value
-        val view    = application.injector.instanceOf[FirstContactNameView]
+        val view    = application.injector.instanceOf[AgentFirstContactNameView]
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(request, messages(application)).toString()
       }
@@ -79,7 +78,7 @@ class FirstContactNameControllerSpec extends SpecBase {
         val request   = FakeRequest(POST, firstContactNameRoute).withFormUrlEncodedBody(("value", ""))
         val result    = route(application, request).value
         val boundForm = form.bind(Map("value" -> ""))
-        val view      = application.injector.instanceOf[FirstContactNameView]
+        val view      = application.injector.instanceOf[AgentFirstContactNameView]
         status(result) mustEqual BAD_REQUEST
         contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString()
 

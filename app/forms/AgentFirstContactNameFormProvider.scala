@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
 
-case object FirstContactNamePage extends QuestionPage[String] {
+import javax.inject.Inject
+import play.api.data.Form
 
-  override def path: JsPath = JsPath \ toString
+class AgentFirstContactNameFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "firstContactName"
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("agentFirstContactName.error.required")
+        .verifying(maxLength(170, "agentFirstContactName.error.length"))
+    )
 }

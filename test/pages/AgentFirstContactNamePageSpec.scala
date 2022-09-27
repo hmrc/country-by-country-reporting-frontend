@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import forms.mappings.Mappings
+import pages.behaviours.PageBehaviours
 
-import javax.inject.Inject
-import play.api.data.Form
+class AgentFirstContactNamePageSpec extends PageBehaviours {
 
-class FirstContactNameFormProvider @Inject() extends Mappings {
+  "FirstContactNamePage" - {
 
-  def apply(): Form[String] =
-    Form(
-      "value" -> text("firstContactName.error.required")
-        .verifying(maxLength(170, "firstContactName.error.length"))
-    )
+    beRetrievable[String](AgentFirstContactNamePage)
+
+    beSettable[String](AgentFirstContactNamePage)
+
+    beRemovable[String](AgentFirstContactNamePage)
+  }
 }
