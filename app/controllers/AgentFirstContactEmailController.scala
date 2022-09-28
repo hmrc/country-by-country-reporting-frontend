@@ -21,7 +21,7 @@ import forms.AgentFirstContactEmailFormProvider
 
 import javax.inject.Inject
 import models.{Mode, UserAnswers}
-import navigation.{ContactDetailsNavigator, Navigator}
+import navigation.ContactDetailsNavigator
 import pages.{AgentFirstContactEmailPage, AgentFirstContactNamePage}
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -69,7 +69,7 @@ class AgentFirstContactEmailController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, contactName = getContactName(request.userAnswers)))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentFirstContactEmailPage, value))
