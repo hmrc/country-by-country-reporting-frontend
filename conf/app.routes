@@ -106,3 +106,8 @@ GET        /file-failed-checks                                      controllers.
 GET        /still-checking-your-file                                controllers.FilePendingChecksController.onPageLoad()
 
 GET        /result-of-automatic-checks                              controllers.FileStatusController.onPageLoad()
+
+GET        /agent/agent-contact-details/first-contact-name                        controllers.AgentFirstContactNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /agent/agent-contact-details/first-contact-name                        controllers.AgentFirstContactNameController.onSubmit(mode: Mode = NormalMode)
+GET        /agent/agent-contact-details/change-first-contact-name                  controllers.AgentFirstContactNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /agent/agent-contact-details/change-first-contact-name                  controllers.AgentFirstContactNameController.onSubmit(mode: Mode = CheckMode)

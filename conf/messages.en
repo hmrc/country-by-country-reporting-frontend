@@ -373,3 +373,13 @@ fileRejected.909.value = DocRefId must be 100 characters or less, start with you
 fileRejected.910.value = MessageRefId must be 85 characters or less, start with your 15-character CBC ID and include up to 70 other characters of your choice
 fileRejected.911.value = Provide an issuedBy for every TIN that has a value other than NOTIN
 fileRejected.912.value = The top level of the StructureChart must not have an Ownership or InvestAmount
+
+agentFirstContactName.title = What is the name of your first contact?
+agentFirstContactName.heading = What is the name of your first contact?
+agentFirstContactName.checkYourAnswersLabel = What is the name of your first contact?
+agentFirstContactName.error.required = Enter the name of the individual or team we should contact if we have any questions about your reports
+agentFirstContactName.error.length = Name must be 170 characters or less
+agentFirstContactName.change.hidden = first contact name
+agentFirstContactName.p1 = This can be an individual or the name of a team. Do not use your client`s name.
+agentFirstContactName.hint = For example, `Tax team` or `Ashley Smith`.
+
