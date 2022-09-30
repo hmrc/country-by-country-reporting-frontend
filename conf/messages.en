@@ -383,3 +383,9 @@ agentFirstContactName.change.hidden = first contact name
 agentFirstContactName.p1 = This can be an individual or the name of a team. Do not use your client`s name.
 agentFirstContactName.hint = For example, `Tax team` or `Ashley Smith`.
 
+
+canWeContactByEmailFirstPage.title = canWeContactByEmailFirstPage
+canWeContactByEmailFirstPage.heading = canWeContactByEmailFirstPage
+canWeContactByEmailFirstPage.checkYourAnswersLabel = canWeContactByEmailFirstPage
+canWeContactByEmailFirstPage.error.required = Select yes if canWeContactByEmailFirstPage
+canWeContactByEmailFirstPage.change.hidden = CanWeContactByEmailFirstPage

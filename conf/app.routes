@@ -111,3 +111,8 @@ GET        /agent/agent-contact-details/first-contact-name                      
 POST       /agent/agent-contact-details/first-contact-name                        controllers.AgentFirstContactNameController.onSubmit(mode: Mode = NormalMode)
 GET        /agent/agent-contact-details/change-first-contact-name                  controllers.AgentFirstContactNameController.onPageLoad(mode: Mode = CheckMode)
 POST       /agent/agent-contact-details/change-first-contact-name                  controllers.AgentFirstContactNameController.onSubmit(mode: Mode = CheckMode)
+
+GET        /canWeContactByEmailFirstPage                        controllers.CanWeContactByEmailFirstPageController.onPageLoad(mode: Mode = NormalMode)
+POST       /canWeContactByEmailFirstPage                        controllers.CanWeContactByEmailFirstPageController.onSubmit(mode: Mode = NormalMode)
+GET        /changeCanWeContactByEmailFirstPage                  controllers.CanWeContactByEmailFirstPageController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeCanWeContactByEmailFirstPage                  controllers.CanWeContactByEmailFirstPageController.onSubmit(mode: Mode = CheckMode)
