@@ -384,8 +384,8 @@ agentFirstContactName.p1 = This can be an individual or the name of a team. Do n
 agentFirstContactName.hint = For example, `Tax team` or `Ashley Smith`.
 
 
-canWeContactByEmailFirstPage.title = canWeContactByEmailFirstPage
-canWeContactByEmailFirstPage.heading = canWeContactByEmailFirstPage
-canWeContactByEmailFirstPage.checkYourAnswersLabel = canWeContactByEmailFirstPage
-canWeContactByEmailFirstPage.error.required = Select yes if canWeContactByEmailFirstPage
-canWeContactByEmailFirstPage.change.hidden = CanWeContactByEmailFirstPage
+canWeContactByEmailFirstPage.title = Can we contact {0} by telephone?
+canWeContactByEmailFirstPage.heading = Can we contact {0} by telephone?
+canWeContactByEmailFirstPage.checkYourAnswersLabel = Can we contact {0} by telephone?
+canWeContactByEmailFirstPage.error.required = Select yes or no
+canWeContactByEmailFirstPage.change.hidden = can we contact {0} by telephone
