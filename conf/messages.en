@@ -380,8 +380,8 @@ agentFirstContactName.checkYourAnswersLabel = What is the name of your first con
 agentFirstContactName.error.required = Enter the name of the individual or team we should contact if we have any questions about your reports
 agentFirstContactName.error.length = Name must be 170 characters or less
 agentFirstContactName.change.hidden = first contact name
-agentFirstContactName.p1 = This can be an individual or the name of a team. Do not use your client`s name.
-agentFirstContactName.hint = For example, `Tax team` or `Ashley Smith`.
+agentFirstContactName.p1 = This can be an individual or the name of a team. Do not use your client‘s name.
+agentFirstContactName.hint = For example, ‘Tax team‘ or ‘Ashley Smith‘.
 
 
 agentFirstContactEmail.title = What is the email address for your first contact?
