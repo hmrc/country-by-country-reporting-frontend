@@ -378,8 +378,17 @@ agentFirstContactName.title = What is the name of your first contact?
 agentFirstContactName.heading = What is the name of your first contact?
 agentFirstContactName.checkYourAnswersLabel = What is the name of your first contact?
 agentFirstContactName.error.required = Enter the name of the individual or team we should contact if we have any questions about your reports
-agentFirstContactName.error.length = Name must be 170 characters or less
+agentFirstContactName.error.length = Name must be 35 characters or less
 agentFirstContactName.change.hidden = first contact name
-agentFirstContactName.p1 = This can be an individual or the name of a team. Do not use your client`s name.
-agentFirstContactName.hint = For example, `Tax team` or `Ashley Smith`.
+agentFirstContactName.p1 = This can be an individual or the name of a team. Do not use your client’s name.
+agentFirstContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
 
+
+agentSecondContactName.title = What is the name of your second contact?
+agentSecondContactName.heading = What is the name of your second contact?
+agentSecondContactName.p1 = This can be an individual or the name of a team. Do not use your client’s name.
+agentSecondContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
+agentSecondContactName.checkYourAnswersLabel = What is the name of your second contact?
+agentSecondContactName.error.required = Enter the name of the individual or team we should contact if we have any questions about your reports
+agentSecondContactName.error.length = Name must be 35 characters or less
+agentSecondContactName.change.hidden = second contact name
