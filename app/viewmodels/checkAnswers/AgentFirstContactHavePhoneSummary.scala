@@ -24,7 +24,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object CanWeContactByEmailFirstPageSummary {
+object AgentFirstContactHavePhoneSummary {
 
   def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(AgentFirstContactHavePhonePage).map {
@@ -32,11 +32,11 @@ object CanWeContactByEmailFirstPageSummary {
         val value = if (answer) "site.yes" else "site.no"
 
         SummaryListRowViewModel(
-          key = "canWeContactByEmailFirstPage.checkYourAnswersLabel",
+          key = "agentFirstContactHavePhone.checkYourAnswersLabel",
           value = ValueViewModel(value),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.CanWeContactByEmailFirstPageController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("canWeContactByEmailFirstPage.change.hidden"))
+            ActionItemViewModel("site.change", routes.AgentFirstContactHavePhoneController.onPageLoad(CheckMode).url)
+              .withVisuallyHiddenText(messages("agentFirstContactHavePhone.change.hidden"))
           )
         )
     }

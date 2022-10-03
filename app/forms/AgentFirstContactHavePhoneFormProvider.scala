@@ -21,10 +21,10 @@ import forms.mappings.Mappings
 import javax.inject.Inject
 import play.api.data.Form
 
-class CanWeContactByEmailFirstPageFormProvider @Inject() extends Mappings {
+class AgentFirstContactHavePhoneFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
-      "value" -> boolean("canWeContactByEmailFirstPage.error.required")
+      "value" -> boolean("agentFirstContactHavePhone.error.required")
     )
 }

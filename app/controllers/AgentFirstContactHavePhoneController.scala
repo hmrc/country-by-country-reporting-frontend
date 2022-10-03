@@ -17,30 +17,29 @@
 package controllers
 
 import controllers.actions._
-import forms.CanWeContactByEmailFirstPageFormProvider
-
-import javax.inject.Inject
+import forms.AgentFirstContactHavePhoneFormProvider
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.{AgentFirstContactNamePage, CanWeContactByEmailFirstPagePage}
+import pages.{AgentFirstContactHavePhonePage, AgentFirstContactNamePage}
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.CanWeContactByEmailFirstPageView
+import views.html.AgentFirstContactHavePhoneView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CanWeContactByEmailFirstPageController @Inject() (
+class AgentFirstContactHavePhoneController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: CanWeContactByEmailFirstPageFormProvider,
+  formProvider: AgentFirstContactHavePhoneFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: CanWeContactByEmailFirstPageView
+  view: AgentFirstContactHavePhoneView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -49,7 +48,7 @@ class CanWeContactByEmailFirstPageController @Inject() (
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(CanWeContactByEmailFirstPagePage) match {
+      val preparedForm = request.userAnswers.get(AgentFirstContactHavePhonePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -72,9 +71,9 @@ class CanWeContactByEmailFirstPageController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, contactName = getContactName(request.userAnswers)))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(CanWeContactByEmailFirstPagePage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentFirstContactHavePhonePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(CanWeContactByEmailFirstPagePage, mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(AgentFirstContactHavePhonePage, mode, updatedAnswers))
         )
   }
 }

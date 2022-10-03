@@ -17,31 +17,29 @@
 package controllers
 
 import base.SpecBase
-import forms.CanWeContactByEmailFirstPageFormProvider
+import forms.AgentFirstContactHavePhoneFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{AgentFirstContactNamePage, CanWeContactByEmailFirstPagePage}
+import pages.{AgentFirstContactHavePhonePage, AgentFirstContactNamePage}
 import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.CanWeContactByEmailFirstPageView
+import views.html.AgentFirstContactHavePhoneView
 
 import scala.concurrent.Future
 
-class CanWeContactByEmailFirstPageControllerSpec extends SpecBase with MockitoSugar {
+class AgentFirstContactHavePhoneControllerSpec extends SpecBase with MockitoSugar {
 
   //override def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new CanWeContactByEmailFirstPageFormProvider()
+  val formProvider = new AgentFirstContactHavePhoneFormProvider()
   val form         = formProvider()
   val contactName  = "contact name"
 
-  lazy val canWeContactByEmailFirstPageRoute: String = routes.CanWeContactByEmailFirstPageController.onPageLoad(NormalMode).url
+  lazy val agentFirstContactHavePhoneRoute: String = routes.AgentFirstContactHavePhoneController.onPageLoad(NormalMode).url
 
   "CanWeContactByEmailFirstPage Controller" - {
 
@@ -51,11 +49,11 @@ class CanWeContactByEmailFirstPageControllerSpec extends SpecBase with MockitoSu
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, canWeContactByEmailFirstPageRoute)
+        val request = FakeRequest(GET, agentFirstContactHavePhoneRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[CanWeContactByEmailFirstPageView]
+        val view = application.injector.instanceOf[AgentFirstContactHavePhoneView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, NormalMode, contactName)(request, messages(application)).toString
@@ -68,16 +66,16 @@ class CanWeContactByEmailFirstPageControllerSpec extends SpecBase with MockitoSu
         .set(AgentFirstContactNamePage, contactName)
         .success
         .value
-        .set(CanWeContactByEmailFirstPagePage, true)
+        .set(AgentFirstContactHavePhonePage, true)
         .success
         .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, canWeContactByEmailFirstPageRoute)
+        val request = FakeRequest(GET, agentFirstContactHavePhoneRoute)
 
-        val view = application.injector.instanceOf[CanWeContactByEmailFirstPageView]
+        val view = application.injector.instanceOf[AgentFirstContactHavePhoneView]
 
         val result = route(application, request).value
 
@@ -102,7 +100,7 @@ class CanWeContactByEmailFirstPageControllerSpec extends SpecBase with MockitoSu
 
       running(application) {
         val request =
-          FakeRequest(POST, canWeContactByEmailFirstPageRoute)
+          FakeRequest(POST, agentFirstContactHavePhoneRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
@@ -118,12 +116,12 @@ class CanWeContactByEmailFirstPageControllerSpec extends SpecBase with MockitoSu
 
       running(application) {
         val request =
-          FakeRequest(POST, canWeContactByEmailFirstPageRoute)
+          FakeRequest(POST, agentFirstContactHavePhoneRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[CanWeContactByEmailFirstPageView]
+        val view = application.injector.instanceOf[AgentFirstContactHavePhoneView]
 
         val result = route(application, request).value
 

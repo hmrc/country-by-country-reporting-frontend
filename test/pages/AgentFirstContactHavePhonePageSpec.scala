@@ -18,14 +18,14 @@ package pages
 
 import pages.behaviours.PageBehaviours
 
-class CanWeContactByEmailFirstPagePageSpec extends PageBehaviours {
+class AgentFirstContactHavePhonePageSpec extends PageBehaviours {
 
-  "CanWeContactByEmailFirstPagePage" - {
+  "AgentFirstContactHavePhonePage" - {
 
-    beRetrievable[Boolean](CanWeContactByEmailFirstPagePage)
+    beRetrievable[Boolean](AgentFirstContactHavePhonePage)
 
-    beSettable[Boolean](CanWeContactByEmailFirstPagePage)
+    beSettable[Boolean](AgentFirstContactHavePhonePage)
 
-    beRemovable[Boolean](CanWeContactByEmailFirstPagePage)
+    beRemovable[Boolean](AgentFirstContactHavePhonePage)
   }
 }

@@ -24,9 +24,9 @@
 
 @(form: Form[_], mode: Mode, contactName: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("canWeContactByEmailFirstPage.title"))) {
+@layout(pageTitle = title(form, messages("agentFirstContactHavePhone.title"))) {
 
-    @formHelper(action = routes.CanWeContactByEmailFirstPageController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = routes.AgentFirstContactHavePhoneController.onSubmit(mode), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -35,7 +35,7 @@
         @govukRadios(
             RadiosViewModel.yesNo(
                 field = form("value"),
-                legend = LegendViewModel(messages("canWeContactByEmailFirstPage.heading", contactName)).asPageHeading()
+                legend = LegendViewModel(messages("agentFirstContactHavePhone.heading", contactName)).asPageHeading()
             )
         )
 

@@ -19,12 +19,12 @@ package forms
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class CanWeContactByEmailFirstPageFormProviderSpec extends BooleanFieldBehaviours {
+class AgentFirstContactHavePhoneFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "canWeContactByEmailFirstPage.error.required"
+  val requiredKey = "agentFirstContactHavePhone.error.required"
   val invalidKey  = "error.boolean"
 
-  val form = new CanWeContactByEmailFirstPageFormProvider()()
+  val form = new AgentFirstContactHavePhoneFormProvider()()
 
   ".value" - {
 
