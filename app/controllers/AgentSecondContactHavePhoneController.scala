@@ -28,7 +28,7 @@ class AgentSecondContactHavePhoneController @Inject()(
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
 
       val preparedForm = request.userAnswers.get(AgentSecondContactHavePhonePage) match {
@@ -39,7 +39,7 @@ class AgentSecondContactHavePhoneController @Inject()(
       Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
 
       form.bindFromRequest().fold(
