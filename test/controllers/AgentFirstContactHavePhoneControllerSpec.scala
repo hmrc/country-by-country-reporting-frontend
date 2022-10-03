@@ -33,15 +33,13 @@ import scala.concurrent.Future
 
 class AgentFirstContactHavePhoneControllerSpec extends SpecBase with MockitoSugar {
 
-  //override def onwardRoute = Call("GET", "/foo")
-
   val formProvider = new AgentFirstContactHavePhoneFormProvider()
   val form         = formProvider()
   val contactName  = "contact name"
 
   lazy val agentFirstContactHavePhoneRoute: String = routes.AgentFirstContactHavePhoneController.onPageLoad(NormalMode).url
 
-  "CanWeContactByEmailFirstPage Controller" - {
+  "AgentFirstContactHavePhone Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -85,8 +83,6 @@ class AgentFirstContactHavePhoneControllerSpec extends SpecBase with MockitoSuga
     }
 
     "must redirect to the next page when valid data is submitted" in {
-
-      //val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any[UserAnswers])) thenReturn Future.successful(true)
 
