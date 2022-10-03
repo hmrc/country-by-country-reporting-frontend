@@ -392,4 +392,8 @@ agentContactDetailsNeeded.p3 = We will use these details if we have any question
 agentContactDetailsNeeded.p4 = Do not provide your client`'s contact details.
 agentContactDetailsNeeded.p5 = You will need to provide your client`'s contact details later.
 
-3g34g
+agentSecondContactHavePhone.title = agentSecondContactHavePhone
+agentSecondContactHavePhone.heading = agentSecondContactHavePhone
+agentSecondContactHavePhone.checkYourAnswersLabel = agentSecondContactHavePhone
+agentSecondContactHavePhone.error.required = Select yes if agentSecondContactHavePhone
+agentSecondContactHavePhone.change.hidden = AgentSecondContactHavePhone
