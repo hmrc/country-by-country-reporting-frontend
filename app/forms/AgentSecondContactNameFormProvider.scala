@@ -23,9 +23,10 @@ import play.api.data.Form
 
 class AgentSecondContactNameFormProvider @Inject() extends Mappings {
 
+  private val maxLength = 35
   def apply(): Form[String] =
     Form(
       "value" -> text("agentSecondContactName.error.required")
-        .verifying(maxLength(35, "agentSecondContactName.error.length"))
+        .verifying(maxLength(maxLength, "agentSecondContactName.error.length"))
     )
 }
