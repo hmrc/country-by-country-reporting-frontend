@@ -17,63 +17,57 @@
 package controllers
 
 import controllers.actions._
-import forms.AgentSecondContactHavePhoneFormProvider
-import models.{Mode, UserAnswers}
-import navigation.Navigator
-import pages.{AgentSecondContactHavePhonePage, AgentSecondContactNamePage}
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import forms.AgentFirstContactNameFormProvider
+import models.Mode
+import navigation.ContactDetailsNavigator
+import pages.AgentSecondContactNamePage
+import play.api.data.Form
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.AgentSecondContactHavePhoneView
+import views.html.AgentFirstContactNameView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AgentSecondContactHavePhoneController @Inject() (
+class AgentSecondContactNameController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  navigator: ContactDetailsNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: AgentSecondContactHavePhoneFormProvider,
+  formProvider: AgentFirstContactNameFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: AgentSecondContactHavePhoneView
+  view: AgentFirstContactNameView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[String] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(AgentSecondContactHavePhonePage) match {
+      val preparedForm = request.userAnswers.get(AgentSecondContactNamePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getContactName(request.userAnswers)))
+      Ok(view(preparedForm, mode))
   }
-
-  private def getContactName(userAnswers: UserAnswers)(implicit messages: Messages) =
-    userAnswers
-      .get(AgentSecondContactNamePage)
-      .fold(messages("default.secondContact.name"))(
-        contactName => contactName
-      )
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, contactName = getContactName(request.userAnswers)))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentSecondContactHavePhonePage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentSecondContactNamePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(AgentSecondContactHavePhonePage, mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(AgentSecondContactNamePage, mode, updatedAnswers))
         )
   }
 }

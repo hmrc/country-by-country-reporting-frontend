@@ -380,8 +380,8 @@ agentFirstContactName.checkYourAnswersLabel = What is the name of your first con
 agentFirstContactName.error.required = Enter the name of the individual or team we should contact if we have any questions about your reports
 agentFirstContactName.error.length = Name must be 170 characters or less
 agentFirstContactName.change.hidden = first contact name
-agentFirstContactName.p1 = This can be an individual or the name of a team. Do not use your client`'s name.
-agentFirstContactName.hint = For example, '`Tax team`' or '`Ashley Smith`'.
+agentFirstContactName.p1 = This can be an individual or the name of a team. Do not use your client’s name.
+agentFirstContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
 
 
 agentContactDetailsNeeded.title = We need your agent contact details
@@ -389,7 +389,7 @@ agentContactDetailsNeeded.heading = We need your agent contact details
 agentContactDetailsNeeded.p1 = Before you can send a country-by-country (CBC) report, we need to collect your agent contact details.
 agentContactDetailsNeeded.p2 = We need up to 2 contacts. They can be for an individual or a team working on behalf of clients.
 agentContactDetailsNeeded.p3 = We will use these details if we have any questions about your CBC reports. These details can be changed at any time. You only need to go through this process once and it will apply for all your clients.
-agentContactDetailsNeeded.p4 = Do not provide your client`'s contact details.
+agentContactDetailsNeeded.p4 = Do not provide your client’s contact details.
 agentContactDetailsNeeded.p5 = You will need to provide your client`'s contact details later.
 
 agentSecondContactHavePhone.title = Can we contact {0} by telephone?
