@@ -383,3 +383,11 @@ agentFirstContactName.change.hidden = first contact name
 agentFirstContactName.p1 = This can be an individual or the name of a team. Do not use your client`s name.
 agentFirstContactName.hint = For example, `Tax team` or `Ashley Smith`.
 
+agentFirstContactPhone.checkYourAnswersLabel = Telephone number
+agentFirstContactPhone.title = What is their telephone number?
+agentFirstContactPhone.heading = What is the telephone number for {0}?
+agentFirstContactPhone.hint = Enter a telephone number, like&nbsp;01632&nbsp;960&nbsp;001, 07700&nbsp;900&nbsp;982 or +44&nbsp;808&nbsp;157&nbsp;0192.
+agentFirstContactPhone.error.required = Enter a telephone number
+agentFirstContactPhone.error.invalid = Enter a telephone number in the correct format
+agentFirstContactPhone.error.length = Telephone number must be 24 characters or less
+agentFirstContactPhone.change.hidden = telephone number

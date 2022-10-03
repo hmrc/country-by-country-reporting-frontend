@@ -111,3 +111,9 @@ GET        /agent/agent-contact-details/first-contact-name                      
 POST       /agent/agent-contact-details/first-contact-name                        controllers.AgentFirstContactNameController.onSubmit(mode: Mode = NormalMode)
 GET        /agent/agent-contact-details/change-first-contact-name                  controllers.AgentFirstContactNameController.onPageLoad(mode: Mode = CheckMode)
 POST       /agent/agent-contact-details/change-first-contact-name                  controllers.AgentFirstContactNameController.onSubmit(mode: Mode = CheckMode)
+
+GET        /agent/agent-contact-details/first-contact-phone                        controllers.AgentFirstContactPhoneController.onPageLoad(mode: Mode = NormalMode)
+POST       /agent/agent-contact-details/first-contact-phone                        controllers.AgentFirstContactPhoneController.onSubmit(mode: Mode = NormalMode)
+GET        /agent/agent-contact-details/change-first-contact-phone                 controllers.AgentFirstContactPhoneController.onPageLoad(mode: Mode = CheckMode)
+POST       /agent/agent-contact-details/change-first-contact-phone                 controllers.AgentFirstContactPhoneController.onSubmit(mode: Mode = CheckMode)
+
