@@ -18,13 +18,14 @@ package controllers
 
 import controllers.actions._
 import forms.SecondContactPhoneFormProvider
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.ContactDetailsNavigator
-import pages.{SecondContactNamePage, SecondContactPhonePage}
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import pages.SecondContactPhonePage
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import utils.ContactHelper
 import views.html.SecondContactPhoneView
 
 import javax.inject.Inject
@@ -42,7 +43,8 @@ class SecondContactPhoneController @Inject() (
   view: SecondContactPhoneView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
-    with I18nSupport {
+    with I18nSupport
+    with ContactHelper {
 
   val form = formProvider()
 
@@ -55,12 +57,6 @@ class SecondContactPhoneController @Inject() (
 
       Ok(view(preparedForm, getSecondContactName(request.userAnswers), mode))
   }
-
-  private def getSecondContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
-    (userAnswers.get(SecondContactNamePage)) match {
-      case Some(contactName) => contactName
-      case _                 => messages("default.secondContact.name")
-    }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
