@@ -30,6 +30,9 @@ trait PageGenerators {
   implicit lazy val arbitraryAgentContactTelephoneNumberPage: Arbitrary[AgentFirstContactPhonePage.type] =
     Arbitrary(AgentFirstContactPhonePage)
 
+  implicit lazy val arbitraryAgentSecondContactHavePhonePage: Arbitrary[AgentSecondContactHavePhonePage.type] =
+    Arbitrary(AgentSecondContactHavePhonePage)
+
   implicit lazy val arbitraryAgentSecondContactEmailPage: Arbitrary[AgentSecondContactEmailPage.type] =
     Arbitrary(AgentSecondContactEmailPage)
 

@@ -429,6 +429,12 @@ agentFirstContactHavePhone.checkYourAnswersLabel = Can we contact {0} by telepho
 agentFirstContactHavePhone.error.required = Select yes if they can be contacted by telephone
 agentFirstContactHavePhone.change.hidden = agent first contact telephone number
 
+agentSecondContactHavePhone.title = Can we contact {0} by telephone?
+agentSecondContactHavePhone.heading = Can we contact {0} by telephone?
+agentSecondContactHavePhone.checkYourAnswersLabel = Can we contact {0} by telephone?
+agentSecondContactHavePhone.error.required = Select yes if we can call your second contact by telephone
+agentSecondContactHavePhone.change.hidden = can we contact {0} by telephone?
+
 agentSecondContact.title = Do you have a second contact if your first contact is not available?
 agentSecondContact.heading = Do you have a second contact if your first contact is not available?
 agentSecondContact.checkYourAnswersLabel = Do you have a second contact if your first contact is not available?
