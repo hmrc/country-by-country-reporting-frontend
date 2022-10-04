@@ -416,5 +416,5 @@ agentContactDetailsNeeded.p5 = You will need to provide your client`'s contact d
 agentSecondContactHavePhone.title = Can we contact {0} by telephone?
 agentSecondContactHavePhone.heading = Can we contact {0} by telephone?
 agentSecondContactHavePhone.checkYourAnswersLabel = Can we contact {0} by telephone?
-agentSecondContactHavePhone.error.required = Select yes or no
+agentSecondContactHavePhone.error.required = Select yes if we can call your second contact by telephone
 agentSecondContactHavePhone.change.hidden = can we contact {0} by telephone?
