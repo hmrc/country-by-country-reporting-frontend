@@ -26,7 +26,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.AgentFirstContactNameView
+import views.html.{AgentFirstContactNameView, AgentSecondContactNameView}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -40,7 +40,7 @@ class AgentSecondContactNameController @Inject() (
   requireData: DataRequiredAction,
   formProvider: AgentFirstContactNameFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: AgentFirstContactNameView
+  view: AgentSecondContactNameView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {

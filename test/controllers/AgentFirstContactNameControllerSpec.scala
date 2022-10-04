@@ -34,7 +34,8 @@ class AgentFirstContactNameControllerSpec extends SpecBase {
   val formProvider                       = new AgentFirstContactNameFormProvider()
   val form                               = formProvider()
   lazy val firstContactNameRoute: String = controllers.routes.AgentFirstContactNameController.onPageLoad(NormalMode).url
-  "FirstContactNameController" - {
+  "AgentFirstContactNameController" - {
+
     "Must return OK and correct view for GET" in {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
       running(application) {
@@ -45,6 +46,7 @@ class AgentFirstContactNameControllerSpec extends SpecBase {
         contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString()
       }
     }
+
     "Must populate view correctly on a GET, when the questions has previously been answered" in {
       val userAnswers = emptyUserAnswers.set(AgentFirstContactNamePage, "answer").success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
@@ -56,6 +58,7 @@ class AgentFirstContactNameControllerSpec extends SpecBase {
         contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(request, messages(application)).toString()
       }
     }
+
     "Must redirect to the next page when valid data is submitted" in {
       when(mockSessionRepository.set(any[UserAnswers])).thenReturn(Future.successful(true))
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -81,7 +84,6 @@ class AgentFirstContactNameControllerSpec extends SpecBase {
         val view      = application.injector.instanceOf[AgentFirstContactNameView]
         status(result) mustEqual BAD_REQUEST
         contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString()
-
       }
     }
   }

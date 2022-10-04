@@ -17,82 +17,79 @@
 package controllers
 
 import base.SpecBase
-import forms.AgentSecondContactHavePhoneFormProvider
+import forms.AgentSecondContactNameFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{AgentSecondContactHavePhonePage, AgentSecondContactNamePage}
+import pages.AgentSecondContactNamePage
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.AgentSecondContactHavePhoneView
+import views.html.AgentSecondContactNameView
 
 import scala.concurrent.Future
 
-class AgentSecondContactHavePhoneControllerSpec extends SpecBase with MockitoSugar {
+class AgentSecondContactNameControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider      = new AgentSecondContactHavePhoneFormProvider()
-  val form              = formProvider()
-  val contactName       = "your second contact"
-  val contactNamePlural = "your second contact’s"
+  val formProvider = new AgentSecondContactNameFormProvider()
+  val form         = formProvider()
 
-  lazy val agentSecondContactHavePhoneRoute: String = routes.AgentSecondContactHavePhoneController.onPageLoad(NormalMode).url
+  lazy val agentSecondContactNameRoute = routes.AgentSecondContactNameController.onPageLoad(NormalMode).url
 
-  "AgentSecondContactHavePhone Controller" - {
+  "AgentSecondContactName Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers.set(AgentSecondContactNamePage, contactName).success.value
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, agentSecondContactHavePhoneRoute)
+        val request = FakeRequest(GET, agentSecondContactNameRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[AgentSecondContactHavePhoneView]
+        val view = application.injector.instanceOf[AgentSecondContactNameView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, contactName)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AgentSecondContactHavePhonePage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(AgentSecondContactNamePage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, agentSecondContactHavePhoneRoute)
+        val request = FakeRequest(GET, agentSecondContactNameRoute)
 
-        val view = application.injector.instanceOf[AgentSecondContactHavePhoneView]
+        val view = application.injector.instanceOf[AgentSecondContactNameView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode, contactName)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(request, messages(application)).toString
       }
     }
 
     "must redirect to the next page when valid data is submitted" in {
 
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(mockSessionRepository.set(any[UserAnswers])) thenReturn Future.successful(true)
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[ContactDetailsNavigator].toInstance(new FakeContactDetailsNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
 
       running(application) {
         val request =
-          FakeRequest(POST, agentSecondContactHavePhoneRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+          FakeRequest(POST, agentSecondContactNameRoute)
+            .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value
 
@@ -107,17 +104,17 @@ class AgentSecondContactHavePhoneControllerSpec extends SpecBase with MockitoSug
 
       running(application) {
         val request =
-          FakeRequest(POST, agentSecondContactHavePhoneRoute)
+          FakeRequest(POST, agentSecondContactNameRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[AgentSecondContactHavePhoneView]
+        val view = application.injector.instanceOf[AgentSecondContactNameView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, "your second contact")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
       }
     }
   }
