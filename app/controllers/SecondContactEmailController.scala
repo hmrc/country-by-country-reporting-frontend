@@ -18,13 +18,14 @@ package controllers
 
 import controllers.actions._
 import forms.SecondContactEmailFormProvider
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.ContactDetailsNavigator
-import pages.{SecondContactEmailPage, SecondContactNamePage}
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import pages.SecondContactEmailPage
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import utils.ContactHelper
 import views.html.SecondContactEmailView
 
 import javax.inject.Inject
@@ -42,7 +43,8 @@ class SecondContactEmailController @Inject() (
   view: SecondContactEmailView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
-    with I18nSupport {
+    with I18nSupport
+    with ContactHelper {
 
   val form = formProvider()
 
@@ -52,22 +54,15 @@ class SecondContactEmailController @Inject() (
         case None        => form
         case Some(value) => form.fill(value)
       }
-      Ok(view(preparedForm, mode, getContactName(request.userAnswers)))
+      Ok(view(preparedForm, mode, getSecondContactName(request.userAnswers)))
   }
-
-  private def getContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
-    userAnswers
-      .get(SecondContactNamePage)
-      .fold(messages("default.secondContact.name"))(
-        contactName => contactName
-      )
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getContactName(request.userAnswers)))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getSecondContactName(request.userAnswers)))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(SecondContactEmailPage, value))

@@ -16,46 +16,43 @@
 
 package controllers
 
-import connectors.FileDetailsConnector
 import controllers.actions._
-import models.ConversationId
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import utils.ContactHelper
-import utils.DateTimeFormatUtil._
-import views.html.{FileReceivedView, ThereIsAProblemView}
+import models.UserAnswers
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.Json
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
+import services.SubscriptionService
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import views.html.AgentContactDetailsNeededView
 
-class FileReceivedController @Inject() (
+import scala.concurrent.{ExecutionContext, Future}
+
+class AgentContactDetailsNeededController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  fileDetailsConnector: FileDetailsConnector,
   val controllerComponents: MessagesControllerComponents,
-  view: FileReceivedView,
-  errorView: ThereIsAProblemView
+  view: AgentContactDetailsNeededView,
+  subscriptionService: SubscriptionService,
+  sessionRepository: SessionRepository
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
-    with I18nSupport
-    with ContactHelper {
+    with I18nSupport {
 
-  def onPageLoad(conversationId: ConversationId): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData()).async {
     implicit request =>
-      fileDetailsConnector.getFileDetails(conversationId) map {
-        fileDetails =>
-          (for {
-            emails  <- getContactEmails
-            details <- fileDetails
-          } yield {
-            val time = details.submitted.format(timeFormatter).toLowerCase
-            val date = details.submitted.format(dateFormatter)
-
-            Ok(view(details.messageRefId, time, date, emails.firstContact, emails.secondContact))
-          }).getOrElse(InternalServerError(errorView()))
+      subscriptionService.getContactDetails(request.userAnswers.getOrElse(UserAnswers(request.userId))).flatMap {
+        case Some(userAnswers) =>
+          sessionRepository.set(userAnswers).map {
+            _ =>
+              val isContactDetailsDefined = userAnswers.data != Json.obj()
+              Ok(view(isContactDetailsDefined))
+          }
+        case _ => Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
       }
   }
 }

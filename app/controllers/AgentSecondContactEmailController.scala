@@ -17,30 +17,30 @@
 package controllers
 
 import controllers.actions._
-import forms.HaveSecondContactFormProvider
-import models.{CheckMode, Mode}
+import forms.AgentSecondContactEmailFormProvider
+import models.Mode
 import navigation.ContactDetailsNavigator
-import pages.HaveSecondContactPage
+import pages.AgentSecondContactEmailPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.ContactHelper
-import views.html.HaveSecondContactView
+import views.html.AgentSecondContactEmailView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class HaveSecondContactController @Inject() (
+class AgentSecondContactEmailController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: ContactDetailsNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: HaveSecondContactFormProvider,
+  formProvider: AgentSecondContactEmailFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: HaveSecondContactView
+  view: AgentSecondContactEmailView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
@@ -50,12 +50,12 @@ class HaveSecondContactController @Inject() (
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(HaveSecondContactPage) match {
-        case Some(value) => form.fill(value)
+      val preparedForm = request.userAnswers.get(AgentSecondContactEmailPage) match {
         case None        => form
+        case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getFirstContactName(request.userAnswers)))
+      Ok(view(preparedForm, mode, getPluralAgentSecondContactName(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
@@ -63,12 +63,12 @@ class HaveSecondContactController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getFirstContactName(request.userAnswers)))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getPluralAgentSecondContactName(request.userAnswers)))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(HaveSecondContactPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentSecondContactEmailPage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(HaveSecondContactPage, CheckMode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(AgentSecondContactEmailPage, mode, updatedAnswers))
         )
   }
 }

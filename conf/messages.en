@@ -72,6 +72,9 @@ contactName.change.hidden = contact name
 default.firstContact.name = your first contact
 default.secondContact.name = your second contact
 
+contact.name.plural = {0}’s
+contact.name.plural.withS = {0}’
+
 contactEmail.title = What is their email address?
 contactEmail.heading = What is the email address for {0}?
 contactEmail.hint = We will use this to send confirmation of your reports or if we have any questions about them.
@@ -378,11 +381,47 @@ agentFirstContactName.title = What is the name of your first contact?
 agentFirstContactName.heading = What is the name of your first contact?
 agentFirstContactName.checkYourAnswersLabel = What is the name of your first contact?
 agentFirstContactName.error.required = Enter the name of the individual or team we should contact if we have any questions about your reports
-agentFirstContactName.error.length = Name must be 170 characters or less
+agentFirstContactName.error.length = Name must be 35 characters or less
+agentFirstContactName.error.invalid = Name of the individual or team must only include letters a to z, numbers 0 to 9, apostrophes, grave accents, ampersands, hyphens, backslashes, carets and spaces
 agentFirstContactName.change.hidden = first contact name
-agentFirstContactName.p1 = This can be an individual or the name of a team. Do not use your client‘'s name.
-agentFirstContactName.hint = For example, '‘Tax team‘' or '‘Ashley Smith‘'.
+agentFirstContactName.p1 = This can be an individual or the name of a team. Do not use your client’s name.
+agentFirstContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
 
+agentContactDetailsNeeded.title = We need your agent contact details
+agentContactDetailsNeeded.heading = We need your agent contact details
+agentContactDetailsNeeded.p1 = Before you can send a country-by-country (CBC) report, we need to collect your agent contact details.
+agentContactDetailsNeeded.p2 = We need up to 2 contacts. They can be for an individual or a team working on behalf of clients.
+agentContactDetailsNeeded.p3 = We will use these details if we have any questions about your CBC reports. These details can be changed at any time. You only need to go through this process once and it will apply for all your clients.
+agentContactDetailsNeeded.p4 = Do not provide your client’s contact details.
+agentContactDetailsNeeded.p5 = You will need to provide your client’s contact details later.
+
+agentFirstContactEmail.title = What is the email address for your first contact?
+agentFirstContactEmail.heading = What is the email address for {0}?
+agentFirstContactEmail.checkYourAnswersLabel = What is the email address for {0}?
+agentFirstContactEmail.error.required = Enter an email address
+agentFirstContactEmail.error.length = Email must be 132 characters or less
+agentFirstContactEmail.change.hidden = first contact email
+agentFirstContactEmail.hint = We will use this to send confirmation of the reports you send and if we have any questions about them.
+agentFirstContactEmail.error.invalid = Enter an email address in the correct format, like name@example.com
+
+agentSecondContactName.title = What is the name of your second contact?
+agentSecondContactName.heading = What is the name of your second contact?
+agentSecondContactName.p1 = This can be an individual or the name of a team. Do not use your client’s name.
+agentSecondContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
+agentSecondContactName.checkYourAnswersLabel = What is the name of your second contact?
+agentSecondContactName.error.required = Enter the name of the individual or team we should contact if we have any questions about your reports
+agentSecondContactName.error.length = Name must be 35 characters or less
+agentSecondContactName.error.invalid = Name of the individual or team must only include letters a to z, numbers 0 to 9, apostrophes, grave accents, ampersands, hyphens, backslashes, carets and spaces
+agentSecondContactName.change.hidden = second contact name
+
+agentSecondContactEmail.title = What is your first contact's email address?
+agentSecondContactEmail.heading = What is {0} email address?
+agentSecondContactEmail.checkYourAnswersLabel = What is {0} email address?
+agentSecondContactEmail.hint = We will use this email to send confirmation of the reports we receive or if we have any questions about your client’s report.
+agentSecondContactEmail.error.required = Enter your second contact’s email address
+agentSecondContactEmail.error.invalid = Enter your second contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
+agentSecondContactEmail.error.length = Your second contact’s email address must be 132 characters or less
+agentSecondContactEmail.change.hidden = AgentSecondContactEmail
 
 agentSecondContact.title = Do you have a second contact if your first contact is not available?
 agentSecondContact.heading = Do you have a second contact if your first contact is not available?

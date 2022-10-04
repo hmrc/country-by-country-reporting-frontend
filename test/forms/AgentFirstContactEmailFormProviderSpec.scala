@@ -19,14 +19,14 @@ package forms
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 
-class AgentFirstContactNameFormProviderSpec extends StringFieldBehaviours {
+class AgentFirstContactEmailFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "agentFirstContactName.error.required"
-  val lengthKey   = "agentFirstContactName.error.length"
-  val invalidKey  = "agentFirstContactName.error.invalid"
-  val maxLength   = 35
+  val requiredKey = "agentFirstContactEmail.error.required"
+  val invalidKey  = "agentFirstContactEmail.error.invalid"
+  val lengthKey   = "agentFirstContactEmail.error.length"
+  val maxLength   = 132
 
-  val form = new AgentFirstContactNameFormProvider()()
+  val form = new AgentFirstContactEmailFormProvider()()
 
   ".value" - {
 
@@ -35,10 +35,17 @@ class AgentFirstContactNameFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      validOrganisationName
+      stringsWithMaxLength(maxLength)
     )
 
-    behave like fieldWithMaxLengthAlpha(
+    behave like fieldWithInvalidData(
+      form,
+      fieldName,
+      invalidString = "not a valid email",
+      error = FormError(fieldName, invalidKey)
+    )
+
+    behave like fieldWithMaxLengthEmail(
       form,
       fieldName,
       maxLength = maxLength,
@@ -49,19 +56,6 @@ class AgentFirstContactNameFormProviderSpec extends StringFieldBehaviours {
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
-    )
-
-    behave like fieldWithNonEmptyWhitespace(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
-
-    behave like fieldWithInvalidData(
-      form,
-      fieldName,
-      "jjdjdj£%^&kfkf",
-      FormError(fieldName, invalidKey)
     )
   }
 }
