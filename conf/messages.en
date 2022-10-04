@@ -395,6 +395,15 @@ agentContactDetailsNeeded.p3 = We will use these details if we have any question
 agentContactDetailsNeeded.p4 = Do not provide your client’s contact details.
 agentContactDetailsNeeded.p5 = You will need to provide your client’s contact details later.
 
+agentFirstContactEmail.title = What is the email address for your first contact?
+agentFirstContactEmail.heading = What is the email address for {0}?
+agentFirstContactEmail.checkYourAnswersLabel = What is the email address for {0}?
+agentFirstContactEmail.error.required = Enter an email address
+agentFirstContactEmail.error.length = Email must be 132 characters or less
+agentFirstContactEmail.change.hidden = first contact email
+agentFirstContactEmail.hint = We will use this to send confirmation of the reports you send and if we have any questions about them.
+agentFirstContactEmail.error.invalid = Enter an email address in the correct format, like name@example.com
+
 agentSecondContactName.title = What is the name of your second contact?
 agentSecondContactName.heading = What is the name of your second contact?
 agentSecondContactName.p1 = This can be an individual or the name of a team. Do not use your client’s name.
