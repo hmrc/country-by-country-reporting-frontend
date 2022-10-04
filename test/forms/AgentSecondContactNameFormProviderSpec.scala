@@ -19,14 +19,14 @@ package forms
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 
-class AgentFirstContactNameFormProviderSpec extends StringFieldBehaviours {
+class AgentSecondContactNameFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "agentFirstContactName.error.required"
-  val lengthKey   = "agentFirstContactName.error.length"
-  val invalidKey  = "agentFirstContactName.error.invalid"
+  val requiredKey = "agentSecondContactName.error.required"
+  val lengthKey   = "agentSecondContactName.error.length"
+  val invalidKey  = "agentSecondContactName.error.invalid"
   val maxLength   = 35
 
-  val form = new AgentFirstContactNameFormProvider()()
+  val form = new AgentSecondContactNameFormProvider()()
 
   ".value" - {
 

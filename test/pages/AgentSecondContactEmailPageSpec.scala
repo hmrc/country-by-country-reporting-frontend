@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import forms.mappings.Mappings
+import pages.behaviours.PageBehaviours
 
-import javax.inject.Inject
-import play.api.data.Form
-import utils.RegExConstants
+class AgentSecondContactEmailPageSpec extends PageBehaviours {
 
-class AgentFirstContactNameFormProvider @Inject() extends Mappings with RegExConstants {
+  "AgentSecondContactEmailPage" - {
 
-  private val maxLength = 35
+    beRetrievable[String](AgentSecondContactEmailPage)
 
-  def apply(): Form[String] =
-    Form(
-      "value" -> validatedText("agentFirstContactName.error.required",
-                               "agentFirstContactName.error.invalid",
-                               "agentFirstContactName.error.length",
-                               orgNameRegex,
-                               maxLength
-      )
-    )
+    beSettable[String](AgentSecondContactEmailPage)
+
+    beRemovable[String](AgentSecondContactEmailPage)
+  }
 }

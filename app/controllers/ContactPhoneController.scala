@@ -18,13 +18,14 @@ package controllers
 
 import controllers.actions._
 import forms.ContactPhoneFormProvider
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.ContactDetailsNavigator
-import pages.{ContactNamePage, ContactPhonePage}
+import pages.ContactPhonePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import utils.ContactHelper
 import views.html.ContactPhoneView
 
 import javax.inject.Inject
@@ -42,7 +43,8 @@ class ContactPhoneController @Inject() (
   view: ContactPhoneView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
-    with I18nSupport {
+    with I18nSupport
+    with ContactHelper {
 
   val form = formProvider()
 
@@ -53,21 +55,15 @@ class ContactPhoneController @Inject() (
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, getContactName(request.userAnswers), mode))
+      Ok(view(preparedForm, getFirstContactName(request.userAnswers), mode))
   }
-
-  private def getContactName(userAnswers: UserAnswers) =
-    userAnswers.get(ContactNamePage) match {
-      case Some(contactName) => contactName
-      case _                 => ""
-    }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, getContactName(request.userAnswers), mode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, getFirstContactName(request.userAnswers), mode))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ContactPhonePage, value))

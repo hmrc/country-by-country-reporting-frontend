@@ -22,7 +22,7 @@ import models.ConversationId
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import utils.ContactEmailHelper.getContactEmails
+import utils.ContactHelper
 import utils.DateTimeFormatUtil._
 import views.html.{FileReceivedView, ThereIsAProblemView}
 
@@ -40,7 +40,8 @@ class FileReceivedController @Inject() (
   errorView: ThereIsAProblemView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
-    with I18nSupport {
+    with I18nSupport
+    with ContactHelper {
 
   def onPageLoad(conversationId: ConversationId): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>

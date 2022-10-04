@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package utils
+package pages
 
-import models.ContactEmails
-import models.requests.DataRequest
-import pages.{ContactEmailPage, SecondContactEmailPage}
+import play.api.libs.json.JsPath
 
-object ContactEmailHelper {
+case object AgentSecondContactNamePage extends QuestionPage[String] {
 
-  def getContactEmails()(implicit request: DataRequest[_]): Option[ContactEmails] =
-    request.userAnswers.get(ContactEmailPage) map {
-      firstContactEmail =>
-        ContactEmails(firstContactEmail, request.userAnswers.get(SecondContactEmailPage))
-    }
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "agentSecondContactName"
 }
