@@ -21,13 +21,12 @@ import forms.mappings.Mappings
 import javax.inject.Inject
 import play.api.data.Form
 
-class AgentFirstContactNameFormProvider @Inject() extends Mappings {
+class AgentSecondContactNameFormProvider @Inject() extends Mappings {
 
   private val maxLength = 35
-
   def apply(): Form[String] =
     Form(
-      "value" -> text("agentFirstContactName.error.required")
-        .verifying(maxLength(maxLength, "agentFirstContactName.error.length"))
+      "value" -> text("agentSecondContactName.error.required")
+        .verifying(maxLength(maxLength, "agentSecondContactName.error.length"))
     )
 }
