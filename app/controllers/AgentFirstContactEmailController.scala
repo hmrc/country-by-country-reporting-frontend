@@ -18,18 +18,17 @@ package controllers
 
 import controllers.actions._
 import forms.AgentFirstContactEmailFormProvider
-
-import javax.inject.Inject
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.ContactDetailsNavigator
-import pages.{AgentFirstContactEmailPage, AgentFirstContactNamePage}
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import pages.AgentFirstContactEmailPage
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.ContactHelper
 import views.html.AgentFirstContactEmailView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class AgentFirstContactEmailController @Inject() (

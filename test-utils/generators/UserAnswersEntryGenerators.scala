@@ -31,7 +31,6 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryFirstContactNameUserAnswersEntry: Arbitrary[(AgentFirstContactNamePage.type, JsValue)] =
   implicit lazy val arbitraryAgentContactTelephoneNumberUserAnswersEntry: Arbitrary[(AgentFirstContactPhonePage.type, JsValue)] =
     Arbitrary {
       for {
