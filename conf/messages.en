@@ -406,3 +406,10 @@ agentSecondContactEmail.error.required = Enter your second contact’s email add
 agentSecondContactEmail.error.invalid = Enter your second contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
 agentSecondContactEmail.error.length = Your second contact’s email address must be 132 characters or less
 agentSecondContactEmail.change.hidden = AgentSecondContactEmail
+
+agentContactDetailsSaved.title = Agent contact details saved
+agentContactDetailsSaved.heading = Agent contact details saved
+agentContactDetailsSaved.p1 = You can now {0}.
+agentContactDetailsSaved.p1.link = send CBC reports
+agentContactDetailsSaved.p2 = Before you can send CBC reports you must {0}.
+agentContactDetailsSaved.p2.link = provide contact details for your client

@@ -121,3 +121,5 @@ GET        /agent/agent-contact-details/second-contact-email            controll
 POST       /agent/agent-contact-details/second-contact-email            controllers.AgentSecondContactEmailController.onSubmit(mode: Mode = NormalMode)
 GET        /agent/agent-contact-details/change-second-contact-email     controllers.AgentSecondContactEmailController.onPageLoad(mode: Mode = CheckMode)
 POST       /agent/agent-contact-details/change-second-contact-email     controllers.AgentSecondContactEmailController.onSubmit(mode: Mode = CheckMode)
+
+GET        /agent/agent-contact-details/agent-contact-details-saved     controllers.AgentContactDetailsSavedController.onPageLoad()
