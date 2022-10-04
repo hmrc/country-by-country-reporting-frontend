@@ -423,6 +423,12 @@ agentSecondContactEmail.error.invalid = Enter your second contact’s email addr
 agentSecondContactEmail.error.length = Your second contact’s email address must be 132 characters or less
 agentSecondContactEmail.change.hidden = AgentSecondContactEmail
 
+agentFirstContactHavePhone.title = Can we contact {0} by telephone?
+agentFirstContactHavePhone.heading = Can we contact {0} by telephone?
+agentFirstContactHavePhone.checkYourAnswersLabel = Can we contact {0} by telephone?
+agentFirstContactHavePhone.error.required = Select yes or no
+agentFirstContactHavePhone.change.hidden = can we contact {0} by telephone
+
 agentSecondContact.title = Do you have a second contact if your first contact is not available?
 agentSecondContact.heading = Do you have a second contact if your first contact is not available?
 agentSecondContact.checkYourAnswersLabel = Do you have a second contact if your first contact is not available?
