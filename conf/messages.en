@@ -422,3 +422,9 @@ agentSecondContactEmail.error.required = Enter your second contact’s email add
 agentSecondContactEmail.error.invalid = Enter your second contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
 agentSecondContactEmail.error.length = Your second contact’s email address must be 132 characters or less
 agentSecondContactEmail.change.hidden = AgentSecondContactEmail
+
+agentSecondContact.title = Do you have a second contact if your first contact is not available?
+agentSecondContact.heading = Do you have a second contact if your first contact is not available?
+agentSecondContact.checkYourAnswersLabel = Do you have a second contact if your first contact is not available?
+agentSecondContact.error.required = Select yes or not
+agentSecondContact.change.hidden = do you have a second contact if your first contact is not available
