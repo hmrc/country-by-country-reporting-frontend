@@ -18,10 +18,10 @@ package controllers
 
 import controllers.actions._
 import forms.AgentFirstContactHavePhoneFormProvider
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.Navigator
-import pages.{AgentFirstContactHavePhonePage, AgentFirstContactNamePage}
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import pages.AgentFirstContactHavePhonePage
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController

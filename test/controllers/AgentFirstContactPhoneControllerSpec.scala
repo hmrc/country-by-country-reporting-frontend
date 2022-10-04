@@ -21,7 +21,6 @@ import forms.AgentFirstContactPhoneFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{AgentFirstContactNamePage, AgentFirstContactPhonePage}
 import play.api.inject.bind
@@ -34,10 +33,9 @@ import scala.concurrent.Future
 
 class AgentFirstContactPhoneControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider      = new AgentFirstContactPhoneFormProvider()
-  val form              = formProvider()
-  val contactName       = "first contact name"
-  val contactNamePlural = "first contact name’s"
+  val formProvider = new AgentFirstContactPhoneFormProvider()
+  val form         = formProvider()
+  val contactName  = "first contact name"
 
   lazy val agentFirstContactPhoneRoute = routes.AgentFirstContactPhoneController.onPageLoad(NormalMode).url
 
@@ -56,7 +54,7 @@ class AgentFirstContactPhoneControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[AgentFirstContactPhoneView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, contactNamePlural, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, contactName, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -75,7 +73,7 @@ class AgentFirstContactPhoneControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), contactNamePlural, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), contactName, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -120,7 +118,7 @@ class AgentFirstContactPhoneControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, contactNamePlural, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, contactName, NormalMode)(request, messages(application)).toString
       }
     }
   }
