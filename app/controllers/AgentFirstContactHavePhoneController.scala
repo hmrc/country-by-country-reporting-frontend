@@ -58,13 +58,6 @@ class AgentFirstContactHavePhoneController @Inject() (
       Ok(view(preparedForm, mode, getPluralAgentFirstContactName(request.userAnswers)))
   }
 
-  private def getContactName(userAnswers: UserAnswers)(implicit messages: Messages) =
-    userAnswers
-      .get(AgentFirstContactNamePage)
-      .fold(messages("default.firstContact.name"))(
-        contactName => contactName
-      )
-
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
       form
