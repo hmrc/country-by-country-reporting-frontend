@@ -27,6 +27,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import utils.ContactHelper
 import views.html.AgentFirstContactPhoneView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -43,7 +44,8 @@ class AgentFirstContactPhoneController @Inject() (
   view: AgentFirstContactPhoneView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
-    with I18nSupport {
+    with I18nSupport
+    with ContactHelper {
 
   val form = formProvider()
 
@@ -54,21 +56,15 @@ class AgentFirstContactPhoneController @Inject() (
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, getAgentFirstContactName(request.userAnswers), mode))
+      Ok(view(preparedForm, getPluralAgentFirstContactName(request.userAnswers), mode))
   }
-
-  private def getAgentFirstContactName(userAnswers: UserAnswers) =
-    userAnswers.get(AgentFirstContactNamePage) match {
-      case Some(firstContactName) => firstContactName
-      case _                      => ""
-    }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, getAgentFirstContactName(request.userAnswers), mode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, getPluralAgentFirstContactName(request.userAnswers), mode))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentFirstContactPhonePage, value))
