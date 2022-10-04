@@ -18,11 +18,9 @@ package controllers
 
 import controllers.actions._
 import forms.AgentFirstContactPhoneFormProvider
-
-import javax.inject.Inject
-import models.{Mode, UserAnswers}
-import navigation.{ContactDetailsNavigator, Navigator}
-import pages.{AgentFirstContactNamePage, AgentFirstContactPhonePage}
+import models.Mode
+import navigation.ContactDetailsNavigator
+import pages.AgentFirstContactPhonePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -30,6 +28,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.ContactHelper
 import views.html.AgentFirstContactPhoneView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class AgentFirstContactPhoneController @Inject() (

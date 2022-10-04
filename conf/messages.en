@@ -428,3 +428,9 @@ agentFirstContactHavePhone.heading = Can we contact {0} by telephone?
 agentFirstContactHavePhone.checkYourAnswersLabel = Can we contact {0} by telephone?
 agentFirstContactHavePhone.error.required = Select yes or no
 agentFirstContactHavePhone.change.hidden = can we contact {0} by telephone
+
+agentSecondContact.title = Do you have a second contact if your first contact is not available?
+agentSecondContact.heading = Do you have a second contact if your first contact is not available?
+agentSecondContact.checkYourAnswersLabel = Do you have a second contact if your first contact is not available?
+agentSecondContact.error.required = Select yes or not
+agentSecondContact.change.hidden = do you have a second contact if your first contact is not available
