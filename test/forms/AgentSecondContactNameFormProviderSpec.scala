@@ -23,6 +23,7 @@ class AgentSecondContactNameFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "agentSecondContactName.error.required"
   val lengthKey   = "agentSecondContactName.error.length"
+  val invalidKey  = "agentSecondContactName.error.invalid"
   val maxLength   = 35
 
   val form = new AgentSecondContactNameFormProvider()()
@@ -34,20 +35,33 @@ class AgentSecondContactNameFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      validOrganisationName
     )
 
-    behave like fieldWithMaxLength(
+    behave like fieldWithMaxLengthAlpha(
       form,
       fieldName,
       maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+      lengthError = FormError(fieldName, lengthKey)
     )
 
     behave like mandatoryField(
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
+    )
+
+    behave like fieldWithNonEmptyWhitespace(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+
+    behave like fieldWithInvalidData(
+      form,
+      fieldName,
+      "jjdjdj£%^&kfkf",
+      FormError(fieldName, invalidKey)
     )
   }
 }
