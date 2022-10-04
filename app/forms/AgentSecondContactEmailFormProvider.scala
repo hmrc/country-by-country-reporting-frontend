@@ -20,14 +20,20 @@ import forms.mappings.Mappings
 
 import javax.inject.Inject
 import play.api.data.Form
+import utils.RegExConstants
 
-class AgentSecondContactNameFormProvider @Inject() extends Mappings {
+class AgentSecondContactEmailFormProvider @Inject() extends Mappings with RegExConstants {
 
-  private val maxLength = 35
+  private val maxLength: Int = 132
 
   def apply(): Form[String] =
     Form(
-      "value" -> text("agentSecondContactName.error.required")
-        .verifying(maxLength(maxLength, "agentSecondContactName.error.length"))
+      "value" -> validatedText(
+        "agentSecondContactEmail.error.required",
+        "agentSecondContactEmail.error.invalid",
+        "agentSecondContactEmail.error.length",
+        emailRegex,
+        maxLength
+      )
     )
 }

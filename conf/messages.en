@@ -72,6 +72,9 @@ contactName.change.hidden = contact name
 default.firstContact.name = your first contact
 default.secondContact.name = your second contact
 
+contact.name.plural = {0}’s
+contact.name.plural.withS = {0}’
+
 contactEmail.title = What is their email address?
 contactEmail.heading = What is the email address for {0}?
 contactEmail.hint = We will use this to send confirmation of your reports or if we have any questions about them.
@@ -392,3 +395,12 @@ agentSecondContactName.checkYourAnswersLabel = What is the name of your second c
 agentSecondContactName.error.required = Enter the name of the individual or team we should contact if we have any questions about your reports
 agentSecondContactName.error.length = Name must be 35 characters or less
 agentSecondContactName.change.hidden = second contact name
+
+agentSecondContactEmail.title = What is your first contact's email address?
+agentSecondContactEmail.heading = What is {0} email address?
+agentSecondContactEmail.checkYourAnswersLabel = What is {0} email address?
+agentSecondContactEmail.hint = We will use this email to send confirmation of the reports we receive or if we have any questions about your client’s report.
+agentSecondContactEmail.error.required = Enter your second contact’s email address
+agentSecondContactEmail.error.invalid = Enter your second contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
+agentSecondContactEmail.error.length = Your second contact’s email address must be 132 characters or less
+agentSecondContactEmail.change.hidden = AgentSecondContactEmail

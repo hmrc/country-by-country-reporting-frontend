@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package utils
+package pages
 
-import models.ContactEmails
-import models.requests.DataRequest
-import pages.{ContactEmailPage, SecondContactEmailPage}
+import pages.behaviours.PageBehaviours
 
-object ContactEmailHelper {
+class AgentSecondContactEmailPageSpec extends PageBehaviours {
 
-  def getContactEmails()(implicit request: DataRequest[_]): Option[ContactEmails] =
-    request.userAnswers.get(ContactEmailPage) map {
-      firstContactEmail =>
-        ContactEmails(firstContactEmail, request.userAnswers.get(SecondContactEmailPage))
-    }
+  "AgentSecondContactEmailPage" - {
+
+    beRetrievable[String](AgentSecondContactEmailPage)
+
+    beSettable[String](AgentSecondContactEmailPage)
+
+    beRemovable[String](AgentSecondContactEmailPage)
+  }
 }

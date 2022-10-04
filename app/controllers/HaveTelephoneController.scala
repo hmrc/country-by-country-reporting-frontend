@@ -18,17 +18,17 @@ package controllers
 
 import controllers.actions._
 import forms.HaveTelephoneFormProvider
-
-import javax.inject.Inject
 import models.Mode
 import navigation.ContactDetailsNavigator
-import pages.{ContactNamePage, HaveTelephonePage}
+import pages.HaveTelephonePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import utils.ContactHelper
 import views.html.HaveTelephoneView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class HaveTelephoneController @Inject() (
@@ -43,7 +43,8 @@ class HaveTelephoneController @Inject() (
   view: HaveTelephoneView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
-    with I18nSupport {
+    with I18nSupport
+    with ContactHelper {
 
   val form = formProvider()
 
@@ -54,7 +55,7 @@ class HaveTelephoneController @Inject() (
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, request.userAnswers.get(ContactNamePage).getOrElse(""), mode))
+      Ok(view(preparedForm, getFirstContactName(request.userAnswers), mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
@@ -62,7 +63,7 @@ class HaveTelephoneController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.userAnswers.get(ContactNamePage).getOrElse(""), mode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, getFirstContactName(request.userAnswers), mode))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(HaveTelephonePage, value))
