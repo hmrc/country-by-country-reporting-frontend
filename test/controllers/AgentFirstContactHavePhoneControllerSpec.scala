@@ -33,9 +33,10 @@ import scala.concurrent.Future
 
 class AgentFirstContactHavePhoneControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new AgentFirstContactHavePhoneFormProvider()
-  val form         = formProvider()
-  val contactName  = "contact name"
+  val formProvider      = new AgentFirstContactHavePhoneFormProvider()
+  val form              = formProvider()
+  val contactName       = "first contact name"
+  val contactNamePlural = "first contact name’s"
 
   lazy val agentFirstContactHavePhoneRoute: String = routes.AgentFirstContactHavePhoneController.onPageLoad(NormalMode).url
 
@@ -54,7 +55,7 @@ class AgentFirstContactHavePhoneControllerSpec extends SpecBase with MockitoSuga
         val view = application.injector.instanceOf[AgentFirstContactHavePhoneView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, contactName)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, contactNamePlural)(request, messages(application)).toString
       }
     }
 
@@ -78,7 +79,7 @@ class AgentFirstContactHavePhoneControllerSpec extends SpecBase with MockitoSuga
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode, contactName)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode, contactNamePlural)(request, messages(application)).toString
       }
     }
 
@@ -108,7 +109,12 @@ class AgentFirstContactHavePhoneControllerSpec extends SpecBase with MockitoSuga
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers: UserAnswers = UserAnswers(userAnswersId)
+        .set(AgentFirstContactNamePage, contactName)
+        .success
+        .value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
         val request =
@@ -122,7 +128,7 @@ class AgentFirstContactHavePhoneControllerSpec extends SpecBase with MockitoSuga
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, "your first contact")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, contactNamePlural)(request, messages(application)).toString
       }
     }
 

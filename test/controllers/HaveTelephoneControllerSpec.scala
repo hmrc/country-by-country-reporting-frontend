@@ -18,10 +18,10 @@ package controllers
 
 import base.SpecBase
 import forms.HaveTelephoneFormProvider
-import models.{CheckMode, NormalMode, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
-import pages.HaveTelephonePage
+import pages.{ContactNamePage, HaveTelephonePage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -36,13 +36,20 @@ class HaveTelephoneControllerSpec extends SpecBase {
 
   val form = formProvider()
 
+  val name = "name"
+
   lazy val haveTelephoneRoute = routes.HaveTelephoneController.onPageLoad(NormalMode).url
 
   "HaveTelephone Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers: UserAnswers = UserAnswers(userAnswersId)
+        .set(ContactNamePage, name)
+        .success
+        .value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
         val request = FakeRequest(GET, haveTelephoneRoute)
@@ -52,13 +59,19 @@ class HaveTelephoneControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[HaveTelephoneView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, "", NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, name, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(HaveTelephonePage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(ContactNamePage, name)
+        .success
+        .value
+        .set(HaveTelephonePage, true)
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -70,7 +83,7 @@ class HaveTelephoneControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), "", NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), name, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -102,7 +115,12 @@ class HaveTelephoneControllerSpec extends SpecBase {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers: UserAnswers = UserAnswers(userAnswersId)
+        .set(ContactNamePage, name)
+        .success
+        .value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
         val request =
@@ -116,7 +134,7 @@ class HaveTelephoneControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, "", NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, name, NormalMode)(request, messages(application)).toString
       }
     }
   }
