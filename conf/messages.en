@@ -452,7 +452,7 @@ agentFirstContactPhone.change.hidden = agent first contact telephone number
 agentClientContactDetails.title = agentClientContactDetails
 agentClientContactDetails.heading = agentClientContactDetails
 
-agentClientContactDetails.title = You must provide your client’s contact details
+agentClientContactDetails.title = You must provide your client’s contact details - Send a country-by-country report - GOV.UK
 agentClientContactDetails.heading = You must provide your client’s contact details
 agentClientContactDetails.p1 = Before you can send a country-by-country (CBC) report, we need to collect your client’s contact details.
 agentClientContactDetails.p2 = We need up to 2 contacts. They can be for an individual or a team working on behalf of clients.
