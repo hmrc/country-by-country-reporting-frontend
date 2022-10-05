@@ -19,7 +19,7 @@ package controllers.agent
 import controllers.actions._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.SubscriptionService
+import services.AgentSubscriptionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.AgentCheckYourAnswersHelper
 import viewmodels.govuk.summarylist._
@@ -35,7 +35,7 @@ class ChangeAgentContactDetailsController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  subscriptionService: SubscriptionService,
+  agentSubscriptionService: AgentSubscriptionService,
   val controllerComponents: MessagesControllerComponents,
   view: ChangeAgentContactDetailsView,
   errorView: ThereIsAProblemView
@@ -54,14 +54,9 @@ class ChangeAgentContactDetailsController @Inject() (
         rows = checkUserAnswersHelper.getAgentSecondaryContactDetails
       )
 
-      //TODO: replace with subscriptionService.isAgentContactInformationUpdated(request.userAnswers) when agent contact details API's are set up
-      //TODO: We also need to return if agent contact details exist or not from the API
-      val isAgentContactInformationUpdatedCall = Future.successful(Some(true))
-      val doAgentContactDetailsExistCall       = Future.successful(Some(false))
-
-      isAgentContactInformationUpdatedCall flatMap {
+      agentSubscriptionService.isAgentContactInformationUpdated(request.userAnswers) flatMap {
         case Some(hasContactDetailsChanged) =>
-          doAgentContactDetailsExistCall map {
+          agentSubscriptionService.doAgentContactDetailsExist(request.userAnswers) map {
             case Some(doContactDetailsExist) =>
               Ok(view(agentPrimaryContactList, agentSecondaryContactList, hasContactDetailsChanged, doContactDetailsExist))
             case _ => InternalServerError(errorView())
@@ -72,12 +67,18 @@ class ChangeAgentContactDetailsController @Inject() (
 
   def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
-      //TODO: replace with subscriptionService.updateAgentContactDetails(request.userAnswers) when agent contact details API's are set up
-      val updateAgentContactDetails = Future.successful(true)
-
-      updateAgentContactDetails map {
-        case true  => Redirect(routes.AgentContactDetailsSavedController.onPageLoad)
-        case false => InternalServerError(errorView())
+      agentSubscriptionService.doAgentContactDetailsExist(request.userAnswers) flatMap {
+        agentContactDetailsExist =>
+          agentSubscriptionService.updateAgentContactDetails(request.userAnswers) map {
+            case true =>
+              agentContactDetailsExist match {
+                case Some(true) =>
+                  Redirect(routes.AgentContactDetailsSavedController.onPageLoad()) //TODO: Change to AgentContactDetailsUpdatedController when implemented
+                case Some(false) => Redirect(routes.AgentContactDetailsSavedController.onPageLoad())
+                case _           => InternalServerError(errorView())
+              }
+            case false => InternalServerError(errorView())
+          }
       }
   }
 }
