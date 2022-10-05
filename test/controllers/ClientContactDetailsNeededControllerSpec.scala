@@ -19,22 +19,22 @@ package controllers
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.AgentClientContactDetailsView
+import views.html.ClientContactDetailsNeededView
 
-class AgentClientContactDetailsControllerSpec extends SpecBase {
+class ClientContactDetailsNeededControllerSpec extends SpecBase {
 
-  "AgentClientContactDetails Controller" - {
+  "ClientContactDetailsNeeded Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.AgentClientContactDetailsController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.ClientContactDetailsNeededController.onPageLoad().url)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[AgentClientContactDetailsView]
+        val view = application.injector.instanceOf[ClientContactDetailsNeededView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view()(request, messages(application)).toString
