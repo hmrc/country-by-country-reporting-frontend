@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.client
 
 import base.SpecBase
+import controllers.routes
 import forms.ContactNameFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
@@ -28,31 +29,31 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ContactNameView
+import views.html.client.ClientFirstContactNameView
 
 import scala.concurrent.Future
 
-class ContactNameControllerSpec extends SpecBase with MockitoSugar {
+class ClientFirstContactNameControllerSpec extends SpecBase with MockitoSugar {
 
   override def onwardRoute: Call = Call("GET", "/foo")
 
   val formProvider = new ContactNameFormProvider()
-  val form         = formProvider("contactName")
+  val form         = formProvider("clientFirstContactName")
 
-  lazy val contactNameRoute = routes.ContactNameController.onPageLoad(NormalMode).url
+  lazy val clientFirstContactNameRoute = routes.ClientFirstContactNameController.onPageLoad(NormalMode).url
 
-  "ContactName Controller" - {
+  "ClientFirstContactName Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, contactNameRoute)
+        val request = FakeRequest(GET, clientFirstContactNameRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ContactNameView]
+        val view = application.injector.instanceOf[ClientFirstContactNameView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
@@ -66,9 +67,9 @@ class ContactNameControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, contactNameRoute)
+        val request = FakeRequest(GET, clientFirstContactNameRoute)
 
-        val view = application.injector.instanceOf[ContactNameView]
+        val view = application.injector.instanceOf[ClientFirstContactNameView]
 
         val result = route(application, request).value
 
@@ -91,7 +92,7 @@ class ContactNameControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, contactNameRoute)
+          FakeRequest(POST, clientFirstContactNameRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value
@@ -107,12 +108,12 @@ class ContactNameControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, contactNameRoute)
+          FakeRequest(POST, clientFirstContactNameRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[ContactNameView]
+        val view = application.injector.instanceOf[ClientFirstContactNameView]
 
         val result = route(application, request).value
 
