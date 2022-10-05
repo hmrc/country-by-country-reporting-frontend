@@ -17,25 +17,24 @@
 package viewmodels.checkAnswers
 
 import models.{CheckMode, UserAnswers}
-import pages.AgentSecondContactPage
+import pages.AgentFirstContactNamePage
 import play.api.i18n.Messages
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-object AgentSecondContactSummary {
+object AgentFirstContactNameSummary {
 
   def row(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(AgentSecondContactPage).map {
+    answers.get(AgentFirstContactNamePage).map {
       answer =>
-        val value = if (answer) "site.yes" else "site.no"
-
         SummaryListRowViewModel(
-          key = "agentSecondContact.checkYourAnswersLabel",
-          value = ValueViewModel(value),
+          key = "agentFirstContactName.checkYourAnswersLabel",
+          value = ValueViewModel(HtmlFormat.escape(answer).toString),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.agent.routes.AgentSecondContactController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("agentSecondContact.change.hidden"))
+            ActionItemViewModel("site.change", controllers.agent.routes.AgentFirstContactNameController.onPageLoad(CheckMode).url)
+              .withVisuallyHiddenText(messages("agentFirstContactName.change.hidden"))
           )
         )
     }

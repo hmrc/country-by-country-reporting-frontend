@@ -16,7 +16,6 @@
 
 package viewmodels.checkAnswers
 
-import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.AgentFirstContactHavePhonePage
 import play.api.i18n.Messages
@@ -35,7 +34,7 @@ object AgentFirstContactHavePhoneSummary {
           key = "agentFirstContactHavePhone.checkYourAnswersLabel",
           value = ValueViewModel(value),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.AgentFirstContactHavePhoneController.onPageLoad(CheckMode).url)
+            ActionItemViewModel("site.change", controllers.agent.routes.AgentFirstContactHavePhoneController.onPageLoad(CheckMode).url)
               .withVisuallyHiddenText(messages("agentFirstContactHavePhone.change.hidden"))
           )
         )
