@@ -465,3 +465,13 @@ agentContactDetailsSaved.p1 = You can now {0}.
 agentContactDetailsSaved.p1.link = send CBC reports
 agentContactDetailsSaved.p2 = Before you can send CBC reports you must {0}.
 agentContactDetailsSaved.p2.link = provide contact details for your client
+
+clientFirstContactName.title = What is the name of the first contact at your client’s organisation?
+clientFirstContactName.heading = What is the name of the first contact at your client’s organisation?
+clientFirstContactName.checkYourAnswersLabel = What is the name of the first contact at your client’s organisation?
+clientFirstContactName.p1 = This can be an individual or the name of a team.
+clientFirstContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
+clientFirstContactName.error.required = Enter the name of the first contact
+clientFirstContactName.error.length = The name of the first contact must be 35 characters or less
+clientFirstContactName.error.invalid = The name of the first contact must only include letters a to z, hyphens, spaces, and apostrophes
+clientFirstContactName.change.hidden = client first contact name

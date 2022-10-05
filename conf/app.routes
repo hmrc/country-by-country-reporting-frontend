@@ -155,3 +155,8 @@ GET        /agent/agent-contact-details/change-have-second-contact              
 POST       /agent/agent-contact-details/change-have-second-contact              controllers.AgentSecondContactController.onSubmit(mode: Mode = CheckMode)
 
 GET        /agent/agent-contact-details/agent-contact-details-saved             controllers.AgentContactDetailsSavedController.onPageLoad()
+
+GET        /agent/client-contact-details/first-contact-name                     controllers.ClientFirstContactNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /agent/client-contact-details/first-contact-name                     controllers.ClientFirstContactNameController.onSubmit(mode: Mode = NormalMode)
+GET        /agent/client-contact-details/change-first-contact-name              controllers.ClientFirstContactNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /agent/client-contact-details/change-first-contact-name              controllers.ClientFirstContactNameController.onSubmit(mode: Mode = CheckMode)

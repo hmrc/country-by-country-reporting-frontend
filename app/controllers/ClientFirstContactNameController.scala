@@ -25,12 +25,12 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ContactNameView
+import views.html.ClientFirstContactNameView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ContactNameController @Inject() (
+class ClientFirstContactNameController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: ContactDetailsNavigator,
@@ -39,12 +39,12 @@ class ContactNameController @Inject() (
   requireData: DataRequiredAction,
   formProvider: ContactNameFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: ContactNameView
+  view: ClientFirstContactNameView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
-  val form = formProvider("contactName")
+  val form = formProvider("clientFirstContactName")
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>

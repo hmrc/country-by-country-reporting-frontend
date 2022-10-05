@@ -26,8 +26,8 @@ class ContactNameFormProvider @Inject() extends Mappings with RegExConstants {
 
   private val maxLength = 35
 
-  def apply(): Form[String] =
+  def apply(key: String): Form[String] =
     Form(
-      "value" -> validatedText("contactName.error.required", "contactName.error.invalid", "contactName.error.length", orgNameRegex, maxLength)
+      "value" -> validatedText(s"$key.error.required", s"$key.error.invalid", s"$key.error.length", orgNameRegex, maxLength)
     )
 }
