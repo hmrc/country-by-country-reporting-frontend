@@ -29,35 +29,35 @@ trait ContactHelper {
         ContactEmails(firstContactEmail, request.userAnswers.get(SecondContactEmailPage))
     }
 
-  def getFirstContactName(userAnswers: UserAnswers)(implicit request: DataRequest[_], messages: Messages): String =
+  def getFirstContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
     userAnswers
       .get(ContactNamePage)
       .fold(messages("default.firstContact.name"))(
         contactName => contactName
       )
 
-  def getSecondContactName(userAnswers: UserAnswers)(implicit request: DataRequest[_], messages: Messages): String =
+  def getSecondContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
     userAnswers
       .get(SecondContactNamePage)
       .fold(messages("default.secondContact.name"))(
         contactName => contactName
       )
 
-  def getAgentFirstContactName(userAnswers: UserAnswers)(implicit request: DataRequest[_], messages: Messages): String =
+  def getAgentFirstContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
     userAnswers
       .get(AgentFirstContactNamePage)
       .fold(messages("default.firstContact.name"))(
         contactName => contactName
       )
 
-  def getAgentSecondContactName(userAnswers: UserAnswers)(implicit request: DataRequest[_], messages: Messages): String =
+  def getAgentSecondContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
     userAnswers
       .get(AgentSecondContactNamePage)
       .fold(messages("default.secondContact.name"))(
         contactName => contactName
       )
 
-  def getPluralAgentFirstContactName(userAnswers: UserAnswers)(implicit request: DataRequest[_], messages: Messages): String =
+  def getPluralAgentFirstContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
     userAnswers
       .get(AgentFirstContactNamePage)
       .fold(messages("contact.name.plural", messages("default.firstContact.name")))(
@@ -69,7 +69,7 @@ trait ContactHelper {
           }
       )
 
-  def getPluralAgentSecondContactName(userAnswers: UserAnswers)(implicit request: DataRequest[_], messages: Messages): String =
+  def getPluralAgentSecondContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
     userAnswers
       .get(AgentSecondContactNamePage)
       .fold(messages("contact.name.plural", messages("default.secondContact.name")))(

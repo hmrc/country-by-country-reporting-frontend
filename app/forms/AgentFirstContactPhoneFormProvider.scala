@@ -14,13 +14,25 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
 
-case object AgentFirstContactNamePage extends QuestionPage[String] {
+import play.api.data.Form
+import utils.RegExConstants
 
-  override def path: JsPath = JsPath \ toString
+class AgentFirstContactPhoneFormProvider extends Mappings with RegExConstants {
 
-  override def toString: String = "agentFirstContactName"
+  val maxlength = 24
+
+  def apply(): Form[String] =
+    Form(
+      "value" -> validatedText(
+        "agentFirstContactPhone.error.required",
+        "agentFirstContactPhone.error.invalid",
+        "agentFirstContactPhone.error.length",
+        phoneRegex,
+        maxlength
+      )
+    )
 }
