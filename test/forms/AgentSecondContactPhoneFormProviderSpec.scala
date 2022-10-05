@@ -19,14 +19,14 @@ package forms
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 
-class ContactNameFormProviderSpec extends StringFieldBehaviours {
+class AgentSecondContactPhoneFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "contactName.error.required"
-  val lengthKey   = "contactName.error.length"
-  val invalidKey  = "contactName.error.invalid"
-  val maxLength   = 35
+  val requiredKey = "agentSecondContactPhone.error.required"
+  val invalidKey  = "agentSecondContactPhone.error.invalid"
+  val lengthKey   = "agentSecondContactPhone.error.length"
+  val maxLength   = 24
 
-  val form = new ContactNameFormProvider().apply("contactName")
+  val form = new AgentSecondContactPhoneFormProvider()()
 
   ".value" - {
 
@@ -35,33 +35,27 @@ class ContactNameFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      validOrganisationName
+      validPhoneNumberWithinLength(maxLength)
     )
 
-    behave like fieldWithMaxLengthAlpha(
+    behave like fieldWithMaxLengthPhoneNumber(
       form,
       fieldName,
       maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey)
+      lengthError = FormError(fieldName, lengthKey, Seq())
+    )
+
+    behave like fieldWithInvalidData(
+      form,
+      fieldName,
+      invalidString = "not a phone number",
+      error = FormError(fieldName, invalidKey)
     )
 
     behave like mandatoryField(
       form,
       fieldName,
       requiredError = FormError(fieldName, requiredKey)
-    )
-
-    behave like fieldWithNonEmptyWhitespace(
-      form,
-      fieldName,
-      requiredError = FormError(fieldName, requiredKey)
-    )
-
-    behave like fieldWithInvalidData(
-      form,
-      fieldName,
-      "jjdjdj£%^&kfkf",
-      FormError(fieldName, invalidKey)
     )
   }
 }
