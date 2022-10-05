@@ -148,3 +148,5 @@ GET        /agent/agent-contact-details/have-second-contact                     
 POST       /agent/agent-contact-details/have-second-contact                        controllers.AgentSecondContactController.onSubmit(mode: Mode = NormalMode)
 GET        /agent/agent-contact-details/change-have-second-contact                  controllers.AgentSecondContactController.onPageLoad(mode: Mode = CheckMode)
 POST       /agent/agent-contact-details/change-have-second-contact                  controllers.AgentSecondContactController.onSubmit(mode: Mode = CheckMode)
+
+GET        /agentClientContactDetails                       controllers.AgentClientContactDetailsController.onPageLoad()

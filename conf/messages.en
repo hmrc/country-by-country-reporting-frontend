@@ -449,3 +449,5 @@ agentFirstContactPhone.error.required = Enter a telephone number
 agentFirstContactPhone.error.invalid = Enter a telephone number in the correct format
 agentFirstContactPhone.error.length = Telephone number must be 24 characters or less
 agentFirstContactPhone.change.hidden = agent first contact telephone number
+agentClientContactDetails.title = agentClientContactDetails
+agentClientContactDetails.heading = agentClientContactDetails
