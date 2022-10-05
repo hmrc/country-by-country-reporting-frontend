@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
 
-case object AgentFirstContactNamePage extends QuestionPage[String] {
+import javax.inject.Inject
+import play.api.data.Form
 
-  override def path: JsPath = JsPath \ toString
+class AgentSecondContactFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "agentFirstContactName"
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("agentSecondContact.error.required")
+    )
 }
