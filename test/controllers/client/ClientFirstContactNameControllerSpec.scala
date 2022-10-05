@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.client
 
 import base.SpecBase
+import controllers.routes
 import forms.ContactNameFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
@@ -28,7 +29,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.{ClientFirstContactNameView, ContactNameView}
+import views.html.client.ClientFirstContactNameView
 
 import scala.concurrent.Future
 
