@@ -17,7 +17,7 @@
 package controllers.client
 
 import controllers.actions._
-import forms.AgentFirstContactEmailFormProvider
+import forms.{AgentFirstContactEmailFormProvider, ContactEmailFormProvider}
 import models.Mode
 import navigation.ContactDetailsNavigator
 import pages.ContactEmailPage
@@ -38,7 +38,7 @@ class ClientFirstContactEmailController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: AgentFirstContactEmailFormProvider,
+  formProvider: ContactEmailFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: ClientFirstContactEmailView
 )(implicit ec: ExecutionContext)
@@ -46,7 +46,7 @@ class ClientFirstContactEmailController @Inject() (
     with I18nSupport
     with ContactHelper {
 
-  val form = formProvider()
+  val form = formProvider("contactEmail")
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
