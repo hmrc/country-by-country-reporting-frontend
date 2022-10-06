@@ -29,9 +29,9 @@ class ContactEmailFormProvider @Inject() extends Mappings with RegExConstants {
   def apply(key: String): Form[String] =
     Form(
       "value" -> validatedText(
-        s"$key.contactEmail.error.required",
-        s"$key.contactEmail.error.invalid",
-        s"$key.contactEmail.error.length",
+        s"$key.error.contactEmail.required",
+        s"$key.error.contactEmail.invalid",
+        s"$key.error.contactEmail.length",
         emailRegex,
         maxLength
       )

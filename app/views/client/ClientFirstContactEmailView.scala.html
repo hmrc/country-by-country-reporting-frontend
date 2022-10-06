@@ -39,7 +39,10 @@
                 field = form("value"),
                 label = LabelViewModel(messages("clientFirstContactEmail.heading", contactName)).asPageHeading()
             )
+                    .withWidth(Full)
+                    .withHint(Hint(content=messages("clientFirstContactEmail.hint")))
         )
+
 
         @govukButton(
             ButtonViewModel(messages("site.continue"))

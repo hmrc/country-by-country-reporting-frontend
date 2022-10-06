@@ -39,19 +39,19 @@ class ClientFirstContactEmailControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val clientFirstContactEmailRoute: String = controllers.client.routes.ClientFirstContactEmailController.onPageLoad(NormalMode).url
 
-  "AgentFirstContactEmail Controller" - {
+  "ClientFirstContactEmail Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers.set(ClientFirstContactNamePage, contactName).success.value
+      val userAnswers = emptyUserAnswers.set(ContactNamePage, contactName).success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, agentFirstContactEmailRoute)
+        val request = FakeRequest(GET, clientFirstContactEmailRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[AgentFirstContactEmailView]
+        val view = application.injector.instanceOf[ClientFirstContactEmailView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, NormalMode, contactNamePlural)(request, messages(application)).toString
@@ -61,19 +61,19 @@ class ClientFirstContactEmailControllerSpec extends SpecBase with MockitoSugar {
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId)
-        .set(AgentFirstContactEmailPage, "answer")
+        .set(ContactEmailPage, "answer")
         .success
         .value
-        .set(AgentFirstContactNamePage, contactName)
+        .set(ContactNamePage, contactName)
         .success
         .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, agentFirstContactEmailRoute)
+        val request = FakeRequest(GET, clientFirstContactEmailRoute)
 
-        val view = application.injector.instanceOf[AgentFirstContactEmailView]
+        val view = application.injector.instanceOf[ClientFirstContactEmailView]
 
         val result = route(application, request).value
 
@@ -96,7 +96,7 @@ class ClientFirstContactEmailControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, agentFirstContactEmailRoute)
+          FakeRequest(POST, clientFirstContactEmailRoute)
             .withFormUrlEncodedBody(("value", "answer@b.com"))
 
         val result = route(application, request).value
@@ -108,17 +108,17 @@ class ClientFirstContactEmailControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = emptyUserAnswers.set(AgentFirstContactNamePage, contactName).success.value
+      val userAnswers = emptyUserAnswers.set(ContactNamePage, contactName).success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, agentFirstContactEmailRoute)
+          FakeRequest(POST, clientFirstContactEmailRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[AgentFirstContactEmailView]
+        val view = application.injector.instanceOf[ClientFirstContactEmailView]
 
         val result = route(application, request).value
 
