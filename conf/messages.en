@@ -438,10 +438,10 @@ agentSecondContactHavePhone.change.hidden = can we contact {0} by telephone?
 agentSecondContactPhone.title = What is their telephone number?
 agentSecondContactPhone.heading = What is {0} telephone number?
 agentSecondContactPhone.checkYourAnswersLabel = Telephone number
-agentSecondContactPhone.hint = For example,&nbsp;01632&nbsp;960&nbsp;001, 07700&nbsp;900&nbsp;982 or +44&nbsp;808&nbsp;157&nbsp;0192.
-agentSecondContactPhone.error.required = Enter a telephone number
-agentSecondContactPhone.error.invalid = Enter a telephone number in the correct format
-agentSecondContactPhone.error.length = Telephone number must be 24 characters or less
+agentSecondContactPhone.p1 = Provide a telephone number from your organisation, not your client’s.
+agentSecondContactPhone.error.required = Enter your second contact’s telephone number
+agentSecondContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
+agentSecondContactPhone.error.length = Your second contact’s telephone number must be 24 characters or less
 agentSecondContactPhone.change.hidden = agent second contact telephone number
 
 agentSecondContact.title = Do you have a second contact if your first contact is not available?
