@@ -20,10 +20,11 @@ import controllers.actions._
 import forms.{AgentFirstContactEmailFormProvider, ContactEmailFormProvider}
 import models.Mode
 import navigation.ContactDetailsNavigator
-import pages.ContactEmailPage
+import pages.{AgentFirstContactNamePage, ContactEmailPage, ContactNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import uk.gov.hmrc.http.client
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.ContactHelper
 import views.html.client.ClientFirstContactEmailView
@@ -50,7 +51,7 @@ class ClientFirstContactEmailController @Inject() (
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(ClientFirstContactEmailPage) match {
+      val preparedForm = request.userAnswers.get(ContactNamePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -66,9 +67,9 @@ class ClientFirstContactEmailController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, contactName = getPluralAgentFirstContactName(request.userAnswers)))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ClientFirstContactEmailPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ContactEmailPage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(ClientFirstContactEmailPage, mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(ContactEmailPage, mode, updatedAnswers))
         )
   }
 }
