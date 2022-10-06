@@ -204,7 +204,7 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
         when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(Some(responseDetail)))
 
         val result = service.isContactInformationUpdated(userAnswers = userAnswers)
-        result.futureValue mustBe Some(false)
+        result.futureValue mustBe Some((false, false))
       }
 
       "return true when ReadSubscription data secondaryContact is None and user updated the secondary contact for organisation flow" in {
@@ -248,7 +248,7 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
         when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(Some(responseDetail)))
 
         val result = service.isContactInformationUpdated(userAnswers = userAnswers)
-        result.futureValue mustBe Some(true)
+        result.futureValue mustBe Some((true, false))
       }
 
       "return true when ReadSubscription data is changed for organisation flow" in {
@@ -277,7 +277,7 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
         when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(Some(responseDetail)))
 
         val result = service.isContactInformationUpdated(userAnswers = userAnswers)
-        result.futureValue mustBe Some(true)
+        result.futureValue mustBe Some((true, false))
       }
 
       "return None when ReadSubscription fails to return the details" in {
