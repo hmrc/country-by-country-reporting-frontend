@@ -163,3 +163,5 @@ GET        /agent/client-contact-details/first-contact-name                     
 POST       /agent/client-contact-details/first-contact-name                     controllers.client.ClientFirstContactNameController.onSubmit(mode: Mode = NormalMode)
 GET        /agent/client-contact-details/change-first-contact-name              controllers.client.ClientFirstContactNameController.onPageLoad(mode: Mode = CheckMode)
 POST       /agent/client-contact-details/change-first-contact-name              controllers.client.ClientFirstContactNameController.onSubmit(mode: Mode = CheckMode)
+
+GET        /agent/client-contact-details/client-contact-details-needed                       controllers.client.ClientContactDetailsNeededController.onPageLoad()

@@ -410,18 +410,18 @@ agentFirstContactHavePhone.error.required = Select yes if they can be contacted 
 
 agentFirstContactPhone.title = What is the telephone number for your first contact?
 agentFirstContactPhone.heading = What is the telephone number for {0}?
-agentFirstContactPhone.checkYourAnswersLabel = First contact telephone number
+agentFirstContactPhone.checkYourAnswersLabel = What is the telephone number for {0}?
 agentFirstContactPhone.hint = Enter a telephone number, like&nbsp;01632&nbsp;960&nbsp;001, 07700&nbsp;900&nbsp;982 or +44&nbsp;808&nbsp;157&nbsp;0192.
 agentFirstContactPhone.error.required = Enter a telephone number
 agentFirstContactPhone.error.invalid = Enter a telephone number in the correct format
 agentFirstContactPhone.error.length = Telephone number must be 24 characters or less
-agentFirstContactPhone.change.hidden = first contact telephone number
+agentFirstContactPhone.change.hidden = agent first contact telephone number
 
 agentSecondContact.title = Do you have a second contact if your first contact is not available?
 agentSecondContact.heading = Do you have a second contact if your first contact is not available?
-agentSecondContact.checkYourAnswersLabel = Is there someone else we can contact?
+agentSecondContact.checkYourAnswersLabel = Do you have a second contact if your first contact is not available?
 agentSecondContact.error.required = Select yes if there is someone else we can contact
-agentSecondContact.change.hidden = is there someone else we can contact
+agentSecondContact.change.hidden = if you have a second agent contact
 
 agentSecondContactName.title = What is the name of your second contact?
 agentSecondContactName.heading = What is the name of your second contact?
@@ -448,15 +448,16 @@ agentSecondContactHavePhone.error.required = Select yes if we can call your seco
 
 agentSecondContactPhone.title = What is their telephone number?
 agentSecondContactPhone.heading = What is {0} telephone number?
-agentSecondContactPhone.checkYourAnswersLabel = Second contact telephone number
-agentSecondContactPhone.hint = For example,&nbsp;01632&nbsp;960&nbsp;001, 07700&nbsp;900&nbsp;982 or +44&nbsp;808&nbsp;157&nbsp;0192.
-agentSecondContactPhone.error.required = Enter a telephone number
-agentSecondContactPhone.error.invalid = Enter a telephone number in the correct format
-agentSecondContactPhone.error.length = Telephone number must be 24 characters or less
-agentSecondContactPhone.change.hidden = second contact telephone number
+agentSecondContactPhone.checkYourAnswersLabel = Telephone number
+agentSecondContactPhone.p1 = Provide a telephone number from your organisation, not your client’s.
+agentSecondContactPhone.error.required = Enter your second contact’s telephone number
+agentSecondContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
+agentSecondContactPhone.error.length = Your second contact’s telephone number must be 24 characters or less
+agentSecondContactPhone.change.hidden = agent second contact telephone number
 
 agentContactDetailsSaved.title = Agent contact details saved
 agentContactDetailsSaved.heading = Agent contact details saved
+agentContactDetailsSaved.subheading = What happens next
 agentContactDetailsSaved.p1 = You can now {0}.
 agentContactDetailsSaved.p1.link = send CBC reports
 agentContactDetailsSaved.p2 = Before you can send CBC reports you must {0}.
@@ -468,6 +469,12 @@ changeAgentContactDetails.primary.heading = First contact
 changeAgentContactDetails.secondary.heading = Second contact
 changeAgentContactDetails.nowSendContactDetails = Send us your agent contact details
 changeAgentContactDetails.confirmingInformation = By sending these contact details, you are confirming that the information provided is correct and complete to the best of your knowledge.
+
+clientContactDetailsNeeded.title = You must provide your client’s contact details
+clientContactDetailsNeeded.heading = You must provide your client’s contact details
+clientContactDetailsNeeded.p1 = Before you can send a country-by-country (CBC) report, we need to collect your client’s contact details.
+clientContactDetailsNeeded.p2 = We need up to 2 contacts. They can be for an individual or a team working at your client’s organisation.
+clientContactDetailsNeeded.p3 = We will use these details if we have any questions about your CBC reports. These details can be changed at any time. You only need to go through this process once and you can change these details later if you want to.
 
 clientFirstContactName.title = What is the name of the first contact at your client’s organisation?
 clientFirstContactName.heading = What is the name of the first contact at your client’s organisation?
