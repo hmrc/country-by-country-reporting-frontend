@@ -461,6 +461,7 @@ agentFirstContactPhone.change.hidden = agent first contact telephone number
 
 agentContactDetailsSaved.title = Agent contact details saved
 agentContactDetailsSaved.heading = Agent contact details saved
+agentContactDetailsSaved.subheading = What happens next
 agentContactDetailsSaved.p1 = You can now {0}.
 agentContactDetailsSaved.p1.link = send CBC reports
 agentContactDetailsSaved.p2 = Before you can send CBC reports you must {0}.
