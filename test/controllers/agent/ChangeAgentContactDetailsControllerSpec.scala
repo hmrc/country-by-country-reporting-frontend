@@ -207,9 +207,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.AgentContactDetailsSavedController
-            .onPageLoad()
-            .url //TODO: Change to AgentContactDetailsUpdatedController when implemented
+          redirectLocation(result).value mustEqual routes.AgentContactDetailsUpdatedController.onPageLoad().url
         }
       }
 

@@ -72,8 +72,7 @@ class ChangeAgentContactDetailsController @Inject() (
           agentSubscriptionService.updateAgentContactDetails(request.userAnswers) map {
             case true =>
               agentContactDetailsExist match {
-                case Some(true) =>
-                  Redirect(routes.AgentContactDetailsSavedController.onPageLoad()) //TODO: Change to AgentContactDetailsUpdatedController when implemented
+                case Some(true)  => Redirect(routes.AgentContactDetailsUpdatedController.onPageLoad())
                 case Some(false) => Redirect(routes.AgentContactDetailsSavedController.onPageLoad())
                 case _           => InternalServerError(errorView())
               }

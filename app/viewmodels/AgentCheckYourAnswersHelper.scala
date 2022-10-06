@@ -27,12 +27,12 @@ import viewmodels.govuk.summarylist._
 class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
   def getAgentPrimaryContactDetails: Seq[SummaryListRow] =
-    Seq(contactNamePage(), contactEmailPage(), contactPhonePage()).flatten
+    Seq(firstContactNamePage(), firstContactEmailPage(), firstContactPhonePage()).flatten
 
   def getAgentSecondaryContactDetails: Seq[SummaryListRow] =
-    Seq(hasSecondContactPage(), secondaryContactNamePage(), secondaryContactEmailPage(), secondaryContactPhonePage()).flatten
+    Seq(hasSecondContactPage(), secondContactNamePage(), secondContactEmailPage(), secondContactPhonePage()).flatten
 
-  def contactNamePage(): Option[SummaryListRow] = userAnswers.get(AgentFirstContactNamePage) map {
+  def firstContactNamePage(): Option[SummaryListRow] = userAnswers.get(AgentFirstContactNamePage) map {
     x =>
       SummaryListRowViewModel(
         key = "agentFirstContactName.checkYourAnswersLabel",
@@ -45,7 +45,7 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
       )
   }
 
-  def contactEmailPage(): Option[SummaryListRow] = userAnswers.get(AgentFirstContactEmailPage) map {
+  def firstContactEmailPage(): Option[SummaryListRow] = userAnswers.get(AgentFirstContactEmailPage) map {
     x =>
       SummaryListRowViewModel(
         key = "agentFirstContactEmail.checkYourAnswersLabel",
@@ -58,7 +58,7 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
       )
   }
 
-  def contactPhonePage(): Option[SummaryListRow] = {
+  def firstContactPhonePage(): Option[SummaryListRow] = {
     val summaryView = (value: String) =>
       SummaryListRowViewModel(
         key = "agentFirstContactPhone.checkYourAnswersLabel",
@@ -103,7 +103,7 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
 
   }
 
-  def secondaryContactNamePage(): Option[SummaryListRow] = userAnswers.get(AgentSecondContactNamePage) map {
+  def secondContactNamePage(): Option[SummaryListRow] = userAnswers.get(AgentSecondContactNamePage) map {
     x =>
       SummaryListRowViewModel(
         key = "agentSecondContactName.checkYourAnswersLabel",
@@ -116,7 +116,7 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
       )
   }
 
-  def secondaryContactEmailPage(): Option[SummaryListRow] = userAnswers.get(AgentSecondContactEmailPage) map {
+  def secondContactEmailPage(): Option[SummaryListRow] = userAnswers.get(AgentSecondContactEmailPage) map {
     x =>
       SummaryListRowViewModel(
         key = "agentSecondContactEmail.checkYourAnswersLabel",
@@ -129,7 +129,7 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
       )
   }
 
-  def secondaryContactPhonePage(): Option[SummaryListRow] = {
+  def secondContactPhonePage(): Option[SummaryListRow] = {
     val summaryView = (value: String) =>
       SummaryListRowViewModel(
         key = "agentSecondContactPhone.checkYourAnswersLabel",

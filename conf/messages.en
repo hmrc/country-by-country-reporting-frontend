@@ -410,7 +410,7 @@ agentFirstContactHavePhone.error.required = Select yes if they can be contacted 
 
 agentFirstContactPhone.title = What is the telephone number for your first contact?
 agentFirstContactPhone.heading = What is the telephone number for {0}?
-agentFirstContactPhone.checkYourAnswersLabel = What is the telephone number for {0}?
+agentFirstContactPhone.checkYourAnswersLabel = First contact telephone number
 agentFirstContactPhone.hint = Enter a telephone number, like&nbsp;01632&nbsp;960&nbsp;001, 07700&nbsp;900&nbsp;982 or +44&nbsp;808&nbsp;157&nbsp;0192.
 agentFirstContactPhone.error.required = Enter a telephone number
 agentFirstContactPhone.error.invalid = Enter a telephone number in the correct format
