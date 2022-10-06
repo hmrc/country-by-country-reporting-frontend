@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.agent
 
 import base.SpecBase
 import pages.ContactNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.AgentContactDetailsUpdatedView
+import views.html.agent.AgentContactDetailsUpdatedView
 
 class AgentContactDetailsUpdatedControllerSpec extends SpecBase {
 
