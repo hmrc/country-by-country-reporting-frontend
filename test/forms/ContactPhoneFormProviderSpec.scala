@@ -26,7 +26,7 @@ class ContactPhoneFormProviderSpec extends StringFieldBehaviours {
   val lengthKey   = "contactPhone.error.length"
   val maxLength   = 24
 
-  val form = new ContactPhoneFormProvider()()
+  val form = new ContactPhoneFormProvider().apply("contactPhone")
 
   ".value" - {
 

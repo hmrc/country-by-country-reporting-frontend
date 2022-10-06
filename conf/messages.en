@@ -467,6 +467,12 @@ agentContactDetailsSaved.p1.link = send CBC reports
 agentContactDetailsSaved.p2 = Before you can send CBC reports you must {0}.
 agentContactDetailsSaved.p2.link = provide contact details for your client
 
+agentContactDetailsUpdated.title = Agent contact details updated
+agentContactDetailsUpdated.heading = Agent contact details updated
+agentContactDetailsUpdated.p1 = We will use your new details if we have any questions about your reports.
+agentContactDetailsUpdated.p2 = {0}.
+agentContactDetailsUpdated.p2.link = Back to send a CBC report
+
 clientFirstContactName.title = What is the name of the first contact at your client’s organisation?
 clientFirstContactName.heading = What is the name of the first contact at your client’s organisation?
 clientFirstContactName.checkYourAnswersLabel = What is the name of the first contact at your client’s organisation?
@@ -483,8 +489,11 @@ clientContactDetailsNeeded.p1 = Before you can send a country-by-country (CBC) r
 clientContactDetailsNeeded.p2 = We need up to 2 contacts. They can be for an individual or a team working at your client’s organisation.
 clientContactDetailsNeeded.p3 = We will use these details if we have any questions about your CBC reports. These details can be changed at any time. You only need to go through this process once and you can change these details later if you want to.
 
-agentContactDetailsUpdated.title = Agent contact details updated
-agentContactDetailsUpdated.heading = Agent contact details updated
-agentContactDetailsUpdated.p1 = We will use your new details if we have any questions about your reports.
-agentContactDetailsUpdated.p2 = {0}.
-agentContactDetailsUpdated.p2.link = Back to send a CBC report
+clientFirstContactPhone.title = What is their telephone number?
+clientFirstContactPhone.heading = What is {0} telephone number?
+clientFirstContactPhone.checkYourAnswersLabel = Telephone number
+clientFirstContactPhone.p1 = Provide a telephone number from your client’s organisation.
+clientFirstContactPhone.error.required = Enter the first contact’s telephone number
+clientFirstContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
+clientFirstContactPhone.error.length = The first contact’s telephone number must be 24 characters or less
+clientFirstContactPhone.change.hidden = agent second contact telephone number
