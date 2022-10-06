@@ -37,7 +37,7 @@ class ContactPhoneControllerSpec extends SpecBase with MockitoSugar {
   override def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new ContactPhoneFormProvider()
-  val form         = formProvider()
+  val form         = formProvider("contactPhone")
   val name         = "name"
 
   lazy val contactPhoneRoute = routes.ContactPhoneController.onPageLoad(NormalMode).url

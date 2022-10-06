@@ -491,3 +491,12 @@ clientFirstContactName.error.required = Enter the name of the first contact
 clientFirstContactName.error.length = The name of the first contact must be 35 characters or less
 clientFirstContactName.error.invalid = The name of the first contact must only include letters a to z, hyphens, spaces, and apostrophes
 clientFirstContactName.change.hidden = client first contact name
+
+clientFirstContactPhone.title = What is their telephone number?
+clientFirstContactPhone.heading = What is {0} telephone number?
+clientFirstContactPhone.checkYourAnswersLabel = Telephone number
+clientFirstContactPhone.p1 = Provide a telephone number from your client’s organisation.
+clientFirstContactPhone.error.required = Enter the first contact’s telephone number
+clientFirstContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
+clientFirstContactPhone.error.length = The first contact’s telephone number must be 24 characters or less
+clientFirstContactPhone.change.hidden = agent second contact telephone number
