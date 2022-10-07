@@ -35,7 +35,7 @@ trait UserAnswersGenerator extends TryValues {
       arbitrary[(AgentSecondContactEmailPage.type, JsValue)] ::
       arbitrary[(AgentSecondContactNamePage.type, JsValue)] ::
       arbitrary[(AgentFirstContactEmailPage.type, JsValue)] ::
-      arbitrary[(AgentSecondContactPage.type, JsValue)] ::
+      arbitrary[(AgentHaveSecondContactPage.type, JsValue)] ::
       arbitrary[(SecondContactEmailPage.type, JsValue)] ::
       arbitrary[(ContactNamePage.type, JsValue)] ::
       arbitrary[(HaveTelephonePage.type, JsValue)] ::
