@@ -37,7 +37,7 @@ class HaveSecondContactControllerSpec extends SpecBase with MockitoSugar {
   override def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new HaveSecondContactFormProvider()
-  val form         = formProvider()
+  val form         = formProvider("haveSecondContact")
 
   private val name = "First Contact Name"
 

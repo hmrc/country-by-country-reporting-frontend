@@ -26,7 +26,7 @@ class ContactEmailFormProviderSpec extends StringFieldBehaviours {
   val lengthKey   = "contactEmail.error.length"
   val maxLength   = 132
 
-  val form = new ContactEmailFormProvider()()
+  val form = new ContactEmailFormProvider().apply("contactEmail")
 
   ".value" - {
 

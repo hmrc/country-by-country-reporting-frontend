@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.client
 
 import controllers.actions._
 import forms.ContactEmailFormProvider
@@ -26,12 +26,12 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.ContactHelper
-import views.html.ContactEmailView
+import views.html.client.ClientFirstContactEmailView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ContactEmailController @Inject() (
+class ClientFirstContactEmailController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: ContactDetailsNavigator,
@@ -40,13 +40,13 @@ class ContactEmailController @Inject() (
   requireData: DataRequiredAction,
   formProvider: ContactEmailFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: ContactEmailView
+  view: ClientFirstContactEmailView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
     with ContactHelper {
 
-  val form = formProvider("contactEmail")
+  val form = formProvider("clientFirstContactEmail")
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
@@ -55,7 +55,7 @@ class ContactEmailController @Inject() (
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getFirstContactName(request.userAnswers)))
+      Ok(view(preparedForm, mode, getPluralFirstContactName(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
@@ -63,7 +63,7 @@ class ContactEmailController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getFirstContactName(request.userAnswers)))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getPluralFirstContactName(request.userAnswers)))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ContactEmailPage, value))

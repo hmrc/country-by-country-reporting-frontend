@@ -509,3 +509,19 @@ clientSecondContactPhone.error.required = Enter the first contact’s telephone 
 clientSecondContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
 clientSecondContactPhone.error.length = The first contact’s telephone number must be 24 characters or less
 clientSecondContactPhone.change.hidden = client second contact telephone number
+
+clientHaveSecondContact.title = Is there someone else we can contact if your first contact is not available?
+clientHaveSecondContact.heading = Is there someone else we can contact if {0} is not available?
+clientHaveSecondContact.hint = This can be a team mailbox or another contact.
+clientHaveSecondContact.checkYourAnswersLabel = Do you have a second contact?
+clientHaveSecondContact.error.required = Select yes if there is someone else we can contact
+clientHaveSecondContact.change.hidden = if you have a second contact
+
+clientFirstContactEmail.title = What is the first contact’s email address?
+clientFirstContactEmail.heading = What is {0} email address?
+clientFirstContactEmail.p1 = We will use this to send confirmation of the CBC reports or if we have any questions about them.
+clientFirstContactEmail.checkYourAnswersLabel = Email address
+clientFirstContactEmail.error.required = Enter the first contact’s email address
+clientFirstContactEmail.error.invalid = Enter the first contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
+clientFirstContactEmail.error.length = The first contact’s email address must be 132 characters or less
+clientFirstContactEmail.change.hidden = email address
