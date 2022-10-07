@@ -122,7 +122,7 @@ GET        /agent/agent-contact-details/contact-needed                          
 GET        /agent/agent-contact-details/second-contact-have-phone               controllers.AgentSecondContactHavePhoneController.onPageLoad(mode: Mode = NormalMode)
 POST       /agent/agent-contact-details/second-contact-have-phone               controllers.AgentSecondContactHavePhoneController.onSubmit(mode: Mode = NormalMode)
 GET        /agent/agent-contact-details/change-second-contact-have-phone        controllers.AgentSecondContactHavePhoneController.onPageLoad(mode: Mode = CheckMode)
-POST       /agent/agent-contact-details/change-econd-contact-have-phone         controllers.AgentSecondContactHavePhoneController.onSubmit(mode: Mode = CheckMode)
+POST       /agent/agent-contact-details/change-second-contact-have-phone         controllers.AgentSecondContactHavePhoneController.onSubmit(mode: Mode = CheckMode)
 
 GET        /agent/agent-contact-details/first-contact-email                     controllers.AgentFirstContactEmailController.onPageLoad(mode: Mode = NormalMode)
 POST       /agent/agent-contact-details/first-contact-email                     controllers.AgentFirstContactEmailController.onSubmit(mode: Mode = NormalMode)
