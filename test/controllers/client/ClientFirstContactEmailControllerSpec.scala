@@ -34,8 +34,8 @@ import scala.concurrent.Future
 class ClientFirstContactEmailControllerSpec extends SpecBase with MockitoSugar {
   val formProvider      = new ContactEmailFormProvider()
   val form              = formProvider("clientFirstEmail")
-  val contactName       = "first contact name"
-  val contactNamePlural = "first contact name’s"
+  val contactName       = "contact name"
+  val contactNamePlural = "contact name’s"
 
   lazy val clientFirstContactEmailRoute: String = controllers.client.routes.ClientFirstContactEmailController.onPageLoad(NormalMode).url
 
