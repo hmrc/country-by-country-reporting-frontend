@@ -542,3 +542,12 @@ clientSecondContactName.error.required = Enter the second contact’s name
 clientSecondContactName.error.length = The second contact’s name must be 35 characters or less
 clientSecondContactName.error.invalid = The name of the second contact must only include letters a to z, hyphens, spaces, and apostrophes
 clientSecondContactName.change.hidden = client second contact name
+
+clientSecondContactEmail.title = What is the second contact’s email address?
+clientSecondContactEmail.heading = What is {0} email address?
+clientSecondContactEmail.hint = We will use this email to send confirmation of the reports we receive or if we have any questions about your client’s report.
+clientSecondContactEmail.checkYourAnswersLabel = Second contact email address
+clientSecondContactEmail.error.required = Enter the second contact’s email address
+clientSecondContactEmail.error.length = The second contact’s email address must be 132 characters or less
+clientSecondContactEmail.error.invalid = Enter the second contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
+clientSecondContactEmail.change.hidden = second contact email address
