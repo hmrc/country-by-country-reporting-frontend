@@ -516,7 +516,7 @@ clientHaveSecondContact.change.hidden = if you have a second contact
 
 clientFirstContactEmail.title = What is the first contact’s email address?
 clientFirstContactEmail.heading = What is {0} email address?
-clientFirstContactEmail.hint = We will use this to send confirmation of the CBC reports or if we have any questions about them.
+clientFirstContactEmail.p1 = We will use this to send confirmation of the CBC reports or if we have any questions about them.
 clientFirstContactEmail.checkYourAnswersLabel = Email address
 clientFirstContactEmail.error.required = Enter the first contact’s email address
 clientFirstContactEmail.error.invalid = Enter the first contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com

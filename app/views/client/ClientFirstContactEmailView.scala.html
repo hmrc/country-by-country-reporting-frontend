@@ -35,13 +35,14 @@
         }
 
         <h1 class="govuk-heading-l">@messages("clientFirstContactEmail.heading", contactName)</h1>
+        <p class="govuk-body">@messages("clientFirstContactEmail.p1")</p>
+
         @govukInput(
             InputViewModel(
                 field = form("value"),
                 label = LabelViewModel(messages("clientFirstContactEmail.heading", contactName)).asPageHeading().withCssClass("govuk-visually-hidden")
             )
                     .withWidth(Full)
-                    .withHint(Hint(content=messages("clientFirstContactEmail.hint")))
         )
 
 
