@@ -45,7 +45,7 @@ class ChangeContactDetailsControllerSpec extends SpecBase with BeforeAndAfterEac
       "must return OK and the correct view for a GET and show 'confirm and send' button on updating contact details" in {
 
         when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
-          .thenReturn(Future.successful(Some(true)))
+          .thenReturn(Future.successful(Some((true, true))))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
@@ -67,7 +67,7 @@ class ChangeContactDetailsControllerSpec extends SpecBase with BeforeAndAfterEac
       "must return OK and the correct view for a GET and hide 'confirm and send' button on not updating contact details" in {
 
         when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
-          .thenReturn(Future.successful(Some(false)))
+          .thenReturn(Future.successful(Some((false, false))))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(

@@ -31,10 +31,10 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryAgentSecondContactUserAnswersEntry: Arbitrary[(AgentSecondContactPage.type, JsValue)] =
+  implicit lazy val arbitraryAgentSecondContactUserAnswersEntry: Arbitrary[(AgentHaveSecondContactPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[AgentSecondContactPage.type]
+        page  <- arbitrary[AgentHaveSecondContactPage.type]
         value <- arbitrary[Boolean].map(Json.toJson(_))
       } yield (page, value)
     }

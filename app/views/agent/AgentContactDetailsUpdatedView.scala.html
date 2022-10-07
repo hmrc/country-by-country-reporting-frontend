@@ -14,6 +14,7 @@
  * limitations under the License.
  *@
 
+@import views.html.components.Link
 @this(
   layout: templates.Layout,
   govukPanel : GovukPanel,
@@ -22,7 +23,7 @@
 
 @()(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("agentContactDetailsUpdated.title"))) {
+@layout(pageTitle = titleNoForm(messages("agentContactDetailsUpdated.title")), showBackLink = false) {
 
 @govukPanel(Panel(
 title = Text(messages("agentContactDetailsUpdated.heading"))

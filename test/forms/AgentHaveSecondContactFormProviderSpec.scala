@@ -16,15 +16,30 @@
 
 package forms
 
-import forms.mappings.Mappings
+import forms.behaviours.BooleanFieldBehaviours
+import play.api.data.FormError
 
-import javax.inject.Inject
-import play.api.data.Form
+class AgentHaveSecondContactFormProviderSpec extends BooleanFieldBehaviours {
 
-class AgentSecondContactFormProvider @Inject() extends Mappings {
+  val requiredKey = "agentHaveSecondContact.error.required"
+  val invalidKey  = "error.boolean"
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("agentSecondContact.error.required")
+  val form = new AgentHaveSecondContactFormProvider()()
+
+  ".value" - {
+
+    val fieldName = "value"
+
+    behave like booleanField(
+      form,
+      fieldName,
+      invalidError = FormError(fieldName, invalidKey)
     )
+
+    behave like mandatoryField(
+      form,
+      fieldName,
+      requiredError = FormError(fieldName, requiredKey)
+    )
+  }
 }

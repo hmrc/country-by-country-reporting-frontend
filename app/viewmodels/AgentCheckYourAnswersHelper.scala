@@ -40,7 +40,7 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
         actions = Seq(
           ActionItemViewModel("site.change", routes.AgentFirstContactNameController.onPageLoad(CheckMode).url)
             .withAttribute(("id", "contact-name"))
-            .withVisuallyHiddenText(messages("contactName.change.hidden"))
+            .withVisuallyHiddenText(messages("agentFirstContactName.change.hidden"))
         )
       )
   }
@@ -53,7 +53,7 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
         actions = Seq(
           ActionItemViewModel("site.change", routes.AgentFirstContactEmailController.onPageLoad(CheckMode).url)
             .withAttribute(("id", "contact-email"))
-            .withVisuallyHiddenText(messages("contactEmail.change.hidden"))
+            .withVisuallyHiddenText(messages("agentFirstContactEmail.change.hidden"))
         )
       )
   }
@@ -66,7 +66,7 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
         actions = Seq(
           ActionItemViewModel("site.change", routes.AgentFirstContactHavePhoneController.onPageLoad(CheckMode).url)
             .withAttribute(("id", "contact-phone"))
-            .withVisuallyHiddenText(messages("contactPhone.change.hidden"))
+            .withVisuallyHiddenText(messages("agentFirstContactPhone.change.hidden"))
         )
       )
 
@@ -81,15 +81,15 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
   def hasSecondContactPage(): Option[SummaryListRow] = {
     val summaryView = (yesNo: String) =>
       SummaryListRowViewModel(
-        key = "agentSecondContact.checkYourAnswersLabel",
+        key = "agentHaveSecondContact.checkYourAnswersLabel",
         value = ValueViewModel(HtmlFormat.escape(s"${messages(yesNo)}").toString),
         actions = Seq(
-          ActionItemViewModel("site.change", routes.AgentSecondContactController.onPageLoad(CheckMode).url)
+          ActionItemViewModel("site.change", routes.AgentHaveSecondContactController.onPageLoad(CheckMode).url)
             .withAttribute(("id", "second-contact"))
-            .withVisuallyHiddenText(messages("haveSecondContact.change.hidden"))
+            .withVisuallyHiddenText(messages("agentHaveSecondContact.change.hidden"))
         )
       )
-    Some(userAnswers.get(AgentSecondContactPage) match {
+    Some(userAnswers.get(AgentHaveSecondContactPage) match {
       case Some(x) =>
         val yesNo = if (x) "site.yes" else "site.no"
         summaryView(yesNo)
@@ -111,7 +111,7 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
         actions = Seq(
           ActionItemViewModel("site.change", routes.AgentSecondContactNameController.onPageLoad(CheckMode).url)
             .withAttribute(("id", "snd-contact-name"))
-            .withVisuallyHiddenText(messages("secondContactName.change.hidden"))
+            .withVisuallyHiddenText(messages("agentSecondContactName.change.hidden"))
         )
       )
   }
@@ -124,7 +124,7 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
         actions = Seq(
           ActionItemViewModel("site.change", routes.AgentSecondContactEmailController.onPageLoad(CheckMode).url)
             .withAttribute(("id", "snd-contact-email"))
-            .withVisuallyHiddenText(messages("secondContactEmail.change.hidden"))
+            .withVisuallyHiddenText(messages("agentSecondContactEmail.change.hidden"))
         )
       )
   }
@@ -137,11 +137,11 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
         actions = Seq(
           ActionItemViewModel("site.change", routes.AgentSecondContactHavePhoneController.onPageLoad(CheckMode).url)
             .withAttribute(("id", "snd-contact-phone"))
-            .withVisuallyHiddenText(messages("secondContactPhone.change.hidden"))
+            .withVisuallyHiddenText(messages("agentSecondContactPhone.change.hidden"))
         )
       )
 
-    userAnswers.get(AgentSecondContactPage) match {
+    userAnswers.get(AgentHaveSecondContactPage) match {
       case Some(true) =>
         Some(
           userAnswers.get(AgentSecondContactPhonePage) match {

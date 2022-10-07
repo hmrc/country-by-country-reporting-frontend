@@ -17,26 +17,26 @@
 package controllers.agent
 
 import base.SpecBase
-import forms.AgentSecondContactFormProvider
+import forms.AgentHaveSecondContactFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
-import pages.AgentSecondContactPage
+import pages.AgentHaveSecondContactPage
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.agent.AgentSecondContactView
+import views.html.agent.AgentHaveSecondContactView
 
 import scala.concurrent.Future
 
-class AgentSecondContactControllerSpec extends SpecBase with MockitoSugar {
+class AgentHaveSecondContactControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new AgentSecondContactFormProvider()
+  val formProvider = new AgentHaveSecondContactFormProvider()
   val form         = formProvider()
 
-  lazy val agentSecondContactRoute = routes.AgentSecondContactController.onPageLoad(NormalMode).url
+  lazy val agentSecondContactRoute = routes.AgentHaveSecondContactController.onPageLoad(NormalMode).url
 
   "AgentSecondContact Controller" - {
 
@@ -49,7 +49,7 @@ class AgentSecondContactControllerSpec extends SpecBase with MockitoSugar {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[AgentSecondContactView]
+        val view = application.injector.instanceOf[AgentHaveSecondContactView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
@@ -58,14 +58,14 @@ class AgentSecondContactControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AgentSecondContactPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(AgentHaveSecondContactPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
         val request = FakeRequest(GET, agentSecondContactRoute)
 
-        val view = application.injector.instanceOf[AgentSecondContactView]
+        val view = application.injector.instanceOf[AgentHaveSecondContactView]
 
         val result = route(application, request).value
 
@@ -109,7 +109,7 @@ class AgentSecondContactControllerSpec extends SpecBase with MockitoSugar {
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[AgentSecondContactView]
+        val view = application.injector.instanceOf[AgentHaveSecondContactView]
 
         val result = route(application, request).value
 
