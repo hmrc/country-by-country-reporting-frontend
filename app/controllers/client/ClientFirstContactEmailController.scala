@@ -17,14 +17,13 @@
 package controllers.client
 
 import controllers.actions._
-import forms.{AgentFirstContactEmailFormProvider, ContactEmailFormProvider}
+import forms.ContactEmailFormProvider
 import models.Mode
 import navigation.ContactDetailsNavigator
-import pages.{AgentFirstContactNamePage, ContactEmailPage, ContactNamePage}
+import pages.ContactEmailPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import uk.gov.hmrc.http.client
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.ContactHelper
 import views.html.client.ClientFirstContactEmailView
@@ -47,11 +46,11 @@ class ClientFirstContactEmailController @Inject() (
     with I18nSupport
     with ContactHelper {
 
-  val form = formProvider("contactEmail")
+  val form = formProvider("clientFirstContactEmail")
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(ContactNamePage) match {
+      val preparedForm = request.userAnswers.get(ContactEmailPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }

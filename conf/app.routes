@@ -163,7 +163,7 @@ POST       /agent/client-contact-details/change-first-contact-name              
 
 GET        /agent/client-contact-details/client-contact-details-needed                       controllers.client.ClientContactDetailsNeededController.onPageLoad()
 
-GET        /client/client-contact-details/first-contact-email                     controllers.client.ClientFirstContactEmailController.onPageLoad(mode: Mode = NormalMode)
-POST       /client/client-contact-details/first-contact-email                     controllers.client.ClientFirstContactEmailController.onSubmit(mode: Mode = NormalMode)
-GET        /client/client-contact-details/change-first-contact-email              controllers.client.ClientFirstContactEmailController.onPageLoad(mode: Mode = CheckMode)
-POST       /client/client-contact-details/change-first-contact-email              controllers.client.ClientFirstContactEmailController.onSubmit(mode: Mode = CheckMode)
+GET        /agent/client-contact-details/first-contact-email                     controllers.client.ClientFirstContactEmailController.onPageLoad(mode: Mode = NormalMode)
+POST       /agent/client-contact-details/first-contact-email                     controllers.client.ClientFirstContactEmailController.onSubmit(mode: Mode = NormalMode)
+GET        /agent/client-contact-details/change-first-contact-email              controllers.client.ClientFirstContactEmailController.onPageLoad(mode: Mode = CheckMode)
+POST       /agent/client-contact-details/change-first-contact-email              controllers.client.ClientFirstContactEmailController.onSubmit(mode: Mode = CheckMode)
