@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.client
 
 import controllers.actions._
 import forms.HaveSecondContactFormProvider
@@ -26,12 +26,12 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.ContactHelper
-import views.html.HaveSecondContactView
+import views.html.client.ClientHaveSecondContactView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class HaveSecondContactController @Inject() (
+class ClientHaveSecondContactController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: ContactDetailsNavigator,
@@ -40,13 +40,13 @@ class HaveSecondContactController @Inject() (
   requireData: DataRequiredAction,
   formProvider: HaveSecondContactFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: HaveSecondContactView
+  view: ClientHaveSecondContactView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
     with ContactHelper {
 
-  val form = formProvider("haveSecondContact")
+  val form = formProvider("clientHaveSecondContact")
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>

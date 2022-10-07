@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.client
 
 import base.SpecBase
 import forms.HaveSecondContactFormProvider
@@ -28,22 +28,22 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.HaveSecondContactView
+import views.html.client.ClientHaveSecondContactView
 
 import scala.concurrent.Future
 
-class HaveSecondContactControllerSpec extends SpecBase with MockitoSugar {
+class ClientHaveSecondContactControllerSpec extends SpecBase with MockitoSugar {
 
   override def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new HaveSecondContactFormProvider()
-  val form         = formProvider("haveSecondContact")
+  val form         = formProvider("clientHaveSecondContact")
 
   private val name = "First Contact Name"
 
-  lazy val haveSecondContactRoute = routes.HaveSecondContactController.onPageLoad(NormalMode).url
+  lazy val clientHaveSecondContactRoute = routes.ClientHaveSecondContactController.onPageLoad(NormalMode).url
 
-  "HaveSecondContact Controller" - {
+  "ClientHaveSecondContact Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -52,11 +52,11 @@ class HaveSecondContactControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, haveSecondContactRoute)
+        val request = FakeRequest(GET, clientHaveSecondContactRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[HaveSecondContactView]
+        val view = application.injector.instanceOf[ClientHaveSecondContactView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, NormalMode, name)(request, messages(application)).toString
@@ -76,9 +76,9 @@ class HaveSecondContactControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, haveSecondContactRoute)
+        val request = FakeRequest(GET, clientHaveSecondContactRoute)
 
-        val view = application.injector.instanceOf[HaveSecondContactView]
+        val view = application.injector.instanceOf[ClientHaveSecondContactView]
 
         val result = route(application, request).value
 
@@ -103,7 +103,7 @@ class HaveSecondContactControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, haveSecondContactRoute)
+          FakeRequest(POST, clientHaveSecondContactRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
@@ -121,12 +121,12 @@ class HaveSecondContactControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, haveSecondContactRoute)
+          FakeRequest(POST, clientHaveSecondContactRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[HaveSecondContactView]
+        val view = application.injector.instanceOf[ClientHaveSecondContactView]
 
         val result = route(application, request).value
 
