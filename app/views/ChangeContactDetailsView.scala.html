@@ -23,7 +23,7 @@
         govukButton: GovukButton
 )
 
-@(primary: SummaryList, secondary: SummaryList, frontendAppConfig: FrontendAppConfig, hasChanged: Boolean)(implicit request: Request[_], messages: Messages)
+@(primary: SummaryList, secondary: SummaryList, frontendAppConfig: FrontendAppConfig, hasChanged: Boolean, isOrganisationsFirstVisitAfterMigration: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("ChangeContactDetails.title"))) {
     @formHelper(action = routes.ChangeContactDetailsController.onSubmit()) {
@@ -45,7 +45,9 @@
         }
     }
 
-     <p class="govuk-!-padding-top-5 govuk-body">
-       <a class="govuk-link" href=@routes.IndexController.onPageLoad.url>@messages("site.backToReportPage")</a>
-     </p>
+     @if(!isOrganisationsFirstVisitAfterMigration) {
+         <p class="govuk-!-padding-top-5 govuk-body">
+           <a class="govuk-link" href=@routes.IndexController.onPageLoad.url>@messages("site.backToReportPage")</a>
+         </p>
+    }
 }

@@ -18,9 +18,11 @@ package controllers
 
 import config.FrontendAppConfig
 import controllers.actions._
+import models.requests.DataRequest
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.SubscriptionService
+import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.CheckYourAnswersHelper
 import viewmodels.govuk.summarylist._
@@ -42,6 +44,9 @@ class ChangeContactDetailsController @Inject() (
 ) extends FrontendBaseController
     with I18nSupport {
 
+  private def isOrganisationAndFirstVisitAfterMigration(isFirstVisitAfterMigration: Boolean)(implicit request: DataRequest[AnyContent]): Boolean =
+    (request.userType == AffinityGroup.Organisation) & isFirstVisitAfterMigration
+
   def onPageLoad: Action[AnyContent] = (identify andThen getData.apply andThen requireData).async {
     implicit request =>
       val checkUserAnswersHelper = CheckYourAnswersHelper(request.userAnswers)
@@ -55,8 +60,11 @@ class ChangeContactDetailsController @Inject() (
       )
 
       subscriptionService.isContactInformationUpdated(request.userAnswers) map {
-        case Some(hasChanged) => Ok(view(primaryContactList, secondaryContactList, frontendAppConfig, hasChanged))
-        case _                => InternalServerError(errorView())
+        case Some((hasChanged, isFirstVisitAfterMigration)) =>
+          Ok(
+            view(primaryContactList, secondaryContactList, frontendAppConfig, hasChanged, isOrganisationAndFirstVisitAfterMigration(isFirstVisitAfterMigration))
+          )
+        case _ => InternalServerError(errorView())
       }
   }
 
