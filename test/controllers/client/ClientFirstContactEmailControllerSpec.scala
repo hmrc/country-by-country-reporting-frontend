@@ -102,8 +102,6 @@ class ClientFirstContactEmailControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      //val userAnswers = emptyUserAnswers.set(ContactNamePage, contactName).success.value
-
       val userAnswers: UserAnswers = UserAnswers(userAnswersId)
         .set(ContactNamePage, contactName)
         .success
