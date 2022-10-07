@@ -33,7 +33,7 @@ import scala.concurrent.Future
 
 class ClientFirstContactEmailControllerSpec extends SpecBase with MockitoSugar {
   val formProvider      = new ContactEmailFormProvider()
-  val form              = formProvider("clientFirstEmail")
+  val form              = formProvider("clientFirstContactEmail")
   val contactName       = "contact name"
   val contactNamePlural = "contact name’s"
 
@@ -102,7 +102,13 @@ class ClientFirstContactEmailControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = emptyUserAnswers.set(ContactNamePage, contactName).success.value
+      //val userAnswers = emptyUserAnswers.set(ContactNamePage, contactName).success.value
+
+      val userAnswers: UserAnswers = UserAnswers(userAnswersId)
+        .set(ContactNamePage, contactName)
+        .success
+        .value
+
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
