@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,28 +12,23 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package forms
+@import views.html.components.Link
+@this(
+  layout: templates.Layout,
+  govukPanel : GovukPanel,
+  link: components.Link
+)
 
-import forms.mappings.Mappings
-import play.api.data.Form
-import utils.RegExConstants
+@()(implicit request: Request[_], messages: Messages)
 
-import javax.inject.Inject
+@layout(pageTitle = titleNoForm(messages("agentContactDetailsUpdated.title")), showBackLink = false) {
 
-class ContactPhoneFormProvider @Inject() extends Mappings with RegExConstants {
+@govukPanel(Panel(
+title = Text(messages("agentContactDetailsUpdated.heading"))
+))
 
-  val maxlength = 24
-
-  def apply(key: String): Form[String] =
-    Form(
-      "value" -> validatedText(
-        s"$key.error.required",
-        s"$key.error.invalid",
-        s"$key.error.length",
-        phoneRegex,
-        maxlength
-      )
-    )
+<p class="govuk-body">@Html(messages("agentContactDetailsUpdated.p1"))</p>
+<p class="govuk-body">@Html(messages("agentContactDetailsUpdated.p2", link(routes.IndexController.onPageLoad.url, "agentContactDetailsUpdated.p2.link")))</p>
 }

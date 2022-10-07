@@ -24,24 +24,24 @@
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode, secondContactName: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], secondContactName: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("agentSecondContactPhone.title"))) {
+@layout(pageTitle = title(form, messages("clientSecondContactPhone.title"))) {
 
-    @formHelper(action = routes.AgentSecondContactPhoneController.onSubmit(mode)) {
+    @formHelper(action = controllers.client.routes.ClientSecondContactPhoneController.onSubmit(mode)) {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <h1 class="govuk-heading-l">@messages("agentSecondContactPhone.heading", secondContactName)</h1>
-        <p class="govuk-body">@messages("agentSecondContactPhone.p1")</p>
+        <h1 class="govuk-heading-l">@messages("clientSecondContactPhone.heading", secondContactName)</h1>
+        <p class="govuk-body">@messages("clientSecondContactPhone.p1")</p>
 
         @govukInput(
             InputViewModel(
-                    field = form("value"),
-                    label = LabelViewModel(messages("agentSecondContactPhone.heading", secondContactName)).asPageHeading().withCssClass("govuk-visually-hidden")
-                ).withWidth(ThreeQuarters)
+                field = form("value"),
+                label = LabelViewModel(messages("clientSecondContactPhone.heading")).asPageHeading().withCssClass("govuk-visually-hidden")
+            ).withWidth(ThreeQuarters)
         )
 
         @govukButton(

@@ -14,34 +14,29 @@
  * limitations under the License.
  *@
 
-@import viewmodels.InputWidth._
-
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
-    govukInput: GovukInput,
+    govukRadios: GovukRadios,
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode, secondContactName: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, contactName: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("agentSecondContactPhone.title"))) {
+@layout(pageTitle = title(form, messages("clientHaveSecondContact.title"))) {
 
-    @formHelper(action = routes.AgentSecondContactPhoneController.onSubmit(mode)) {
+    @formHelper(action = routes.HaveSecondContactController.onSubmit(mode), 'autoComplete -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <h1 class="govuk-heading-l">@messages("agentSecondContactPhone.heading", secondContactName)</h1>
-        <p class="govuk-body">@messages("agentSecondContactPhone.p1")</p>
-
-        @govukInput(
-            InputViewModel(
-                    field = form("value"),
-                    label = LabelViewModel(messages("agentSecondContactPhone.heading", secondContactName)).asPageHeading().withCssClass("govuk-visually-hidden")
-                ).withWidth(ThreeQuarters)
+        @govukRadios(
+            RadiosViewModel.yesNo(
+                field = form("value"),
+                legend = LegendViewModel(messages("clientHaveSecondContact.heading", contactName)).asPageHeading()
+            ).withHint(HintViewModel(Text(messages("clientHaveSecondContact.hint"))))
         )
 
         @govukButton(
