@@ -43,6 +43,30 @@ trait ContactHelper {
         contactName => contactName
       )
 
+  def getPluralFirstContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
+    userAnswers
+      .get(ContactNamePage)
+      .fold(messages("contact.name.plural", messages("default.firstContact.name")))(
+        contactName =>
+          if (contactName.endsWith("s")) {
+            messages("contact.name.plural.withS", contactName)
+          } else {
+            messages("contact.name.plural", contactName)
+          }
+      )
+
+  def getPluralSecondContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
+    userAnswers
+      .get(SecondContactNamePage)
+      .fold(messages("contact.name.plural", messages("default.secondContact.name")))(
+        contactName =>
+          if (contactName.endsWith("s")) {
+            messages("contact.name.plural.withS", contactName)
+          } else {
+            messages("contact.name.plural", contactName)
+          }
+      )
+
   def getAgentFirstContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
     userAnswers
       .get(AgentFirstContactNamePage)
