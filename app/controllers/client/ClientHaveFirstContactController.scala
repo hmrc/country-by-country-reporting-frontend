@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.HaveFirstContactFormProvider
 import models.{CheckMode, Mode}
 import navigation.ContactDetailsNavigator
-import pages.HaveSecondContactPage
+import pages.{HaveFirstContactPage, HaveSecondContactPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -50,9 +50,9 @@ class ClientHaveFirstContactController @Inject() (
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(HaveSecondContactPage) match {
-        case Some(value) => form.fill(value)
+      val preparedForm = request.userAnswers.get(HaveFirstContactPage) match {
         case None        => form
+        case Some(value) => form.fill(value)
       }
 
       Ok(view(preparedForm, mode, getFirstContactName(request.userAnswers)))
@@ -66,9 +66,9 @@ class ClientHaveFirstContactController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getFirstContactName(request.userAnswers)))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(HaveSecondContactPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(HaveFirstContactPage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(HaveSecondContactPage, CheckMode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(HaveFirstContactPage, CheckMode, updatedAnswers))
         )
   }
 }

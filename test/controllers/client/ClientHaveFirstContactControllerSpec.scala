@@ -17,7 +17,7 @@
 package controllers.client
 
 import base.SpecBase
-import forms.{HaveFirstContactFormProvider, HaveSecondContactFormProvider}
+import forms.HaveFirstContactFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
@@ -83,7 +83,7 @@ class ClientHaveFirstContactControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, name)(request, messages(application)).toString
       }
     }
 
