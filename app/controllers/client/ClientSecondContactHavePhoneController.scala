@@ -47,7 +47,7 @@ class ClientSecondContactHavePhoneController @Inject() (
     with I18nSupport
     with ContactHelper {
 
-  val form = formProvider()
+  val form = formProvider("clientSecondContactHavePhone")
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>

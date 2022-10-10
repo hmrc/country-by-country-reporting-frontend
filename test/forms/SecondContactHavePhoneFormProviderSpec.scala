@@ -24,7 +24,7 @@ class SecondContactHavePhoneFormProviderSpec extends BooleanFieldBehaviours {
   val requiredKey = "secondContactHavePhone.error.required"
   val invalidKey  = "error.boolean"
 
-  val form = new SecondContactHavePhoneFormProvider()()
+  val form = new SecondContactHavePhoneFormProvider().apply("contactEmail")
 
   ".value" - {
 
