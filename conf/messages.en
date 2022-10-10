@@ -517,7 +517,6 @@ clientFirstContactHavePhone.checkYourAnswersLabel = Client Telephone number
 clientFirstContactHavePhone.error.required = Select yes if we can call the first contact by telephone
 clientFirstContactHavePhone.change.hidden =  We will use this to keep in touch and if we have any questions about your reports.
 
-
 clientHaveSecondContact.title = Is there someone else we can contact if your first contact is not available?
 clientHaveSecondContact.heading = Is there someone else we can contact if {0} is not available?
 clientHaveSecondContact.hint = This can be a team mailbox or another contact.
