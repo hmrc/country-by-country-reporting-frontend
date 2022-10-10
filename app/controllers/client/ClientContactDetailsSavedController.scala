@@ -21,7 +21,7 @@ import pages.ContactNamePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.agent.AgentContactDetailsSavedView
+import views.html.client.ClientContactDetailsSavedView
 
 import javax.inject.Inject
 
@@ -31,7 +31,7 @@ class ClientContactDetailsSavedController @Inject()(
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: AgentContactDetailsSavedView
+  view: ClientContactDetailsSavedView
 ) extends FrontendBaseController
     with I18nSupport {
 
