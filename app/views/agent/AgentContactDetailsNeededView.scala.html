@@ -33,6 +33,6 @@
         <p class="govuk-body">@messages("agentContactDetailsNeeded.p5")</p>
     }
 
-    <a href="#" id="submit" role="button" draggable="false" class="govuk-button" data-module="govuk-button">@messages("site.continue")</a>
+    <a href=@controllers.agent.routes.AgentFirstContactNameController.onPageLoad(NormalMode) id="submit" role="button" draggable="false" class="govuk-button" data-module="govuk-button">@messages("site.continue")</a>
 
 }
