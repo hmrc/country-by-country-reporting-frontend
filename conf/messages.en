@@ -510,7 +510,7 @@ clientSecondContactPhone.error.invalid = Telephone number can only include numbe
 clientSecondContactPhone.error.length = The first contact’s telephone number must be 24 characters or less
 clientSecondContactPhone.change.hidden = client second contact telephone number
 
-clientFirstContactHavePhone.title = Can we call {0} by telephone?
+clientFirstContactHavePhone.title = Can we call the first contact by telephone?
 clientFirstContactHavePhone.heading = Can we call {0} by telephone?
 clientFirstContactHavePhone.hint = This can be a team mailbox or another contact.
 clientFirstContactHavePhone.checkYourAnswersLabel = Client Telephone number
