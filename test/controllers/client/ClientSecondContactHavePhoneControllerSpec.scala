@@ -43,7 +43,8 @@ class ClientSecondContactHavePhoneControllerSpec extends SpecBase with MockitoSu
 
     "must return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers.set(SecondContactNamePage, contactName).success.value
+      val userAnswers = emptyUserAnswers
+        .set(SecondContactNamePage, contactName).success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
