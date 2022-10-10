@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.client
 
 import controllers.actions._
 import forms.HaveTelephoneFormProvider
-import models.Mode
+import models.{CheckMode, Mode}
 import navigation.ContactDetailsNavigator
 import pages.HaveTelephonePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -26,12 +26,12 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.ContactHelper
-import views.html.HaveTelephoneView
+import views.html.client.ClientFirstContactHavePhoneView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class HaveTelephoneController @Inject() (
+class ClientFirstContactHavePhoneController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: ContactDetailsNavigator,
@@ -40,13 +40,13 @@ class HaveTelephoneController @Inject() (
   requireData: DataRequiredAction,
   formProvider: HaveTelephoneFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: HaveTelephoneView
+  view: ClientFirstContactHavePhoneView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
     with ContactHelper {
 
-  val form = formProvider("haveTelephone")
+  val form = formProvider("clientFirstContactHavePhone")
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
@@ -55,7 +55,7 @@ class HaveTelephoneController @Inject() (
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, getFirstContactName(request.userAnswers), mode))
+      Ok(view(preparedForm, mode, getFirstContactName(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
@@ -63,12 +63,12 @@ class HaveTelephoneController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, getFirstContactName(request.userAnswers), mode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getFirstContactName(request.userAnswers)))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(HaveTelephonePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(HaveTelephonePage, mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(HaveTelephonePage, CheckMode, updatedAnswers))
         )
   }
 }
