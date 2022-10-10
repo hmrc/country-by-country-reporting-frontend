@@ -34,24 +34,24 @@ import scala.concurrent.Future
 class ClientSecondContactHavePhoneControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new SecondContactHavePhoneFormProvider()
-  val form         = formProvider()
+  val form         = formProvider("clientSecondContactHavePhone")
   val contactName  = "name"
 
-  lazy val agentSecondContactHavePhoneRoute: String = routes.ClientSecondContactHavePhoneController.onPageLoad(NormalMode).url
+  lazy val clientSecondContactHavePhoneRoute: String = routes.ClientSecondContactHavePhoneController.onPageLoad(NormalMode).url
 
   "AgentSecondContactHavePhone Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val userAnswers = emptyUserAnswers.set(AgentSecondContactNamePage, contactName).success.value
+      val userAnswers = emptyUserAnswers.set(SecondContactNamePage, contactName).success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, agentSecondContactHavePhoneRoute)
+        val request = FakeRequest(GET, clientSecondContactHavePhoneRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[AgentSecondContactHavePhoneView]
+        val view = application.injector.instanceOf[ClientSecondContactHavePhoneView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, NormalMode, contactName)(request, messages(application)).toString
@@ -61,14 +61,14 @@ class ClientSecondContactHavePhoneControllerSpec extends SpecBase with MockitoSu
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(AgentSecondContactHavePhonePage, true).success.value.set(AgentSecondContactNamePage, contactName).success.value
+        UserAnswers(userAnswersId).set(SecondContactHavePhonePage, true).success.value.set(SecondContactNamePage, contactName).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, agentSecondContactHavePhoneRoute)
+        val request = FakeRequest(GET, clientSecondContactHavePhoneRoute)
 
-        val view = application.injector.instanceOf[AgentSecondContactHavePhoneView]
+        val view = application.injector.instanceOf[ClientSecondContactHavePhoneView]
 
         val result = route(application, request).value
 
@@ -91,7 +91,7 @@ class ClientSecondContactHavePhoneControllerSpec extends SpecBase with MockitoSu
 
       running(application) {
         val request =
-          FakeRequest(POST, agentSecondContactHavePhoneRoute)
+          FakeRequest(POST, clientSecondContactHavePhoneRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
@@ -103,17 +103,17 @@ class ClientSecondContactHavePhoneControllerSpec extends SpecBase with MockitoSu
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers = emptyUserAnswers.set(AgentSecondContactNamePage, contactName).success.value
+      val userAnswers = emptyUserAnswers.set(SecondContactNamePage, contactName).success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, agentSecondContactHavePhoneRoute)
+          FakeRequest(POST, clientSecondContactHavePhoneRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[AgentSecondContactHavePhoneView]
+        val view = application.injector.instanceOf[ClientSecondContactHavePhoneView]
 
         val result = route(application, request).value
 

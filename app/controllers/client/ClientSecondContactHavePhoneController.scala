@@ -32,7 +32,7 @@ import views.html.client.ClientSecondContactHavePhoneView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class ClientSecondContactHavePhoneController @Inject()(
+class ClientSecondContactHavePhoneController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
