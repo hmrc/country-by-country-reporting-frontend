@@ -39,7 +39,7 @@ class ClientSecondContactHavePhoneControllerSpec extends SpecBase with MockitoSu
 
   lazy val clientSecondContactHavePhoneRoute: String = routes.ClientSecondContactHavePhoneController.onPageLoad(NormalMode).url
 
-  "AgentSecondContactHavePhone Controller" - {
+  "ClientSecondContactHavePhone Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
