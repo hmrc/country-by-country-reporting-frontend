@@ -522,7 +522,7 @@ clientHaveSecondContact.title = Is there someone else we can contact if your fir
 clientHaveSecondContact.heading = Is there someone else we can contact if {0} is not available?
 clientHaveSecondContact.hint = This can be a team mailbox or another contact.
 clientHaveSecondContact.checkYourAnswersLabel = Do you have a second contact?
-clientHaveSecondContact.error.required = Select yes if there is someone else we can contact
+clientHaveSecondContact.error.required = Select yes if you have a second client contact if the first client contact is not available
 clientHaveSecondContact.change.hidden = if you have a second contact
 
 clientFirstContactEmail.title = What is the first contact’s email address?
