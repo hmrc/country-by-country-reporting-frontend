@@ -24,7 +24,7 @@ class HaveTelephoneFormProviderSpec extends BooleanFieldBehaviours {
   val requiredKey = "haveTelephone.error.required"
   val invalidKey  = "error.boolean"
 
-  val form = new HaveTelephoneFormProvider()()
+  val form = new HaveTelephoneFormProvider()("haveTelephone")
 
   ".value" - {
 

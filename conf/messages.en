@@ -510,12 +510,13 @@ clientSecondContactPhone.error.invalid = Telephone number can only include numbe
 clientSecondContactPhone.error.length = The first contact’s telephone number must be 24 characters or less
 clientSecondContactPhone.change.hidden = client second contact telephone number
 
-clientHaveFirstContact.title = Can we call CBC team by telephone?
-clientHaveFirstContact.heading = Can we call CBC team by telephone?
-clientHaveFirstContact.hint = This can be a team mailbox or another contact.
-clientHaveFirstContact.checkYourAnswersLabel = Can we call CBC team by telephone?
-clientHaveFirstContact.error.required = Select yes if we can call the first contact by telephone
-clientHaveFirstContact.change.hidden = if you have a first contact
+clientFirstContactHavePhone.title = Can we call {0} by telephone?
+clientFirstContactHavePhone.heading = Can we call {0} by telephone?
+clientFirstContactHavePhone.hint = This can be a team mailbox or another contact.
+clientFirstContactHavePhone.checkYourAnswersLabel = Client Telephone number
+clientFirstContactHavePhone.error.required = Select yes if we can call the first contact by telephone
+clientFirstContactHavePhone.change.hidden =  We will use this to keep in touch and if we have any questions about your reports.
+
 
 clientHaveSecondContact.title = Is there someone else we can contact if your first contact is not available?
 clientHaveSecondContact.heading = Is there someone else we can contact if {0} is not available?

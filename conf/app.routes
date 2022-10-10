@@ -173,10 +173,10 @@ POST       /agent/client-contact-details/first-contact-email                    
 GET        /agent/client-contact-details/change-first-contact-email              controllers.client.ClientFirstContactEmailController.onPageLoad(mode: Mode = CheckMode)
 POST       /agent/client-contact-details/change-first-contact-email              controllers.client.ClientFirstContactEmailController.onSubmit(mode: Mode = CheckMode)
 
-GET        /agent/client-contact-details/first-contact-have-phone                controllers.client.ClientHaveFirstContactController.onPageLoad(mode: Mode = NormalMode)
-POST       /agent/client-contact-details/first-contact-have-phone                controllers.client.ClientHaveFirstContactController.onSubmit(mode: Mode = NormalMode)
-GET        /agent/client-contact-details/change-first-contact-have-phone         controllers.client.ClientHaveFirstContactController.onPageLoad(mode: Mode = CheckMode)
-POST       /agent/client-contact-details/change-first-contact-have-phone         controllers.client.ClientHaveFirstContactController.onSubmit(mode: Mode = CheckMode)
+GET        /agent/client-contact-details/first-contact-have-phone                controllers.client.ClientFirstContactHavePhoneController.onPageLoad(mode: Mode = NormalMode)
+POST       /agent/client-contact-details/first-contact-have-phone                controllers.client.ClientFirstContactHavePhoneController.onSubmit(mode: Mode = NormalMode)
+GET        /agent/client-contact-details/change-first-contact-have-phone         controllers.client.ClientFirstContactHavePhoneController.onPageLoad(mode: Mode = CheckMode)
+POST       /agent/client-contact-details/change-first-contact-have-phone         controllers.client.ClientFirstContactHavePhoneController.onSubmit(mode: Mode = CheckMode)
 
 
 GET        /agent/client-contact-details/first-contact-phone                    controllers.client.ClientFirstContactPhoneController.onPageLoad(mode: Mode = NormalMode)
