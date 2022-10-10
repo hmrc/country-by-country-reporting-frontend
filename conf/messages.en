@@ -525,3 +525,13 @@ clientFirstContactEmail.error.required = Enter the first contact’s email addre
 clientFirstContactEmail.error.invalid = Enter the first contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
 clientFirstContactEmail.error.length = The first contact’s email address must be 132 characters or less
 clientFirstContactEmail.change.hidden = email address
+
+clientSecondContactName.title = What is the name of the second contact?
+clientSecondContactName.heading = What is the name of the second contact?
+clientSecondContactName.checkYourAnswersLabel = What is the name of the second contact?
+clientSecondContactName.p1 = This can be an individual or the name of a team at your client’s organisation.
+clientSecondContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
+clientSecondContactName.error.required = Enter the second contact’s name
+clientSecondContactName.error.length = The second contact’s name must be 35 characters or less
+clientSecondContactName.error.invalid = The name of the second contact must only include letters a to z, hyphens, spaces, and apostrophes
+clientSecondContactName.change.hidden = client second contact name
