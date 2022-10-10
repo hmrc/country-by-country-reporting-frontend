@@ -505,9 +505,9 @@ clientSecondContactPhone.title = What is their telephone number?
 clientSecondContactPhone.heading = What is {0} telephone number?
 clientSecondContactPhone.checkYourAnswersLabel = Telephone number
 clientSecondContactPhone.p1 = Provide a telephone number from your client’s organisation.
-clientSecondContactPhone.error.required = Enter the first contact’s telephone number
+clientSecondContactPhone.error.required = Enter the second contact’s telephone number
 clientSecondContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
-clientSecondContactPhone.error.length = The first contact’s telephone number must be 24 characters or less
+clientSecondContactPhone.error.length = The second contact’s telephone number must be 24 characters or less
 clientSecondContactPhone.change.hidden = client second contact telephone number
 
 clientHaveSecondContact.title = Is there someone else we can contact if your first contact is not available?
