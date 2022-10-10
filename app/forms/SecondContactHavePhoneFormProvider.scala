@@ -23,8 +23,8 @@ import javax.inject.Inject
 
 class SecondContactHavePhoneFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(key: String): Form[Boolean] =
     Form(
-      "value" -> boolean("secondContactHavePhone.error.required")
+      "value" -> boolean(s"$key.error.required")
     )
 }
