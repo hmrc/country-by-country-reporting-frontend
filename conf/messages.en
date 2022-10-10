@@ -505,9 +505,9 @@ clientSecondContactPhone.title = What is their telephone number?
 clientSecondContactPhone.heading = What is {0} telephone number?
 clientSecondContactPhone.checkYourAnswersLabel = Telephone number
 clientSecondContactPhone.p1 = Provide a telephone number from your client’s organisation.
-clientSecondContactPhone.error.required = Enter the first contact’s telephone number
+clientSecondContactPhone.error.required = Enter the second contact’s telephone number
 clientSecondContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
-clientSecondContactPhone.error.length = The first contact’s telephone number must be 24 characters or less
+clientSecondContactPhone.error.length = The second contact’s telephone number must be 24 characters or less
 clientSecondContactPhone.change.hidden = client second contact telephone number
 
 clientFirstContactHavePhone.title = Can we call the first contact by telephone?
@@ -533,3 +533,13 @@ clientFirstContactEmail.error.required = Enter the first contact’s email addre
 clientFirstContactEmail.error.invalid = Enter the first contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
 clientFirstContactEmail.error.length = The first contact’s email address must be 132 characters or less
 clientFirstContactEmail.change.hidden = email address
+
+clientSecondContactName.title = What is the name of the second contact?
+clientSecondContactName.heading = What is the name of the second contact?
+clientSecondContactName.checkYourAnswersLabel = What is the name of the second contact?
+clientSecondContactName.p1 = This can be an individual or the name of a team at your client’s organisation.
+clientSecondContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
+clientSecondContactName.error.required = Enter the second contact’s name
+clientSecondContactName.error.length = The second contact’s name must be 35 characters or less
+clientSecondContactName.error.invalid = The name of the second contact must only include letters a to z, hyphens, spaces, and apostrophes
+clientSecondContactName.change.hidden = client second contact name
