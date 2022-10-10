@@ -14,52 +14,52 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.client
 
 import base.SpecBase
 import forms.HaveTelephoneFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
-import pages.{ContactNamePage, HaveTelephonePage}
+import org.scalatestplus.mockito.MockitoSugar
+import pages.{ContactNamePage, HaveSecondContactPage}
 import play.api.inject.bind
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.HaveTelephoneView
+import views.html.client.ClientFirstContactHavePhoneView
 
 import scala.concurrent.Future
 
-class HaveTelephoneControllerSpec extends SpecBase {
+class ClientFirstContactHavePhoneControllerSpec extends SpecBase with MockitoSugar {
+
+  override def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new HaveTelephoneFormProvider()
+  val form         = formProvider("clientFirstContactHavePhone")
 
-  val form = formProvider("haveTelephone")
+  private val name = "First Contact Name"
 
-  val name = "name"
+  lazy val clientFirstContactHavePhoneRoute = routes.ClientFirstContactHavePhoneController.onPageLoad(NormalMode).url
 
-  lazy val haveTelephoneRoute = routes.HaveTelephoneController.onPageLoad(NormalMode).url
-
-  "HaveTelephone Controller" - {
+  "ClientFirstContactHavePhone Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val userAnswers: UserAnswers = UserAnswers(userAnswersId)
-        .set(ContactNamePage, name)
-        .success
-        .value
+      val userAnswers = emptyUserAnswers.set(ContactNamePage, name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, haveTelephoneRoute)
+        val request = FakeRequest(GET, clientFirstContactHavePhoneRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[HaveTelephoneView]
+        val view = application.injector.instanceOf[ClientFirstContactHavePhoneView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, name, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, name)(request, messages(application)).toString
       }
     }
 
@@ -69,32 +69,32 @@ class HaveTelephoneControllerSpec extends SpecBase {
         .set(ContactNamePage, name)
         .success
         .value
-        .set(HaveTelephonePage, true)
+        .set(HaveSecondContactPage, true)
         .success
         .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, haveTelephoneRoute)
+        val request = FakeRequest(GET, clientFirstContactHavePhoneRoute)
 
-        val view = application.injector.instanceOf[HaveTelephoneView]
+        val view = application.injector.instanceOf[ClientFirstContactHavePhoneView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), name, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, name)(request, messages(application)).toString
       }
     }
 
     "must redirect to the next page when valid data is submitted" in {
 
-      val mockSessionRepository = mock[SessionRepository]
+      val userAnswers = emptyUserAnswers.set(ContactNamePage, name).success.value
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[ContactDetailsNavigator].toInstance(new FakeContactDetailsNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -103,7 +103,7 @@ class HaveTelephoneControllerSpec extends SpecBase {
 
       running(application) {
         val request =
-          FakeRequest(POST, haveTelephoneRoute)
+          FakeRequest(POST, clientFirstContactHavePhoneRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
@@ -115,27 +115,25 @@ class HaveTelephoneControllerSpec extends SpecBase {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers: UserAnswers = UserAnswers(userAnswersId)
-        .set(ContactNamePage, name)
-        .success
-        .value
+      val userAnswers = emptyUserAnswers.set(ContactNamePage, name).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, haveTelephoneRoute)
+          FakeRequest(POST, clientFirstContactHavePhoneRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[HaveTelephoneView]
+        val view = application.injector.instanceOf[ClientFirstContactHavePhoneView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, name, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, name)(request, messages(application)).toString
       }
     }
+
   }
 }

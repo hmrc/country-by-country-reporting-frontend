@@ -23,8 +23,8 @@ import play.api.data.Form
 
 class HaveTelephoneFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(key: String): Form[Boolean] =
     Form(
-      "value" -> boolean("haveTelephone.error.required")
+      "value" -> boolean(s"$key.error.required")
     )
 }
