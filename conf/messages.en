@@ -542,3 +542,9 @@ clientSecondContactName.error.required = Enter the second contact’s name
 clientSecondContactName.error.length = The second contact’s name must be 35 characters or less
 clientSecondContactName.error.invalid = The name of the second contact must only include letters a to z, hyphens, spaces, and apostrophes
 clientSecondContactName.change.hidden = client second contact name
+
+clientContactDetailsSaved.title = Client contact details saved
+clientContactDetailsSaved.heading = Client contact details saved
+clientContactDetailsSaved.p1 = We will use your client’s new details if we need to contact them.
+clientContactDetailsSaved.p2 = You can now {0}.
+clientContactDetailsSaved.p2.link = send a CBC report
