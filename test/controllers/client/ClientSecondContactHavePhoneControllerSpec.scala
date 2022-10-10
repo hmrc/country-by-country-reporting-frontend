@@ -33,11 +33,11 @@ import scala.concurrent.Future
 
 class ClientSecondContactHavePhoneControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new AgentSecondContactHavePhoneFormProvider()
+  val formProvider = new SecondContactHavePhoneFormProvider()
   val form         = formProvider()
   val contactName  = "name"
 
-  lazy val agentSecondContactHavePhoneRoute: String = routes.AgentSecondContactHavePhoneController.onPageLoad(NormalMode).url
+  lazy val agentSecondContactHavePhoneRoute: String = routes.ClientSecondContactHavePhoneController.onPageLoad(NormalMode).url
 
   "AgentSecondContactHavePhone Controller" - {
 
