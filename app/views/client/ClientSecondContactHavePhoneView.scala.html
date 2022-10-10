@@ -24,7 +24,7 @@
 
 @(form: Form[_], mode: Mode, contactName: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("agentSecondContactHavePhone.title"))) {
+@layout(pageTitle = title(form, messages("clientSecondContactHavePhone.title"))) {
 
     @formHelper(action = controllers.agent.routes.AgentSecondContactHavePhoneController.onSubmit(mode), 'autoComplete -> "off") {
 
@@ -35,7 +35,7 @@
         @govukRadios(
             RadiosViewModel.yesNo(
                 field = form("value"),
-                legend = LegendViewModel(messages("agentSecondContactHavePhone.heading", contactName)).asPageHeading()
+                legend = LegendViewModel(messages("clientSecondContactHavePhone.heading", contactName)).asPageHeading()
             )
         )
 

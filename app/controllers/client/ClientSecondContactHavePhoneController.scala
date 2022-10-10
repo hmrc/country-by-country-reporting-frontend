@@ -17,16 +17,15 @@
 package controllers.client
 
 import controllers.actions._
-import forms.{AgentSecondContactHavePhoneFormProvider, SecondContactHavePhoneFormProvider}
+import forms.SecondContactHavePhoneFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.{AgentSecondContactHavePhonePage, SecondContactHavePhonePage}
+import pages.SecondContactHavePhonePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.ContactHelper
-import views.html.agent.AgentSecondContactHavePhoneView
 import views.html.client.ClientSecondContactHavePhoneView
 
 import javax.inject.Inject
