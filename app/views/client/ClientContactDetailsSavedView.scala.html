@@ -22,16 +22,16 @@
 
 @(clientContactDetailsExist: Boolean)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("agentContactDetailsSaved.title")), showBackLink = false) {
+@layout(pageTitle = titleNoForm(messages("clientContactDetailsSaved.title")), showBackLink = false) {
 
     @govukPanel(Panel(
-        title = Text(messages("agentContactDetailsSaved.heading"))
+        title = Text(messages("clientContactDetailsSaved.heading"))
     ))
 
-  <h2 class="govuk-heading-m">@messages("agentContactDetailsSaved.subheading")</h2>
+    @* todo - update this once i know what the condition of the dynamic content is*@
   @if(clientContactDetailsExist) {
-    <p class="govuk-body">@Html(messages("agentContactDetailsSaved.p1", link(routes.IndexController.onPageLoad.url, "agentContactDetailsSaved.p1.link")))</p>
+    <p class="govuk-body">@Html(messages("clientContactDetailsSaved.p1", link(routes.IndexController.onPageLoad.url, "agentContactDetailsSaved.p1.link")))</p>
   } else {
-    <p class="govuk-body">@Html(messages("agentContactDetailsSaved.p2", link("#", "agentContactDetailsSaved.p2.link")))</p> @*Todo: update link when client contact details journey complete*@
+    <p class="govuk-body">@Html(messages("clientContactDetailsSaved.p2", link("#", "agentContactDetailsSaved.p2.link")))</p> @*Todo: update link when client contact details journey complete*@
   }
 }
