@@ -29,6 +29,6 @@
     ))
 
     <p class="govuk-body">@messages("clientContactDetailsSaved.p1")</p>
-    <p class="govuk-body">@Html(messages("clientContactDetailsSaved.p2", link("#", "clientContactDetailsSaved.p2.link")))</p>
+    <p class="govuk-body">@Html(messages("clientContactDetailsSaved.p2", link(controllers.routes.IndexController.onPageLoad.url, "clientContactDetailsSaved.p2.link")))</p>
 
 }
