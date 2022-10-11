@@ -28,10 +28,7 @@
         title = Text(messages("clientContactDetailsSaved.heading"))
     ))
 
-    @* todo - update this once i know what the condition of the dynamic content is*@
-  @if(clientContactDetailsExist) {
-    <p class="govuk-body">@Html(messages("clientContactDetailsSaved.p1", link(routes.IndexController.onPageLoad.url, "agentContactDetailsSaved.p1.link")))</p>
-  } else {
-    <p class="govuk-body">@Html(messages("clientContactDetailsSaved.p2", link("#", "agentContactDetailsSaved.p2.link")))</p> @*Todo: update link when client contact details journey complete*@
-  }
+    <p class="govuk-body">@messages("clientContactDetailsSaved.p1")</p>
+    <p class="govuk-body">@Html(messages("clientContactDetailsSaved.p2", link("#", "clientContactDetailsSaved.p2.link")))</p>
+
 }
