@@ -43,21 +43,5 @@ class ClientContactDetailsSavedControllerSpec extends SpecBase {
         contentAsString(result) mustEqual view(clientContactDetailsExist = true)(request, messages(application)).toString
       }
     }
-
-    "must return OK and the correct view for a GET when client contact details don not exist" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      running(application) {
-        val request = FakeRequest(GET, routes.ClientContactDetailsSavedController.onPageLoad().url)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[ClientContactDetailsSavedView]
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(clientContactDetailsExist = false)(request, messages(application)).toString
-      }
-    }
   }
 }
