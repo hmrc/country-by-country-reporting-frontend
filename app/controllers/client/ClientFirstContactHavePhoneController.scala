@@ -14,48 +14,48 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.client
 
 import controllers.actions._
-import forms.SecondContactHavePhoneFormProvider
+import forms.HaveTelephoneFormProvider
 import models.{CheckMode, Mode}
 import navigation.ContactDetailsNavigator
-import pages.SecondContactHavePhonePage
+import pages.HaveTelephonePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.ContactHelper
-import views.html.SecondContactHavePhoneView
+import views.html.client.ClientFirstContactHavePhoneView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class SecondContactHavePhoneController @Inject() (
+class ClientFirstContactHavePhoneController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: ContactDetailsNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: SecondContactHavePhoneFormProvider,
+  formProvider: HaveTelephoneFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: SecondContactHavePhoneView
+  view: ClientFirstContactHavePhoneView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
     with ContactHelper {
 
-  val form = formProvider("secondContactHavePhone")
+  val form = formProvider("clientFirstContactHavePhone")
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(SecondContactHavePhonePage) match {
+      val preparedForm = request.userAnswers.get(HaveTelephonePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getSecondContactName(request.userAnswers)))
+      Ok(view(preparedForm, mode, getFirstContactName(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
@@ -63,12 +63,12 @@ class SecondContactHavePhoneController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getSecondContactName(request.userAnswers)))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getFirstContactName(request.userAnswers)))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(SecondContactHavePhonePage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(HaveTelephonePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(SecondContactHavePhonePage, CheckMode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(HaveTelephonePage, CheckMode, updatedAnswers))
         )
   }
 }

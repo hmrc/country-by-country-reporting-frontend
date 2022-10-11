@@ -34,7 +34,7 @@ class HaveTelephoneControllerSpec extends SpecBase {
 
   val formProvider = new HaveTelephoneFormProvider()
 
-  val form = formProvider()
+  val form = formProvider("haveTelephone")
 
   val name = "name"
 

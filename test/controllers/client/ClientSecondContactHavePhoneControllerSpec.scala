@@ -14,75 +14,69 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.client
 
 import base.SpecBase
-import forms.SecondContactEmailFormProvider
+import forms.SecondContactHavePhoneFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
+import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{SecondContactEmailPage, SecondContactNamePage}
+import pages.{SecondContactHavePhonePage, SecondContactNamePage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.SecondContactEmailView
+import views.html.client.ClientSecondContactHavePhoneView
 
 import scala.concurrent.Future
 
-class SecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
+class ClientSecondContactHavePhoneControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new SecondContactEmailFormProvider()
-  val form         = formProvider("secondContactEmail")
-  val name         = "name"
+  val formProvider = new SecondContactHavePhoneFormProvider()
+  val form         = formProvider("clientSecondContactHavePhone")
+  val contactName  = "name"
 
-  lazy val secondContactEmailRoute: String = routes.SecondContactEmailController.onPageLoad(NormalMode).url
+  lazy val clientSecondContactHavePhoneRoute: String = routes.ClientSecondContactHavePhoneController.onPageLoad(NormalMode).url
 
-  "SecondContactEmail Controller" - {
+  "ClientSecondContactHavePhone Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val userAnswers: UserAnswers = UserAnswers(userAnswersId)
-        .set(SecondContactNamePage, name)
+      val userAnswers = emptyUserAnswers
+        .set(SecondContactNamePage, contactName)
         .success
         .value
-
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, secondContactEmailRoute)
+        val request = FakeRequest(GET, clientSecondContactHavePhoneRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[SecondContactEmailView]
+        val view = application.injector.instanceOf[ClientSecondContactHavePhoneView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, contactName)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers: UserAnswers = UserAnswers(userAnswersId)
-        .set(SecondContactNamePage, name)
-        .success
-        .value
-        .set(SecondContactEmailPage, "email@email.com")
-        .success
-        .value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(SecondContactHavePhonePage, true).success.value.set(SecondContactNamePage, contactName).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, secondContactEmailRoute)
+        val request = FakeRequest(GET, clientSecondContactHavePhoneRoute)
 
-        val view = application.injector.instanceOf[SecondContactEmailView]
+        val view = application.injector.instanceOf[ClientSecondContactHavePhoneView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("email@email.com"), NormalMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode, contactName)(request, messages(application)).toString
       }
     }
 
@@ -93,15 +87,15 @@ class SecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[ContactDetailsNavigator].toInstance(new FakeContactDetailsNavigator(onwardRoute)),
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
 
       running(application) {
         val request =
-          FakeRequest(POST, secondContactEmailRoute)
-            .withFormUrlEncodedBody(("value", "email@email.com"))
+          FakeRequest(POST, clientSecondContactHavePhoneRoute)
+            .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
 
@@ -112,28 +106,23 @@ class SecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val userAnswers: UserAnswers = UserAnswers(userAnswersId)
-        .set(SecondContactNamePage, name)
-        .success
-        .value
-
+      val userAnswers = emptyUserAnswers.set(SecondContactNamePage, contactName).success.value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, secondContactEmailRoute)
+          FakeRequest(POST, clientSecondContactHavePhoneRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[SecondContactEmailView]
+        val view = application.injector.instanceOf[ClientSecondContactHavePhoneView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, contactName)(request, messages(application)).toString
       }
     }
-
   }
 }

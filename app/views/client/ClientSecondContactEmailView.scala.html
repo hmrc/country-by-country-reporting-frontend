@@ -14,33 +14,36 @@
  * limitations under the License.
  *@
 
+@import viewmodels.InputWidth._
+
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
-    govukRadios: GovukRadios,
+    govukInput: GovukInput,
     govukButton: GovukButton
 )
 
-@(form: Form[_], mode: Mode, contactName: String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], mode: Mode, secondContactName: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("clientHaveSecondContact.title"))) {
+@layout(pageTitle = title(form, messages("clientSecondContactEmail.title"))) {
 
-    @formHelper(action = controllers.client.routes.ClientHaveSecondContactController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = controllers.client.routes.ClientSecondContactEmailController.onSubmit(mode)) {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        @govukRadios(
-            RadiosViewModel.yesNo(
+        @govukInput(
+            InputViewModel(
                 field = form("value"),
-                legend = LegendViewModel(messages("clientHaveSecondContact.heading", contactName)).asPageHeading()
-            ).withHint(HintViewModel(Text(messages("clientHaveSecondContact.hint"))))
-        )
+                label = LabelViewModel(messages(s"clientSecondContactEmail.heading", secondContactName)).asPageHeading()
+                ).withHint(HintViewModel(Text(messages("clientSecondContactEmail.hint"))))
+                .withWidth(Full)
+            )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue")).withAttribute("id", "submit")
+            ButtonViewModel(messages("site.continue")).withAttribute("id" -> "submit")
         )
     }
 }
