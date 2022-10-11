@@ -22,7 +22,7 @@ import models.{NormalMode, UserAnswers}
 import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{ContactNamePage, ContactPhonePage, SecondContactNamePage}
+import pages.{ContactPhonePage, SecondContactNamePage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
