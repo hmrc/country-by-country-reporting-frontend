@@ -555,3 +555,8 @@ clientSecondContactEmail.change.hidden = second contact email address
 clientSecondContactHavePhone.title = Can we call your second contact by telephone?
 clientSecondContactHavePhone.heading = Can we call {0} by telephone?
 clientSecondContactHavePhone.error.required = Select yes if they can be contacted by telephone
+
+clientDetailsUpdated.title = Client contact details updated
+clientDetailsUpdated.heading = Client contact details updated
+clientDetailsUpdated.p1 = We will use your client’s new details if we need to contact them.
+clientDetailsUpdated.link = Back to send a CBC report	
