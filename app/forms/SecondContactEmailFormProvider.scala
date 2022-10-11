@@ -26,12 +26,12 @@ class SecondContactEmailFormProvider @Inject() extends Mappings with RegExConsta
 
   private val maxLength: Int = 132
 
-  def apply(): Form[String] =
+  def apply(key: String): Form[String] =
     Form(
       "value" -> validatedText(
-        "secondContactEmail.error.required",
-        "secondContactEmail.error.invalid",
-        "secondContactEmail.error.length",
+        s"$key.error.required",
+        s"$key.error.invalid",
+        s"$key.error.length",
         emailRegex,
         maxLength
       )
