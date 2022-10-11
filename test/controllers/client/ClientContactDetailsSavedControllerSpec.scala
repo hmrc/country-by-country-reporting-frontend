@@ -26,7 +26,7 @@ class ClientContactDetailsSavedControllerSpec extends SpecBase {
 
   "ClientContactDetailsSaved Controller" - {
 
-    "must return OK and the correct view for a GET when client contact details exist" in {
+    "must return OK and the correct view for a GET" in {
 
       val userAnswers = emptyUserAnswers.set(ContactNamePage, "name").success.value
 
