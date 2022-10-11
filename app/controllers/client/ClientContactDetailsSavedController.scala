@@ -25,7 +25,7 @@ import views.html.client.ClientContactDetailsSavedView
 
 import javax.inject.Inject
 
-class ClientContactDetailsSavedController @Inject()(
+class ClientContactDetailsSavedController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
