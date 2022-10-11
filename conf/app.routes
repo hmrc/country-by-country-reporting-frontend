@@ -198,6 +198,11 @@ POST       /agent/client-contact-details/second-contact-name                    
 GET        /agent/client-contact-details/change-second-contact-name             controllers.client.ClientSecondContactNameController.onPageLoad(mode: Mode = CheckMode)
 POST       /agent/client-contact-details/change-second-contact-name             controllers.client.ClientSecondContactNameController.onSubmit(mode: Mode = CheckMode)
 
+GET        /agent/client-contact-details/second-contact-email                    controllers.client.ClientSecondContactEmailController.onPageLoad(mode: Mode = NormalMode)
+POST       /agent/client-contact-details/second-contact-email                    controllers.client.ClientSecondContactEmailController.onSubmit(mode: Mode = NormalMode)
+GET        /agent/client-contact-details/change-second-contact-email             controllers.client.ClientSecondContactEmailController.onPageLoad(mode: Mode = CheckMode)
+POST       /agent/client-contact-details/change-second-contact-email             controllers.client.ClientSecondContactEmailController.onSubmit(mode: Mode = CheckMode)
+
 GET        /agent/client-contact-details/second-contact-have-phone               controllers.client.ClientSecondContactHavePhoneController.onPageLoad(mode: Mode = NormalMode)
 POST       /agent/client-contact-details/second-contact-have-phone               controllers.client.ClientSecondContactHavePhoneController.onSubmit(mode: Mode = NormalMode)
 GET        /agent/client-contact-details/change-second-contact-have-phone        controllers.client.ClientSecondContactHavePhoneController.onPageLoad(mode: Mode = CheckMode)

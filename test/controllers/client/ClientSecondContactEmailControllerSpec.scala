@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.client
 
 import base.SpecBase
 import forms.SecondContactEmailFormProvider
@@ -27,19 +27,20 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.SecondContactEmailView
+import views.html.client.ClientSecondContactEmailView
 
 import scala.concurrent.Future
 
-class SecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
+class ClientSecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new SecondContactEmailFormProvider()
-  val form         = formProvider("secondContactEmail")
-  val name         = "name"
+  val form         = formProvider("clientSecondContactEmail")
+  val name         = "Second client contact name"
+  val pluralName   = "Second client contact name’s"
 
-  lazy val secondContactEmailRoute: String = routes.SecondContactEmailController.onPageLoad(NormalMode).url
+  lazy val secondContactEmailRoute: String = routes.ClientSecondContactEmailController.onPageLoad(NormalMode).url
 
-  "SecondContactEmail Controller" - {
+  "ClientSecondContactEmail Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -55,10 +56,10 @@ class SecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[SecondContactEmailView]
+        val view = application.injector.instanceOf[ClientSecondContactEmailView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, pluralName)(request, messages(application)).toString
       }
     }
 
@@ -77,12 +78,12 @@ class SecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request = FakeRequest(GET, secondContactEmailRoute)
 
-        val view = application.injector.instanceOf[SecondContactEmailView]
+        val view = application.injector.instanceOf[ClientSecondContactEmailView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("email@email.com"), NormalMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("email@email.com"), NormalMode, pluralName)(request, messages(application)).toString
       }
     }
 
@@ -126,12 +127,12 @@ class SecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[SecondContactEmailView]
+        val view = application.injector.instanceOf[ClientSecondContactEmailView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, name)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, pluralName)(request, messages(application)).toString
       }
     }
 

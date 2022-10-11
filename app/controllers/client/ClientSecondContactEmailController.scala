@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.client
 
 import controllers.actions._
 import forms.SecondContactEmailFormProvider
@@ -26,12 +26,12 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.ContactHelper
-import views.html.SecondContactEmailView
+import views.html.client.ClientSecondContactEmailView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class SecondContactEmailController @Inject() (
+class ClientSecondContactEmailController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: ContactDetailsNavigator,
@@ -40,13 +40,13 @@ class SecondContactEmailController @Inject() (
   requireData: DataRequiredAction,
   formProvider: SecondContactEmailFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: SecondContactEmailView
+  view: ClientSecondContactEmailView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
     with ContactHelper {
 
-  val form = formProvider("secondContactEmail")
+  val form = formProvider("clientSecondContactEmail")
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
@@ -54,7 +54,7 @@ class SecondContactEmailController @Inject() (
         case None        => form
         case Some(value) => form.fill(value)
       }
-      Ok(view(preparedForm, mode, getSecondContactName(request.userAnswers)))
+      Ok(view(preparedForm, mode, getPluralSecondContactName(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
@@ -62,7 +62,7 @@ class SecondContactEmailController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getSecondContactName(request.userAnswers)))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getPluralSecondContactName(request.userAnswers)))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(SecondContactEmailPage, value))
