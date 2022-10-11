@@ -20,7 +20,7 @@ import controllers.actions._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.DetailsUpdatedView
+import views.html.client.ClientDetailsUpdatedView
 
 import javax.inject.Inject
 
@@ -30,7 +30,7 @@ class ClientDetailsUpdatedController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: DetailsUpdatedView
+  view: ClientDetailsUpdatedView
 ) extends FrontendBaseController
     with I18nSupport {
 
