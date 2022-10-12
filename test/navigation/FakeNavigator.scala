@@ -30,3 +30,8 @@ class FakeContactDetailsNavigator(desiredRoute: Call) extends ContactDetailsNavi
 
   override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = desiredRoute
 }
+
+class FakeAgentContactDetailsNavigator(desiredRoute: Call) extends AgentContactDetailsNavigator {
+
+  override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = desiredRoute
+}

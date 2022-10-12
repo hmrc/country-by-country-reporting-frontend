@@ -560,3 +560,9 @@ clientDetailsUpdated.title = Client contact details updated
 clientDetailsUpdated.heading = Client contact details updated
 clientDetailsUpdated.p1 = We will use your client’s new details if we need to contact them.
 clientDetailsUpdated.link = Back to send a CBC report	
+
+clientContactDetailsSaved.title = Client contact details saved
+clientContactDetailsSaved.heading = Client contact details saved
+clientContactDetailsSaved.p1 = We will use your client’s new details if we need to contact them.
+clientContactDetailsSaved.p2 = You can now {0}.
+clientContactDetailsSaved.p2.link = send a CBC report

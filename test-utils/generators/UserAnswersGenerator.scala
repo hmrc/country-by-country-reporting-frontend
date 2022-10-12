@@ -27,25 +27,24 @@ trait UserAnswersGenerator extends TryValues {
   self: Generators =>
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
-    arbitrary[(AgentFirstContactHavePhonePage.type, JsValue)] ::
-      arbitrary[(AgentFirstContactNamePage.type, JsValue)] ::
+    arbitrary[(AgentFirstContactNamePage.type, JsValue)] ::
+      arbitrary[(AgentFirstContactEmailPage.type, JsValue)] ::
+      arbitrary[(AgentFirstContactHavePhonePage.type, JsValue)] ::
       arbitrary[(AgentFirstContactPhonePage.type, JsValue)] ::
+      arbitrary[(AgentHaveSecondContactPage.type, JsValue)] ::
+      arbitrary[(AgentSecondContactNamePage.type, JsValue)] ::
       arbitrary[(AgentSecondContactEmailPage.type, JsValue)] ::
       arbitrary[(AgentSecondContactHavePhonePage.type, JsValue)] ::
-      arbitrary[(AgentSecondContactEmailPage.type, JsValue)] ::
-      arbitrary[(AgentSecondContactNamePage.type, JsValue)] ::
-      arbitrary[(AgentFirstContactEmailPage.type, JsValue)] ::
-      arbitrary[(AgentHaveSecondContactPage.type, JsValue)] ::
-      arbitrary[(SecondContactEmailPage.type, JsValue)] ::
+      arbitrary[(AgentSecondContactPhonePage.type, JsValue)] ::
       arbitrary[(ContactNamePage.type, JsValue)] ::
+      arbitrary[(ContactEmailPage.type, JsValue)] ::
       arbitrary[(HaveTelephonePage.type, JsValue)] ::
       arbitrary[(ContactPhonePage.type, JsValue)] ::
-      arbitrary[(ContactEmailPage.type, JsValue)] ::
       arbitrary[(HaveSecondContactPage.type, JsValue)] ::
       arbitrary[(SecondContactNamePage.type, JsValue)] ::
+      arbitrary[(SecondContactEmailPage.type, JsValue)] ::
       arbitrary[(SecondContactHavePhonePage.type, JsValue)] ::
       arbitrary[(SecondContactPhonePage.type, JsValue)] ::
-      arbitrary[(SecondContactEmailPage.type, JsValue)] ::
       Nil
 
   implicit lazy val arbitraryUserData: Arbitrary[UserAnswers] = {
