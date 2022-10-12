@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,24 +12,25 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package pages
+@import views.html.components.Link
 
-import models.UserAnswers
-import play.api.libs.json.JsPath
+@this(
+        layout: templates.Layout,
+        govukPanel : GovukPanel,
+        link: Link
+)
 
-import scala.util.Try
+@()(implicit request: Request[_], messages: Messages)
 
-case object AgentFirstContactHavePhonePage extends QuestionPage[Boolean] {
+@layout(pageTitle = titleNoForm(messages("clientDetailsUpdated.title")), showBackLink = false) {
 
-  override def path: JsPath = JsPath \ toString
+    @govukPanel(Panel(
+        title = Text(messages("clientDetailsUpdated.heading"))
+    ))
 
-  override def toString: String = "agentFirstContactHavePhone"
+    <p class="govuk-body">@messages("clientDetailsUpdated.p1")</p>
 
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
-    value match {
-      case Some(false) => userAnswers.remove(AgentFirstContactPhonePage)
-      case _           => super.cleanup(value, userAnswers)
-    }
+  <p class="govuk-body">@link(routes.IndexController.onPageLoad.url, "clientDetailsUpdated.link")</p>
 }

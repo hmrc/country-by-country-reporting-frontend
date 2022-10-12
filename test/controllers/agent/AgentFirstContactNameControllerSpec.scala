@@ -19,10 +19,11 @@ package controllers.agent
 import base.SpecBase
 import forms.AgentFirstContactNameFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
+import navigation.{AgentContactDetailsNavigator, FakeAgentContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import pages.AgentFirstContactNamePage
 import play.api.inject
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
@@ -63,7 +64,7 @@ class AgentFirstContactNameControllerSpec extends SpecBase {
       when(mockSessionRepository.set(any[UserAnswers])).thenReturn(Future.successful(true))
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(
-          inject.bind[ContactDetailsNavigator].toInstance(new FakeContactDetailsNavigator(onwardRoute)),
+          bind[AgentContactDetailsNavigator].toInstance(new FakeAgentContactDetailsNavigator(onwardRoute)),
           inject.bind[SessionRepository].toInstance(mockSessionRepository)
         )
         .build()
