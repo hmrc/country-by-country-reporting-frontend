@@ -55,7 +55,7 @@ class AgentFirstContactPhoneController @Inject() (
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, getAgentFirstContactName(request.userAnswers), mode))
+      Ok(view(preparedForm, getPluralAgentFirstContactName(request.userAnswers), mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
@@ -63,7 +63,7 @@ class AgentFirstContactPhoneController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, getAgentFirstContactName(request.userAnswers), mode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, getPluralAgentFirstContactName(request.userAnswers), mode))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentFirstContactPhonePage, value))

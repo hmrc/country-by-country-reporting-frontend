@@ -33,9 +33,10 @@ import scala.concurrent.Future
 
 class AgentFirstContactPhoneControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new AgentFirstContactPhoneFormProvider()
-  val form         = formProvider()
-  val contactName  = "first contact name"
+  val formProvider      = new AgentFirstContactPhoneFormProvider()
+  val form              = formProvider()
+  val contactName       = "first contact name"
+  val contactNamePlural = "first contact name’s"
 
   lazy val agentFirstContactPhoneRoute = routes.AgentFirstContactPhoneController.onPageLoad(NormalMode).url
 
@@ -54,14 +55,19 @@ class AgentFirstContactPhoneControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[AgentFirstContactPhoneView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, contactName, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, contactNamePlural, NormalMode)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers =
-        UserAnswers(userAnswersId).set(AgentFirstContactPhonePage, "answer").success.value.set(AgentFirstContactNamePage, contactName).success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(AgentFirstContactNamePage, contactName)
+        .success
+        .value
+        .set(AgentFirstContactPhonePage, "answer")
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -73,7 +79,7 @@ class AgentFirstContactPhoneControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), contactName, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), contactNamePlural, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -118,7 +124,7 @@ class AgentFirstContactPhoneControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, contactName, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, contactNamePlural, NormalMode)(request, messages(application)).toString
       }
     }
   }
