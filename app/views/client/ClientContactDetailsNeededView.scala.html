@@ -15,7 +15,8 @@
  *@
 
 @this(
-        layout: templates.Layout
+        layout: templates.Layout,
+        govukButton: GovukButton
 )
 
 @()(implicit request: Request[_], messages: Messages)
@@ -27,6 +28,8 @@
     <p class="govuk-body">@messages("clientContactDetailsNeeded.p2")</p>
     <p class="govuk-body">@messages("clientContactDetailsNeeded.p3")</p>
 
-    <a href="#" id="submit" role="button" draggable="false" class="govuk-button" data-module="govuk-button">@messages("site.continue")</a>
-
+    @govukButton(
+        ButtonViewModel(messages("site.continue")).withAttribute("id", "submit")
+                .asLink(controllers.client.routes.ClientFirstContactNameController.onPageLoad(NormalMode).url)
+    )
 }
