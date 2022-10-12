@@ -19,7 +19,7 @@ package controllers.agent
 import controllers.actions._
 import forms.AgentFirstContactNameFormProvider
 import models.Mode
-import navigation.ContactDetailsNavigator
+import navigation.AgentContactDetailsNavigator
 import pages.AgentFirstContactNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class AgentFirstContactNameController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: ContactDetailsNavigator,
+  navigator: AgentContactDetailsNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,

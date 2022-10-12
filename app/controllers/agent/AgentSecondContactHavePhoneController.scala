@@ -19,7 +19,7 @@ package controllers.agent
 import controllers.actions._
 import forms.AgentSecondContactHavePhoneFormProvider
 import models.Mode
-import navigation.Navigator
+import navigation.AgentContactDetailsNavigator
 import pages.AgentSecondContactHavePhonePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class AgentSecondContactHavePhoneController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: Navigator,
+  navigator: AgentContactDetailsNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,

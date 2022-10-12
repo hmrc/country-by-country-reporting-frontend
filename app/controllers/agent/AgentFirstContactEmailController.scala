@@ -19,7 +19,7 @@ package controllers.agent
 import controllers.actions._
 import forms.AgentFirstContactEmailFormProvider
 import models.Mode
-import navigation.ContactDetailsNavigator
+import navigation.AgentContactDetailsNavigator
 import pages.AgentFirstContactEmailPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class AgentFirstContactEmailController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: ContactDetailsNavigator,
+  navigator: AgentContactDetailsNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
