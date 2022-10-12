@@ -40,7 +40,6 @@ class ClientContactDetailsSavedControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[ClientContactDetailsSavedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(clientContactDetailsExist = true)(request, messages(application)).toString
       }
     }
   }
