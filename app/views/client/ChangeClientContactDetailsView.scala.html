@@ -1,0 +1,51 @@
+@*
+ * Copyright 2022 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@this(
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukSummaryList: GovukSummaryList,
+        govukButton: GovukButton
+)
+
+@(primary: SummaryList, secondary: SummaryList, hasChanged: Boolean, isOrganisationsFirstVisitAfterMigration: Boolean)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = titleNoForm(messages("ChangeClientContactDetails.title"))) {
+    @formHelper(action = controllers.client.routes.ChangeClientContactDetailsController.onSubmit()) {
+        <h1 class="govuk-heading-l">@messages("ChangeClientContactDetails.heading")</h1>
+
+        <h2 class="govuk-heading-m">@messages("ChangeClientContactDetails.primary.heading")</h2>
+
+        @govukSummaryList(primary)
+
+        <h2 class="govuk-heading-m govuk-!-padding-top-5">@messages("ChangeClientContactDetails.secondary.heading")</h2>
+
+        @govukSummaryList(secondary)
+
+        @if(hasChanged) {
+            <h2 class="govuk-heading-m govuk-!-padding-top-5">@messages("ChangeClientContactDetails.subheading")</h2>
+
+            <p class="govuk-body">@messages("ChangeClientContactDetails.confirmingInformation")</p>
+            @govukButton(ButtonViewModel(Text(messages("site.confirmAndSend"))).withAttribute( "id" -> "submit"))
+        }
+    }
+
+     @if(!isOrganisationsFirstVisitAfterMigration) {
+         <p class="govuk-!-padding-top-5 govuk-body">
+           <a class="govuk-link" href=@routes.IndexController.onPageLoad.url>@messages("site.backToReportPage")</a>
+         </p>
+    }
+}

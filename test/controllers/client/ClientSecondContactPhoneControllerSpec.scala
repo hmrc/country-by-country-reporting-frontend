@@ -22,7 +22,7 @@ import models.{NormalMode, UserAnswers}
 import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{ContactPhonePage, SecondContactNamePage}
+import pages.{ContactPhonePage, SecondContactNamePage, SecondContactPhonePage}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -72,7 +72,7 @@ class ClientSecondContactPhoneControllerSpec extends SpecBase with MockitoSugar 
         .set(SecondContactNamePage, name)
         .success
         .value
-        .set(ContactPhonePage, "answer")
+        .set(SecondContactPhonePage, "answer")
         .success
         .value
 
