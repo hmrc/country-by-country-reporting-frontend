@@ -16,14 +16,10 @@
 
 package controllers.client
 
-import config.FrontendAppConfig
 import controllers.actions._
-import controllers.agent.routes
-import models.requests.DataRequest
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.SubscriptionService
-import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.ClientCheckYourAnswersHelper
 import viewmodels.govuk.summarylist._
@@ -35,7 +31,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class ChangeClientContactDetailsController @Inject() (
   override val messagesApi: MessagesApi,
-  frontendAppConfig: FrontendAppConfig,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -61,7 +56,7 @@ class ChangeClientContactDetailsController @Inject() (
       subscriptionService.isContactInformationUpdated(request.userAnswers) map {
         case Some((hasChanged, isFirstVisitAfterMigration)) =>
           Ok(
-            view(primaryContactList, secondaryContactList, frontendAppConfig, hasChanged, isFirstVisitAfterMigration)
+            view(primaryContactList, secondaryContactList, hasChanged, isFirstVisitAfterMigration)
           )
         case _ => InternalServerError(errorView())
       }

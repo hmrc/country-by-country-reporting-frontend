@@ -14,8 +14,6 @@
  * limitations under the License.
  *@
 
-@import config.FrontendAppConfig
-
 @this(
         layout: templates.Layout,
         formHelper: FormWithCSRF,
@@ -23,7 +21,7 @@
         govukButton: GovukButton
 )
 
-@(primary: SummaryList, secondary: SummaryList, frontendAppConfig: FrontendAppConfig, hasChanged: Boolean, isOrganisationsFirstVisitAfterMigration: Boolean)(implicit request: Request[_], messages: Messages)
+@(primary: SummaryList, secondary: SummaryList, hasChanged: Boolean, isOrganisationsFirstVisitAfterMigration: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("ChangeClientContactDetails.title"))) {
     @formHelper(action = controllers.client.routes.ChangeClientContactDetailsController.onSubmit()) {
