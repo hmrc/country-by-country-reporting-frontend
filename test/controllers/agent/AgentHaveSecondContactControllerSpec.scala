@@ -22,7 +22,7 @@ import models.{NormalMode, UserAnswers}
 import navigation.{AgentContactDetailsNavigator, FakeAgentContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
-import pages.AgentHaveSecondContactPage
+import pages.{AgentFirstContactNamePage, AgentHaveSecondContactPage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -35,6 +35,7 @@ class AgentHaveSecondContactControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new AgentHaveSecondContactFormProvider()
   val form         = formProvider()
+  val contactName  = "contact name"
 
   lazy val agentSecondContactRoute = routes.AgentHaveSecondContactController.onPageLoad(NormalMode).url
 
@@ -42,7 +43,8 @@ class AgentHaveSecondContactControllerSpec extends SpecBase with MockitoSugar {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers.set(AgentFirstContactNamePage, contactName).success.value
+      val application = applicationBuilder(Some(userAnswers)).build()
 
       running(application) {
         val request = FakeRequest(GET, agentSecondContactRoute)
@@ -52,13 +54,19 @@ class AgentHaveSecondContactControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[AgentHaveSecondContactView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, contactName)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AgentHaveSecondContactPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(AgentFirstContactNamePage, contactName)
+        .success
+        .value
+        .set(AgentHaveSecondContactPage, true)
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -70,7 +78,7 @@ class AgentHaveSecondContactControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode, contactName)(request, messages(application)).toString
       }
     }
 
@@ -100,7 +108,8 @@ class AgentHaveSecondContactControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers.set(AgentFirstContactNamePage, contactName).success.value
+      val application = applicationBuilder(Some(userAnswers)).build()
 
       running(application) {
         val request =
@@ -114,7 +123,7 @@ class AgentHaveSecondContactControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, contactName)(request, messages(application)).toString
       }
     }
   }

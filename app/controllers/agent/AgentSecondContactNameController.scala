@@ -17,7 +17,7 @@
 package controllers.agent
 
 import controllers.actions._
-import forms.AgentFirstContactNameFormProvider
+import forms.AgentSecondContactNameFormProvider
 import models.Mode
 import navigation.AgentContactDetailsNavigator
 import pages.AgentSecondContactNamePage
@@ -38,7 +38,7 @@ class AgentSecondContactNameController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  formProvider: AgentFirstContactNameFormProvider,
+  formProvider: AgentSecondContactNameFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: AgentSecondContactNameView
 )(implicit ec: ExecutionContext)

@@ -15,7 +15,8 @@
  *@
 
 @this(
-        layout: templates.Layout
+        layout: templates.Layout,
+        govukButton: GovukButton
 )
 
 @()(implicit request: Request[_], messages: Messages)
@@ -28,7 +29,8 @@
 
     <p class="govuk-body">@messages("contactDetailsNeeded.p2")</p>
 
-    <a href=@controllers.routes.ContactNameController.onPageLoad(NormalMode) id="submit" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
-            @messages("site.continue")
-    </a>
+    @govukButton(
+        ButtonViewModel(messages("site.continue")).withAttribute("id", "submit")
+                .asLink(controllers.routes.ContactNameController.onPageLoad(NormalMode).url)
+    )
 }

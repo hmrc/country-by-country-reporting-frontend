@@ -25,6 +25,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import utils.ContactHelper
 import views.html.agent.AgentHaveSecondContactView
 
 import javax.inject.Inject
@@ -42,6 +43,7 @@ class AgentHaveSecondContactController @Inject() (
   view: AgentHaveSecondContactView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
+    with ContactHelper
     with I18nSupport {
 
   val form = formProvider()
@@ -53,7 +55,7 @@ class AgentHaveSecondContactController @Inject() (
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, getAgentFirstContactName(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
@@ -61,7 +63,7 @@ class AgentHaveSecondContactController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getAgentFirstContactName(request.userAnswers)))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentHaveSecondContactPage, value))

@@ -32,6 +32,6 @@
   @if(clientContactDetailsExist) {
     <p class="govuk-body">@Html(messages("agentContactDetailsSaved.p1", link(routes.IndexController.onPageLoad.url, "agentContactDetailsSaved.p1.link")))</p>
   } else {
-    <p class="govuk-body">@Html(messages("agentContactDetailsSaved.p2", link("#", "agentContactDetailsSaved.p2.link")))</p> @*Todo: update link when client contact details journey complete*@
+    <p class="govuk-body">@Html(messages("agentContactDetailsSaved.p2", link(controllers.client.routes.ClientContactDetailsNeededController.onPageLoad.url, "agentContactDetailsSaved.p2.link")))</p> @*Todo: update link when client contact details journey complete*@
   }
 }
