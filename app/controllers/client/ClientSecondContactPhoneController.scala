@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.ContactPhoneFormProvider
 import models.Mode
 import navigation.ContactDetailsNavigator
-import pages.ContactPhonePage
+import pages.{ContactPhonePage, SecondContactPhonePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -50,7 +50,7 @@ class ClientSecondContactPhoneController @Inject() (
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(ContactPhonePage) match {
+      val preparedForm = request.userAnswers.get(SecondContactPhonePage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
@@ -66,9 +66,9 @@ class ClientSecondContactPhoneController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, getPluralSecondContactName(request.userAnswers), mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ContactPhonePage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(SecondContactPhonePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(ContactPhonePage, mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(SecondContactPhonePage, mode, updatedAnswers))
         )
   }
 }

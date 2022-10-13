@@ -84,6 +84,14 @@ class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnecto
         None
     }
 
+  def doContactDetailsExist()(implicit hc: HeaderCarrier): Future[Option[Boolean]] =
+    subscriptionConnector.readSubscription map {
+      case Some(responseDetail) => Some(!isUserVisitingAfterMigration(responseDetail))
+      case _ =>
+        logger.warn("isContactInformationUpdated: readSubscription call failed to fetch the data")
+        None
+    }
+
   private def populateResponseDetails[T <: ContactTypePage](userAnswers: UserAnswers, contactInfo: OrganisationDetails, mobile: Option[String])(implicit
     contactTypePage: T
   ): Option[ContactInformation] = {
