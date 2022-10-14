@@ -103,8 +103,14 @@ class ClientContactDetailsNavigatorSpec extends SpecBase with ScalaCheckProperty
         }
       }
 
-
-
+      "Must go from -client second contact name page- to -client second contact email page-" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            navigator
+              .nextPage(SecondContactNamePage, NormalMode, answers)
+              .mustBe(routes.ClientSecondContactEmailController.onPageLoad(NormalMode))
+        }
+      }
 
       // use yesno method in navigator
       // yes go to second contact name
