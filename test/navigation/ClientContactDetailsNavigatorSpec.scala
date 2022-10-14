@@ -121,8 +121,29 @@ class ClientContactDetailsNavigatorSpec extends SpecBase with ScalaCheckProperty
         }
       }
 
-      // use yesno method in navigator
-      // no go to check answers
+      "Must go from -client second contact have phone page- to -client second contact phone page- when YES is selected" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            val updatedAnswers =
+              answers.set(SecondContactHavePhonePage, value = true).success.value
+
+            navigator
+              .nextPage(SecondContactHavePhonePage, NormalMode, updatedAnswers)
+              .mustBe(routes.ClientSecondContactPhoneController.onPageLoad(NormalMode))
+        }
+      }
+
+      "Must go from -client second contact have phone page- to -check your answers- when NO is selected" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            val updatedAnswers =
+              answers.set(SecondContactHavePhonePage, value = false).success.value
+
+            navigator
+              .nextPage(SecondContactHavePhonePage, NormalMode, updatedAnswers)
+              .mustBe(routes.ChangeClientContactDetailsController.onPageLoad())
+        }
+      }
     }
   }
 }

@@ -37,6 +37,7 @@ class ClientContactDetailsNavigator @Inject() () {
                   routes.ClientFirstContactPhoneController.onPageLoad(NormalMode),
                   routes.ClientHaveSecondContactController.onPageLoad(NormalMode)
         )
+
     case ContactPhonePage => _ => routes.ClientHaveSecondContactController.onPageLoad(NormalMode)
     case HaveSecondContactPage =>
       ua =>
@@ -48,6 +49,14 @@ class ClientContactDetailsNavigator @Inject() () {
 
     case SecondContactNamePage  => _ => routes.ClientSecondContactEmailController.onPageLoad(NormalMode)
     case SecondContactEmailPage => _ => routes.ClientSecondContactHavePhoneController.onPageLoad(NormalMode)
+    case SecondContactHavePhonePage =>
+      ua =>
+        yesNoPage(
+          ua,
+          SecondContactHavePhonePage,
+          routes.ClientSecondContactPhoneController.onPageLoad(NormalMode),
+          routes.ChangeClientContactDetailsController.onPageLoad()
+        )
   }
 
   val checkRoutes: (Page) => UserAnswers => Call = {
