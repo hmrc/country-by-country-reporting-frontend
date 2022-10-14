@@ -17,8 +17,9 @@
 package navigation
 
 import controllers.client.routes
+import models.subscription.ContactTypePage.primaryContactDetailsPages.haveTelephonePage
 import models.{CheckMode, Mode, NormalMode, UserAnswers}
-import pages.{ContactEmailPage, ContactNamePage, Page}
+import pages._
 import play.api.mvc.Call
 
 import javax.inject.{Inject, Singleton}
@@ -29,11 +30,31 @@ class ClientContactDetailsNavigator @Inject() () {
   val normalRoutes: (Page) => UserAnswers => Call = {
     case ContactNamePage  => _ => routes.ClientFirstContactEmailController.onPageLoad(NormalMode)
     case ContactEmailPage => _ => routes.ClientFirstContactHavePhoneController.onPageLoad(NormalMode)
+    case HaveTelephonePage =>
+      ua =>
+        yesNoPage(ua,
+                  haveTelephonePage,
+                  routes.ClientFirstContactPhoneController.onPageLoad(NormalMode),
+                  routes.ClientHaveSecondContactController.onPageLoad(NormalMode)
+        )
+    case ContactPhonePage => _ => routes.ClientHaveSecondContactController.onPageLoad(NormalMode)
+    case HaveSecondContactPage =>
+      ua =>
+        yesNoPage(ua,
+                  HaveSecondContactPage,
+                  routes.ClientSecondContactNameController.onPageLoad(NormalMode),
+                  routes.ChangeClientContactDetailsController.onPageLoad()
+        )
   }
 
   val checkRoutes: (Page) => UserAnswers => Call = {
-    case ContactNamePage => _ => routes.ClientFirstContactEmailController.onPageLoad(NormalMode)
+    case ContactNamePage => _ => routes.ClientFirstContactEmailController.onPageLoad(CheckMode)
   }
+
+  def yesNoPage(ua: UserAnswers, fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call =
+    ua.get(fromPage)
+      .map(if (_) yesCall else noCall)
+      .getOrElse(controllers.routes.ThereIsAProblemController.onPageLoad())
 
   def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {
     case NormalMode => normalRoutes(page)(userAnswers)

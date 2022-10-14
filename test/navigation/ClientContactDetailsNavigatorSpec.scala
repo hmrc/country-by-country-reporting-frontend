@@ -46,6 +46,69 @@ class ClientContactDetailsNavigatorSpec extends SpecBase with ScalaCheckProperty
               .mustBe(routes.ClientFirstContactHavePhoneController.onPageLoad(NormalMode))
         }
       }
+
+      "Must go from -client first contact have phone page- to -client first contact phone page- when YES is selected" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            val updatedAnswers =
+              answers.set(HaveTelephonePage, value = true).success.value
+
+            navigator
+              .nextPage(HaveTelephonePage, NormalMode, updatedAnswers)
+              .mustBe(routes.ClientFirstContactPhoneController.onPageLoad(NormalMode))
+        }
+      }
+
+      "Must go from -client first contact have phone page- to -client have second contact details page- when NO is selected" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            val updatedAnswers =
+              answers.set(HaveTelephonePage, value = false).success.value
+
+            navigator
+              .nextPage(HaveTelephonePage, NormalMode, updatedAnswers)
+              .mustBe(routes.ClientHaveSecondContactController.onPageLoad(NormalMode))
+        }
+      }
+
+      "Must go from -client first contact phone page- to -client have second contact page-" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            navigator
+              .nextPage(ContactPhonePage, NormalMode, answers)
+              .mustBe(routes.ClientHaveSecondContactController.onPageLoad(NormalMode))
+
+        }
+      }
+
+      "Must go from -client have second contact page- to -check your answers- when NO is answered" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            val updatedAnswers = answers.set(HaveSecondContactPage, value = false).success.value
+
+            navigator
+              .nextPage(HaveSecondContactPage, NormalMode, updatedAnswers)
+              .mustBe(routes.ChangeClientContactDetailsController.onPageLoad())
+        }
+      }
+
+      "Must go from -client have second contact page- to -client second contact name- when YES is answered" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            val updatedAnswers = answers.set(HaveSecondContactPage, value = true).success.value
+
+            navigator
+              .nextPage(HaveSecondContactPage, NormalMode, updatedAnswers)
+              .mustBe(routes.ClientSecondContactNameController.onPageLoad(NormalMode))
+        }
+      }
+
+
+
+
+      // use yesno method in navigator
+      // yes go to second contact name
+      // no go to check answers
     }
   }
 }
