@@ -46,7 +46,8 @@ class ClientContactDetailsNavigator @Inject() () {
                   routes.ChangeClientContactDetailsController.onPageLoad()
         )
 
-    case SecondContactNamePage => _ => routes.ClientSecondContactEmailController.onPageLoad(NormalMode)
+    case SecondContactNamePage  => _ => routes.ClientSecondContactEmailController.onPageLoad(NormalMode)
+    case SecondContactEmailPage => _ => routes.ClientSecondContactHavePhoneController.onPageLoad(NormalMode)
   }
 
   val checkRoutes: (Page) => UserAnswers => Call = {
