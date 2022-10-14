@@ -156,7 +156,6 @@ class ClientContactDetailsNavigatorSpec extends SpecBase with ScalaCheckProperty
       }
     }
 
-
     "In CHECK mode" - {
       "Must go from client first contact name page to client first contact email page" in {
         forAll(arbitrary[UserAnswers]) {

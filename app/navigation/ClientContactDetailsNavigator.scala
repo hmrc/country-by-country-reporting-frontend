@@ -62,7 +62,37 @@ class ClientContactDetailsNavigator @Inject() () {
   }
 
   val checkRoutes: (Page) => UserAnswers => Call = {
-    case ContactNamePage => _ => routes.ClientFirstContactEmailController.onPageLoad(CheckMode)
+    case ContactNamePage  => _ => routes.ClientFirstContactEmailController.onPageLoad(CheckMode)
+    case ContactEmailPage => _ => routes.ClientFirstContactHavePhoneController.onPageLoad(CheckMode)
+    case HaveTelephonePage =>
+      ua =>
+        yesNoPage(ua,
+                  haveTelephonePage,
+                  routes.ClientFirstContactPhoneController.onPageLoad(CheckMode),
+                  routes.ChangeClientContactDetailsController.onPageLoad()
+        )
+
+    case ContactPhonePage => _ => routes.ChangeClientContactDetailsController.onPageLoad()
+    case HaveSecondContactPage =>
+      ua =>
+        yesNoPage(ua,
+                  HaveSecondContactPage,
+                  routes.ClientSecondContactNameController.onPageLoad(CheckMode),
+                  routes.ChangeClientContactDetailsController.onPageLoad()
+        )
+
+    case SecondContactNamePage  => _ => routes.ClientSecondContactEmailController.onPageLoad(CheckMode)
+    case SecondContactEmailPage => _ => routes.ClientSecondContactHavePhoneController.onPageLoad(CheckMode)
+    case SecondContactHavePhonePage =>
+      ua =>
+        yesNoPage(
+          ua,
+          SecondContactHavePhonePage,
+          routes.ClientSecondContactPhoneController.onPageLoad(CheckMode),
+          routes.ChangeClientContactDetailsController.onPageLoad()
+        )
+
+    case SecondContactPhonePage => _ => routes.ChangeClientContactDetailsController.onPageLoad()
   }
 
   def yesNoPage(ua: UserAnswers, fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call =
