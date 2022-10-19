@@ -20,7 +20,7 @@ import generators.ModelGenerators
 import models.agentSubscription.{AgentRequestDetailForUpdate, AgentResponseDetail}
 import org.scalacheck.Arbitrary
 import play.api.Application
-import play.api.http.Status.{INTERNAL_SERVER_ERROR, OK}
+import play.api.http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND, OK}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 
@@ -65,6 +65,35 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
   val agentResponseDetail: AgentResponseDetail = Json.parse(agentResponseDetailString).as[AgentResponseDetail]
 
   "AgentSubscriptionConnector" - {
+    "checkSubscriptionExists" - {
+      "must return true when readSubscription is successful" in {
+        stubPostResponse(readSubscriptionUrl, OK, agentResponseDetailString)
+
+        whenReady(connector.checkSubscriptionExists()) {
+          result =>
+            result mustBe Some(true)
+        }
+      }
+
+      "must return false when readSubscription fails with a NOT_FOUND" in {
+        stubPostResponse(readSubscriptionUrl, NOT_FOUND)
+
+        whenReady(connector.checkSubscriptionExists()) {
+          result =>
+            result mustBe Some(false)
+        }
+      }
+
+      "must return a None when readSubscription fails with InternalServerError" in {
+        stubPostResponse(readSubscriptionUrl, INTERNAL_SERVER_ERROR)
+
+        whenReady(connector.readSubscription()) {
+          result =>
+            result mustBe None
+        }
+      }
+    }
+
     "readSubscription" - {
       "must return a AgentResponseDetails when readSubscription is successful" in {
         stubPostResponse(readSubscriptionUrl, OK, agentResponseDetailString)
@@ -75,7 +104,7 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
         }
       }
 
-      "must return a None when readSubscription  fails with InternalServerError" in {
+      "must return a None when readSubscription fails with InternalServerError" in {
         stubPostResponse(readSubscriptionUrl, INTERNAL_SERVER_ERROR)
 
         whenReady(connector.readSubscription()) {

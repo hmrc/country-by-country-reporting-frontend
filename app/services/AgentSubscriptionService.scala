@@ -52,13 +52,8 @@ class AgentSubscriptionService @Inject() (agentSubscriptionConnector: AgentSubsc
         Future.successful(false)
     }
 
-  def doAgentContactDetailsExist()(implicit hc: HeaderCarrier): Future[Boolean] =
-    agentSubscriptionConnector.readSubscription map {
-      case Some(_) => true
-      case _ =>
-        logger.warn("doAgentContactDetailsExist: readSubscription call failed to fetch the data")
-        false
-    }
+  def doAgentContactDetailsExist()(implicit hc: HeaderCarrier): Future[Option[Boolean]] =
+    agentSubscriptionConnector.checkSubscriptionExists
 
   def isAgentContactInformationUpdated(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[Boolean]] =
     agentSubscriptionConnector.readSubscription map {

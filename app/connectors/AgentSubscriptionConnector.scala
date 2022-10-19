@@ -19,6 +19,7 @@ package connectors
 import config.FrontendAppConfig
 import models.agentSubscription.{AgentRequestDetailForUpdate, AgentResponseDetail}
 import play.api.Logging
+import play.api.http.Status.NOT_FOUND
 import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
 import uk.gov.hmrc.http.HttpReads.is2xx
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
@@ -27,6 +28,27 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class AgentSubscriptionConnector @Inject() (val config: FrontendAppConfig, val http: HttpClient) extends Logging {
+
+  def checkSubscriptionExists()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[Boolean]] = {
+
+    val url = s"${config.cbcUrl}/country-by-country-reporting/agent/subscription/read-subscription"
+    http
+      .POSTEmpty(url)
+      .map {
+        case responseMessage if is2xx(responseMessage.status) =>
+          Some(true)
+        case responseMessage if responseMessage.status == NOT_FOUND =>
+          Some(false)
+        case otherStatus =>
+          logger.warn(s"checkSubscriptionExists: Status $otherStatus has been thrown when read agent subscription was called")
+          None
+      }
+      .recover {
+        case e: Exception =>
+          logger.warn(s"checkSubscriptionExists: S${e.getMessage} has been thrown when read agent subscription was called")
+          None
+      }
+  }
 
   def readSubscription()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[AgentResponseDetail]] = {
 

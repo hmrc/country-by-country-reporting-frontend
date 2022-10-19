@@ -282,29 +282,22 @@ class AgentSubscriptionServiceSpec extends SpecBase with ModelGenerators {
 
     "doAgentContactDetailsExist" - {
       "must return true if agentContactDetails exist" in {
-        val agentResponseDetail = AgentResponseDetail(
-          subscriptionID = "111111111",
-          tradingName = Some("name"),
-          isGBUser = true,
-          primaryContact = AgentContactInformation(AgentDetails("orgName"), "test@test.com", Some("+4411223344"), Some("4411223344")),
-          secondaryContact = None
-        )
-
-        when(mockAgentSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]()))
-          .thenReturn(Future.successful(Some(agentResponseDetail)))
+        when(mockAgentSubscriptionConnector.checkSubscriptionExists()(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(Some(true)))
 
         val result = service.doAgentContactDetailsExist()
 
-        result.futureValue mustBe true
+        result.futureValue.value mustBe true
       }
 
       "must return false if agentContactDetails don't exist" in {
 
-        when(mockAgentSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(None))
+        when(mockAgentSubscriptionConnector.checkSubscriptionExists()(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(Some(false)))
 
         val result = service.doAgentContactDetailsExist()
 
-        result.futureValue mustBe false
+        result.futureValue.value mustBe false
       }
     }
   }

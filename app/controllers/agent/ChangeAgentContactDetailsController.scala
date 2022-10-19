@@ -57,8 +57,9 @@ class ChangeAgentContactDetailsController @Inject() (
       agentSubscriptionService.isAgentContactInformationUpdated(request.userAnswers) flatMap {
         case Some(hasContactDetailsChanged) =>
           agentSubscriptionService.doAgentContactDetailsExist map {
-            doContactDetailsExist =>
+            case Some(doContactDetailsExist) =>
               Ok(view(agentPrimaryContactList, agentSecondaryContactList, hasContactDetailsChanged, doContactDetailsExist))
+            case _ => InternalServerError(errorView())
           }
         case _ => Future.successful(InternalServerError(errorView()))
       }
@@ -67,15 +68,17 @@ class ChangeAgentContactDetailsController @Inject() (
   def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
       agentSubscriptionService.doAgentContactDetailsExist flatMap {
-        agentContactDetailsExist =>
+        case Some(true) =>
           agentSubscriptionService.updateAgentContactDetails(request.userAnswers) map {
-            case true =>
-              agentContactDetailsExist match {
-                case true  => Redirect(routes.AgentContactDetailsUpdatedController.onPageLoad())
-                case false => Redirect(routes.AgentContactDetailsSavedController.onPageLoad())
-              }
-            case false => InternalServerError(errorView())
+            case true => Redirect(routes.AgentContactDetailsUpdatedController.onPageLoad())
+            case _    => InternalServerError(errorView())
           }
+        case Some(false) =>
+          agentSubscriptionService.updateAgentContactDetails(request.userAnswers) map { //TODO: change to createAgentContactDetails
+            case true => Redirect(routes.AgentContactDetailsSavedController.onPageLoad())
+            case _    => InternalServerError(errorView())
+          }
+        case _ => Future.successful(InternalServerError(errorView()))
       }
   }
 }
