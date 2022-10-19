@@ -47,8 +47,8 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.isAgentContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
-        when(mockAgentSubscriptionService.doAgentContactDetailsExist(any[UserAnswers]())(any[HeaderCarrier]()))
-          .thenReturn(Future.successful(Some(true)))
+        when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
+          .thenReturn(Future.successful(true))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
@@ -72,8 +72,8 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.isAgentContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(false)))
 
-        when(mockAgentSubscriptionService.doAgentContactDetailsExist(any[UserAnswers]())(any[HeaderCarrier]()))
-          .thenReturn(Future.successful(Some(true)))
+        when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
+          .thenReturn(Future.successful(true))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
@@ -97,8 +97,8 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.isAgentContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
-        when(mockAgentSubscriptionService.doAgentContactDetailsExist(any[UserAnswers]())(any[HeaderCarrier]()))
-          .thenReturn(Future.successful(Some(true)))
+        when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
+          .thenReturn(Future.successful(true))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
@@ -122,8 +122,8 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.isAgentContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
-        when(mockAgentSubscriptionService.doAgentContactDetailsExist(any[UserAnswers]())(any[HeaderCarrier]()))
-          .thenReturn(Future.successful(Some(false)))
+        when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
+          .thenReturn(Future.successful(false))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
@@ -169,8 +169,8 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.updateAgentContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(true))
 
-        when(mockAgentSubscriptionService.doAgentContactDetailsExist(any[UserAnswers]())(any[HeaderCarrier]()))
-          .thenReturn(Future.successful(Some(false)))
+        when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
+          .thenReturn(Future.successful(false))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
@@ -192,8 +192,8 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.updateAgentContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(true))
 
-        when(mockAgentSubscriptionService.doAgentContactDetailsExist(any[UserAnswers]())(any[HeaderCarrier]()))
-          .thenReturn(Future.successful(Some(true)))
+        when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
+          .thenReturn(Future.successful(true))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
@@ -214,8 +214,8 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
       "load 'technical difficulties' page on failing to update agent ContactDetails" in {
         when(mockAgentSubscriptionService.updateAgentContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(false))
-        when(mockAgentSubscriptionService.doAgentContactDetailsExist(any[UserAnswers]())(any[HeaderCarrier]()))
-          .thenReturn(Future.successful(Some(true)))
+        when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
+          .thenReturn(Future.successful(true))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(

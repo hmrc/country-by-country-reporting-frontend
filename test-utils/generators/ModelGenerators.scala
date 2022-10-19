@@ -16,6 +16,7 @@
 
 package generators
 
+import models.agentSubscription.{AgentContactInformation, AgentDetails, AgentRequestDetailForUpdate, AgentResponseDetail}
 import models.fileDetails.RecordErrorCode.CustomError
 import models.fileDetails.{FileErrorCode, FileErrors, RecordError, RecordErrorCode, ValidationErrors}
 import models.subscription._
@@ -30,6 +31,12 @@ trait ModelGenerators {
     } yield OrganisationDetails(orgName)
   }
 
+  implicit val arbitraryAgentDetails: Arbitrary[AgentDetails] = Arbitrary {
+    for {
+      orgName <- arbitrary[String]
+    } yield AgentDetails(orgName)
+  }
+
   implicit val arbitraryContactInformation: Arbitrary[ContactInformation] = Arbitrary {
     for {
       contactType <- arbitrary[OrganisationDetails]
@@ -37,6 +44,15 @@ trait ModelGenerators {
       phone       <- Gen.option(arbitrary[String])
       mobile      <- Gen.option(arbitrary[String])
     } yield ContactInformation(contactType, email, phone, mobile)
+  }
+
+  implicit val arbitraryAgentContactInformation: Arbitrary[AgentContactInformation] = Arbitrary {
+    for {
+      contactType <- arbitrary[AgentDetails]
+      email       <- arbitrary[String]
+      phone       <- Gen.option(arbitrary[String])
+      mobile      <- Gen.option(arbitrary[String])
+    } yield AgentContactInformation(contactType, email, phone, mobile)
   }
 
   implicit val arbitraryRequestDetail: Arbitrary[RequestDetailForUpdate] = Arbitrary {
@@ -48,6 +64,17 @@ trait ModelGenerators {
       primaryContact   <- arbitrary[ContactInformation]
       secondaryContact <- Gen.option(arbitrary[ContactInformation])
     } yield RequestDetailForUpdate(idType, idNumber, tradingName, isGBUser, primaryContact, secondaryContact)
+  }
+
+  implicit val arbitraryAgentRequestDetail: Arbitrary[AgentRequestDetailForUpdate] = Arbitrary {
+    for {
+      idType           <- arbitrary[String]
+      idNumber         <- arbitrary[String]
+      tradingName      <- Gen.option(arbitrary[String])
+      isGBUser         <- arbitrary[Boolean]
+      primaryContact   <- arbitrary[AgentContactInformation]
+      secondaryContact <- Gen.option(arbitrary[AgentContactInformation])
+    } yield AgentRequestDetailForUpdate(idType, idNumber, tradingName, isGBUser, primaryContact, secondaryContact)
   }
 
   implicit val arbitraryFileErrorCode: Arbitrary[FileErrorCode] = Arbitrary {
@@ -81,6 +108,16 @@ trait ModelGenerators {
       primaryContact   <- arbitrary[ContactInformation]
       secondaryContact <- Gen.option(arbitrary[ContactInformation])
     } yield ResponseDetail(subscriptionID, tradingName, isGBUser, primaryContact, secondaryContact)
+  }
+
+  implicit val arbitraryAgentResponseDetail: Arbitrary[AgentResponseDetail] = Arbitrary {
+    for {
+      subscriptionID   <- arbitrary[String]
+      tradingName      <- Gen.option(arbitrary[String])
+      isGBUser         <- arbitrary[Boolean]
+      primaryContact   <- arbitrary[AgentContactInformation]
+      secondaryContact <- Gen.option(arbitrary[AgentContactInformation])
+    } yield AgentResponseDetail(subscriptionID, tradingName, isGBUser, primaryContact, secondaryContact)
   }
 
   implicit val arbitraryUpdateValidationErrors: Arbitrary[ValidationErrors] =
