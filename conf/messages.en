@@ -39,8 +39,8 @@ error.number = Please enter a valid number
 error.required = Please enter a value
 error.summary.title = There is a problem
 
-index.title = Send a country-by-country (CBC) report
-index.heading = Send a country-by-country (CBC) report
+index.title = Manage your country-by-country report
+index.heading = Manage your country-by-country report
 index.p1 = You can {0}.
 index.p1.link = upload an XML file to send a CBC report
 index.p2 = The file must be 20MB or less and include your CBC ID.
