@@ -41,7 +41,7 @@ class FilePendingChecksControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET when fileStatus is Pending" in {
 
-      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401))
+      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
       val userAnswers: UserAnswers = emptyUserAnswers
         .set(ConversationIdPage, conversationId)
         .success
@@ -74,7 +74,7 @@ class FilePendingChecksControllerSpec extends SpecBase {
 
     "must redirect to File Problem Page when REJECTED status returned with 'problem' errors" in {
 
-      val validXmlDetails  = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401))
+      val validXmlDetails  = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
       val validationErrors = ValidationErrors(Some(Seq(FileErrors(FailedSchemaValidation, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
 
       val userAnswers: UserAnswers = emptyUserAnswers
@@ -105,7 +105,7 @@ class FilePendingChecksControllerSpec extends SpecBase {
 
     "must redirect to File Problem Page when REJECTED status returned with regular errors" in {
 
-      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401))
+      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
       val validationErrors =
         ValidationErrors(Some(Seq(FileErrors(MessageRefIDHasAlreadyBeenUsed, None))), Some(Seq(RecordError(MissingCorrDocRefId, None, None))))
 
@@ -137,7 +137,7 @@ class FilePendingChecksControllerSpec extends SpecBase {
 
     "must redirect to File Passed Checks Page when ACCEPTED status returned" in {
 
-      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401))
+      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
 
       val userAnswers: UserAnswers = emptyUserAnswers
         .set(ConversationIdPage, conversationId)

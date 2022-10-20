@@ -48,6 +48,19 @@ object CheckYourFileDetailsViewModel {
       )
     )
 
+  def getAgentSummaryRows(validatedFileData: ValidatedFileData)(implicit messages: Messages): Seq[SummaryListRow] = {
+    val fileDetails = getSummaryRows(validatedFileData)
+    fileDetails.take(2) ++ getReportingEntity(validatedFileData.messageSpecData.reportingEntityName) ++ fileDetails.drop(2)
+  }
+
+  private def getReportingEntity(reportingEntityName: String)(implicit messages: Messages): Seq[SummaryListRow] = Seq(
+    SummaryListRowViewModel(
+      key = "checkYourFileDetails.reportingEntityName",
+      value = ValueViewModel(HtmlFormat.escape(s"$reportingEntityName").toString),
+      actions = Seq()
+    )
+  )
+
   private def displayTypeIndictator(typeIndic: MessageTypeIndic)(implicit messages: Messages) =
     typeIndic match {
       case CBC401 => messages("checkYourFileDetails.messageTypeIndic.CBC401")

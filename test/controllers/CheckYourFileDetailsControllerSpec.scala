@@ -17,8 +17,19 @@
 package controllers
 
 import base.SpecBase
+import controllers.actions.{
+  DataRequiredAction,
+  DataRequiredActionImpl,
+  DataRetrievalAction,
+  FakeDataRetrievalActionProvider,
+  FakeIdentifierAction,
+  FakeIdentifierActionAgent,
+  IdentifierAction
+}
 import models.{CBC401, MessageSpecData, UserAnswers, ValidatedFileData}
 import pages.ValidXMLPage
+import play.api.inject.bind
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.CheckYourFileDetailsViewModel
@@ -31,7 +42,7 @@ class CheckYourFileDetailsControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET" in {
 
-      val vfd: ValidatedFileData = ValidatedFileData("filename.xml", MessageSpecData("messageRefId", CBC401))
+      val vfd: ValidatedFileData = ValidatedFileData("filename.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
       val ua: UserAnswers        = emptyUserAnswers.set(ValidXMLPage, vfd).success.value
       val application            = applicationBuilder(userAnswers = Some(ua)).build()
 
@@ -50,5 +61,34 @@ class CheckYourFileDetailsControllerSpec extends SpecBase {
         contentAsString(result) mustEqual view(list)(request, messages(application)).toString
       }
     }
+
+    "must return OK and the correct view for a GET for Agent" in {
+
+      val vfd: ValidatedFileData = ValidatedFileData("filename.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
+      val ua: UserAnswers        = emptyUserAnswers.set(ValidXMLPage, vfd).success.value
+      val application = new GuiceApplicationBuilder()
+        .overrides(
+          bind[DataRequiredAction].to[DataRequiredActionImpl],
+          bind[IdentifierAction].to[FakeIdentifierActionAgent],
+          bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(Some(ua)))
+        )
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.CheckYourFileDetailsController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[CheckYourFileDetailsView]
+
+        val list = SummaryListViewModel(CheckYourFileDetailsViewModel.getAgentSummaryRows(vfd)(messages(application)))
+          .withoutBorders()
+          .withCssClass("govuk-!-margin-bottom-0")
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(list)(request, messages(application)).toString
+      }
+    }
+
   }
 }
