@@ -50,7 +50,7 @@ object CheckYourFileDetailsViewModel {
 
   def getAgentSummaryRows(validatedFileData: ValidatedFileData)(implicit messages: Messages): Seq[SummaryListRow] = {
     val fileDetails = getSummaryRows(validatedFileData)
-    fileDetails.take(2) ++ getReportingEntity(validatedFileData.messageSpecData.reportingEntityName) ++ fileDetails.drop(2)
+    fileDetails.take(1) ++ getReportingEntity(validatedFileData.messageSpecData.reportingEntityName) ++ fileDetails.drop(1)
   }
 
   private def getReportingEntity(reportingEntityName: String)(implicit messages: Messages): Seq[SummaryListRow] = Seq(
