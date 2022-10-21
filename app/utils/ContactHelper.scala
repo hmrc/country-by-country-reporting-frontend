@@ -18,7 +18,16 @@ package utils
 
 import models.{ContactEmails, UserAnswers}
 import models.requests.DataRequest
-import pages.{AgentFirstContactNamePage, AgentSecondContactNamePage, ContactEmailPage, ContactNamePage, SecondContactEmailPage, SecondContactNamePage}
+import pages.{
+  AgentFirstContactEmailPage,
+  AgentFirstContactNamePage,
+  AgentSecondContactEmailPage,
+  AgentSecondContactNamePage,
+  ContactEmailPage,
+  ContactNamePage,
+  SecondContactEmailPage,
+  SecondContactNamePage
+}
 import play.api.i18n.Messages
 
 trait ContactHelper {
@@ -27,6 +36,12 @@ trait ContactHelper {
     request.userAnswers.get(ContactEmailPage) map {
       firstContactEmail =>
         ContactEmails(firstContactEmail, request.userAnswers.get(SecondContactEmailPage))
+    }
+
+  def getAgentContactEmails()(implicit request: DataRequest[_]): Option[ContactEmails] =
+    request.userAnswers.get(AgentFirstContactEmailPage) map {
+      firstContactEmail =>
+        ContactEmails(firstContactEmail, request.userAnswers.get(AgentSecondContactEmailPage))
     }
 
   def getFirstContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =

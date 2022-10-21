@@ -48,6 +48,7 @@ class FileDetailsConnectorSpec extends Connector {
       |  {
       |    "name": "test1.xml",
       |    "messageRefId": "messageRefId1",
+      |    "reportingEntityName": "Reporting Entity",
       |    "submitted": "2022-02-10T15:35:37.636",
       |    "lastUpdated": "2022-02-10T15:35:37.636",
       |    "status":{"Pending":{}},
@@ -56,6 +57,7 @@ class FileDetailsConnectorSpec extends Connector {
       |  {
       |    "name": "test2.xml",
       |    "messageRefId": "messageRefId2",
+      |    "reportingEntityName": "Reporting Entity",
       |    "submitted": "2022-02-10T15:35:37.636",
       |    "lastUpdated": "2022-02-10T15:45:37.636",
       |    "status": {
@@ -71,6 +73,7 @@ class FileDetailsConnectorSpec extends Connector {
      |  {
      |    "name": "test3.xml",
      |    "messageRefId": "messageRefId3",
+     |    "reportingEntityName": "Reporting Entity",
      |    "submitted": "2022-02-10T15:35:37.636",
      |    "lastUpdated": "2022-02-10T15:45:37.636",
      |    "status": {"Accepted":{}},

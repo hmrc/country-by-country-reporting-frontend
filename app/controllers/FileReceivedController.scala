@@ -19,12 +19,16 @@ package controllers
 import connectors.FileDetailsConnector
 import controllers.actions._
 import models.ConversationId
+import pages.ValidXMLPage
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.ContactHelper
-import utils.DateTimeFormatUtil._
-import views.html.{FileReceivedView, ThereIsAProblemView}
+import viewmodels.FileReceivedViewModel
+import views.html.{FileReceivedAgentView, FileReceivedView, ThereIsAProblemView}
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
@@ -37,24 +41,43 @@ class FileReceivedController @Inject() (
   fileDetailsConnector: FileDetailsConnector,
   val controllerComponents: MessagesControllerComponents,
   view: FileReceivedView,
+  agentView: FileReceivedAgentView,
   errorView: ThereIsAProblemView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
-    with ContactHelper {
+    with ContactHelper
+    with Logging {
 
   def onPageLoad(conversationId: ConversationId): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
       fileDetailsConnector.getFileDetails(conversationId) map {
         fileDetails =>
           (for {
-            emails  <- getContactEmails
-            details <- fileDetails
-          } yield {
-            val time = details.submitted.format(timeFormatter).toLowerCase
-            val date = details.submitted.format(dateFormatter)
-
-            Ok(view(details.messageRefId, time, date, emails.firstContact, emails.secondContact))
+            validXMLDetails <- request.userAnswers.get(ValidXMLPage)
+            emails          <- getContactEmails
+            details         <- fileDetails
+          } yield request.userType match {
+            case AffinityGroup.Agent =>
+              getAgentContactEmails match {
+                case Some(agentContactEmails) =>
+                  Ok(
+                    agentView(
+                      FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getAgentSummaryRows(details, validXMLDetails)),
+                      emails.firstContact,
+                      emails.secondContact,
+                      agentContactEmails.firstContact,
+                      agentContactEmails.secondContact
+                    )
+                  )
+                case None =>
+                  logger.warn("FileReceivedController: Agent detected but cannot retrieve agent email")
+                  InternalServerError(errorView())
+              }
+            case Organisation =>
+              Ok(
+                view(FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getSummaryRows(details)), emails.firstContact, emails.secondContact)
+              )
           }).getOrElse(InternalServerError(errorView()))
       }
   }
