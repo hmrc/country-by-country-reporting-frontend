@@ -22,7 +22,6 @@ import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.auth.core.AffinityGroup
-import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Organisation}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.FileCheckViewModel
 import views.html.{FileFailedChecksView, ThereIsAProblemView}
@@ -47,8 +46,8 @@ class FileFailedChecksController @Inject() (
         case (Some(xmlDetails), Some(conversationId)) =>
           val action  = routes.FileRejectedController.onPageLoad(conversationId).url
           val summary = FileCheckViewModel.createFileSummary(xmlDetails.fileName, "Rejected")
-          val isOrg = (request.userType == AffinityGroup.Organisation)
-          Ok(view(summary, action, isOrg))
+          val isAgent = request.userType == AffinityGroup.Agent
+          Ok(view(summary, action, isAgent))
         case _ =>
           logger.warn("FileFailedChecksController: Unable to retrieve either XML information or ConversationId from UserAnswers")
           InternalServerError(errorView())
