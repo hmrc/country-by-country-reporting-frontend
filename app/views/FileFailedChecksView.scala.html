@@ -21,7 +21,7 @@
     govukButton: GovukButton
 )
 
-@(fileSummary: Seq[SummaryListRow], action: String, isOrg: Boolean)()(implicit request: Request[_], messages: Messages)
+@(fileSummary: Seq[SummaryListRow], action: String, isOrg: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("fileFailedChecks.title")), showBackLink = false) {
 
