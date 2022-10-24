@@ -17,9 +17,19 @@
 package controllers
 
 import base.SpecBase
+import controllers.actions.{
+  DataRequiredAction,
+  DataRequiredActionImpl,
+  DataRetrievalAction,
+  FakeAgentIdentifierAction,
+  FakeDataRetrievalActionProvider,
+  IdentifierAction
+}
 import models.requests.DataRequest
 import models.{CBC401, ConversationId, MessageSpecData, ValidatedFileData}
 import pages.{ConversationIdPage, ValidXMLPage}
+import play.api.inject.bind
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.AffinityGroup
@@ -49,8 +59,7 @@ class FileFailedChecksControllerSpec extends SpecBase {
 
         val fileSummaryList = FileCheckViewModel.createFileSummary(validXmlDetails.fileName, "Rejected")(messages(application))
         val action          = routes.FileRejectedController.onPageLoad(conversationId).url
-        val request         = DataRequest(
-          FakeRequest(GET, routes.FileFailedChecksController.onPageLoad().url), "1", "1", AffinityGroup.Organisation, userAnswers)
+        val request         = FakeRequest(GET, routes.FileFailedChecksController.onPageLoad().url)
         val result          = route(application, request).value
         val view            = application.injector.instanceOf[FileFailedChecksView]
 
@@ -72,13 +81,19 @@ class FileFailedChecksControllerSpec extends SpecBase {
         .success
         .value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = new GuiceApplicationBuilder()
+        .overrides(
+          bind[DataRequiredAction].to[DataRequiredActionImpl],
+          bind[IdentifierAction].to[FakeAgentIdentifierAction],
+          bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(Some(userAnswers)))
+        )
+        .build()
 
       running(application) {
 
         val fileSummaryList = FileCheckViewModel.createFileSummary(validXmlDetails.fileName, "Rejected")(messages(application))
         val action          = routes.FileRejectedController.onPageLoad(conversationId).url
-        val request         = DataRequest(FakeRequest(GET, routes.FileFailedChecksController.onPageLoad().url), "1", "1", AffinityGroup.Agent, userAnswers)
+        val request         = FakeRequest(GET, routes.FileFailedChecksController.onPageLoad().url)
         val result          = route(application, request).value
         val view            = application.injector.instanceOf[FileFailedChecksView]
 

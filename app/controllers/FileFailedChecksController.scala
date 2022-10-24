@@ -46,8 +46,7 @@ class FileFailedChecksController @Inject() (
         case (Some(xmlDetails), Some(conversationId)) =>
           val action  = routes.FileRejectedController.onPageLoad(conversationId).url
           val summary = FileCheckViewModel.createFileSummary(xmlDetails.fileName, "Rejected")
-          val isAgent = request.userType == AffinityGroup.Agent
-          Ok(view(summary, action, isAgent))
+          Ok(view(summary, action, request.isAgent))
         case _ =>
           logger.warn("FileFailedChecksController: Unable to retrieve either XML information or ConversationId from UserAnswers")
           InternalServerError(errorView())
