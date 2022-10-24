@@ -19,6 +19,7 @@ package services
 import base.SpecBase
 import connectors.AgentSubscriptionConnector
 import generators.ModelGenerators
+import models.{SubscriptionID, UserAnswers}
 import models.agentSubscription.{AgentContactInformation, AgentDetails, AgentResponseDetail}
 import org.mockito.ArgumentMatchers.any
 import org.scalacheck.Arbitrary
@@ -44,6 +45,70 @@ class AgentSubscriptionServiceSpec extends SpecBase with ModelGenerators {
   val service: AgentSubscriptionService = app.injector.instanceOf[AgentSubscriptionService]
 
   "AgentSubscriptionService" - {
+    "CreateAgentContactDetails" - {
+      "must return 'true' on successfully creating subscription" in {
+        val subscriptionID                                             = SubscriptionID("id")
+        val arn                                                        = "ARN12345"
+        val responseCreateSubscription: Future[Option[SubscriptionID]] = Future.successful(Some(subscriptionID))
+        when(mockAgentSubscriptionConnector.createSubscription(any())(any(), any())).thenReturn(responseCreateSubscription)
+
+        val userAnswers = UserAnswers("")
+          .set(AgentFirstContactNamePage, "TestName")
+          .success
+          .value
+          .set(AgentFirstContactEmailPage, "test@gmail.com")
+          .success
+          .value
+          .set(AgentFirstContactPhonePage, "000000000")
+          .success
+          .value
+          .set(AgentHaveSecondContactPage, false)
+          .success
+          .value
+
+        val result = service.createAgentContactDetails(arn, userAnswers)
+        result.futureValue mustBe true
+
+        verify(mockAgentSubscriptionConnector, times(1)).createSubscription(any())(any(), any())
+      }
+
+      "must return false when unable to create subscription because UserAnswers is empty" in {
+        val responseCreateSubscription: Future[Option[SubscriptionID]] = Future.successful(None)
+        val arn                                                        = "ARN12345"
+
+        when(mockAgentSubscriptionConnector.createSubscription(any())(any(), any())).thenReturn(responseCreateSubscription)
+
+        val result = service.createAgentContactDetails(arn, UserAnswers("id"))
+
+        result.futureValue mustBe false
+      }
+
+      "must return false when it fails to create subscription" in {
+        val arn = "ARN12345"
+        val userAnswers = UserAnswers("")
+          .set(AgentFirstContactNamePage, "TestName")
+          .success
+          .value
+          .set(AgentFirstContactEmailPage, "test@gmail.com")
+          .success
+          .value
+          .set(AgentFirstContactPhonePage, "000000000")
+          .success
+          .value
+          .set(AgentHaveSecondContactPage, false)
+          .success
+          .value
+
+        val responseCreateSubscription: Future[Option[SubscriptionID]] = Future.successful(None)
+
+        when(mockAgentSubscriptionConnector.createSubscription(any())(any(), any())).thenReturn(responseCreateSubscription)
+
+        val result = service.createAgentContactDetails(arn, userAnswers)
+
+        result.futureValue mustBe false
+      }
+    }
+
     "GetAgentContactDetails" - {
       "must call the agent subscription connector and return a UserAnswers populated with returned contact details for Agent" in {
         val responseDetailString: String =

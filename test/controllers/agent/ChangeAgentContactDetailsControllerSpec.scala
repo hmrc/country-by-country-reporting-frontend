@@ -166,7 +166,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
     "onSubmit" - {
 
       "redirect to confirmation page on saving new agent ContactDetails on first visit" in {
-        when(mockAgentSubscriptionService.updateAgentContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
+        when(mockAgentSubscriptionService.createAgentContactDetails(any[String], any[UserAnswers])(any[HeaderCarrier]))
           .thenReturn(Future.successful(true))
 
         when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))

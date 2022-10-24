@@ -17,7 +17,8 @@
 package connectors
 
 import config.FrontendAppConfig
-import models.agentSubscription.{AgentRequestDetailForUpdate, AgentResponseDetail}
+import models.SubscriptionID
+import models.agentSubscription.{AgentRequestDetailForUpdate, AgentResponseDetail, CreateAgentSubscriptionRequest, CreateAgentSubscriptionResponse}
 import play.api.Logging
 import play.api.http.Status.NOT_FOUND
 import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
@@ -28,6 +29,30 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class AgentSubscriptionConnector @Inject() (val config: FrontendAppConfig, val http: HttpClient) extends Logging {
+
+  def createSubscription(
+    createAgentSubscriptionRequest: CreateAgentSubscriptionRequest
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[SubscriptionID]] = {
+
+    val submissionUrl = s"${config.cbcUrl}/country-by-country-reporting/agent/subscription/create-subscription"
+    http
+      .POST[CreateAgentSubscriptionRequest, HttpResponse](
+        submissionUrl,
+        createAgentSubscriptionRequest
+      )
+      .map {
+        case response if is2xx(response.status) =>
+          response.json.asOpt[CreateAgentSubscriptionResponse].map(_.subscriptionID)
+        case response =>
+          logger.warn(s"Unable to create an agent subscription to ETMP. ${response.status} response status")
+          None
+      }
+      .recover {
+        case e: Exception =>
+          logger.warn(s"Error message ${e.getMessage} has been thrown when create agent subscription was called")
+          None
+      }
+  }
 
   def checkSubscriptionExists()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[Boolean]] = {
 

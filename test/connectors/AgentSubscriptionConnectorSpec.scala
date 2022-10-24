@@ -17,7 +17,8 @@
 package connectors
 
 import generators.ModelGenerators
-import models.agentSubscription.{AgentRequestDetailForUpdate, AgentResponseDetail}
+import models.SubscriptionID
+import models.agentSubscription.{AgentRequestDetailForUpdate, AgentResponseDetail, CreateAgentSubscriptionRequest}
 import org.scalacheck.Arbitrary
 import play.api.Application
 import play.api.http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND, OK}
@@ -25,6 +26,7 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
 
@@ -35,6 +37,7 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
     .build()
 
   lazy val connector: AgentSubscriptionConnector = app.injector.instanceOf[AgentSubscriptionConnector]
+  private val createSubscriptionUrl              = "/country-by-country-reporting/agent/subscription/create-subscription"
   private val readSubscriptionUrl                = "/country-by-country-reporting/agent/subscription/read-subscription"
   private val updateSubscriptionUrl              = "/country-by-country-reporting/agent/subscription/update-subscription"
 
@@ -65,6 +68,71 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
   val agentResponseDetail: AgentResponseDetail = Json.parse(agentResponseDetailString).as[AgentResponseDetail]
 
   "AgentSubscriptionConnector" - {
+    "createSubscription" - {
+      val createAgentSubscriptionRequest = Arbitrary.arbitrary[CreateAgentSubscriptionRequest].sample.value
+
+      "must return SubscriptionID for valid input request" in {
+        val expectedResponse = SubscriptionID("XACBC0000123456")
+
+        val subscriptionResponse: String =
+          s"""
+             |{
+             | "createAgentSubscriptionForCBCResponse": {
+             |"responseCommon": {
+             |"status": "OK",
+             |"processingDate": "1000-01-01T00:00:00Z"
+             |  },
+             |  "responseDetail": {
+             |   "subscriptionID": "XACBC0000123456"
+             |  }
+             |} }""".stripMargin
+
+        stubPostResponse(createSubscriptionUrl, OK, subscriptionResponse)
+
+        val result: Future[Option[SubscriptionID]] = connector.createSubscription(createAgentSubscriptionRequest)
+        result.futureValue.value mustBe expectedResponse
+      }
+
+      "must return None for invalid json response" in {
+        val subscriptionResponse: String =
+          s"""
+             |{
+             | "createAgentSubscriptionForCBCResponse": {
+             |"responseCommon": {
+             |"status": "OK",
+             |"processingDate": "1000-01-01T00:00:00Z"
+             |  },
+             |  "responseDetail": {
+             |  }
+             |} }""".stripMargin
+
+        stubPostResponse(createSubscriptionUrl, OK, subscriptionResponse)
+
+        val result = connector.createSubscription(createAgentSubscriptionRequest)
+        result.futureValue mustBe None
+      }
+
+      "must return None when create subscription fails" in {
+        val errorCode: Int = errorCodes.sample.value
+
+        val subscriptionErrorResponse: String =
+          s"""
+             | "errorDetail": {
+             |    "timestamp": "2016-08-16T18:15:41Z",
+             |    "correlationId": "f058ebd6-02f7-4d3f-942e-904344e8cde5",
+             |    "errorCode": "$errorCode",
+             |    "errorMessage": "Internal error",
+             |    "source": "Internal error"
+             |  }
+             |""".stripMargin
+
+        stubPostResponse(createSubscriptionUrl, errorCode, subscriptionErrorResponse)
+
+        val result = connector.createSubscription(createAgentSubscriptionRequest)
+        result.futureValue mustBe None
+      }
+    }
+
     "checkSubscriptionExists" - {
       "must return true when readSubscription is successful" in {
         stubPostResponse(readSubscriptionUrl, OK, agentResponseDetailString)

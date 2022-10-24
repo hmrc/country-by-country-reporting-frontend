@@ -28,6 +28,18 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class AgentSubscriptionService @Inject() (agentSubscriptionConnector: AgentSubscriptionConnector)(implicit ec: ExecutionContext) extends Logging {
 
+  def createAgentContactDetails(arn: String, userAnswers: UserAnswers)(implicit
+    hc: HeaderCarrier
+  ): Future[Boolean] =
+    AgentSubscriptionRequest.createAgentSubscriptionRequest(arn, userAnswers) match {
+      case Right(agentSubscriptionRequest) =>
+        agentSubscriptionConnector.createSubscription(CreateAgentSubscriptionRequest(agentSubscriptionRequest)) map {
+          case Some(_) => true
+          case None    => false
+        }
+      case Left(_) => Future.successful(false)
+    }
+
   def getAgentContactDetails(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] =
     agentSubscriptionConnector.readSubscription map {
       responseOpt =>
