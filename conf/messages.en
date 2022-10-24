@@ -266,7 +266,8 @@ filePendingChecks.link = you can sign out
 
 fileFailedChecks.title = Your file has failed our checks
 fileFailedChecks.heading = Your file has failed our checks
-fileFailedChecks.warning = You may be fined if you do not send another version.
+fileFailedChecks.warning1 = You may be fined if you do not send another version.
+fileFailedChecks.warning2 = Your client may be fined if a revised version of this file is not sent.
 
 fileDataError.title = There is a problem with your file
 fileDataError.heading = There is a problem with your file
