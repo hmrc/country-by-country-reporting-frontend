@@ -91,19 +91,18 @@ class AgentSubscriptionService @Inject() (agentSubscriptionConnector: AgentSubsc
     }
 
   private def populateResponseDetails[T <: AgentContactTypePage](userAnswers: UserAnswers, contactInfo: AgentDetails, mobile: Option[String])(implicit
-    contactTypePage: T
+    agentContactTypePage: T
   ): Option[AgentContactInformation] = {
-
-    val updatedContactType = userAnswers.get(contactTypePage.contactNamePage) match {
+    val updatedContactType = userAnswers.get(agentContactTypePage.contactNamePage) match {
       case Some(orgName) => AgentDetails(orgName)
       case _             => contactInfo
     }
 
     for {
-      email               <- userAnswers.get(contactTypePage.contactEmailPage)
-      haveTelephoneNumber <- userAnswers.get(contactTypePage.haveTelephonePage)
+      email               <- userAnswers.get(agentContactTypePage.contactEmailPage)
+      haveTelephoneNumber <- userAnswers.get(agentContactTypePage.haveTelephonePage)
     } yield {
-      val contactTelephone = if (haveTelephoneNumber) userAnswers.get(contactTypePage.contactTelephonePage) else None
+      val contactTelephone = if (haveTelephoneNumber) userAnswers.get(agentContactTypePage.contactTelephonePage) else None
       AgentContactInformation(updatedContactType, email, contactTelephone, mobile)
     }
 
