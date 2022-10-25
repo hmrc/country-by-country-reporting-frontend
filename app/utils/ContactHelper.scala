@@ -48,7 +48,7 @@ trait ContactHelper {
       .get(ContactNamePage)
       .fold(messages("contact.name.plural", messages("default.firstContact.name")))(
         contactName =>
-          if (contactName.endsWith("s")) {
+          if (contactName.endsWith("s") || contactName.endsWith("S")) {
             messages("contact.name.plural.withS", contactName)
           } else {
             messages("contact.name.plural", contactName)
