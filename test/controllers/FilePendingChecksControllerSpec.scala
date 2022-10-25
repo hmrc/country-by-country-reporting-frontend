@@ -84,7 +84,7 @@ class FilePendingChecksControllerSpec extends SpecBase {
 
     "must return OK for Agent and the correct view for a GET when fileStatus is Pending" in {
 
-      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401))
+      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
       val userAnswers: UserAnswers = emptyUserAnswers
         .set(ConversationIdPage, conversationId)
         .success
