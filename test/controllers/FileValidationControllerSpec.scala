@@ -68,7 +68,7 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
     "must redirect to Check your answers and present the correct view for a GET" in {
 
       val userAnswersCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
-      val messageSpecData                                = MessageSpecData("XBG1999999", CBC401)
+      val messageSpecData                                = MessageSpecData("XBG1999999", CBC401, "Reporting Entity")
       val expectedData: JsObject                         = Json.obj("uploadID" -> UploadId("123"), "validXML" -> ValidatedFileData("afile", messageSpecData), "url" -> downloadURL)
 
       when(mockValidationConnector.sendForValidation(any())(any(), any())).thenReturn(Future.successful(Right(messageSpecData)))

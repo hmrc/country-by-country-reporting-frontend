@@ -17,10 +17,14 @@
 package controllers
 
 import controllers.actions._
+import models.ValidatedFileData
+import models.requests.DataRequest
 import pages.ValidXMLPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.CheckYourFileDetailsViewModel
 import viewmodels.govuk.summarylist._
@@ -44,7 +48,7 @@ class CheckYourFileDetailsController @Inject() (
     implicit request =>
       request.userAnswers.get(ValidXMLPage) match {
         case Some(details) =>
-          val detailsList = SummaryListViewModel(CheckYourFileDetailsViewModel.getSummaryRows(details))
+          val detailsList = SummaryListViewModel(getSummaryRows(details))
             .withoutBorders()
             .withCssClass("govuk-!-margin-bottom-0")
           Ok(view(detailsList))
@@ -53,4 +57,8 @@ class CheckYourFileDetailsController @Inject() (
           InternalServerError(errorView())
       }
   }
+
+  private def getSummaryRows(fileDetails: ValidatedFileData)(implicit request: DataRequest[AnyContent]): Seq[SummaryListRow] =
+    if (request.userType == AffinityGroup.Agent) { CheckYourFileDetailsViewModel.getAgentSummaryRows(fileDetails) }
+    else { CheckYourFileDetailsViewModel.getSummaryRows(fileDetails) }
 }

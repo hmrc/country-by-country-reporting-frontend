@@ -183,6 +183,7 @@ checkYourFileDetails.messageRefId = MessageRefId
 checkYourFileDetails.messageTypeIndic = MessageTypeIndic
 checkYourFileDetails.messageTypeIndic.CBC401 = New information
 checkYourFileDetails.messageTypeIndic.CBC402 = Correction or deletion
+checkYourFileDetails.reportingEntityName = ReportingEntity Name
 
 fileReceived.title = Your file has been sent
 fileReceived.heading = Your file has been sent
