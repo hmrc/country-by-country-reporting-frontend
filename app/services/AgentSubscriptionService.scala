@@ -19,7 +19,7 @@ package services
 import connectors.AgentSubscriptionConnector
 import models.UserAnswers
 import models.agentSubscription._
-import pages.{AgentHaveSecondContactPage, AgentSecondContactNamePage}
+import pages.{AgentFirstContactEmailPage, AgentFirstContactNamePage, AgentHaveSecondContactPage, AgentSecondContactNamePage}
 import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -84,10 +84,13 @@ class AgentSubscriptionService @Inject() (agentSubscriptionConnector: AgentSubsc
                                                                                      responseDetail.primaryContact.mobile
           )
         } yield !responseDetail.copy(primaryContact = primaryContact, secondaryContact = secondaryContact).equals(responseDetail)
-
-      case _ =>
-        logger.warn("isContactInformationUpdated: readSubscription call failed to fetch the data")
-        None
+      case None =>
+        if (userAnswers.get(AgentFirstContactNamePage).isDefined && userAnswers.get(AgentFirstContactEmailPage).isDefined) {
+          Some(true)
+        } else {
+          logger.warn("isAgentContactInformationUpdated: Subscription does not exist & failed to get userAnswers")
+          None
+        }
     }
 
   private def populateResponseDetails[T <: AgentContactTypePage](userAnswers: UserAnswers, contactInfo: AgentDetails, mobile: Option[String])(implicit

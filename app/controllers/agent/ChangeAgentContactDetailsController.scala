@@ -74,7 +74,7 @@ class ChangeAgentContactDetailsController @Inject() (
             case _    => InternalServerError(errorView())
           }
         case Some(false) =>
-          agentSubscriptionService.createAgentContactDetails("ARN12345", request.userAnswers) map { //TODO: get real ARN
+          agentSubscriptionService.createAgentContactDetails("ARN123777", request.userAnswers) map { //TODO: get real ARN
             case true => Redirect(routes.AgentContactDetailsSavedController.onPageLoad())
             case _    => InternalServerError(errorView())
           }

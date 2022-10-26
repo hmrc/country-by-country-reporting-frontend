@@ -19,7 +19,7 @@ package models.agentSubscription
 import play.api.libs.json.{Json, OFormat}
 
 case class CreateAgentSubscriptionRequest(
-  createSubscriptionForCBCRequest: AgentSubscriptionRequest
+  createAgentSubscriptionForCBCRequest: AgentSubscriptionRequest
 )
 
 object CreateAgentSubscriptionRequest {
