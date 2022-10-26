@@ -21,7 +21,7 @@
     govukButton: GovukButton
 )
 
-@(fileSummary: Seq[SummaryListRow], action: String)(implicit request: Request[_], messages: Messages)
+@(fileSummary: Seq[SummaryListRow], action: String, isAgent: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("fileFailedChecks.title")), showBackLink = false) {
 
@@ -31,10 +31,17 @@
         SummaryListViewModel(fileSummary)
     )
 
-    @govukWarningText(WarningText(
-        iconFallbackText = "site.warning",
-        content = Text(messages("fileFailedChecks.warning"))
-    ))
+    @if(isAgent) {
+        @govukWarningText(WarningText(
+            iconFallbackText = "site.warning",
+            content = Text(messages("fileFailedChecks.agentWarning"))
+        ))
+    } else {
+        @govukWarningText(WarningText(
+            iconFallbackText = "site.warning",
+            content = Text(messages("fileFailedChecks.orgWarning"))
+        ))
+    }
 
     @govukButton(
         ButtonViewModel(Text(messages("fileSummary.viewErrors"))).withAttribute( "id" -> "submit").asLink(action)
