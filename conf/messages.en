@@ -419,7 +419,7 @@ agentFirstContactPhone.change.hidden = first contact telephone number
 
 agentHaveSecondContact.title = Do you have a second contact if your first contact is not available?
 agentHaveSecondContact.heading = Do you have a second contact if {0} is not available?
-agentHaveSecondContact.checkYourAnswersLabel = Is there someone else we can contact?
+agentHaveSecondContact.checkYourAnswersLabel = Do you have a second contact if your first contact is not available?
 agentHaveSecondContact.error.required = Select yes if you have a second contact if your first contact is not available
 agentHaveSecondContact.change.hidden = is there someone else we can contact
 
