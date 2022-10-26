@@ -37,10 +37,12 @@
         ButtonViewModel(Text(messages("fileSummary.refresh"))).withAttribute( "id" -> "submit").asLink(action)
     )
 
-    <p class="govuk-body">@Html(messages("filePendingChecks.p1", link(controllers.auth.routes.AuthController.signOutNoSurvey.url, "filePendingChecks.link")))</p>
-    @if(isAgent) {
-        <p class="govuk-body">@messages("filePendingChecks.agent.p2")</p>
-    }
+    <p class="govuk-body">@Html(messages("filePendingChecks.p1", link(controllers.auth.routes.AuthController.signOutNoSurvey.url, "filePendingChecks.link")))
+        @if(isAgent) {
+        @messages("filePendingChecks.agent.p2")
+        }
+    </p>
+
 
 
     <p class="govuk-body">@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</p>

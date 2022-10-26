@@ -11,7 +11,7 @@ site.start = Start now
 site.startAgain = Start again
 site.signIn = Sign in
 site.govuk = GOV.UK
-site.backToReportPage = Back to send a CBC report
+site.backToReportPage = Back to manage your country-by-country report
 
 no.phone = None
 
