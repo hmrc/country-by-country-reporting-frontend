@@ -421,7 +421,7 @@ agentHaveSecondContact.title = Do you have a second contact if your first contac
 agentHaveSecondContact.heading = Do you have a second contact if {0} is not available?
 agentHaveSecondContact.checkYourAnswersLabel = Do you have a second contact if your first contact is not available?
 agentHaveSecondContact.error.required = Select yes if you have a second contact if your first contact is not available
-agentHaveSecondContact.change.hidden = is there someone else we can contact
+agentHaveSecondContact.change.hidden = do you have a second contact if your first contact is not available?
 
 agentSecondContactName.title = What is the name of your second contact?
 agentSecondContactName.heading = What is the name of your second contact?
