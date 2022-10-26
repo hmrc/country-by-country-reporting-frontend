@@ -48,7 +48,7 @@ trait ContactHelper {
       .get(ContactNamePage)
       .fold(messages("contact.name.plural", messages("default.firstContact.name")))(
         contactName =>
-          if (contactName.endsWith("s") || contactName.endsWith("S")) {
+          if (contactName.toLowerCase.endsWith("s")) {
             messages("contact.name.plural.withS", contactName)
           } else {
             messages("contact.name.plural", contactName)
@@ -60,7 +60,7 @@ trait ContactHelper {
       .get(SecondContactNamePage)
       .fold(messages("contact.name.plural", messages("default.secondContact.name")))(
         contactName =>
-          if (contactName.endsWith("s")) {
+          if (contactName.toLowerCase.endsWith("s")) {
             messages("contact.name.plural.withS", contactName)
           } else {
             messages("contact.name.plural", contactName)
@@ -86,7 +86,7 @@ trait ContactHelper {
       .get(AgentFirstContactNamePage)
       .fold(messages("contact.name.plural", messages("default.firstContact.name")))(
         contactName =>
-          if (contactName.endsWith("s") || contactName.endsWith("S")) {
+          if (contactName.toLowerCase.endsWith("s")) {
             messages("contact.name.plural.withS", contactName)
           } else {
             messages("contact.name.plural", contactName)
@@ -98,7 +98,7 @@ trait ContactHelper {
       .get(AgentSecondContactNamePage)
       .fold(messages("contact.name.plural", messages("default.secondContact.name")))(
         contactName =>
-          if (contactName.endsWith("s") || contactName.endsWith("S")) {
+          if (contactName.toLowerCase.endsWith("s")) {
             messages("contact.name.plural.withS", contactName)
           } else {
             messages("contact.name.plural", contactName)
