@@ -266,7 +266,7 @@ filePendingChecks.link = sign out and check later
 filePendingChecks.agent.p2 = if the file passes the checks, we will also email your client.
 fileFailedChecks.title = Your file has failed our checks
 fileFailedChecks.heading = Your file has failed our checks
-fileFailedChecks.orgWarning = You may be fined if you do not send another version.
+fileFailedChecks.orgWarning = x
 fileFailedChecks.agentWarning = Your client may be fined if a revised version of this file is not sent.
 
 fileDataError.title = There is a problem with your file
