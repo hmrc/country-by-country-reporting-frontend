@@ -45,7 +45,7 @@ object FileReceivedViewModel {
   def getAgentSummaryRows(receivedFileDetails: FileDetails, validatedFileData: ValidatedFileData)(implicit messages: Messages): Seq[SummaryListRow] =
     Seq(
       SummaryListRowViewModel(
-        key = "fileReceived.reportingEntityName.key",
+        key = "fileReceivedAgent.reportingEntityName.key",
         value = ValueViewModel(HtmlFormat.escape(s"${validatedFileData.messageSpecData.reportingEntityName}").toString),
         actions = Seq()
       )

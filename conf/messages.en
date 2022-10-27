@@ -199,9 +199,7 @@ fileReceived.thoughts = What did you think of this service? (opens in new tab)
 
 fileReceivedAgent.title = Your file has been sent
 fileReceivedAgent.heading = Your file has been sent
-fileReceivedAgent.messageRefId.key = File MessageRefId
 fileReceivedAgent.reportingEntityName.key = ReportingEntity Name
-fileReceivedAgent.ChecksCompleted.key = Checks completed
 fileReceivedAgent.ChecksCompleted.time = {0} at {1}
 fileReceivedAgent.client.p1 = We also sent a confirmation email to your client at {0}{1}
 fileReceivedAgent.client.p1.5 = and {0}
