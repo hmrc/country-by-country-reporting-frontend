@@ -18,8 +18,8 @@ package controllers.client
 
 import controllers.actions._
 import forms.HaveSecondContactFormProvider
-import models.{CheckMode, Mode}
-import navigation.ContactDetailsNavigator
+import models.Mode
+import navigation.ClientContactDetailsNavigator
 import pages.HaveSecondContactPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ClientHaveSecondContactController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: ContactDetailsNavigator,
+  navigator: ClientContactDetailsNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,

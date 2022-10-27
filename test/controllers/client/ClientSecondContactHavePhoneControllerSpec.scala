@@ -19,7 +19,7 @@ package controllers.client
 import base.SpecBase
 import forms.SecondContactHavePhoneFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{ClientContactDetailsNavigator, FakeClientContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{SecondContactHavePhonePage, SecondContactNamePage}
@@ -87,7 +87,7 @@ class ClientSecondContactHavePhoneControllerSpec extends SpecBase with MockitoSu
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[ClientContactDetailsNavigator].toInstance(new FakeClientContactDetailsNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()

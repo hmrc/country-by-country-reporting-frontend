@@ -18,6 +18,15 @@ package controllers
 
 import base.SpecBase
 import connectors.FileDetailsConnector
+import controllers.actions.{
+  DataRequiredAction,
+  DataRequiredActionImpl,
+  DataRetrievalAction,
+  FakeAgentIdentifierAction,
+  FakeDataRetrievalActionProvider,
+  FakeIdentifierAction,
+  IdentifierAction
+}
 import models.fileDetails.FileErrorCode.{FailedSchemaValidation, MessageRefIDHasAlreadyBeenUsed}
 import models.fileDetails.RecordErrorCode.{DocRefIDFormat, MissingCorrDocRefId}
 import models.fileDetails.{Pending, Rejected, ValidationErrors, Accepted => FileStatusAccepted, _}
@@ -25,6 +34,7 @@ import models.{CBC401, ConversationId, MessageSpecData, UserAnswers, ValidatedFi
 import org.mockito.ArgumentMatchers.any
 import pages.{ConversationIdPage, ValidXMLPage}
 import play.api.inject.bind
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.FileCheckViewModel
@@ -41,7 +51,7 @@ class FilePendingChecksControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET when fileStatus is Pending" in {
 
-      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401))
+      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
       val userAnswers: UserAnswers = emptyUserAnswers
         .set(ConversationIdPage, conversationId)
         .success
@@ -68,13 +78,49 @@ class FilePendingChecksControllerSpec extends SpecBase {
         val view    = application.injector.instanceOf[FilePendingChecksView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(fileSummaryList, action, "conversationId")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(fileSummaryList, action, "conversationId", false)(request, messages(application)).toString
+      }
+    }
+
+    "must return OK for Agent and the correct view for a GET when fileStatus is Pending" in {
+
+      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
+      val userAnswers: UserAnswers = emptyUserAnswers
+        .set(ConversationIdPage, conversationId)
+        .success
+        .value
+        .set(ValidXMLPage, validXmlDetails)
+        .success
+        .value
+
+      when(mockFileDetailsConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(Some(Pending)))
+
+      val application = new GuiceApplicationBuilder()
+        .overrides(
+          bind[DataRequiredAction].to[DataRequiredActionImpl],
+          bind[IdentifierAction].to[FakeAgentIdentifierAction],
+          bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(Some(userAnswers))),
+          bind[FileDetailsConnector].toInstance(mockFileDetailsConnector)
+        )
+        .build()
+
+      val fileSummaryList = FileCheckViewModel.createFileSummary(validXmlDetails.fileName, "Pending")(messages(application))
+      val action          = routes.FilePendingChecksController.onPageLoad().url
+
+      running(application) {
+
+        val request = FakeRequest(GET, routes.FilePendingChecksController.onPageLoad().url)
+        val result  = route(application, request).value
+        val view    = application.injector.instanceOf[FilePendingChecksView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(fileSummaryList, action, "conversationId", true)(request, messages(application)).toString
       }
     }
 
     "must redirect to File Problem Page when REJECTED status returned with 'problem' errors" in {
 
-      val validXmlDetails  = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401))
+      val validXmlDetails  = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
       val validationErrors = ValidationErrors(Some(Seq(FileErrors(FailedSchemaValidation, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
 
       val userAnswers: UserAnswers = emptyUserAnswers
@@ -105,7 +151,7 @@ class FilePendingChecksControllerSpec extends SpecBase {
 
     "must redirect to File Problem Page when REJECTED status returned with regular errors" in {
 
-      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401))
+      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
       val validationErrors =
         ValidationErrors(Some(Seq(FileErrors(MessageRefIDHasAlreadyBeenUsed, None))), Some(Seq(RecordError(MissingCorrDocRefId, None, None))))
 
@@ -137,7 +183,7 @@ class FilePendingChecksControllerSpec extends SpecBase {
 
     "must redirect to File Passed Checks Page when ACCEPTED status returned" in {
 
-      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401))
+      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
 
       val userAnswers: UserAnswers = emptyUserAnswers
         .set(ConversationIdPage, conversationId)

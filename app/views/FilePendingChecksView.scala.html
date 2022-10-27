@@ -21,7 +21,7 @@
         govukButton: GovukButton
 )
 
-@(fileSummary: Seq[SummaryListRow], action: String, conversationId: String)(implicit request: Request[_], messages: Messages)
+@(fileSummary: Seq[SummaryListRow], action: String, conversationId: String, isAgent:Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("filePendingChecks.title")), showBackLink = false) {
 
@@ -37,7 +37,13 @@
         ButtonViewModel(Text(messages("fileSummary.refresh"))).withAttribute( "id" -> "submit").asLink(action)
     )
 
-    <p class="govuk-body">@Html(messages("filePendingChecks.p1", link(controllers.auth.routes.AuthController.signOutNoSurvey.url, "filePendingChecks.link")))</p>
+    <p class="govuk-body">@Html(messages("filePendingChecks.p1", link(controllers.auth.routes.AuthController.signOutNoSurvey.url, "filePendingChecks.link")))
+        @if(isAgent) {
+        @messages("filePendingChecks.agent.p2")
+        }
+    </p>
+
+
 
     <p class="govuk-body">@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</p>
 

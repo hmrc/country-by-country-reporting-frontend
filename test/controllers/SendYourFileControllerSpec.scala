@@ -45,7 +45,7 @@ class SendYourFileControllerSpec extends SpecBase {
       "must return OK and the correct view with no warning text for a GET" in {
 
         val userAnswers = UserAnswers("Id")
-          .set(ValidXMLPage, ValidatedFileData("fileName", MessageSpecData("messageRef", CBC401)))
+          .set(ValidXMLPage, ValidatedFileData("fileName", MessageSpecData("messageRef", CBC401, "Reporting Entity")))
           .success
           .value
 
@@ -67,7 +67,7 @@ class SendYourFileControllerSpec extends SpecBase {
       "must return OK and the correct view with some warning text for a GET" in {
 
         val userAnswers = UserAnswers("Id")
-          .set(ValidXMLPage, ValidatedFileData("fileName", MessageSpecData("messageRef", CBC402)))
+          .set(ValidXMLPage, ValidatedFileData("fileName", MessageSpecData("messageRef", CBC402, "Reporting Entity")))
           .success
           .value
 
@@ -95,7 +95,7 @@ class SendYourFileControllerSpec extends SpecBase {
         val mockXmlHandler          = mock[XmlHandler]
 
         val userAnswers = UserAnswers("Id")
-          .set(ValidXMLPage, ValidatedFileData("fileName", MessageSpecData("messageRef", CBC402)))
+          .set(ValidXMLPage, ValidatedFileData("fileName", MessageSpecData("messageRef", CBC402, "Reporting Entity")))
           .success
           .value
           .set(URLPage, "url")
@@ -129,7 +129,7 @@ class SendYourFileControllerSpec extends SpecBase {
       "redirect to there is a problem page if userAnswers missing" in {
 
         val userAnswers = UserAnswers("Id")
-          .set(ValidXMLPage, ValidatedFileData("fileName", MessageSpecData("messageRef", CBC402)))
+          .set(ValidXMLPage, ValidatedFileData("fileName", MessageSpecData("messageRef", CBC402, "Reporting Entity")))
           .success
           .value
 
@@ -150,7 +150,7 @@ class SendYourFileControllerSpec extends SpecBase {
         val mockXmlHandler          = mock[XmlHandler]
 
         val userAnswers = UserAnswers("Id")
-          .set(ValidXMLPage, ValidatedFileData("fileName", MessageSpecData("messageRef", CBC402)))
+          .set(ValidXMLPage, ValidatedFileData("fileName", MessageSpecData("messageRef", CBC402, "Reporting Entity")))
           .success
           .value
           .set(URLPage, "url")

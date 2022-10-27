@@ -19,7 +19,7 @@ package controllers.client
 import base.SpecBase
 import forms.ContactNameFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{ContactDetailsNavigator, FakeContactDetailsNavigator}
+import navigation.{ClientContactDetailsNavigator, FakeClientContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ContactNamePage
@@ -84,7 +84,7 @@ class ClientFirstContactNameControllerSpec extends SpecBase with MockitoSugar {
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[ContactDetailsNavigator].toInstance(new FakeContactDetailsNavigator(onwardRoute)),
+            bind[ClientContactDetailsNavigator].toInstance(new FakeClientContactDetailsNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()

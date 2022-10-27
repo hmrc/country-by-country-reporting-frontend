@@ -19,9 +19,15 @@ package models.requests
 import play.api.mvc.{Request, WrappedRequest}
 import models.UserAnswers
 import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 
 case class OptionalDataRequest[A](request: Request[A], userId: String, userAnswers: Option[UserAnswers], userType: AffinityGroup, subscriptionId: String)
-    extends WrappedRequest[A](request)
+    extends WrappedRequest[A](request) {
+  def isAgent = userType == Agent
+}
 
 case class DataRequest[A](request: Request[A], userId: String, subscriptionId: String, userType: AffinityGroup, userAnswers: UserAnswers)
-    extends WrappedRequest[A](request)
+    extends WrappedRequest[A](request) {
+
+  def isAgent = userType == Agent
+}

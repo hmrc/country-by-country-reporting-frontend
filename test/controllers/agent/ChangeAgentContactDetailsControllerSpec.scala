@@ -113,7 +113,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
 
           status(result) mustEqual OK
           val doc = Jsoup.parse(contentAsString(result))
-          doc.getElementsContainingText("Back to send a CBC report").isEmpty mustBe false
+          doc.getElementsContainingText("Back to manage your country-by-country report").isEmpty mustBe false
         }
       }
 

@@ -19,7 +19,7 @@ package controllers.client
 import controllers.actions._
 import forms.HaveTelephoneFormProvider
 import models.{CheckMode, Mode}
-import navigation.ContactDetailsNavigator
+import navigation.ClientContactDetailsNavigator
 import pages.HaveTelephonePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ClientFirstContactHavePhoneController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
-  navigator: ContactDetailsNavigator,
+  navigator: ClientContactDetailsNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -68,7 +68,7 @@ class ClientFirstContactHavePhoneController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(HaveTelephonePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(HaveTelephonePage, CheckMode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(HaveTelephonePage, mode, updatedAnswers))
         )
   }
 }
