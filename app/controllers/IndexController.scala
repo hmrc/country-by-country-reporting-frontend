@@ -19,6 +19,7 @@ package controllers
 import connectors.FileDetailsConnector
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import models.UserAnswers
+import pages.ContactNamePage
 import play.api.Logging
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Json
@@ -51,20 +52,31 @@ class IndexController @Inject() (
       //TODO this is only temporary until agent journey/auth is complete
       if (request.userType == Agent) {
         agentSubscriptionService.getAgentContactDetails(request.userAnswers.getOrElse(UserAnswers(request.userId))) flatMap {
-          case Some(userAnswers) =>
-            sessionRepository.set(userAnswers) flatMap {
-              _ =>
-                if (userAnswers.data == Json.obj()) {
-                  Future.successful(Redirect(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad()))
-                } else {
-                  fileConnector.getAllFileDetails map {
-                    fileDetails =>
-                      Ok(view(fileDetails.isDefined, request.subscriptionId))
-                  }
+          agentContactDetails =>
+            subscriptionService.getContactDetails(agentContactDetails.getOrElse(UserAnswers(request.userId))) flatMap {
+              clientContactDetails =>
+                (agentContactDetails, clientContactDetails) match {
+                  case (Some(agentUserAnswers), Some(clientUserAnswers)) =>
+                    sessionRepository.set(agentUserAnswers).flatMap {
+                      _ =>
+                        sessionRepository.set(clientUserAnswers).flatMap {
+                          _ =>
+                            if (agentUserAnswers.data == Json.obj()) {
+                              Future.successful(Redirect(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad()))
+                            } else if (clientUserAnswers.get(ContactNamePage).isEmpty) {
+                              Future.successful(Redirect(routes.ContactDetailsNeededController.onPageLoad()))
+                            } else {
+                              fileConnector.getAllFileDetails map {
+                                fileDetails =>
+                                  Ok(view(fileDetails.isDefined, request.subscriptionId))
+                              }
+                            }
+                        }
+                    }
+                  case _ =>
+                    Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
                 }
             }
-          case _ =>
-            Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
         }
       } else {
         subscriptionService.getContactDetails(request.userAnswers.getOrElse(UserAnswers(request.userId))) flatMap {
