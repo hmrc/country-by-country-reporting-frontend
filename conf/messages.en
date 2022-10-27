@@ -197,6 +197,19 @@ fileReceived.p2 = If we have any questions about your report, we will contact yo
 fileReceived.print = Print or save this page
 fileReceived.thoughts = What did you think of this service? (opens in new tab)
 
+fileReceivedAgent.title = Your file has been sent
+fileReceivedAgent.heading = Your file has been sent
+fileReceivedAgent.reportingEntityName.key = ReportingEntity Name
+fileReceivedAgent.ChecksCompleted.time = {0} at {1}
+fileReceivedAgent.client.p1 = We also sent a confirmation email to your client at {0}{1}
+fileReceivedAgent.client.p1.5 = and {0}
+fileReceivedAgent.agent.p1 = We have sent a confirmation email to {0}{1} to show the file has passed our automatic checks.
+fileReceivedAgent.agent.p1.5 = and {0}
+fileReceivedAgent.subheading = What happens next
+fileReceivedAgent.p2 = We will contact you or your client by email or telephone if we have any questions about this report.
+fileReceivedAgent.print = Print or save this page
+fileReceivedAgent.thoughts = What did you think of this service? (opens in new tab)
+
 uploadFile.title = Upload an XML file
 uploadFile.heading = Upload an XML file
 uploadFile.p1 = We will run two sets of automatic checks to make sure your file meets the CBC XML requirements.
