@@ -78,6 +78,9 @@ class FileReceivedController @Inject() (
               Ok(
                 view(FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getSummaryRows(details)), emails.firstContact, emails.secondContact)
               )
+            case _ =>
+              logger.warn("FileReceivedController: The User is neither an Organisation or an Agent")
+              InternalServerError(errorView())
           }).getOrElse(InternalServerError(errorView()))
       }
   }
