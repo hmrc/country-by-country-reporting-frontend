@@ -75,6 +75,7 @@ class FileReceivedControllerSpec extends SpecBase {
       val fileDetails = FileDetails(
         "name",
         messageRefId,
+        "Reporting Entity",
         LocalDateTime.parse("2022-01-01T10:30:00.000"),
         LocalDateTime.parse("2022-01-01T10:30:00.000"),
         Accepted,
@@ -113,7 +114,6 @@ class FileReceivedControllerSpec extends SpecBase {
       val secondContactEmail      = "second@email.com"
       val agentFirstContactEmail  = "agentfirst@email.com"
       val agentSecondContactEmail = "agentsecond@email.com"
-      val vfd: ValidatedFileData  = ValidatedFileData("filename.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
 
       val userAnswers = emptyUserAnswers
         .set(ContactEmailPage, firstContactEmail)
@@ -126,9 +126,6 @@ class FileReceivedControllerSpec extends SpecBase {
         .success
         .value
         .set(AgentSecondContactEmailPage, agentSecondContactEmail)
-        .success
-        .value
-        .set(ValidXMLPage, vfd)
         .success
         .value
 
@@ -144,6 +141,7 @@ class FileReceivedControllerSpec extends SpecBase {
       val fileDetails = FileDetails(
         "name",
         messageRefId,
+        "Reporting Entity",
         LocalDateTime.parse("2022-01-01T10:30:00.000"),
         LocalDateTime.parse("2022-01-01T10:30:00.000"),
         Accepted,
@@ -166,7 +164,7 @@ class FileReceivedControllerSpec extends SpecBase {
 
         val view = application.injector.instanceOf[FileReceivedAgentView]
 
-        val list = SummaryListViewModel(FileReceivedViewModel.getAgentSummaryRows(fileDetails, vfd)(messages(application)))
+        val list = SummaryListViewModel(FileReceivedViewModel.getAgentSummaryRows(fileDetails)(messages(application)))
           .withoutBorders()
           .withCssClass("govuk-!-margin-bottom-0")
 

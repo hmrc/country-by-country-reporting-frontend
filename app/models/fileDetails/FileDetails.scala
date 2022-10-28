@@ -23,6 +23,7 @@ import java.time.LocalDateTime
 
 case class FileDetails(name: String,
                        messageRefId: String,
+                       reportingEntityName: String,
                        submitted: LocalDateTime,
                        lastUpdated: LocalDateTime,
                        status: FileStatus,

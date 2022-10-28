@@ -92,6 +92,7 @@ class FileDetailsConnectorSpec extends Connector {
             FileDetails(
               "test1.xml",
               "messageRefId1",
+              "Reporting Entity",
               LocalDateTime.parse("2022-02-10T15:35:37.636"),
               LocalDateTime.parse("2022-02-10T15:35:37.636"),
               Pending,
@@ -100,6 +101,7 @@ class FileDetailsConnectorSpec extends Connector {
             fileDetails.FileDetails(
               "test2.xml",
               "messageRefId2",
+              "Reporting Entity",
               LocalDateTime.parse("2022-02-10T15:35:37.636"),
               LocalDateTime.parse("2022-02-10T15:45:37.636"),
               Rejected(
@@ -158,6 +160,7 @@ class FileDetailsConnectorSpec extends Connector {
           fileDetails.FileDetails(
             "test3.xml",
             "messageRefId3",
+            "Reporting Entity",
             LocalDateTime.parse("2022-02-10T15:35:37.636"),
             LocalDateTime.parse("2022-02-10T15:45:37.636"),
             Accepted,

@@ -54,16 +54,15 @@ class FileReceivedController @Inject() (
       fileDetailsConnector.getFileDetails(conversationId) map {
         fileDetails =>
           (for {
-            validXMLDetails <- request.userAnswers.get(ValidXMLPage)
-            emails          <- getContactEmails
-            details         <- fileDetails
+            emails  <- getContactEmails
+            details <- fileDetails
           } yield request.userType match {
             case AffinityGroup.Agent =>
               getAgentContactEmails match {
                 case Some(agentContactEmails) =>
                   Ok(
                     agentView(
-                      FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getAgentSummaryRows(details, validXMLDetails)),
+                      FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getAgentSummaryRows(details)),
                       emails.firstContact,
                       emails.secondContact,
                       agentContactEmails.firstContact,

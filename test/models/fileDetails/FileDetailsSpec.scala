@@ -33,10 +33,17 @@ class FileDetailsSpec extends SpecBase with Generators with ScalaCheckPropertyCh
       val date            = LocalDateTime.now
       val validationError = Arbitrary.arbitrary[ValidationErrors].sample.value
 
-      val fileDetail1 = FileDetails("test1.xml", "messageRefId1", date, date, Pending, ConversationId("XGD11111"))
-      val fileDetail2 = fileDetails.FileDetails("test2.xml", "messageRefId2", date, date.plusSeconds(11), Rejected(validationError), ConversationId("XGD11111"))
+      val fileDetail1 = FileDetails("test1.xml", "messageRefId1", "Reporting Entity", date, date, Pending, ConversationId("XGD11111"))
+      val fileDetail2 = fileDetails.FileDetails("test2.xml",
+                                                "messageRefId2",
+                                                "Reporting Entity",
+                                                date,
+                                                date.plusSeconds(11),
+                                                Rejected(validationError),
+                                                ConversationId("XGD11111")
+      )
       val fileDetail3 =
-        fileDetails.FileDetails("test3.xml", "messageRefId3", date, date.plusSeconds(25), Accepted, ConversationId("XGD11111"))
+        fileDetails.FileDetails("test3.xml", "messageRefId3", "Reporting Entity", date, date.plusSeconds(25), Accepted, ConversationId("XGD11111"))
       val expectedResult = Seq(fileDetail1, fileDetail2, fileDetail3)
 
       val json = Json.toJson(Seq(fileDetail1, fileDetail2, fileDetail3))
