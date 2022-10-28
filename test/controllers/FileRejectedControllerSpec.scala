@@ -60,6 +60,7 @@ class FileRejectedControllerSpec extends SpecBase with ModelGenerators with Scal
               FileDetails(
                 fileName,
                 messageRefId,
+                "Reporting Entity",
                 LocalDateTime.parse("2022-01-01T10:30:00.000"),
                 LocalDateTime.parse("2022-01-01T10:30:00.000"),
                 Rejected(validationErrors),
@@ -117,6 +118,7 @@ class FileRejectedControllerSpec extends SpecBase with ModelGenerators with Scal
               FileDetails(
                 fileName,
                 messageRefId,
+                "Reporting Entity",
                 LocalDateTime.parse("2022-01-01T10:30:00.000"),
                 LocalDateTime.parse("2022-01-01T10:30:00.000"),
                 Accepted,
