@@ -15,6 +15,7 @@
  *@
 
 @import config.FrontendAppConfig
+@import models.ContactEmails
 
 @this(
         layout: templates.Layout,
@@ -26,7 +27,7 @@
         appConfig: FrontendAppConfig
 )
 
-@(messageRefId: String, timeSubmitted: String, dateSubmitted: String, firstContactEmail: String, secondContactEmail:Option[String])(implicit request: Request[_], messages: Messages)
+@(fileDetails: SummaryList, firstContactEmail: String, secondContactEmail:Option[String])(implicit request: Request[_], messages: Messages)
 
  @secondContactMessage = {
  @if(secondContactEmail.isDefined){@messages("fileReceived.p1.5", secondContactEmail.get)}
@@ -38,20 +39,7 @@
    title = Text(messages("fileReceived.heading"))
   ))
 
-  @govukSummaryList(
-   SummaryList(
-    Seq(
-     SummaryListRow(
-      key = Key(messages("fileReceived.messageRefId.key")),
-      value = Value(messageRefId)
-     ),
-     SummaryListRow(
-      key = Key(messages("fileReceived.ChecksCompleted.key")),
-      value = Value(messages("fileReceived.ChecksCompleted.time", dateSubmitted, timeSubmitted))
-     )
-    )
-   )
-  )
+    @govukSummaryList(fileDetails)
 
   <p class="govuk-body">@messages("fileReceived.p1", firstContactEmail, secondContactMessage)</p>
 

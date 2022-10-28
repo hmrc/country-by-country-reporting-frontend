@@ -18,7 +18,16 @@ package utils
 
 import models.{ContactEmails, UserAnswers}
 import models.requests.DataRequest
-import pages.{AgentFirstContactNamePage, AgentSecondContactNamePage, ContactEmailPage, ContactNamePage, SecondContactEmailPage, SecondContactNamePage}
+import pages.{
+  AgentFirstContactEmailPage,
+  AgentFirstContactNamePage,
+  AgentSecondContactEmailPage,
+  AgentSecondContactNamePage,
+  ContactEmailPage,
+  ContactNamePage,
+  SecondContactEmailPage,
+  SecondContactNamePage
+}
 import play.api.i18n.Messages
 
 trait ContactHelper {
@@ -27,6 +36,12 @@ trait ContactHelper {
     request.userAnswers.get(ContactEmailPage) map {
       firstContactEmail =>
         ContactEmails(firstContactEmail, request.userAnswers.get(SecondContactEmailPage))
+    }
+
+  def getAgentContactEmails()(implicit request: DataRequest[_]): Option[ContactEmails] =
+    request.userAnswers.get(AgentFirstContactEmailPage) map {
+      firstContactEmail =>
+        ContactEmails(firstContactEmail, request.userAnswers.get(AgentSecondContactEmailPage))
     }
 
   def getFirstContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
@@ -48,7 +63,7 @@ trait ContactHelper {
       .get(ContactNamePage)
       .fold(messages("contact.name.plural", messages("default.firstContact.name")))(
         contactName =>
-          if (contactName.endsWith("s")) {
+          if (contactName.toLowerCase.endsWith("s")) {
             messages("contact.name.plural.withS", contactName)
           } else {
             messages("contact.name.plural", contactName)
@@ -60,7 +75,7 @@ trait ContactHelper {
       .get(SecondContactNamePage)
       .fold(messages("contact.name.plural", messages("default.secondContact.name")))(
         contactName =>
-          if (contactName.endsWith("s")) {
+          if (contactName.toLowerCase.endsWith("s")) {
             messages("contact.name.plural.withS", contactName)
           } else {
             messages("contact.name.plural", contactName)
@@ -86,7 +101,7 @@ trait ContactHelper {
       .get(AgentFirstContactNamePage)
       .fold(messages("contact.name.plural", messages("default.firstContact.name")))(
         contactName =>
-          if (contactName.endsWith("s")) {
+          if (contactName.toLowerCase.endsWith("s")) {
             messages("contact.name.plural.withS", contactName)
           } else {
             messages("contact.name.plural", contactName)
@@ -98,7 +113,7 @@ trait ContactHelper {
       .get(AgentSecondContactNamePage)
       .fold(messages("contact.name.plural", messages("default.secondContact.name")))(
         contactName =>
-          if (contactName.endsWith("s")) {
+          if (contactName.toLowerCase.endsWith("s")) {
             messages("contact.name.plural.withS", contactName)
           } else {
             messages("contact.name.plural", contactName)
