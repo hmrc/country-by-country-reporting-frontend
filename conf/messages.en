@@ -482,7 +482,6 @@ agentContactDetailsUpdated.title = Agent contact details updated
 agentContactDetailsUpdated.heading = Agent contact details updated
 agentContactDetailsUpdated.p1 = We will use your new details if we have any questions about your reports.
 agentContactDetailsUpdated.p2 = {0}.
-agentContactDetailsUpdated.p2.link = Back to send a CBC report
 
 changeAgentContactDetails.title = Check your agent contact details
 changeAgentContactDetails.heading = Check your agent contact details
