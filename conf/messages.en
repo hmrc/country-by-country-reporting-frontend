@@ -141,7 +141,6 @@ secondContactPhone.change.hidden = second contact telephone number
 detailsUpdated.title = Contact details updated
 detailsUpdated.heading = Contact details updated
 detailsUpdated.p1 = We will use your new details if we need to contact you.
-detailsUpdated.link = Back to send a CBC report
 
 ChangeContactDetails.title = Contact details at your organisation
 ChangeContactDetails.heading = Contact details at your organisation
