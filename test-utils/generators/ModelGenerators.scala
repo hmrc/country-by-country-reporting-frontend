@@ -16,6 +16,16 @@
 
 package generators
 
+import models.agentSubscription.{
+  AgentContactInformation,
+  AgentDetails,
+  AgentRequestCommonForSubscription,
+  AgentRequestDetail,
+  AgentRequestDetailForUpdate,
+  AgentResponseDetail,
+  AgentSubscriptionRequest,
+  CreateAgentSubscriptionRequest
+}
 import models.fileDetails.RecordErrorCode.CustomError
 import models.fileDetails.{FileErrorCode, FileErrors, RecordError, RecordErrorCode, ValidationErrors}
 import models.subscription._
@@ -30,6 +40,12 @@ trait ModelGenerators {
     } yield OrganisationDetails(orgName)
   }
 
+  implicit val arbitraryAgentDetails: Arbitrary[AgentDetails] = Arbitrary {
+    for {
+      orgName <- arbitrary[String]
+    } yield AgentDetails(orgName)
+  }
+
   implicit val arbitraryContactInformation: Arbitrary[ContactInformation] = Arbitrary {
     for {
       contactType <- arbitrary[OrganisationDetails]
@@ -37,6 +53,15 @@ trait ModelGenerators {
       phone       <- Gen.option(arbitrary[String])
       mobile      <- Gen.option(arbitrary[String])
     } yield ContactInformation(contactType, email, phone, mobile)
+  }
+
+  implicit val arbitraryAgentContactInformation: Arbitrary[AgentContactInformation] = Arbitrary {
+    for {
+      contactType <- arbitrary[AgentDetails]
+      email       <- arbitrary[String]
+      phone       <- Gen.option(arbitrary[String])
+      mobile      <- Gen.option(arbitrary[String])
+    } yield AgentContactInformation(contactType, email, phone, mobile)
   }
 
   implicit val arbitraryRequestDetail: Arbitrary[RequestDetailForUpdate] = Arbitrary {
@@ -48,6 +73,17 @@ trait ModelGenerators {
       primaryContact   <- arbitrary[ContactInformation]
       secondaryContact <- Gen.option(arbitrary[ContactInformation])
     } yield RequestDetailForUpdate(idType, idNumber, tradingName, isGBUser, primaryContact, secondaryContact)
+  }
+
+  implicit val arbitraryAgentRequestDetailForUpdate: Arbitrary[AgentRequestDetailForUpdate] = Arbitrary {
+    for {
+      idType           <- arbitrary[String]
+      idNumber         <- arbitrary[String]
+      tradingName      <- Gen.option(arbitrary[String])
+      isGBUser         <- arbitrary[Boolean]
+      primaryContact   <- arbitrary[AgentContactInformation]
+      secondaryContact <- Gen.option(arbitrary[AgentContactInformation])
+    } yield AgentRequestDetailForUpdate(idType, idNumber, tradingName, isGBUser, primaryContact, secondaryContact)
   }
 
   implicit val arbitraryFileErrorCode: Arbitrary[FileErrorCode] = Arbitrary {
@@ -83,12 +119,65 @@ trait ModelGenerators {
     } yield ResponseDetail(subscriptionID, tradingName, isGBUser, primaryContact, secondaryContact)
   }
 
+  implicit val arbitraryAgentResponseDetail: Arbitrary[AgentResponseDetail] = Arbitrary {
+    for {
+      subscriptionID   <- arbitrary[String]
+      tradingName      <- Gen.option(arbitrary[String])
+      isGBUser         <- arbitrary[Boolean]
+      primaryContact   <- arbitrary[AgentContactInformation]
+      secondaryContact <- Gen.option(arbitrary[AgentContactInformation])
+    } yield AgentResponseDetail(subscriptionID, tradingName, isGBUser, primaryContact, secondaryContact)
+  }
+
   implicit val arbitraryUpdateValidationErrors: Arbitrary[ValidationErrors] =
     Arbitrary {
       for {
         fileErrors   <- Gen.option(listWithMaxLength(5, arbitrary[FileErrors]))
         recordErrors <- Gen.option(listWithMaxLength(5, arbitrary[RecordError]))
       } yield ValidationErrors(fileErrors, recordErrors)
+    }
+
+  implicit val arbitraryAgentRequestDetail: Arbitrary[AgentRequestDetail] = Arbitrary {
+    for {
+      idType           <- arbitrary[String]
+      idNumber         <- arbitrary[String]
+      tradingName      <- Gen.option(arbitrary[String])
+      isGBUser         <- arbitrary[Boolean]
+      primaryContact   <- arbitrary[AgentContactInformation]
+      secondaryContact <- Gen.option(arbitrary[AgentContactInformation])
+    } yield AgentRequestDetail(
+      IDType = idType,
+      IDNumber = idNumber,
+      tradingName = tradingName,
+      isGBUser = isGBUser,
+      primaryContact = primaryContact,
+      secondaryContact = secondaryContact
+    )
+  }
+
+  implicit val arbitraryAgentRequestCommonForSubscription: Arbitrary[AgentRequestCommonForSubscription] =
+    Arbitrary {
+      for {
+        receiptDate        <- arbitrary[String]
+        acknowledgementRef <- arbitrary[String]
+      } yield AgentRequestCommonForSubscription(
+        regime = "CBC",
+        conversationID = None,
+        receiptDate = receiptDate,
+        acknowledgementReference = acknowledgementRef,
+        originatingSystem = "MDTP",
+        None
+      )
+    }
+
+  implicit val arbitraryCreateAgentSubscriptionRequest: Arbitrary[CreateAgentSubscriptionRequest] =
+    Arbitrary {
+      for {
+        requestCommon <- arbitrary[AgentRequestCommonForSubscription]
+        requestDetail <- arbitrary[AgentRequestDetail]
+      } yield CreateAgentSubscriptionRequest(
+        AgentSubscriptionRequest(requestCommon, requestDetail)
+      )
     }
 
   def listWithMaxLength[T](maxSize: Int, gen: Gen[T]): Gen[Seq[T]] =

@@ -299,5 +299,60 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
         result.futureValue mustBe None
       }
     }
+    "doContactDetailsExist" - {
+      "must return true if contactDetails exists" in {
+        val responseDetail = ResponseDetail(
+          subscriptionID = "111111111",
+          tradingName = Some("name"),
+          isGBUser = true,
+          primaryContact = ContactInformation(OrganisationDetails("orgName"), "test@test.com", Some("+4411223344"), Some("4411223344")),
+          secondaryContact = None
+        )
+
+        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(Some(responseDetail)))
+
+        val result = service.doContactDetailsExist()
+
+        result.futureValue.value mustBe true
+      }
+
+      "must return false if visiting after migration" in {
+        val responseDetailString: String =
+          """
+            |{
+            |"subscriptionID": "111111111",
+            |"tradingName": "",
+            |"isGBUser": true,
+            |"primaryContact":
+            |{
+            |"email": "*****",
+            |"phone": "99999",
+            |"mobile": "",
+            |"organisation": {
+            |"organisationName": "*****"
+            |}
+            |},
+            |"secondaryContact":
+            |{
+            |"email": "test@test.com",
+            |"phone": "99999",
+            |"mobile": "",
+            |"organisation": {
+            |"organisationName": "wer"
+            |}
+            |}
+            |}""".stripMargin
+
+        val responseDetail = Json.parse(responseDetailString).as[ResponseDetail]
+
+        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(Some(responseDetail)))
+
+        val result = service.doContactDetailsExist()
+
+        result.futureValue.value mustBe false
+      }
+    }
   }
 }
