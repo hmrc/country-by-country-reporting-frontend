@@ -56,7 +56,7 @@ class ChangeAgentContactDetailsController @Inject() (
 
       agentSubscriptionService.isAgentContactInformationUpdated(request.userAnswers) flatMap {
         case Some(hasContactDetailsChanged) =>
-          agentSubscriptionService.doAgentContactDetailsExist(request.userAnswers) map {
+          agentSubscriptionService.doAgentContactDetailsExist map {
             case Some(doContactDetailsExist) =>
               Ok(view(agentPrimaryContactList, agentSecondaryContactList, hasContactDetailsChanged, doContactDetailsExist))
             case _ => InternalServerError(errorView())
@@ -67,17 +67,18 @@ class ChangeAgentContactDetailsController @Inject() (
 
   def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
-      agentSubscriptionService.doAgentContactDetailsExist(request.userAnswers) flatMap {
-        agentContactDetailsExist =>
+      agentSubscriptionService.doAgentContactDetailsExist flatMap {
+        case Some(true) =>
           agentSubscriptionService.updateAgentContactDetails(request.userAnswers) map {
-            case true =>
-              agentContactDetailsExist match {
-                case Some(true)  => Redirect(routes.AgentContactDetailsUpdatedController.onPageLoad())
-                case Some(false) => Redirect(routes.AgentContactDetailsSavedController.onPageLoad())
-                case _           => InternalServerError(errorView())
-              }
-            case false => InternalServerError(errorView())
+            case true => Redirect(routes.AgentContactDetailsUpdatedController.onPageLoad())
+            case _    => InternalServerError(errorView())
           }
+        case Some(false) =>
+          agentSubscriptionService.createAgentContactDetails("ARN123777", request.userAnswers) map { //TODO: get real ARN
+            case true => Redirect(routes.AgentContactDetailsSavedController.onPageLoad())
+            case _    => InternalServerError(errorView())
+          }
+        case _ => Future.successful(InternalServerError(errorView()))
       }
   }
 }

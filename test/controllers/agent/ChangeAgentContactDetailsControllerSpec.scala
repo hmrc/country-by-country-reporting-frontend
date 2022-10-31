@@ -47,7 +47,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.isAgentContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
-        when(mockAgentSubscriptionService.doAgentContactDetailsExist(any[UserAnswers]())(any[HeaderCarrier]()))
+        when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -72,7 +72,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.isAgentContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(false)))
 
-        when(mockAgentSubscriptionService.doAgentContactDetailsExist(any[UserAnswers]())(any[HeaderCarrier]()))
+        when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -97,7 +97,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.isAgentContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
-        when(mockAgentSubscriptionService.doAgentContactDetailsExist(any[UserAnswers]())(any[HeaderCarrier]()))
+        when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -122,7 +122,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.isAgentContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
-        when(mockAgentSubscriptionService.doAgentContactDetailsExist(any[UserAnswers]())(any[HeaderCarrier]()))
+        when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(false)))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -166,10 +166,10 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
     "onSubmit" - {
 
       "redirect to confirmation page on saving new agent ContactDetails on first visit" in {
-        when(mockAgentSubscriptionService.updateAgentContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
+        when(mockAgentSubscriptionService.createAgentContactDetails(any[String], any[UserAnswers])(any[HeaderCarrier]))
           .thenReturn(Future.successful(true))
 
-        when(mockAgentSubscriptionService.doAgentContactDetailsExist(any[UserAnswers]())(any[HeaderCarrier]()))
+        when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(false)))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -192,7 +192,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.updateAgentContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(true))
 
-        when(mockAgentSubscriptionService.doAgentContactDetailsExist(any[UserAnswers]())(any[HeaderCarrier]()))
+        when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -214,7 +214,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
       "load 'technical difficulties' page on failing to update agent ContactDetails" in {
         when(mockAgentSubscriptionService.updateAgentContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(false))
-        when(mockAgentSubscriptionService.doAgentContactDetailsExist(any[UserAnswers]())(any[HeaderCarrier]()))
+        when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))

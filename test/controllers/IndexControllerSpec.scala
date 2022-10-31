@@ -18,14 +18,23 @@ package controllers
 
 import base.SpecBase
 import connectors.FileDetailsConnector
+import controllers.actions.{
+  DataRequiredAction,
+  DataRequiredActionImpl,
+  DataRetrievalAction,
+  FakeAgentIdentifierAction,
+  FakeDataRetrievalActionProvider,
+  IdentifierAction
+}
 import models.UserAnswers
 import org.mockito.ArgumentMatchers.any
 import pages.HaveTelephonePage
 import play.api.inject.bind
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import services.SubscriptionService
+import services.{AgentSubscriptionService, SubscriptionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.IndexView
 
@@ -89,6 +98,39 @@ class IndexControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result) mustBe Some(routes.ContactDetailsNeededController.onPageLoad().url)
+      }
+    }
+
+    "must return SEE_OTHER and redirect to 'Agent Contact details needed' page for new agent on first visit" in {
+      val userAnswers                  = UserAnswers("id")
+      val mockSubscriptionService      = mock[SubscriptionService]
+      val mockAgentSubscriptionService = mock[AgentSubscriptionService]
+
+      val application = new GuiceApplicationBuilder()
+        .overrides(
+          bind[DataRequiredAction].to[DataRequiredActionImpl],
+          bind[IdentifierAction].to[FakeAgentIdentifierAction],
+          bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(Some(userAnswers))),
+          bind[SubscriptionService].toInstance(mockSubscriptionService),
+          bind[AgentSubscriptionService].toInstance(mockAgentSubscriptionService),
+          bind[SessionRepository].toInstance(mockSessionRepository)
+        )
+        .build()
+
+      when(mockAgentSubscriptionService.getAgentContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
+        .thenReturn(Future.successful(Some(userAnswers)))
+
+      when(mockSubscriptionService.getContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
+        .thenReturn(Future.successful(Some(userAnswers)))
+      when(mockSessionRepository.set(any[UserAnswers]())).thenReturn(Future.successful(true))
+
+      running(application) {
+        val request = FakeRequest(GET, routes.IndexController.onPageLoad.url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad().url)
       }
     }
   }
