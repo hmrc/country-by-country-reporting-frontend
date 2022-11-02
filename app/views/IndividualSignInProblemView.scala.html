@@ -24,13 +24,13 @@
 
 @()(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("thereIsAProblem.title")), showBackLink = false) {
+@layout(pageTitle = titleNoForm(messages("individualSignInProblem.title")), showBackLink = false) {
 
-    <h1 class="govuk-heading-l">@messages("thereIsAProblem.heading")</h1>
+    <h1 class="govuk-heading-l">@messages("individualSignInProblem.heading")</h1>
 
-    <p class="govuk-body">@messages("thereIsAProblem.p1")</p>
+    <p class="govuk-body">@messages("individualSignInProblem.p1")</p>
 
     <p class="govuk-body">
-    @Html(messages("thereIsAProblem.p2", link(s"mailto:${appConfig.emailEnquiries}", appConfig.emailEnquiries)))
+    @Html(messages("individualSignInProblem.p2", link(controllers.routes.IndexController.onPageLoad.url, "individualSignInProblem.p2.link")))
     </p>
 }

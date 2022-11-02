@@ -591,4 +591,7 @@ individualSignInProblem.title = Sorry, you’re unable to use this service
 individualSignInProblem.heading = Sorry, you’re unable to use this service
 individualSignInProblem.p1 = You’ve signed in as an individual. Only organisations can send reports.
 individualSignInProblem.p2 = If you need to send reports for an organisation, {0}.
+individualSignInProblem.p2.link = sign in with your organisation’s Government Gateway details.
+
+
 
