@@ -24,7 +24,7 @@ import views.html.ThereIsAProblemView
 
 import javax.inject.Inject
 
-class IndividualSignInProblemController @Inject()(
+class IndividualSignInProblemController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
