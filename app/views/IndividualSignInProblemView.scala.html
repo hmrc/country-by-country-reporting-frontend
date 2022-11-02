@@ -31,6 +31,6 @@
     <p class="govuk-body">@messages("individualSignInProblem.p1")</p>
 
     <p class="govuk-body">
-    @Html(messages("individualSignInProblem.p2", link(controllers.routes.IndexController.onPageLoad.url, "individualSignInProblem.p2.link")))
+    @Html(messages("individualSignInProblem.p2", link(appConfig.loginUrl, "individualSignInProblem.p2.link")))
     </p>
 }
