@@ -30,7 +30,7 @@ class IndividualSignInProblemController @Inject()(
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: ThereIsAProblemView
+  view: IndividualSignInProblemView
 ) extends FrontendBaseController
     with I18nSupport {
 
