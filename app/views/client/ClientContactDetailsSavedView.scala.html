@@ -28,7 +28,7 @@
         title = Text(messages("clientContactDetailsSaved.heading"))
     ))
 
-    <p class="govuk-body">@messages("clientContactDetailsSaved.p1")</p>
+    <h2 class="govuk-heading-m">@messages("clientContactDetailsSaved.p1")</h2>
     <p class="govuk-body">@Html(messages("clientContactDetailsSaved.p2", link(controllers.routes.IndexController.onPageLoad.url, "clientContactDetailsSaved.p2.link")))</p>
 
 }
