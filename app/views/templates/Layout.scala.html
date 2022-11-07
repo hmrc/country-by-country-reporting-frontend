@@ -62,7 +62,7 @@
 @beforeContent = {
 
     @if(showBackLink) {
-        @govukBackLink(BackLinkViewModel(href = "#"))
+        @govukBackLink(BackLinkViewModel(href = "#").withCssClass("js-enabled"))
     }
 }
 

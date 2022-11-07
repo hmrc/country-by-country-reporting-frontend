@@ -141,7 +141,6 @@ secondContactPhone.change.hidden = second contact telephone number
 detailsUpdated.title = Contact details updated
 detailsUpdated.heading = Contact details updated
 detailsUpdated.p1 = We will use your new details if we need to contact you.
-detailsUpdated.link = Back to send a CBC report
 
 ChangeContactDetails.title = Contact details at your organisation
 ChangeContactDetails.heading = Contact details at your organisation
@@ -482,7 +481,6 @@ agentContactDetailsUpdated.title = Agent contact details updated
 agentContactDetailsUpdated.heading = Agent contact details updated
 agentContactDetailsUpdated.p1 = We will use your new details if we have any questions about your reports.
 agentContactDetailsUpdated.p2 = {0}.
-agentContactDetailsUpdated.p2.link = Back to send a CBC report
 
 changeAgentContactDetails.title = Check your agent contact details
 changeAgentContactDetails.heading = Check your agent contact details
@@ -578,7 +576,6 @@ ChangeClientContactDetails.confirmingInformation = By sending these details, you
 clientDetailsUpdated.title = Client contact details updated
 clientDetailsUpdated.heading = Client contact details updated
 clientDetailsUpdated.p1 = We will use your client’s new details if we need to contact them.
-clientDetailsUpdated.link = Back to send a CBC report
 
 clientContactDetailsSaved.title = Client contact details saved
 clientContactDetailsSaved.heading = Client contact details saved
