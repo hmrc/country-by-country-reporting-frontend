@@ -521,7 +521,7 @@ clientFirstContactHavePhone.heading = Can we call {0} by telephone?
 clientFirstContactHavePhone.hint = This can be a team mailbox or another contact.
 clientFirstContactHavePhone.error.required = Select yes if we can call the first client contact by telephone
 
-clientFirstContactPhone.title = What is the first client contact telephone number?
+clientFirstContactPhone.title = What is the first client contact‘s telephone number?
 clientFirstContactPhone.heading = What is {0} telephone number?
 clientFirstContactPhone.checkYourAnswersLabel = First client contact telephone number
 clientFirstContactPhone.p1 = Provide a telephone number from your client’s organisation.
