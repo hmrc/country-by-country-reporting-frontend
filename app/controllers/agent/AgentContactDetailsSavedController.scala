@@ -16,7 +16,7 @@
 
 package controllers.agent
 
-import controllers.actions._
+import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
 import pages.ContactNamePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -27,9 +27,9 @@ import javax.inject.Inject
 
 class AgentContactDetailsSavedController @Inject() (
   override val messagesApi: MessagesApi,
-  identify: IdentifierAction,
-  getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
+  identify: AgentIdentifierAction,
+  getData: AgentDataRetrievalAction,
+  requireData: AgentDataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: AgentContactDetailsSavedView
 ) extends FrontendBaseController

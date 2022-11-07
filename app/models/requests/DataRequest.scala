@@ -21,6 +21,9 @@ import models.UserAnswers
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 
+case class OptionalAgentDataRequest[A](request: Request[A], userId: String, userAnswers: Option[UserAnswers], arn: String) extends WrappedRequest[A](request)
+case class AgentDataRequest[A](request: Request[A], userId: String, userAnswers: UserAnswers, arn: String) extends WrappedRequest[A](request)
+
 case class OptionalDataRequest[A](request: Request[A], userId: String, userAnswers: Option[UserAnswers], userType: AffinityGroup, subscriptionId: String)
     extends WrappedRequest[A](request) {
   def isAgent = userType == Agent

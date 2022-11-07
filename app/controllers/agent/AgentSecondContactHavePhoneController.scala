@@ -16,7 +16,7 @@
 
 package controllers.agent
 
-import controllers.actions._
+import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
 import forms.AgentSecondContactHavePhoneFormProvider
 import models.Mode
 import navigation.AgentContactDetailsNavigator
@@ -35,9 +35,9 @@ class AgentSecondContactHavePhoneController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: AgentContactDetailsNavigator,
-  identify: IdentifierAction,
-  getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
+  identify: AgentIdentifierAction,
+  getData: AgentDataRetrievalAction,
+  requireData: AgentDataRequiredAction,
   formProvider: AgentSecondContactHavePhoneFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: AgentSecondContactHavePhoneView

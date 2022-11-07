@@ -16,7 +16,7 @@
 
 package controllers.agent
 
-import controllers.actions._
+import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.AgentSubscriptionService
@@ -32,9 +32,9 @@ import scala.concurrent.Future
 
 class ChangeAgentContactDetailsController @Inject() (
   override val messagesApi: MessagesApi,
-  identify: IdentifierAction,
-  getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
+  identify: AgentIdentifierAction,
+  getData: AgentDataRetrievalAction,
+  requireData: AgentDataRequiredAction,
   agentSubscriptionService: AgentSubscriptionService,
   val controllerComponents: MessagesControllerComponents,
   view: ChangeAgentContactDetailsView,

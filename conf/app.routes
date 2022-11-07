@@ -214,3 +214,5 @@ POST       /agent/change-client-contact/check-answers                           
 GET        /agent/change-client-contact/details-updated                          controllers.client.ClientDetailsUpdatedController.onPageLoad()
 
 GET        /agent/change-client-contact/details-saved                            controllers.client.ClientContactDetailsSavedController.onPageLoad()
+
+GET        /agent/use-agent-services                                             controllers.agent.AgentUseAgentServicesController.onPageLoad()

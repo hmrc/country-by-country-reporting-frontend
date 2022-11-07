@@ -16,7 +16,7 @@
 
 package controllers.agent
 
-import controllers.actions._
+import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
 import forms.AgentSecondContactEmailFormProvider
 import models.Mode
 import navigation.AgentContactDetailsNavigator
@@ -35,9 +35,9 @@ class AgentSecondContactEmailController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: AgentContactDetailsNavigator,
-  identify: IdentifierAction,
-  getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
+  identify: AgentIdentifierAction,
+  getData: AgentDataRetrievalAction,
+  requireData: AgentDataRequiredAction,
   formProvider: AgentSecondContactEmailFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: AgentSecondContactEmailView
