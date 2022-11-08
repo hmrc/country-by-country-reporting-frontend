@@ -584,3 +584,11 @@ clientContactDetailsSaved.p1 = We will use your client’s new details if we nee
 clientContactDetailsSaved.p2 = You can now {0}.
 clientContactDetailsSaved.p2.link = send a CBC report
 
+individualSignInProblem.title = Sorry, you’re unable to use this service
+individualSignInProblem.heading = Sorry, you’re unable to use this service
+individualSignInProblem.p1 = You’ve signed in as an individual. Only organisations can send reports.
+individualSignInProblem.p2 = If you need to send reports for an organisation, {0}.
+individualSignInProblem.p2.link = sign in with your organisation’s Government Gateway details
+
+
+

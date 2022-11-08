@@ -23,6 +23,7 @@ import models.requests.IdentifierRequest
 import play.api.Logging
 import play.api.mvc.Results._
 import play.api.mvc._
+import uk.gov.hmrc.auth.core.AffinityGroup.Individual
 import uk.gov.hmrc.auth.core.AuthProvider.GovernmentGateway
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
@@ -32,7 +33,10 @@ import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait IdentifierAction extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest]
+trait IdentifierAction
+    extends ActionRefiner[Request, IdentifierRequest]
+    with ActionBuilder[IdentifierRequest, AnyContent]
+    with ActionFunction[Request, IdentifierRequest]
 
 class AuthenticatedIdentifierAction @Inject() (
   override val authConnector: AuthConnector,
@@ -43,30 +47,29 @@ class AuthenticatedIdentifierAction @Inject() (
     with AuthorisedFunctions
     with Logging {
 
-  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
-
+  override def refine[A](request: Request[A]): Future[Either[Result, IdentifierRequest[A]]] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     authorised(AuthProviders(GovernmentGateway) and ConfidenceLevel.L50)
       .retrieve(Retrievals.internalId and Retrievals.allEnrolments and Retrievals.affinityGroup) {
-        case Some(internalId) ~ enrolments ~ Some(affinity) => getSubscriptionId(request, enrolments, internalId, affinity, block)
+        case Some(_) ~ _ ~ Some(Individual)                 => Future.successful(Left(Redirect(routes.IndividualSignInProblemController.onPageLoad())))
+        case Some(internalId) ~ enrolments ~ Some(affinity) => getSubscriptionId(request, enrolments, internalId, affinity)
         case _ =>
           logger.warn("Unable to retrieve internal id or affinity group")
-          throw AuthorisationException.fromString("Unable to retrieve internal id or affinity group")
+          Future.successful(Left(Redirect(routes.UnauthorisedController.onPageLoad)))
       } recover {
       case _: NoActiveSession =>
-        Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl)))
+        Left(Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl))))
       case _: AuthorisationException =>
-        Redirect(routes.UnauthorisedController.onPageLoad)
+        Left(Redirect(routes.UnauthorisedController.onPageLoad))
     }
   }
 
   private def getSubscriptionId[A](request: Request[A],
                                    enrolments: Enrolments,
                                    internalId: String,
-                                   affinityGroup: AffinityGroup,
-                                   block: IdentifierRequest[A] => Future[Result]
-  ): Future[Result] = {
+                                   affinityGroup: AffinityGroup
+  ): Future[Either[Result, IdentifierRequest[A]]] = {
 
     val cbcEnrolment  = "HMRC-CBC-ORG"
     val cbcIdentifier = "cbcId"
@@ -77,12 +80,11 @@ class AuthenticatedIdentifierAction @Inject() (
       subscriptionId <- if (id.value.nonEmpty) Some(id.value) else None
     } yield subscriptionId
 
-    subscriptionId.fold {
+    if (subscriptionId.isDefined) {
+      Future.successful(Right(IdentifierRequest(request, internalId, subscriptionId.get, affinityGroup)))
+    } else {
       logger.warn("Unable to retrieve CBC id from Enrolments")
-      Future.successful(Redirect(config.registerUrl))
-    } {
-      cbcId =>
-        block(IdentifierRequest(request, internalId, cbcId, affinityGroup))
+      Future.successful(Left(Redirect(config.registerUrl)))
     }
   }
 }
