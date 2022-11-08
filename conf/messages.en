@@ -567,8 +567,8 @@ clientSecondContactPhone.error.invalid = Telephone number can only include numbe
 clientSecondContactPhone.error.length = The second contact’s telephone number must be 24 characters or less
 clientSecondContactPhone.change.hidden = second client contact telephone number
 
-ChangeClientContactDetails.title = Change your client’s contact details
-ChangeClientContactDetails.heading = Change your client’s contact details
+ChangeClientContactDetails.title = Check your client’s contact details
+ChangeClientContactDetails.heading = Check your client’s contact details
 ChangeClientContactDetails.primary.heading = First client contact
 ChangeClientContactDetails.secondary.heading = Second client contact
 ChangeClientContactDetails.subheading = Send us your client’s contact details
