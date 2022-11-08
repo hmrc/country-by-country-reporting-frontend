@@ -31,7 +31,7 @@ class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnecto
   private val placeholder: String = "*****"
 
   private def isUserVisitingAfterMigration(responseDetail: ResponseDetail): Boolean =
-    responseDetail.primaryContact.email.contains(placeholder) || responseDetail.primaryContact.organisationDetails.organisationName.contains(placeholder)
+    responseDetail.secondaryContact.get.email.contains(placeholder) || responseDetail.secondaryContact.get.organisationDetails.organisationName.contains(placeholder)
 
   def getContactDetails(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] =
     subscriptionConnector.readSubscription map {
