@@ -86,7 +86,7 @@ class ClientCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: 
         actions = Seq(
           ActionItemViewModel("site.change", routes.ClientHaveSecondContactController.onPageLoad(CheckMode).url)
             .withAttribute(("id", "second-contact"))
-            .withVisuallyHiddenText(messages("haveSecondContact.change.hidden"))
+            .withVisuallyHiddenText(messages("clientHaveSecondContact.change.hidden"))
         )
       )
     Some(userAnswers.get(HaveSecondContactPage) match {
