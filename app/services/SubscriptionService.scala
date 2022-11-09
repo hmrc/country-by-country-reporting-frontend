@@ -16,6 +16,7 @@
 
 package services
 
+import config.FrontendAppConfig
 import connectors.SubscriptionConnector
 import models.UserAnswers
 import models.subscription._
@@ -26,12 +27,15 @@ import uk.gov.hmrc.http.HeaderCarrier
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnector)(implicit ec: ExecutionContext) extends Logging {
+class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnector, appConfig: FrontendAppConfig)(implicit ec: ExecutionContext)
+    extends Logging {
 
-  private val placeholder: String = "*****"
+  private val placeholder: String = appConfig.migratedUserIdentifier
 
   private def isUserVisitingAfterMigration(responseDetail: ResponseDetail): Boolean =
-    responseDetail.primaryContact.email.contains(placeholder) || responseDetail.primaryContact.organisationDetails.organisationName.contains(placeholder)
+    responseDetail.secondaryContact.isDefined &&
+      (responseDetail.secondaryContact.get.email.contains(placeholder) ||
+        responseDetail.secondaryContact.get.organisationDetails.organisationName.contains(placeholder))
 
   def getContactDetails(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] =
     subscriptionConnector.readSubscription map {
