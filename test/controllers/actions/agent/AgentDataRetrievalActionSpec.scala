@@ -42,9 +42,13 @@ class AgentDataRetrievalActionSpec extends SpecBase {
         when(sessionRepository.get("id")) thenReturn Future(None)
         val action = new Harness(sessionRepository)
 
-        val result = action.callTransform(AgentIdentifierRequest(FakeRequest(), "id", "arn")).futureValue
+        val fakeRequest = FakeRequest()
+        val result      = action.callTransform(AgentIdentifierRequest(fakeRequest, "id", "arn")).futureValue
 
         result.userAnswers must not be defined
+        result.request mustBe fakeRequest
+        result.userId mustBe "id"
+        result.arn mustBe "arn"
       }
     }
 
@@ -56,9 +60,13 @@ class AgentDataRetrievalActionSpec extends SpecBase {
         when(sessionRepository.get("id")) thenReturn Future(Some(UserAnswers("id")))
         val action = new Harness(sessionRepository)
 
-        val result = action.callTransform(AgentIdentifierRequest(FakeRequest(), "id", "arn")).futureValue
+        val fakeRequest = FakeRequest()
+        val result      = action.callTransform(AgentIdentifierRequest(fakeRequest, "id", "arn")).futureValue
 
         result.userAnswers mustBe defined
+        result.request mustBe fakeRequest
+        result.userId mustBe "id"
+        result.arn mustBe "arn"
       }
     }
   }
