@@ -14,23 +14,23 @@
  * limitations under the License.
  *@
 
-@import views.html.components.Link
+@import config.FrontendAppConfig
 
 @this(
         layout: templates.Layout,
-        govukPanel : GovukPanel,
-        link: Link
+        link: components.Link,
+        appConfig: FrontendAppConfig
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("detailsUpdated.title")), showBackLink = false) {
+@layout(pageTitle = titleNoForm(messages("individualSignInProblem.title")), showBackLink = false) {
 
-    @govukPanel(Panel(
-        title = Text(messages("detailsUpdated.heading"))
-    ))
+    <h1 class="govuk-heading-l">@messages("individualSignInProblem.heading")</h1>
 
-    <p class="govuk-body">@messages("detailsUpdated.p1")</p>
+    <p class="govuk-body">@messages("individualSignInProblem.p1")</p>
 
-  <p class="govuk-body">@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</p>
+    <p class="govuk-body">
+    @Html(messages("individualSignInProblem.p2", link(appConfig.loginUrl, "individualSignInProblem.p2.link")))
+    </p>
 }

@@ -16,16 +16,20 @@
 
 package controllers.actions
 
+import akka.io.Tcp.Bind
 import base.SpecBase
 import com.google.inject.Inject
 import config.FrontendAppConfig
 import controllers.routes
+import org.mockito.ArgumentMatchers.any
+import play.api.inject
 import play.api.mvc.{BodyParsers, Results}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.AffinityGroup.Individual
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.authorise.Predicate
-import uk.gov.hmrc.auth.core.retrieve.Retrieval
+import uk.gov.hmrc.auth.core.retrieve.{~, Retrieval}
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -143,6 +147,34 @@ class AuthActionSpec extends SpecBase {
     }
 
     "the user has an unsupported affinity group" - {
+
+      "must redirect the user to the unauthorised page when INDIVIDUAL" in {
+
+        type RetrievalType = Option[String] ~ Enrolments ~ Option[AffinityGroup]
+        val authRetrievals = Future.successful(new ~(new ~(Some("id"), Enrolments(Set.empty[Enrolment])), Some(Individual)))
+
+        val mockAuthConnector = mock[AuthConnector]
+        val application = applicationBuilder(userAnswers = None)
+          .overrides(
+            inject.bind[AuthConnector].toInstance(mockAuthConnector)
+          )
+          .build()
+
+        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]])(any(), any()))
+          .thenReturn(authRetrievals)
+
+        running(application) {
+          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+
+          val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, bodyParsers)
+          val controller = new Harness(authAction)
+          val result     = controller.onPageLoad()(FakeRequest())
+
+          status(result) mustBe SEE_OTHER
+          redirectLocation(result) mustBe Some(routes.IndividualSignInProblemController.onPageLoad.url)
+        }
+      }
 
       "must redirect the user to the unauthorised page" in {
 

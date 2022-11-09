@@ -20,17 +20,17 @@ import controllers.actions._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ThereIsAProblemView
+import views.html.IndividualSignInProblemView
 
 import javax.inject.Inject
 
-class ThereIsAProblemController @Inject() (
+class IndividualSignInProblemController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: ThereIsAProblemView
+  view: IndividualSignInProblemView
 ) extends FrontendBaseController
     with I18nSupport {
 

@@ -141,7 +141,6 @@ secondContactPhone.change.hidden = second contact telephone number
 detailsUpdated.title = Contact details updated
 detailsUpdated.heading = Contact details updated
 detailsUpdated.p1 = We will use your new details if we need to contact you.
-detailsUpdated.link = Back to send a CBC report
 
 ChangeContactDetails.title = Contact details at your organisation
 ChangeContactDetails.heading = Contact details at your organisation
@@ -482,7 +481,6 @@ agentContactDetailsUpdated.title = Agent contact details updated
 agentContactDetailsUpdated.heading = Agent contact details updated
 agentContactDetailsUpdated.p1 = We will use your new details if we have any questions about your reports.
 agentContactDetailsUpdated.p2 = {0}.
-agentContactDetailsUpdated.p2.link = Back to send a CBC report
 
 changeAgentContactDetails.title = Check your agent contact details
 changeAgentContactDetails.heading = Check your agent contact details
@@ -502,75 +500,75 @@ clientFirstContactName.heading = What is the name of the first contact at your c
 clientFirstContactName.checkYourAnswersLabel = First client contact name
 clientFirstContactName.p1 = This can be an individual or the name of a team.
 clientFirstContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
-clientFirstContactName.error.required = Enter the name of the first contact
-clientFirstContactName.error.length = The name of the first contact must be 35 characters or less
-clientFirstContactName.error.invalid = The name of the first contact must only include letters a to z, hyphens, spaces, and apostrophes
+clientFirstContactName.error.required = Enter the name of the first client contact
+clientFirstContactName.error.length = The name of the first client contact must be 35 characters or less
+clientFirstContactName.error.invalid = The name of the first client contact must only include letters a to z, hyphens, spaces, and apostrophes
 clientFirstContactName.change.hidden = first client contact name
 
-clientFirstContactEmail.title = What is the first contact’s email address?
+clientFirstContactEmail.title = What is the first client contact’s email address?
 clientFirstContactEmail.heading = What is {0} email address?
 clientFirstContactEmail.p1 = We will use this to send confirmation of the CBC reports or if we have any questions about them.
 clientFirstContactEmail.checkYourAnswersLabel = First client contact email address
-clientFirstContactEmail.error.required = Enter the first contact’s email address
-clientFirstContactEmail.error.invalid = Enter the first contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
-clientFirstContactEmail.error.length = The first contact’s email address must be 132 characters or less
+clientFirstContactEmail.error.required = Enter the first client contact’s email address
+clientFirstContactEmail.error.invalid = Enter the first client contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
+clientFirstContactEmail.error.length = The first client contact’s email address must be 132 characters or less
 clientFirstContactEmail.change.hidden = first client contact email address
 
-clientFirstContactHavePhone.title = Can we call the first contact by telephone?
+clientFirstContactHavePhone.title = Can we call the first client contact by telephone?
 clientFirstContactHavePhone.heading = Can we call {0} by telephone?
 clientFirstContactHavePhone.hint = This can be a team mailbox or another contact.
-clientFirstContactHavePhone.error.required = Select yes if we can call the first contact by telephone
+clientFirstContactHavePhone.error.required = Select yes if we can call the first client contact by telephone
 
-clientFirstContactPhone.title = What is their telephone number?
+clientFirstContactPhone.title = What is the first client contact‘s telephone number?
 clientFirstContactPhone.heading = What is {0} telephone number?
 clientFirstContactPhone.checkYourAnswersLabel = First client contact telephone number
 clientFirstContactPhone.p1 = Provide a telephone number from your client’s organisation.
-clientFirstContactPhone.error.required = Enter the first contact’s telephone number
+clientFirstContactPhone.error.required = Enter the first client contact’s telephone number
 clientFirstContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
-clientFirstContactPhone.error.length = The first contact’s telephone number must be 24 characters or less
+clientFirstContactPhone.error.length = The first client contact’s telephone number must be 24 characters or less
 clientFirstContactPhone.change.hidden = first client contact telephone number
 
-clientHaveSecondContact.title = Is there someone else we can contact if your first contact is not available?
-clientHaveSecondContact.heading = Is there someone else we can contact if {0} is not available?
-clientHaveSecondContact.hint = This can be a team mailbox or another contact.
-clientHaveSecondContact.checkYourAnswersLabel = Is there someone else we can contact?
+clientHaveSecondContact.title = Do you have a second client contact if your first contact is not available?
+clientHaveSecondContact.heading = Do you have a second client contact if {0} is not available?
+clientHaveSecondContact.checkYourAnswersLabel = Do you have a second client contact if the first client contact is not available?
 clientHaveSecondContact.error.required = Select yes if you have a second client contact if the first client contact is not available
-clientHaveSecondContact.change.hidden = is there someone else we can contact?
+clientHaveSecondContact.change.hidden = Do you have a second client contact if the first client contact is not available?
+clientHaveSecondContact.change.hidden = do you have a second client contact if the first client contact is not available?
 
-clientSecondContactName.title = What is the name of the second contact?
-clientSecondContactName.heading = What is the name of the second contact?
+clientSecondContactName.title = What is the name of the second client contact?
+clientSecondContactName.heading = What is the name of the second client contact?
 clientSecondContactName.checkYourAnswersLabel = Second client contact name
 clientSecondContactName.p1 = This can be an individual or the name of a team at your client’s organisation.
 clientSecondContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
-clientSecondContactName.error.required = Enter the second contact’s name
-clientSecondContactName.error.length = The second contact’s name must be 35 characters or less
-clientSecondContactName.error.invalid = The name of the second contact must only include letters a to z, hyphens, spaces, and apostrophes
+clientSecondContactName.error.required = Enter the second client contact’s name
+clientSecondContactName.error.length = The second client contact’s name must be 35 characters or less
+clientSecondContactName.error.invalid = The name of the second client contact must only include letters a to z, hyphens, spaces, and apostrophes
 clientSecondContactName.change.hidden = second client contact name
 
-clientSecondContactEmail.title = What is the second contact’s email address?
+clientSecondContactEmail.title = What is the second client contact’s email address?
 clientSecondContactEmail.heading = What is {0} email address?
 clientSecondContactEmail.hint = We will use this email to send confirmation of the reports we receive or if we have any questions about your client’s report.
 clientSecondContactEmail.checkYourAnswersLabel = Second client contact email address
-clientSecondContactEmail.error.required = Enter the second contact’s email address
-clientSecondContactEmail.error.length = The second contact’s email address must be 132 characters or less
-clientSecondContactEmail.error.invalid = Enter the second contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
+clientSecondContactEmail.error.required = Enter the second client contact’s email address
+clientSecondContactEmail.error.length = The second client contact’s email address must be 132 characters or less
+clientSecondContactEmail.error.invalid = Enter the second client contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
 clientSecondContactEmail.change.hidden = second client contact email address
 
-clientSecondContactHavePhone.title = Can we call your second contact by telephone?
+clientSecondContactHavePhone.title = Can we call your second client contact by telephone?
 clientSecondContactHavePhone.heading = Can we call {0} by telephone?
-clientSecondContactHavePhone.error.required = Select yes if we can call the second contact by telephone
+clientSecondContactHavePhone.error.required = Select yes if we can call the second client contact by telephone
 
-clientSecondContactPhone.title = What is their telephone number?
+clientSecondContactPhone.title = What is the second client contact’s telephone number?
 clientSecondContactPhone.heading = What is {0} telephone number?
 clientSecondContactPhone.checkYourAnswersLabel = Second client contact telephone number
 clientSecondContactPhone.p1 = Provide a telephone number from your client’s organisation.
-clientSecondContactPhone.error.required = Enter the second contact’s telephone number
+clientSecondContactPhone.error.required = Enter the second client contact’s telephone number
 clientSecondContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
-clientSecondContactPhone.error.length = The second contact’s telephone number must be 24 characters or less
+clientSecondContactPhone.error.length = The second client contact’s telephone number must be 24 characters or less
 clientSecondContactPhone.change.hidden = second client contact telephone number
 
-ChangeClientContactDetails.title = Change your client’s contact details
-ChangeClientContactDetails.heading = Change your client’s contact details
+ChangeClientContactDetails.title = Check your client’s contact details
+ChangeClientContactDetails.heading = Check your client’s contact details
 ChangeClientContactDetails.primary.heading = First client contact
 ChangeClientContactDetails.secondary.heading = Second client contact
 ChangeClientContactDetails.subheading = Send us your client’s contact details
@@ -579,11 +577,10 @@ ChangeClientContactDetails.confirmingInformation = By sending these details, you
 clientDetailsUpdated.title = Client contact details updated
 clientDetailsUpdated.heading = Client contact details updated
 clientDetailsUpdated.p1 = We will use your client’s new details if we need to contact them.
-clientDetailsUpdated.link = Back to send a CBC report
 
 clientContactDetailsSaved.title = Client contact details saved
 clientContactDetailsSaved.heading = Client contact details saved
-clientContactDetailsSaved.p1 = We will use your client’s new details if we need to contact them.
+clientContactDetailsSaved.p1 = What happens next
 clientContactDetailsSaved.p2 = You can now {0}.
 clientContactDetailsSaved.p2.link = send a CBC report
 
@@ -592,3 +589,9 @@ agentUseAgentServices.h1 = You must use agent services to send a country-by-coun
 agentUseAgentServices.p1 = We have made changes to this service. You now need to sign in to your agent services account to send a country-by-country report.
 agentUseAgentServices.p2 = If you do not have an agent services account {0}.
 agentUseAgentServices.p2.link = check if you can create one
+
+individualSignInProblem.title = Sorry, you’re unable to use this service
+individualSignInProblem.heading = Sorry, you’re unable to use this service
+individualSignInProblem.p1 = You’ve signed in as an individual. Only organisations can send reports.
+individualSignInProblem.p2 = If you need to send reports for an organisation, {0}.
+individualSignInProblem.p2.link = sign in with your organisation’s Government Gateway details
