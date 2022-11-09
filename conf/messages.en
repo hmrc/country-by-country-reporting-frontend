@@ -533,6 +533,7 @@ clientHaveSecondContact.heading = Do you have a second client contact if {0} is 
 clientHaveSecondContact.checkYourAnswersLabel = Do you have a second client contact if the first client contact is not available?
 clientHaveSecondContact.error.required = Select yes if you have a second client contact if the first client contact is not available
 clientHaveSecondContact.change.hidden = Do you have a second client contact if the first client contact is not available?
+clientHaveSecondContact.change.hidden = do you have a second client contact if the first client contact is not available?
 
 clientSecondContactName.title = What is the name of the second client contact?
 clientSecondContactName.heading = What is the name of the second client contact?
