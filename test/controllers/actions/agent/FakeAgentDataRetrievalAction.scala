@@ -35,8 +35,8 @@ class FakeAgentDataRetrievalActionProvider(
 
   override protected def transform[A](request: AgentIdentifierRequest[A]): Future[OptionalAgentDataRequest[A]] =
     stubbedUserAnswers match {
-      case None    => Future(OptionalAgentDataRequest(request, "", None, ""))
-      case Some(_) => Future(OptionalAgentDataRequest(request, "", stubbedUserAnswers, ""))
+      case None    => Future(OptionalAgentDataRequest(request, request.userId, None, request.arn))
+      case Some(_) => Future(OptionalAgentDataRequest(request, request.userId, stubbedUserAnswers, request.arn))
     }
 
   implicit override protected def executionContext: ExecutionContext =

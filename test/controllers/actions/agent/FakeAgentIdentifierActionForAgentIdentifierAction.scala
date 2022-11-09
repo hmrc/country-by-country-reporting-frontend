@@ -27,7 +27,7 @@ class FakeAgentIdentifierActionForAgentIdentifierAction @Inject() (
 ) extends AgentIdentifierAction {
 
   override def invokeBlock[A](request: Request[A], block: AgentIdentifierRequest[A] => Future[Result]): Future[Result] =
-    block(AgentIdentifierRequest(request, "", ""))
+    block(AgentIdentifierRequest(request, "userId", "arn"))
 
   override protected def executionContext: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 }
