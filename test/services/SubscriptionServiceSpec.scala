@@ -103,11 +103,11 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
             |},
             |"secondaryContact":
             |{
-            |"email": "*****",
+            |"email": "migrated@email.com",
             |"phone": "99999",
             |"mobile": "",
             |"organisation": {
-            |"organisationName": "*****"
+            |"organisationName": "MIGRATED"
             |}
             |}
             |}""".stripMargin
@@ -335,11 +335,11 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
             |},
             |"secondaryContact":
             |{
-            |"email": "*****",
+            |"email": "migrated@email.com",
             |"phone": "99999",
             |"mobile": "",
             |"organisation": {
-            |"organisationName": "*****"
+            |"organisationName": "MIGRATED"
             |}
             |}
             |}""".stripMargin
