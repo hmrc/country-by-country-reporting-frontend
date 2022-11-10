@@ -185,7 +185,7 @@ class AgentIdentifierActionSpec extends SpecBase with TableDrivenPropertyChecks 
 
       forAll(Table("userAffinityType", Individual, Organisation)) {
         userAffinityType =>
-          s"must redirect the user to the unauthorised page when not $userAffinityType" in {
+          s"must redirect the user to the unauthorised page when $userAffinityType" in {
 
             type RetrievalType = Option[String] ~ Enrolments ~ Option[AffinityGroup]
             val authRetrievals = Future.successful(new ~(new ~(Some("id"), Enrolments(Set.empty[Enrolment])), Some(userAffinityType)))
