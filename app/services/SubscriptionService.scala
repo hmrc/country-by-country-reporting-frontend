@@ -30,10 +30,13 @@ import scala.concurrent.{ExecutionContext, Future}
 class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnector, appConfig: FrontendAppConfig)(implicit ec: ExecutionContext)
     extends Logging {
 
+  val migratedUserEmail = appConfig.migratedUserEmail.toLowerCase
+  val migratedUserName  = appConfig.migratedUserName.toLowerCase
+
   private def isUserVisitingAfterMigration(responseDetail: ResponseDetail): Boolean =
     responseDetail.secondaryContact.isDefined &&
-      (responseDetail.secondaryContact.get.email.contains(appConfig.migratedUserEmail) &&
-        responseDetail.secondaryContact.get.organisationDetails.organisationName.contains(appConfig.migratedUserName))
+      (responseDetail.secondaryContact.get.email.toLowerCase.contains(migratedUserEmail) &&
+        responseDetail.secondaryContact.get.organisationDetails.organisationName.toLowerCase.contains(migratedUserName))
 
   def getContactDetails(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] =
     subscriptionConnector.readSubscription map {
