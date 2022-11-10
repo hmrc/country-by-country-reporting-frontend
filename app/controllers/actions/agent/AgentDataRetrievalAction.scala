@@ -16,9 +16,8 @@
 
 package controllers.actions.agent
 
-import controllers.actions.DataRetrievalAction
 import models.requests.agent.AgentIdentifierRequest
-import models.requests.{IdentifierRequest, OptionalAgentDataRequest, OptionalDataRequest}
+import models.requests.OptionalAgentDataRequest
 import play.api.mvc.ActionTransformer
 import repositories.SessionRepository
 

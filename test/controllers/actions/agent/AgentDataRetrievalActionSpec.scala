@@ -32,7 +32,7 @@ class AgentDataRetrievalActionSpec extends SpecBase {
     def callTransform[A](request: AgentIdentifierRequest[A]): Future[OptionalAgentDataRequest[A]] = transform(request)
   }
 
-  "Data Retrieval Action" - {
+  "Agent Data Retrieval Action" - {
 
     "when there is no data in the cache" - {
 
