@@ -35,6 +35,6 @@ class AgentDataRequiredActionImpl @Inject() (implicit val executionContext: Exec
         logger.warn("AgentDataRequiredAction: No UserAnswers found for request")
         Future.successful(Left(Redirect(routes.ThereIsAProblemController.onPageLoad())))
       case Some(userAnswers) =>
-        Future.successful(Right(AgentDataRequest(request, request.userId, userAnswers, request.arn)))
+        Future.successful(Right(AgentDataRequest(request.request, request.userId, userAnswers, request.arn)))
     }
 }
