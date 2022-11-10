@@ -94,20 +94,20 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
             |"isGBUser": true,
             |"primaryContact":
             |{
-            |"email": "*****",
-            |"phone": "99999",
-            |"mobile": "",
-            |"organisation": {
-            |"organisationName": "*****"
-            |}
-            |},
-            |"secondaryContact":
-            |{
             |"email": "test@test.com",
             |"phone": "99999",
             |"mobile": "",
             |"organisation": {
             |"organisationName": "wer"
+            |}
+            |},
+            |"secondaryContact":
+            |{
+            |"email": "*****",
+            |"phone": "99999",
+            |"mobile": "",
+            |"organisation": {
+            |"organisationName": "*****"
             |}
             |}
             |}""".stripMargin
@@ -326,20 +326,20 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
             |"isGBUser": true,
             |"primaryContact":
             |{
-            |"email": "*****",
-            |"phone": "99999",
-            |"mobile": "",
-            |"organisation": {
-            |"organisationName": "*****"
-            |}
-            |},
-            |"secondaryContact":
-            |{
             |"email": "test@test.com",
             |"phone": "99999",
             |"mobile": "",
             |"organisation": {
             |"organisationName": "wer"
+            |}
+            |},
+            |"secondaryContact":
+            |{
+            |"email": "*****",
+            |"phone": "99999",
+            |"mobile": "",
+            |"organisation": {
+            |"organisationName": "*****"
             |}
             |}
             |}""".stripMargin
