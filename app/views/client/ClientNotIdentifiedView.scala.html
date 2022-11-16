@@ -1,0 +1,37 @@
+@*
+ * Copyright 2022 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@this(
+        layout: templates.Layout,
+        link: components.Link
+)
+
+@()(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = titleNoForm(messages("clientNotIdentified.title"))) {
+
+    <h1 class="govuk-heading-l">@messages("clientNotIdentified.heading")</h1>
+
+    <p class="govuk-body">@messages("clientNotIdentified.p1")</p>
+
+    <h2 class="govuk-heading-m">@messages("clientNotIdentified.subheading")</h2>
+
+    <ol class="govuk-body govuk-list--number">
+        <li>@link("#", "clientNotIdentified.bullet1")</li> @*TODO: add CBC ID Entry page link URL when implemented*@
+        <li>@Html(messages("clientNotIdentified.bullet2", link("#", "clientNotIdentified.bullet2.link")))</li> @*TODO: add agent services link URL when known*@
+        <li>@messages("clientNotIdentified.bullet3")</li>
+    </ol>
+}
