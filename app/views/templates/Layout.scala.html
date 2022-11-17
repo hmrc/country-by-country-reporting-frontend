@@ -29,17 +29,16 @@
 @(pageTitle: String, showBackLink: Boolean = true, timeout: Boolean = true, showSignOut: Boolean = true)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @timeOutDialog = {
-@hmrcTimeoutDialogHelper(
-    timeout             = Some(appConfig.timeout),
-    countdown           = Some(appConfig.countdown),
-    keepAliveUrl        = Some(routes.KeepAliveController.keepAlive.url),
-    keepAliveButtonText = Some(messages("timeout.keepAlive")),
-    signOutUrl          = controllers.auth.routes.AuthController.signOut.url,
-    timeoutUrl          = Some(controllers.auth.routes.AuthController.signOutNoSurvey.url),
-    signOutButtonText   = Some(messages("timeout.signOut")),
-    title               = Some(messages("timeout.title")),
-    message             = Some(messages("timeout.message"))
-)
+    @hmrcTimeoutDialogHelper(
+        timeout             = Some(appConfig.timeout),
+        countdown           = Some(appConfig.countdown),
+        keepAliveUrl        = Some(routes.KeepAliveController.keepAlive.url),
+        keepAliveButtonText = Some(messages("timeout.keepAlive")),
+        signOutUrl          = controllers.auth.routes.AuthController.signOut.url,
+        timeoutUrl          = Some(controllers.auth.routes.AuthController.signOutNoSurvey.url),
+        signOutButtonText   = Some(messages("timeout.signOut")),
+        title               = Some(messages("timeout.title")),
+        message             = Some(messages("timeout.message"))
     )
 }
 
