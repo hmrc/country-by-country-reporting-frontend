@@ -33,7 +33,10 @@ import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait IdentifierAction extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest]
+trait IdentifierAction
+    extends ActionRefiner[Request, IdentifierRequest]
+    with ActionBuilder[IdentifierRequest, AnyContent]
+    with ActionFunction[Request, IdentifierRequest]
 
 class AuthenticatedIdentifierAction @Inject() (
   override val authConnector: AuthConnector,
@@ -44,65 +47,74 @@ class AuthenticatedIdentifierAction @Inject() (
     with AuthorisedFunctions
     with Logging {
 
-  private def getSubscriptionId(enrolments: Enrolments): Option[String] = {
-    val cbcEnrolment  = "HMRC-CBC-ORG"
-    val cbcIdentifier = "cbcId"
-
-    for {
-      enrolment      <- enrolments.getEnrolment(cbcEnrolment)
-      id             <- enrolment.getIdentifier(cbcIdentifier)
-      subscriptionId <- if (id.value.nonEmpty) Some(id.value) else None
-    } yield subscriptionId
-  }
-
   private def cbcDelegatedAuthRule(clientId: String): Enrolment =
     Enrolment("HMRC-CBC-ORG")
       .withIdentifier("cbcId", clientId)
       .withDelegatedAuthRule("cbc-auth")
 
-  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
+  private def performBlockIfValidAgent[A](
+    internalId: String,
+    request: Request[A],
+    block: IdentifierRequest[A] => Future[Result])(
+    implicit executionContext: ExecutionContext,
+    hc: HeaderCarrier
+  ): Future[Either[Result, IdentifierRequest[A]]] =
+    request.headers.get("clientId") match {
+      case None =>
+        logger.debug(s"IdentifierAction: No client id in the header. Redirecting to /agent/client-id")
+        Future.successful(Left(Redirect(controllers.agent.routes.AgentClientIdController.onPageLoad())))
+      case Some(clientId) =>
+        authorised(cbcDelegatedAuthRule(clientId)).retrieve(Retrievals.allEnrolments) {
+          case Enrolments(Seq(Enrolment("HMRC-AS-AGENT", Seq(EnrolmentIdentifier(_, arn)), _, _), _)) =>
+            logger.debug("IdentifierAction: Authenticated as an Agent with CBC Delegated Auth Rule Enrolment")
+            Future.successful(Right(IdentifierRequest(request, internalId, clientId, Agent))))
+          case enrolments =>
+            logger.debug(s"IdentifierAction: Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
+            // waiting for DAC6-2130 to be merged
+            //Future.successful(Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad)))
+            Future.successful(Left(Redirect(routes.UnauthorisedController.onPageLoad))) // temporary redirect page
+        }
+    }
+
+  override def refine[A](request: Request[A]): Future[Either[Result, IdentifierRequest[A]]] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     authorised(AuthProviders(GovernmentGateway) and ConfidenceLevel.L50)
-      .retrieve(Retrievals.internalId and Retrievals.authorisedEnrolments and Retrievals.affinityGroup) {
-        case Some(_) ~ _ ~ Some(Individual) =>
-          Future.successful(Redirect(routes.IndividualSignInProblemController.onPageLoad()))
-
-        case Some(internalId) ~ enrolments ~ Some(Agent) =>
-          request.headers.get("clientId") match {
-            case None =>
-              logger.debug(s"IdentifierAction: No client id in the header. Redirecting to /agent/client-id")
-              Future.successful(Redirect(controllers.agent.routes.AgentClientIdController.onPageLoad()))
-
-            case Some(clientId) =>
-              authorised(cbcDelegatedAuthRule(clientId)).retrieve(Retrievals.allEnrolments) {
-                case Enrolments(Seq(Enrolment("HMRC-AS-AGENT", Seq(EnrolmentIdentifier(_, arn)), _, _), _)) =>
-                  logger.debug("IdentifierAction: Authenticated as an Agent with CBC Delegated Auth Rule Enrolment")
-                  block(IdentifierRequest(request, internalId, clientId, Agent))
-                case _ =>
-                  logger.debug(s"IdentifierAction: Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
-                  // waiting for DAC6-2130 to be merged
-                  //Future.successful(Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad)))
-                  Future.successful(Redirect(routes.UnauthorisedController.onPageLoad)) // temporary redirect page
-              }
-          }
-
-        case Some(internalId) ~ enrolments ~ Some(affinity) =>
-          getSubscriptionId(enrolments).fold {
-            logger.warn("Unable to retrieve CBC id from Enrolments")
-            Future.successful(Redirect(config.registerUrl))
-          }(
-            subscriptionId => block(IdentifierRequest(request, internalId, subscriptionId, affinity))
-          )
+      .retrieve(Retrievals.internalId and Retrievals.allEnrolments and Retrievals.affinityGroup) {
+        case Some(_) ~ _ ~ Some(Individual)                 => Future.successful(Left(Redirect(routes.IndividualSignInProblemController.onPageLoad())))
+        case Some(internalId) ~ _ ~ Some(Agent)             => performBlockIfValidAgent(internalId, request)
+        case Some(internalId) ~ enrolments ~ Some(affinity) => getSubscriptionId(request, enrolments, internalId, affinity)
         case _ =>
           logger.warn("Unable to retrieve internal id or affinity group")
-          Future.successful(Redirect(routes.UnauthorisedController.onPageLoad))
+          Future.successful(Left(Redirect(routes.UnauthorisedController.onPageLoad)))
       } recover {
       case _: NoActiveSession =>
-        Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl)))
+        Left(Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl))))
       case _: AuthorisationException =>
-        Redirect(routes.UnauthorisedController.onPageLoad)
+        Left(Redirect(routes.UnauthorisedController.onPageLoad))
     }
   }
 
+  private def getSubscriptionId[A](request: Request[A],
+                                   enrolments: Enrolments,
+                                   internalId: String,
+                                   affinityGroup: AffinityGroup
+  ): Future[Either[Result, IdentifierRequest[A]]] = {
+
+    val cbcEnrolment  = "HMRC-CBC-ORG"
+    val cbcIdentifier = "cbcId"
+
+    val subscriptionId: Option[String] = for {
+      enrolment      <- enrolments.getEnrolment(cbcEnrolment)
+      id             <- enrolment.getIdentifier(cbcIdentifier)
+      subscriptionId <- if (id.value.nonEmpty) Some(id.value) else None
+    } yield subscriptionId
+
+    if (subscriptionId.isDefined) {
+      Future.successful(Right(IdentifierRequest(request, internalId, subscriptionId.get, affinityGroup)))
+    } else {
+      logger.warn("Unable to retrieve CBC id from Enrolments")
+      Future.successful(Left(Redirect(config.registerUrl)))
+    }
+  }
 }
