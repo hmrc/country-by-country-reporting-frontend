@@ -52,11 +52,8 @@ class AuthenticatedIdentifierAction @Inject() (
       .withIdentifier("cbcId", clientId)
       .withDelegatedAuthRule("cbc-auth")
 
-  private def performBlockIfValidAgent[A](
-    internalId: String,
-    request: Request[A],
-    block: IdentifierRequest[A] => Future[Result])(
-    implicit executionContext: ExecutionContext,
+  private def agentAuthCheck[A](internalId: String, request: Request[A])(implicit
+    executionContext: ExecutionContext,
     hc: HeaderCarrier
   ): Future[Either[Result, IdentifierRequest[A]]] =
     request.headers.get("clientId") match {
@@ -67,12 +64,19 @@ class AuthenticatedIdentifierAction @Inject() (
         authorised(cbcDelegatedAuthRule(clientId)).retrieve(Retrievals.allEnrolments) {
           case Enrolments(Seq(Enrolment("HMRC-AS-AGENT", Seq(EnrolmentIdentifier(_, arn)), _, _), _)) =>
             logger.debug("IdentifierAction: Authenticated as an Agent with CBC Delegated Auth Rule Enrolment")
-            Future.successful(Right(IdentifierRequest(request, internalId, clientId, Agent))))
+            Future.successful(Right(IdentifierRequest(request, internalId, clientId, Agent)))
           case enrolments =>
             logger.debug(s"IdentifierAction: Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
             // waiting for DAC6-2130 to be merged
             //Future.successful(Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad)))
             Future.successful(Left(Redirect(routes.UnauthorisedController.onPageLoad))) // temporary redirect page
+        } recover {
+          case _: NoActiveSession =>
+            logger.debug("IdentifierAction: Agent does not have an active session, rendering Session Timeout")
+            Left(Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl))))
+          case _: AuthorisationException =>
+            logger.debug("IdentifierAction- Agent does not have delegated authority for Client")
+            Left(Redirect(routes.UnauthorisedController.onPageLoad))
         }
     }
 
@@ -82,7 +86,7 @@ class AuthenticatedIdentifierAction @Inject() (
     authorised(AuthProviders(GovernmentGateway) and ConfidenceLevel.L50)
       .retrieve(Retrievals.internalId and Retrievals.allEnrolments and Retrievals.affinityGroup) {
         case Some(_) ~ _ ~ Some(Individual)                 => Future.successful(Left(Redirect(routes.IndividualSignInProblemController.onPageLoad())))
-        case Some(internalId) ~ _ ~ Some(Agent)             => performBlockIfValidAgent(internalId, request)
+        case Some(internalId) ~ _ ~ Some(Agent)             => agentAuthCheck(internalId, request)
         case Some(internalId) ~ enrolments ~ Some(affinity) => getSubscriptionId(request, enrolments, internalId, affinity)
         case _ =>
           logger.warn("Unable to retrieve internal id or affinity group")
