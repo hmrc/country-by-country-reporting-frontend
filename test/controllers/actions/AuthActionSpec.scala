@@ -145,11 +145,63 @@ class AuthActionSpec extends SpecBase {
       }
     }
 
+    type RetrievalType = Option[String] ~ Enrolments ~ Option[AffinityGroup]
+
+    "the user has a supported affinity group" - {
+      "must redirect to the user to the use-agent-services when AGENT and no delegated auth rule" in {
+        val authRetrievals: RetrievalType = new ~(new ~(Option("userId"), Enrolments(Set.empty[Enrolment])), Option(AffinityGroup.Agent))
+
+        val mockAuthConnector = mock[AuthConnector]
+        val application = applicationBuilder(userAnswers = None)
+          .overrides(
+            inject.bind[AuthConnector].toInstance(mockAuthConnector)
+          )
+          .build()
+
+        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]])(any(), any()))
+          .thenReturn(Future.successful(authRetrievals))
+
+        running(application) {
+          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+
+          val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, bodyParsers)
+          val controller = new Harness(authAction)
+          val result     = controller.onPageLoad()(FakeRequest())
+          redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad.url)
+        }
+      }
+
+      "must allow the user to continue the journey when AGENT and delegated auth rule passes" in {
+        val enrolment: Enrolment          = Enrolment("HMRC-CBC-ORG").withIdentifier("cbcid", "").withDelegatedAuthRule("cbc-auth")
+        val authRetrievals: RetrievalType = new ~(new ~(Option("userId"), Enrolments(Set(enrolment))), Option(AffinityGroup.Agent))
+
+        val mockAuthConnector = mock[AuthConnector]
+        val application = applicationBuilder(userAnswers = None)
+          .overrides(
+            inject.bind[AuthConnector].toInstance(mockAuthConnector)
+          )
+          .build()
+
+        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]])(any(), any()))
+          .thenReturn(Future.successful(authRetrievals))
+
+        running(application) {
+          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+
+          val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, bodyParsers)
+          val controller = new Harness(authAction)
+          val result     = controller.onPageLoad()(FakeRequest())
+          redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad.url)
+        }
+      }
+    }
+
     "the user has an unsupported affinity group" - {
 
       "must redirect the user to the unauthorised page when INDIVIDUAL" in {
 
-        type RetrievalType = Option[String] ~ Enrolments ~ Option[AffinityGroup]
         val authRetrievals = Future.successful(new ~(new ~(Some("id"), Enrolments(Set.empty[Enrolment])), Some(Individual)))
 
         val mockAuthConnector = mock[AuthConnector]
