@@ -215,6 +215,8 @@ GET        /agent/change-client-contact/details-updated                         
 
 GET        /agent/change-client-contact/details-saved                            controllers.client.ClientContactDetailsSavedController.onPageLoad()
 
+GET        /agent/use-agent-services                                             controllers.agent.AgentUseAgentServicesController.onPageLoad()
+
 GET        /agent/client-not-identified                                          controllers.client.ClientNotIdentifiedController.onPageLoad()
 
 GET        /problem/individual-sign-in-problem                                   controllers.IndividualSignInProblemController.onPageLoad()

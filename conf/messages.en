@@ -586,6 +586,12 @@ clientContactDetailsSaved.p1 = What happens next
 clientContactDetailsSaved.p2 = You can now {0}.
 clientContactDetailsSaved.p2.link = send a CBC report
 
+agentUseAgentServices.title = Use Agent Services
+agentUseAgentServices.h1 = You must use agent services to send a country-by-country report
+agentUseAgentServices.p1 = We have made changes to this service. You now need to sign in to your agent services account to send a country-by-country report.
+agentUseAgentServices.p2 = If you do not have an agent services account {0}.
+agentUseAgentServices.p2.link = check if you can create one
+
 clientNotIdentified.title = There is a problem
 clientNotIdentified.heading = There is a problem
 clientNotIdentified.p1 = The CBC ID you entered did not match any clients that have authorised you in your agent services account.
@@ -600,4 +606,3 @@ individualSignInProblem.heading = Sorry, you’re unable to use this service
 individualSignInProblem.p1 = You’ve signed in as an individual. Only organisations can send reports.
 individualSignInProblem.p2 = If you need to send reports for an organisation, {0}.
 individualSignInProblem.p2.link = sign in with your organisation’s Government Gateway details
-

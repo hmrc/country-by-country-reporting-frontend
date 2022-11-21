@@ -17,6 +17,12 @@
 package base
 
 import controllers.actions._
+import controllers.actions.agent.{
+  AgentDataRetrievalAction,
+  AgentIdentifierAction,
+  FakeAgentDataRetrievalAction,
+  FakeAgentIdentifierActionForAgentIdentifierAction
+}
 import models.UserAnswers
 import org.mockito.MockitoSugar
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
@@ -60,6 +66,8 @@ trait SpecBase
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].to[FakeIdentifierAction],
-        bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(userAnswers))
+        bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(userAnswers)),
+        bind[AgentIdentifierAction].to[FakeAgentIdentifierActionForAgentIdentifierAction],
+        bind[AgentDataRetrievalAction].toInstance(new FakeAgentDataRetrievalAction(userAnswers))
       )
 }
