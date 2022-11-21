@@ -49,7 +49,8 @@ class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig:
 
   val emailEnquiries: String = configuration.get[String]("urls.emailEnquiries")
 
-  val migratedUserIdentifier: String = configuration.get[String]("migratedUser.identifier")
+  val migratedUserName: String  = configuration.get[String]("migrated-user.name")
+  val migratedUserEmail: String = configuration.get[String]("migrated-user.email")
 
   private val exitSurveyBaseUrl: String = configuration.get[Service]("microservice.services.feedback-frontend").baseUrl
   val exitSurveyUrl: String             = s"$exitSurveyBaseUrl/feedback/country-by-country-reporting-frontend"

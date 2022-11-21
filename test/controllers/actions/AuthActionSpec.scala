@@ -16,7 +16,6 @@
 
 package controllers.actions
 
-import akka.io.Tcp.Bind
 import base.SpecBase
 import com.google.inject.Inject
 import config.FrontendAppConfig
