@@ -17,22 +17,13 @@
 package controllers
 
 import base.SpecBase
-import controllers.actions.{
-  DataRequiredAction,
-  DataRequiredActionImpl,
-  DataRetrievalAction,
-  FakeAgentIdentifierAction,
-  FakeDataRetrievalActionProvider,
-  IdentifierAction
-}
-import models.requests.DataRequest
+import controllers.actions._
 import models.{CBC401, ConversationId, MessageSpecData, ValidatedFileData}
 import pages.{ConversationIdPage, ValidXMLPage}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import uk.gov.hmrc.auth.core.AffinityGroup
 import viewmodels.FileCheckViewModel
 import views.html.FileFailedChecksView
 

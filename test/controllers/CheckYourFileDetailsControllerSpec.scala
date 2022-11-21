@@ -17,15 +17,7 @@
 package controllers
 
 import base.SpecBase
-import controllers.actions.{
-  DataRequiredAction,
-  DataRequiredActionImpl,
-  DataRetrievalAction,
-  FakeDataRetrievalActionProvider,
-  FakeIdentifierAction,
-  FakeIdentifierActionAgent,
-  IdentifierAction
-}
+import controllers.actions._
 import models.{CBC401, MessageSpecData, UserAnswers, ValidatedFileData}
 import pages.ValidXMLPage
 import play.api.inject.bind

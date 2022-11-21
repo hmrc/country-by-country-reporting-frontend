@@ -14,27 +14,23 @@
  * limitations under the License.
  */
 
-package controllers.agent
+package controllers.client
 
-import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.agent.AgentContactDetailsUpdatedView
+import views.html.client.ClientNotIdentifiedView
 
 import javax.inject.Inject
 
-class AgentContactDetailsUpdatedController @Inject() (
+class ClientNotIdentifiedController @Inject() (
   override val messagesApi: MessagesApi,
-  identify: AgentIdentifierAction,
-  getData: AgentDataRetrievalAction,
-  requireData: AgentDataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: AgentContactDetailsUpdatedView
+  view: ClientNotIdentifiedView
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) {
+  def onPageLoad: Action[AnyContent] = Action {
     implicit request =>
       Ok(view())
   }

@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package controllers.actions.agent
 
-import models.requests.IdentifierRequest
-import play.api.mvc._
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
+import models.requests.agent.AgentIdentifierRequest
+import play.api.mvc.{BodyParsers, Request, Result}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class FakeAgentIdentifierAction @Inject() (bodyParsers: PlayBodyParsers) extends IdentifierAction {
+class FakeAgentIdentifierActionForAgentIdentifierAction @Inject() (
+  override val parser: BodyParsers.Default
+) extends AgentIdentifierAction {
 
-  override def refine[A](request: Request[A]): Future[Either[Result, IdentifierRequest[A]]] =
-    Future.successful(Right(IdentifierRequest(request, "id", "subscriptionId", Agent)))
+  override def invokeBlock[A](request: Request[A], block: AgentIdentifierRequest[A] => Future[Result]): Future[Result] =
+    block(AgentIdentifierRequest(request, "userId", "arn"))
 
-  override def parser: BodyParser[AnyContent] =
-    bodyParsers.default
-
-  override protected def executionContext: ExecutionContext =
-    scala.concurrent.ExecutionContext.Implicits.global
+  override protected def executionContext: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 }

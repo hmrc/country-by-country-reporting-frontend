@@ -23,23 +23,21 @@
 
 @layout(pageTitle = titleNoForm(messages("invalidXMLFile.title")), showBackLink = false) {
 
-<h1 class="govuk-heading-l">@messages("invalidXMLFile.heading")</h1>
+    <h1 class="govuk-heading-l">@messages("invalidXMLFile.heading")</h1>
 
-<p class="govuk-body">@messages("invalidXMLFile.p1", fileName)</p>
+    <p class="govuk-body">@messages("invalidXMLFile.p1", fileName)</p>
 
-<p class="govuk-body">@messages("invalidXMLFile.p2")</p>
+    <p class="govuk-body">@messages("invalidXMLFile.p2")</p>
 
-<ul class="govuk-list govuk-list--bullet">
-  <li>@messages("invalidXMLFile.bullet1")</li>
-  <li>@messages("invalidXMLFile.bullet2")</li>
-  <li>@messages("invalidXMLFile.bullet3")</li>
-</ul>
+    <p class="govuk-body">@messages("invalidXMLFile.p3") <code class="code--block">@messages("invalidXMLFile.p3Example")</code></p>
 
-<p class="govuk-body">@Html(messages("invalidXMLFile.p3", link("#", "invalidXMLFile.p3.link")))</p> @*Todo: update link href*@
+    <p class="govuk-body">@Html(messages("invalidXMLFile.p4", s"""<span class=code--slim>${messages("invalidXMLFile.p4Urn")}</span>""")) <code class="code--block">@messages("invalidXMLFile.p4Example")</code></p>
 
-<ul class="govuk-list">
-    <li>@link("javascript:window.print()", "invalidXMLFile.print")</li>
-    <li>@link(routes.UploadFileController.onPageLoad().url, "invalidXMLFile.uploadLink")</li>
-  <li>@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</li>
-</ul>
+    <p class="govuk-body">@Html(messages("invalidXMLFile.p5", link("#", "invalidXMLFile.p5.link")))</p> @*Todo: update link href*@
+
+    <ul class="govuk-list">
+        <li>@link("javascript:window.print()", "invalidXMLFile.print")</li>
+        <li>@link(routes.UploadFileController.onPageLoad().url, "invalidXMLFile.uploadLink")</li>
+      <li>@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</li>
+    </ul>
 }

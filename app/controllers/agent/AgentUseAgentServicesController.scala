@@ -16,25 +16,22 @@
 
 package controllers.agent
 
-import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
-import play.api.i18n.{I18nSupport, MessagesApi}
+import controllers.actions.IdentifierAction
+import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.agent.AgentContactDetailsUpdatedView
+import views.html.agent.AgentUseAgentServicesView
 
 import javax.inject.Inject
 
-class AgentContactDetailsUpdatedController @Inject() (
-  override val messagesApi: MessagesApi,
-  identify: AgentIdentifierAction,
-  getData: AgentDataRetrievalAction,
-  requireData: AgentDataRequiredAction,
+class AgentUseAgentServicesController @Inject() (
+  identify: IdentifierAction,
   val controllerComponents: MessagesControllerComponents,
-  view: AgentContactDetailsUpdatedView
+  view: AgentUseAgentServicesView
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) {
+  def onPageLoad: Action[AnyContent] = identify {
     implicit request =>
       Ok(view())
   }

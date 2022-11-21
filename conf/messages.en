@@ -218,12 +218,14 @@ uploadFile.error.file.empty = Select a file to upload
 invalidXMLFile.title = There is a problem with your file
 invalidXMLFile.heading = There is a problem with your file
 invalidXMLFile.p1 = We cannot accept the file {0} because it has not been formatted correctly.
-invalidXMLFile.p2 = Check that:
-invalidXMLFile.bullet1 = if provided, the <?xml> element only has an attribute of version="1.0" and, optionally, encoding and standalone attributes with valid values
-invalidXMLFile.bullet2 = all elements have an opening and a closing tag
-invalidXMLFile.bullet3 = all tags are correctly nested
-invalidXMLFile.p3 = To ensure your XML is structured correctly, {0}.
-invalidXMLFile.p3.link = read the country-by-country technical guidance for XML files (opens in new tab)
+invalidXMLFile.p2 = Check all elements in your file have an opening and a closing tag. Check all tags are correctly nested.
+invalidXMLFile.p3 = The CBC_OECD element’s opening tag should be:
+invalidXMLFile.p3Example = <CBC_OECD xmlns="urn:oecd:ties:cbc:v2" xmlns:urn1="urn:oecd:ties:cbcstf:v5">
+invalidXMLFile.p4 = In the second namespace, {0} can be anything if it matches the name prefix used within the DocSpec child elements, for example:
+invalidXMLFile.p4Urn = urn1
+invalidXMLFile.p4Example = <urn1:DocTypeIndic>OECD1</urn1:DocTypeIndic>
+invalidXMLFile.p5 = To ensure your XML has proper formatting, {0}.
+invalidXMLFile.p5.link = read the CBC technical guidance for XML files
 invalidXMLFile.uploadLink = Upload a different file
 invalidXMLFile.print = Print or save this page
 
@@ -584,6 +586,21 @@ clientContactDetailsSaved.p1 = What happens next
 clientContactDetailsSaved.p2 = You can now {0}.
 clientContactDetailsSaved.p2.link = send a CBC report
 
+agentUseAgentServices.title = Use Agent Services
+agentUseAgentServices.h1 = You must use agent services to send a country-by-country report
+agentUseAgentServices.p1 = We have made changes to this service. You now need to sign in to your agent services account to send a country-by-country report.
+agentUseAgentServices.p2 = If you do not have an agent services account {0}.
+agentUseAgentServices.p2.link = check if you can create one
+
+clientNotIdentified.title = There is a problem
+clientNotIdentified.heading = There is a problem
+clientNotIdentified.p1 = The CBC ID you entered did not match any clients that have authorised you in your agent services account.
+clientNotIdentified.subheading = What to do next
+clientNotIdentified.bullet1 = Try entering your client’s CBC ID again
+clientNotIdentified.bullet2 = Use your agent services account to {0}
+clientNotIdentified.bullet2.link = ask a client to authorise you
+clientNotIdentified.bullet3 = Tell your client that they must authorise you before you can use CBC for them
+
 individualSignInProblem.title = Sorry, you’re unable to use this service
 individualSignInProblem.heading = Sorry, you’re unable to use this service
 individualSignInProblem.p1 = You’ve signed in as an individual. Only organisations can send reports.
@@ -594,5 +611,3 @@ agentClientId.title = What is the CBC ID of the client you want to act on behalf
 agentClientId.heading = What is the CBC ID of the client you want to act on behalf of
 agentClientId.hint = This is [??] characters, for example, [example].
 agentClientId.p1 = Or change your CBC agent contact details
-
-

@@ -15,3 +15,28 @@ body:not(.js-enabled) .js-enabled {
         width: 0;
         height: 0;
 }
+
+.code--block{
+    border: none;
+    margin: 0;
+    line-height: 2em;
+    padding: 4px;
+    word-wrap: break-word;
+    font-family: Consolas,Monaco,"Andale Mono","Ubuntu Mono",monospace;
+    color: #0b0c0c;
+    font-size: 14px;
+    background-color: #F7F7F7;
+    display: inline-block;
+}
+
+.code--slim{
+    border: 1px solid #DFE0E7;
+    border-radius: 4px;
+    padding: 2px 4px;
+    display: inline-block;
+    background-color: #F7F7F7;
+    line-height: 1.1em;
+    font-family: Consolas,Monaco,"Andale Mono","Ubuntu Mono",monospace;
+    color: #0b0c0c;
+    font-size: 14px;
+}
