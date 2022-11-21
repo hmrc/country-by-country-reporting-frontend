@@ -1,8 +1,7 @@
-package controllers
+package controllers.agent
 
 import controllers.actions._
 import forms.AgentIsThisYourClientFormProvider
-import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
 import pages.AgentIsThisYourClientPage
@@ -12,6 +11,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.AgentIsThisYourClientView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class AgentIsThisYourClientController @Inject()(
