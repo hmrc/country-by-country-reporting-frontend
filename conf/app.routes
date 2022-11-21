@@ -219,7 +219,8 @@ GET        /agent/client-not-identified                                         
 
 GET        /problem/individual-sign-in-problem                                   controllers.IndividualSignInProblemController.onPageLoad()
 
-GET        /agentIsThisYourClient                        controllers.AgentIsThisYourClientController.onPageLoad(mode: Mode = NormalMode)
-POST       /agentIsThisYourClient                        controllers.AgentIsThisYourClientController.onSubmit(mode: Mode = NormalMode)
-GET        /changeAgentIsThisYourClient                  controllers.AgentIsThisYourClientController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeAgentIsThisYourClient                  controllers.AgentIsThisYourClientController.onSubmit(mode: Mode = CheckMode)
+GET        /agent/agent-is-this-your-client                        controllers.agent.AgentIsThisYourClientController.onPageLoad(mode: Mode = NormalMode)
+POST       /agent/agent-is-this-your-client                        controllers.agent.AgentIsThisYourClientController.onSubmit(mode: Mode = NormalMode)
+GET        /agent/agent-is-this-your-client                        controllers.agent.AgentIsThisYourClientController.onPageLoad(mode: Mode = CheckMode)
+POST       /agent/agent-is-this-your-client                        controllers.agent.AgentIsThisYourClientController.onSubmit(mode: Mode = CheckMode)
+
