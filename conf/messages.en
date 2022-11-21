@@ -601,3 +601,9 @@ individualSignInProblem.p1 = You’ve signed in as an individual. Only organisat
 individualSignInProblem.p2 = If you need to send reports for an organisation, {0}.
 individualSignInProblem.p2.link = sign in with your organisation’s Government Gateway details
 
+
+agentIsThisYourClient.title = agentIsThisYourClient
+agentIsThisYourClient.heading = agentIsThisYourClient
+agentIsThisYourClient.checkYourAnswersLabel = agentIsThisYourClient
+agentIsThisYourClient.error.required = Select yes if agentIsThisYourClient
+agentIsThisYourClient.change.hidden = AgentIsThisYourClient

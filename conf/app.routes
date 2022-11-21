@@ -218,3 +218,8 @@ GET        /agent/change-client-contact/details-saved                           
 GET        /agent/client-not-identified                                          controllers.client.ClientNotIdentifiedController.onPageLoad()
 
 GET        /problem/individual-sign-in-problem                                   controllers.IndividualSignInProblemController.onPageLoad()
+
+GET        /agentIsThisYourClient                        controllers.AgentIsThisYourClientController.onPageLoad(mode: Mode = NormalMode)
+POST       /agentIsThisYourClient                        controllers.AgentIsThisYourClientController.onSubmit(mode: Mode = NormalMode)
+GET        /changeAgentIsThisYourClient                  controllers.AgentIsThisYourClientController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeAgentIsThisYourClient                  controllers.AgentIsThisYourClientController.onSubmit(mode: Mode = CheckMode)
