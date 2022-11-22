@@ -32,6 +32,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
+import uk.gov.hmrc.auth.core.retrieve.EmptyRetrieval
 
 trait IdentifierAction
     extends ActionRefiner[Request, IdentifierRequest]
@@ -47,46 +48,13 @@ class AuthenticatedIdentifierAction @Inject() (
     with AuthorisedFunctions
     with Logging {
 
-  private def cbcDelegatedAuthRule(clientId: String): Enrolment =
-    Enrolment("HMRC-CBC-ORG")
-      .withIdentifier("cbcId", clientId)
-      .withDelegatedAuthRule("cbc-auth")
-
-  private def agentAuthCheck[A](internalId: String, request: Request[A])(implicit
-    executionContext: ExecutionContext,
-    hc: HeaderCarrier
-  ): Future[Either[Result, IdentifierRequest[A]]] =
-    request.headers.get("clientId") match {
-      case None =>
-        logger.debug(s"IdentifierAction: No client id in the header. Redirecting to /agent/client-id")
-        Future.successful(Left(Redirect(controllers.agent.routes.AgentClientIdController.onPageLoad())))
-      case Some(clientId) =>
-        authorised(cbcDelegatedAuthRule(clientId)).retrieve(Retrievals.allEnrolments) {
-          case Enrolments(Seq(Enrolment("HMRC-AS-AGENT", Seq(EnrolmentIdentifier(_, arn)), _, _), _)) =>
-            logger.debug("IdentifierAction: Authenticated as an Agent with CBC Delegated Auth Rule Enrolment")
-            Future.successful(Right(IdentifierRequest(request, internalId, clientId, Agent)))
-          case enrolments =>
-            logger.debug(s"IdentifierAction: Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
-            // waiting for DAC6-2130 to be merged
-            //Future.successful(Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad)))
-            Future.successful(Left(Redirect(routes.UnauthorisedController.onPageLoad))) // temporary redirect page
-        } recover {
-          case _: NoActiveSession =>
-            logger.debug("IdentifierAction: Agent does not have an active session, rendering Session Timeout")
-            Left(Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl))))
-          case _: AuthorisationException =>
-            logger.debug("IdentifierAction- Agent does not have delegated authority for Client")
-            Left(Redirect(routes.UnauthorisedController.onPageLoad))
-        }
-    }
-
   override def refine[A](request: Request[A]): Future[Either[Result, IdentifierRequest[A]]] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     authorised(AuthProviders(GovernmentGateway) and ConfidenceLevel.L50)
       .retrieve(Retrievals.internalId and Retrievals.allEnrolments and Retrievals.affinityGroup) {
         case Some(_) ~ _ ~ Some(Individual)                 => Future.successful(Left(Redirect(routes.IndividualSignInProblemController.onPageLoad())))
-        case Some(internalId) ~ _ ~ Some(Agent)             => agentAuthCheck(internalId, request)
+        case Some(internalId) ~ enrolments ~ Some(Agent)    => agentAuthCheck(request, enrolments, internalId)
         case Some(internalId) ~ enrolments ~ Some(affinity) => getSubscriptionId(request, enrolments, internalId, affinity)
         case _ =>
           logger.warn("Unable to retrieve internal id or affinity group")
@@ -121,4 +89,44 @@ class AuthenticatedIdentifierAction @Inject() (
       Future.successful(Left(Redirect(config.registerUrl)))
     }
   }
+
+  private def cbcDelegatedAuthRule(clientId: String): Enrolment =
+    Enrolment("HMRC-CBC-ORG")
+      .withIdentifier("cbcId", clientId)
+      .withDelegatedAuthRule("cbc-auth")
+
+  private def agentAuthCheck[A](request: Request[A], enrolments: Enrolments, internalId: String)(implicit
+    executionContext: ExecutionContext,
+    hc: HeaderCarrier
+  ): Future[Either[Result, IdentifierRequest[A]]] =
+    enrolments.getEnrolment("HMRC-AS-AGENT") match {
+      case Some(Enrolment("HMRC-AS-AGENT", Seq(EnrolmentIdentifier(_, arn)), _, _)) =>
+        request.headers.get("clientId") match {
+          case None =>
+            logger.info(s"IdentifierAction: No client id in the header. Redirecting to /agent/client-id")
+            Future.successful(Left(Redirect(controllers.agent.routes.AgentClientIdController.onPageLoad())))
+          case Some(clientId) =>
+            authorised(cbcDelegatedAuthRule(clientId)) {
+              logger.info("IdentifierAction: Authenticated as an Agent with CBC Delegated Auth Rule Enrolment")
+              Future.successful(Right(IdentifierRequest(request, internalId, clientId, Agent)))
+            } recover {
+              case _: NoActiveSession =>
+                logger.debug("IdentifierAction: Agent does not have an active session, rendering Session Timeout")
+                Left(Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl))))
+              case _: AuthorisationException =>
+                logger.warn("IdentifierAction: Agent does not have delegated authority for Client. Redirecting to /agent/use-agent-services")
+                Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad))
+              case c: ClassCastException =>
+                logger.warn(
+                  "IdentifierAction: Agent does not have delegated authority for Client. Redirecting to /agent/use-agent-services, ClassCastException",
+                  c
+                )
+                Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad))
+            }
+        }
+      case None =>
+        logger.warn(s"IdentifierAction: Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments. Redirecting to /agent/use-agent-services")
+        Future.successful(Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad)))
+    }
+
 }

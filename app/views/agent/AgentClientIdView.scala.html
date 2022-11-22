@@ -18,6 +18,7 @@
 
 @this(
     layout: templates.Layout,
+    link: components.Link,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
     govukInput: GovukInput,
@@ -48,5 +49,7 @@
         @govukButton(
             ButtonViewModel(messages("site.continue")).withAttribute("id", "submit")
         )
+
+        <p class="govuk-body">@Html(messages("agentClientId.p1", link(s"/agent/agent-contact-details/contact-needed", "agentClientId.p1.link")))</p>
     }
 }

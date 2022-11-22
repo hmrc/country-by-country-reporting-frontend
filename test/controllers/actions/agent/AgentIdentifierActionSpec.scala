@@ -185,7 +185,7 @@ class AgentIdentifierActionSpec extends SpecBase with TableDrivenPropertyChecks 
 
       forAll(Table("userAffinityType", Individual, Organisation)) {
         userAffinityType =>
-          s"must redirect the user to the unauthorised page when $userAffinityType" in {
+          s"must redirect the user to the index page when $userAffinityType" in {
 
             type RetrievalType = Option[String] ~ Enrolments ~ Option[AffinityGroup]
             val authRetrievals = Future.successful(new ~(new ~(Some("id"), Enrolments(Set.empty[Enrolment])), Some(userAffinityType)))
@@ -210,7 +210,7 @@ class AgentIdentifierActionSpec extends SpecBase with TableDrivenPropertyChecks 
               val result     = controller.onPageLoad()(FakeRequest())
 
               status(result) mustBe SEE_OTHER
-              redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad.url)
+              redirectLocation(result) mustBe Some(routes.IndexController.onPageLoad.url)
             }
           }
       }

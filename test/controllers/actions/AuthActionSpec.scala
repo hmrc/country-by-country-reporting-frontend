@@ -33,6 +33,9 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
+import controllers.agent.AgentUseAgentServicesController
+import uk.gov.hmrc.auth.core.retrieve.EmptyRetrieval
+import uk.gov.hmrc.auth.core.retrieve.SimpleRetrieval
 
 class AuthActionSpec extends SpecBase {
 
@@ -168,13 +171,21 @@ class AuthActionSpec extends SpecBase {
           val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, bodyParsers)
           val controller = new Harness(authAction)
           val result     = controller.onPageLoad()(FakeRequest())
-          redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad.url)
+          redirectLocation(result) mustBe Some(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad.url)
         }
       }
 
       "must allow the user to continue the journey when AGENT and delegated auth rule passes" in {
-        val enrolment: Enrolment          = Enrolment("HMRC-CBC-ORG").withIdentifier("cbcid", "").withDelegatedAuthRule("cbc-auth")
-        val authRetrievals: RetrievalType = new ~(new ~(Option("userId"), Enrolments(Set(enrolment))), Option(AffinityGroup.Agent))
+        val authRetrievals: RetrievalType = new ~(new ~(Some("userId"),
+                                                        Enrolments(
+                                                          Set(
+                                                            Enrolment("HMRC-AS-AGENT").withIdentifier("AgentReferenceNumber", "arn123"),
+                                                            Enrolment("HMRC-CBC-ORG").withIdentifier("cbcid", "cbcid1234").withDelegatedAuthRule("cbc-auth")
+                                                          )
+                                                        )
+                                                  ),
+                                                  Some(AffinityGroup.Agent)
+        )
 
         val mockAuthConnector = mock[AuthConnector]
         val application = applicationBuilder(userAnswers = None)
@@ -183,8 +194,8 @@ class AuthActionSpec extends SpecBase {
           )
           .build()
 
-        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]])(any(), any()))
-          .thenReturn(Future.successful(authRetrievals))
+        when(mockAuthConnector.authorise(any(), any[Retrieval[Any]])(any(), any()))
+          .thenReturn(Future.successful(authRetrievals), Future.successful(()))
 
         running(application) {
           val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
@@ -192,8 +203,8 @@ class AuthActionSpec extends SpecBase {
 
           val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, bodyParsers)
           val controller = new Harness(authAction)
-          val result     = controller.onPageLoad()(FakeRequest())
-          redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad.url)
+          val result     = controller.onPageLoad()(FakeRequest().withHeaders(("clientId", "cbcid1234")))
+          status(result) mustBe OK
         }
       }
     }

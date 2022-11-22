@@ -66,7 +66,7 @@ class AuthenticatedAgentIdentifierAction @Inject() (
           }
         case _ ~ _ ~ Some(affinityGroup) =>
           logger.debug(s"AgentIdentifierAction: Affinity group not Agent. Affinity group: $affinityGroup")
-          Future.successful(Redirect(routes.UnauthorisedController.onPageLoad))
+          Future.successful(Redirect(routes.IndexController.onPageLoad))
         case _ =>
           logger.warn("AgentIdentifierAction: Unable to retrieve internal id or affinity group")
           Future.successful(Redirect(routes.UnauthorisedController.onPageLoad))

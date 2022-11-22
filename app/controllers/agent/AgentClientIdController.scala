@@ -32,11 +32,12 @@ import navigation.AgentContactDetailsNavigator
 import models.NormalMode
 import repositories.SessionRepository
 import controllers.actions.DataRetrievalAction
+import controllers.actions.agent.AgentIdentifierAction
 
 class AgentClientIdController @Inject() (
   override val messagesApi: MessagesApi,
   navigator: AgentContactDetailsNavigator,
-  identifier: IdentifierAction,
+  identifier: AgentIdentifierAction,
   view: AgentClientIdView,
   formProvider: AgentClientIdFormProvider,
   override val controllerComponents: MessagesControllerComponents,
