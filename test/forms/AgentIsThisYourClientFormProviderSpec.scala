@@ -6,7 +6,7 @@ import play.api.data.FormError
 class AgentIsThisYourClientFormProviderSpec extends BooleanFieldBehaviours {
 
   val requiredKey = "agentIsThisYourClient.error.required"
-  val invalidKey = "error.boolean"
+  val invalidKey  = "error.boolean"
 
   val form = new AgentIsThisYourClientFormProvider()()
 

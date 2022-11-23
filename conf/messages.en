@@ -606,3 +606,4 @@ agentIsThisYourClient.heading = Is this your client?
 agentIsThisYourClient.checkYourAnswersLabel = Is this your client?
 agentIsThisYourClient.error.required = Select yes if this is your client
 agentIsThisYourClient.change.hidden = if this is your client
+agentIsThisYourClient.p1 = You can now {0}.
