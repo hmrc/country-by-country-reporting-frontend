@@ -16,14 +16,13 @@
 
 package controllers.actions.agent
 
-import models.requests.agent.AgentIdentifierRequest
 import models.requests.OptionalAgentDataRequest
+import models.requests.agent.AgentIdentifierRequest
 import play.api.mvc.ActionTransformer
 import repositories.SessionRepository
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
-import scala.language.higherKinds
 
 class AgentDataRetrievalActionImpl @Inject() (
   val sessionRepository: SessionRepository

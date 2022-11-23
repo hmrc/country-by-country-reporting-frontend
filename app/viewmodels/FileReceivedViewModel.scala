@@ -16,7 +16,6 @@
 
 package viewmodels
 
-import models.ValidatedFileData
 import models.fileDetails.FileDetails
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
