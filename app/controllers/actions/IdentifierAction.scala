@@ -116,11 +116,11 @@ class AuthenticatedIdentifierAction @Inject() (
                   s"IdentifierAction: Agent with HMRC-AS-AGENT Enrolment. No ClientId in UserAnswers in SessionRepository. Redirecting to /agent/client-id. ${request.headers}"
                 )
                 Future.successful(Left(Redirect(controllers.agent.routes.AgentClientIdController.onPageLoad())))
-              case Some(clientId) =>
+              case Some(clientId) => // clientId is cbcid
                 logger.info(s"IdentifierAction: Attempting Agent authorisation checking with ${cbcDelegatedAuthRule(clientId)}")
                 authorised(cbcDelegatedAuthRule(clientId)) {
                   logger.info("IdentifierAction: Agent with HMRC-AS-AGENT Enrolment and Authorised with cbc-auth Delegated Auth Rule")
-                  Future.successful(Right(IdentifierRequest(request, internalId, clientId, Agent)))
+                  Future.successful(Right(IdentifierRequest(request, internalId, clientId, Agent, Some(arn))))
                 } recover {
                   case _: NoActiveSession =>
                     logger.debug("IdentifierAction: Agent does not have an active session, rendering Session Timeout")

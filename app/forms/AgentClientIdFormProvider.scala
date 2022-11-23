@@ -32,7 +32,7 @@ class AgentClientIdFormProvider @Inject() extends Mappings with RegExConstants {
         "agentClientId.error.required",
         "agentClientId.error.invalid",
         "agentClientId.error.length",
-        orgNameRgex,
+        orgNameRegex,
         maxLength
       )
     )
