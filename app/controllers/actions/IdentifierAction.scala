@@ -32,7 +32,8 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
-import uk.gov.hmrc.auth.core.retrieve.EmptyRetrieval
+import repositories.SessionRepository
+import pages.AgentClientIdPage
 
 trait IdentifierAction
     extends ActionRefiner[Request, IdentifierRequest]
@@ -42,7 +43,8 @@ trait IdentifierAction
 class AuthenticatedIdentifierAction @Inject() (
   override val authConnector: AuthConnector,
   config: FrontendAppConfig,
-  val parser: BodyParsers.Default
+  val parser: BodyParsers.Default,
+  sessionRepository: SessionRepository
 )(implicit val executionContext: ExecutionContext)
     extends IdentifierAction
     with AuthorisedFunctions
@@ -101,27 +103,32 @@ class AuthenticatedIdentifierAction @Inject() (
   ): Future[Either[Result, IdentifierRequest[A]]] =
     enrolments.getEnrolment("HMRC-AS-AGENT") match {
       case Some(Enrolment("HMRC-AS-AGENT", Seq(EnrolmentIdentifier(_, arn)), _, _)) =>
-        request.headers.get("clientId") match {
+        sessionRepository.get(internalId).flatMap {
           case None =>
-            logger.info(s"IdentifierAction: No client id in the header. Redirecting to /agent/client-id")
+            logger.info(
+              s"IdentifierAction: Agent with HMRC-AS-AGENT Enrolment. No UserAnswers in SessionRepository. Redirecting to /agent/client-id. ${request.headers}"
+            )
             Future.successful(Left(Redirect(controllers.agent.routes.AgentClientIdController.onPageLoad())))
-          case Some(clientId) =>
-            authorised(cbcDelegatedAuthRule(clientId)) {
-              logger.info("IdentifierAction: Authenticated as an Agent with CBC Delegated Auth Rule Enrolment")
-              Future.successful(Right(IdentifierRequest(request, internalId, clientId, Agent)))
-            } recover {
-              case _: NoActiveSession =>
-                logger.debug("IdentifierAction: Agent does not have an active session, rendering Session Timeout")
-                Left(Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl))))
-              case _: AuthorisationException =>
-                logger.warn("IdentifierAction: Agent does not have delegated authority for Client. Redirecting to /agent/use-agent-services")
-                Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad))
-              case c: ClassCastException =>
-                logger.warn(
-                  "IdentifierAction: Agent does not have delegated authority for Client. Redirecting to /agent/use-agent-services, ClassCastException",
-                  c
+          case Some(userAnswers) =>
+            userAnswers.get(AgentClientIdPage) match {
+              case None =>
+                logger.info(
+                  s"IdentifierAction: Agent with HMRC-AS-AGENT Enrolment. No ClientId in UserAnswers in SessionRepository. Redirecting to /agent/client-id. ${request.headers}"
                 )
-                Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad))
+                Future.successful(Left(Redirect(controllers.agent.routes.AgentClientIdController.onPageLoad())))
+              case Some(clientId) =>
+                logger.info(s"IdentifierAction: Attempting Agent authorisation checking with ${cbcDelegatedAuthRule(clientId)}")
+                authorised(cbcDelegatedAuthRule(clientId)) {
+                  logger.info("IdentifierAction: Agent with HMRC-AS-AGENT Enrolment and Authorised with cbc-auth Delegated Auth Rule")
+                  Future.successful(Right(IdentifierRequest(request, internalId, clientId, Agent)))
+                } recover {
+                  case _: NoActiveSession =>
+                    logger.debug("IdentifierAction: Agent does not have an active session, rendering Session Timeout")
+                    Left(Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl))))
+                  case _: AuthorisationException =>
+                    logger.warn("IdentifierAction: Agent does not have delegated authority for Client. Redirecting to /agent/use-agent-services")
+                    Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad))
+                }
             }
         }
       case None =>

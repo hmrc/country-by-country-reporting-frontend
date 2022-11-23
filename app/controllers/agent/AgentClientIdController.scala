@@ -18,7 +18,6 @@ package controllers.agent
 
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import play.api.i18n.I18nSupport
-import controllers.actions.IdentifierAction
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
 import play.api.i18n.MessagesApi
@@ -29,10 +28,14 @@ import com.google.inject.Inject
 import akka.compat.Future
 import scala.concurrent.Future
 import navigation.AgentContactDetailsNavigator
-import models.NormalMode
 import repositories.SessionRepository
 import controllers.actions.DataRetrievalAction
 import controllers.actions.agent.AgentIdentifierAction
+import controllers.routes._
+import play.api.Logging
+import models.UserAnswers
+import scala.concurrent.ExecutionContext
+import pages.AgentClientIdPage
 
 class AgentClientIdController @Inject() (
   override val messagesApi: MessagesApi,
@@ -41,10 +44,13 @@ class AgentClientIdController @Inject() (
   view: AgentClientIdView,
   formProvider: AgentClientIdFormProvider,
   override val controllerComponents: MessagesControllerComponents,
-  sessionRespository: SessionRepository,
+  sessionRepository: SessionRepository,
   dataRetrieval: DataRetrievalAction
+)(implicit
+  executionContext: ExecutionContext
 ) extends FrontendBaseController
-    with I18nSupport {
+    with I18nSupport
+    with Logging {
 
   val form = formProvider()
 
@@ -58,10 +64,11 @@ class AgentClientIdController @Inject() (
         .bindFromRequest()
         .fold(
           formWithErrors => Future.successful(BadRequest((view(formWithErrors)))),
-          value => {
-            sessionRespository.clear(request.userId)
-            Future.successful(Redirect(routes.AgentFirstContactNameController.onPageLoad(NormalMode)).withHeaders(("clientId", value)))
-          }
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(UserAnswers(request.userId).set(AgentClientIdPage, value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(IndexController.onPageLoad)
         )
   }
 }
