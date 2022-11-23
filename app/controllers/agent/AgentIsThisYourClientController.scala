@@ -53,7 +53,7 @@ class AgentIsThisYourClientController @Inject() (
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode, getClientDetails))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
