@@ -53,7 +53,7 @@ class AgentIsThisYourClientController @Inject() (
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getClientDetails))
+      Ok(view(preparedForm, mode, request.userId))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
@@ -61,7 +61,7 @@ class AgentIsThisYourClientController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, request.userId))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentIsThisYourClientPage, value))
