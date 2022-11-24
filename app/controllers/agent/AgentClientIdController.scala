@@ -68,7 +68,7 @@ class AgentClientIdController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(UserAnswers(request.userId).set(AgentClientIdPage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(IndexController.onPageLoad)
+            } yield Redirect(controllers.routes.IndexController.onPageLoad)
         )
   }
 }

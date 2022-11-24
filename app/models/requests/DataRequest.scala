@@ -30,7 +30,7 @@ case class OptionalDataRequest[A](
   userAnswers: Option[UserAnswers],
   userType: AffinityGroup,
   subscriptionId: String,
-  clientId: Option[String] = None
+  arn: Option[String] = None
 ) extends WrappedRequest[A](request) {
 
   def isAgent      = userType == Agent
@@ -42,7 +42,7 @@ case class DataRequest[A](request: Request[A],
                           subscriptionId: String,
                           userType: AffinityGroup,
                           userAnswers: UserAnswers,
-                          clientId: Option[String] = None
+                          arn: Option[String] = None
 ) extends WrappedRequest[A](request) {
 
   def isAgent      = userType == Agent

@@ -126,8 +126,8 @@ class AuthenticatedIdentifierAction @Inject() (
                     logger.debug("IdentifierAction: Agent does not have an active session, rendering Session Timeout")
                     Left(Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl))))
                   case _: AuthorisationException =>
-                    logger.warn("IdentifierAction: Agent does not have delegated authority for Client. Redirecting to /agent/use-agent-services")
-                    Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad))
+                    logger.warn("IdentifierAction: Agent does not have delegated authority for Client. Redirecting to /agent/client-not-identified")
+                    Left(Redirect(controllers.client.routes.ClientNotIdentifiedController.onPageLoad))
                 }
             }
         }
