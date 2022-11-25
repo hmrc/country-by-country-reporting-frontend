@@ -50,6 +50,6 @@
             ButtonViewModel(messages("site.continue")).withAttribute("id", "submit")
         )
 
-        <p class="govuk-body">@Html(messages("agentClientId.p1", link(s"/agent/agent-contact-details/contact-needed", "agentClientId.p1.link")))</p>
+        <p class="govuk-body">@Html(messages("agentClientId.p1", link(controllers.agent.routes.ChangeAgentContactDetailsController.onPageLoad().url, "agentClientId.p1.link")))</p>
     }
 }

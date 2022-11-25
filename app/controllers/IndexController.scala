@@ -49,11 +49,10 @@ class IndexController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData.apply) async {
     implicit request =>
-      //TODO this is only temporary until agent journey/auth is complete
-      if (request.userType == Agent) {
+      if (request.isAgent) {
         agentSubscriptionService.getAgentContactDetails(request.userAnswers.getOrElse(UserAnswers(request.userId))) flatMap {
           agentContactDetails =>
-            subscriptionService.getContactDetails(agentContactDetails.getOrElse(UserAnswers(request.userId))) flatMap {
+            subscriptionService.getContactDetails(agentContactDetails.getOrElse(UserAnswers(request.userId)), request.subscriptionId) flatMap {
               clientContactDetails =>
                 (agentContactDetails, clientContactDetails) match {
                   case (Some(agentUserAnswers), Some(clientUserAnswers)) =>
@@ -66,7 +65,7 @@ class IndexController @Inject() (
                             } else if (clientUserAnswers.get(ContactNamePage).isEmpty) {
                               Future.successful(Redirect(routes.ContactDetailsNeededController.onPageLoad()))
                             } else {
-                              fileConnector.getAllFileDetails map {
+                              fileConnector.getAllFileDetails(request.subscriptionId) map {
                                 fileDetails =>
                                   Ok(view(fileDetails.isDefined, request.subscriptionId))
                               }
@@ -79,14 +78,14 @@ class IndexController @Inject() (
             }
         }
       } else {
-        subscriptionService.getContactDetails(request.userAnswers.getOrElse(UserAnswers(request.userId))) flatMap {
+        subscriptionService.getContactDetails(request.userAnswers.getOrElse(UserAnswers(request.userId)), request.subscriptionId) flatMap {
           case Some(userAnswers) =>
             sessionRepository.set(userAnswers) flatMap {
               _ =>
                 if (userAnswers.data == Json.obj()) {
                   Future.successful(Redirect(routes.ContactDetailsNeededController.onPageLoad()))
                 } else {
-                  fileConnector.getAllFileDetails map {
+                  fileConnector.getAllFileDetails(request.subscriptionId) map {
                     fileDetails =>
                       Ok(view(fileDetails.isDefined, request.subscriptionId))
                   }

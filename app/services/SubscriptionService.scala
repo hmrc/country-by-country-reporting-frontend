@@ -38,8 +38,8 @@ class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnecto
       (responseDetail.secondaryContact.get.email.toLowerCase.contains(migratedUserEmail) &&
         responseDetail.secondaryContact.get.organisationDetails.organisationName.toLowerCase.contains(migratedUserName))
 
-  def getContactDetails(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] =
-    subscriptionConnector.readSubscription map {
+  def getContactDetails(userAnswers: UserAnswers, subscriptionId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] =
+    subscriptionConnector.readSubscription(subscriptionId: String) map {
       responseOpt =>
         responseOpt.flatMap {
           responseDetail =>
@@ -51,8 +51,8 @@ class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnecto
         }
     }
 
-  def updateContactDetails(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] =
-    subscriptionConnector.readSubscription flatMap {
+  def updateContactDetails(userAnswers: UserAnswers, subscriptionId: String)(implicit hc: HeaderCarrier): Future[Boolean] =
+    subscriptionConnector.readSubscription(subscriptionId: String) flatMap {
       case Some(responseDetails) =>
         RequestDetailForUpdate.convertToRequestDetails(responseDetails, userAnswers) match {
           case Some(requestDetails) => subscriptionConnector.updateSubscription(requestDetails)
@@ -65,8 +65,8 @@ class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnecto
         Future.successful(false)
     }
 
-  def isContactInformationUpdated(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[(Boolean, Boolean)]] =
-    subscriptionConnector.readSubscription map {
+  def isContactInformationUpdated(userAnswers: UserAnswers, subscriptionId: String)(implicit hc: HeaderCarrier): Future[Option[(Boolean, Boolean)]] =
+    subscriptionConnector.readSubscription(subscriptionId: String) map {
       case Some(responseDetail) =>
         val secondaryContact = (userAnswers.get(HaveSecondContactPage), responseDetail.secondaryContact, userAnswers.get(SecondContactNamePage)) match {
           case (Some(true), _, Some(orgName)) => populateResponseDetails[SecondaryContactDetailsPages](userAnswers, OrganisationDetails(orgName), None)
@@ -89,8 +89,8 @@ class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnecto
         None
     }
 
-  def doContactDetailsExist()(implicit hc: HeaderCarrier): Future[Option[Boolean]] =
-    subscriptionConnector.readSubscription map {
+  def doContactDetailsExist(subscriptionId: String)(implicit hc: HeaderCarrier): Future[Option[Boolean]] =
+    subscriptionConnector.readSubscription(subscriptionId: String) map {
       case Some(responseDetail) => Some(!isUserVisitingAfterMigration(responseDetail))
       case _ =>
         logger.warn("isContactInformationUpdated: readSubscription call failed to fetch the data")

@@ -39,6 +39,7 @@ import uk.gov.hmrc.auth.core.retrieve.SimpleRetrieval
 import models.UserAnswers
 import pages.AgentClientIdPage
 import repositories.SessionRepository
+import services.AgentSubscriptionService
 
 class AuthActionSpec extends SpecBase {
 
@@ -58,12 +59,14 @@ class AuthActionSpec extends SpecBase {
         val application = applicationBuilder(userAnswers = None).build()
 
         running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
 
           val authAction = new AuthenticatedIdentifierAction(
             new FakeFailingAuthConnector(new MissingBearerToken),
             appConfig,
+            mockAgentSubscriptionService,
             bodyParsers,
             mockSessionRepository
           )
@@ -83,12 +86,14 @@ class AuthActionSpec extends SpecBase {
         val application = applicationBuilder(userAnswers = None).build()
 
         running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
 
           val authAction = new AuthenticatedIdentifierAction(
             new FakeFailingAuthConnector(new BearerTokenExpired),
             appConfig,
+            mockAgentSubscriptionService,
             bodyParsers,
             mockSessionRepository
           )
@@ -108,12 +113,14 @@ class AuthActionSpec extends SpecBase {
         val application = applicationBuilder(userAnswers = None).build()
 
         running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
 
           val authAction = new AuthenticatedIdentifierAction(
             new FakeFailingAuthConnector(new InsufficientEnrolments),
             appConfig,
+            mockAgentSubscriptionService,
             bodyParsers,
             mockSessionRepository
           )
@@ -133,12 +140,14 @@ class AuthActionSpec extends SpecBase {
         val application = applicationBuilder(userAnswers = None).build()
 
         running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
 
           val authAction = new AuthenticatedIdentifierAction(
             new FakeFailingAuthConnector(new InsufficientConfidenceLevel),
             appConfig,
+            mockAgentSubscriptionService,
             bodyParsers,
             mockSessionRepository
           )
@@ -158,12 +167,14 @@ class AuthActionSpec extends SpecBase {
         val application = applicationBuilder(userAnswers = None).build()
 
         running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
 
           val authAction = new AuthenticatedIdentifierAction(
             new FakeFailingAuthConnector(new UnsupportedAuthProvider),
             appConfig,
+            mockAgentSubscriptionService,
             bodyParsers,
             mockSessionRepository
           )
@@ -193,10 +204,11 @@ class AuthActionSpec extends SpecBase {
           .thenReturn(Future.successful(authRetrievals))
 
         running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
 
-          val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, bodyParsers, mockSessionRepository)
+          val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, mockAgentSubscriptionService, bodyParsers, mockSessionRepository)
           val controller = new Harness(authAction)
           val result     = controller.onPageLoad()(FakeRequest())
           redirectLocation(result) mustBe Some(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad.url)
@@ -235,10 +247,11 @@ class AuthActionSpec extends SpecBase {
           )
 
         running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
 
-          val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, bodyParsers, mockSessionRepository)
+          val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, mockAgentSubscriptionService, bodyParsers, mockSessionRepository)
           val controller = new Harness(authAction)
           val result     = controller.onPageLoad()(FakeRequest())
           status(result) mustBe OK
@@ -263,10 +276,11 @@ class AuthActionSpec extends SpecBase {
           .thenReturn(authRetrievals)
 
         running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
 
-          val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, bodyParsers, mockSessionRepository)
+          val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, mockAgentSubscriptionService, bodyParsers, mockSessionRepository)
           val controller = new Harness(authAction)
           val result     = controller.onPageLoad()(FakeRequest())
 
@@ -280,12 +294,14 @@ class AuthActionSpec extends SpecBase {
         val application = applicationBuilder(userAnswers = None).build()
 
         running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
 
           val authAction = new AuthenticatedIdentifierAction(
             new FakeFailingAuthConnector(new UnsupportedAffinityGroup),
             appConfig,
+            mockAgentSubscriptionService,
             bodyParsers,
             mockSessionRepository
           )
@@ -305,12 +321,14 @@ class AuthActionSpec extends SpecBase {
         val application = applicationBuilder(userAnswers = None).build()
 
         running(application) {
-          val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-          val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
 
           val authAction = new AuthenticatedIdentifierAction(
             new FakeFailingAuthConnector(new UnsupportedCredentialRole),
             appConfig,
+            mockAgentSubscriptionService,
             bodyParsers,
             mockSessionRepository
           )

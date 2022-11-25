@@ -16,26 +16,21 @@
 
 package controllers.agent
 
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import play.api.i18n.I18nSupport
-import play.api.mvc.Action
-import play.api.mvc.AnyContent
-import play.api.i18n.MessagesApi
-import play.api.mvc.MessagesControllerComponents
-import views.html.agent.AgentClientIdView
-import forms.AgentClientIdFormProvider
 import com.google.inject.Inject
-import akka.compat.Future
-import scala.concurrent.Future
-import navigation.AgentContactDetailsNavigator
-import repositories.SessionRepository
-import controllers.actions.DataRetrievalAction
 import controllers.actions.agent.AgentIdentifierAction
-import controllers.routes._
-import play.api.Logging
+import forms.AgentClientIdFormProvider
 import models.UserAnswers
-import scala.concurrent.ExecutionContext
+import navigation.AgentContactDetailsNavigator
 import pages.AgentClientIdPage
+import play.api.Logging
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
+import services.AgentSubscriptionService
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import views.html.agent.AgentClientIdView
+
+import scala.concurrent.{ExecutionContext, Future}
 
 class AgentClientIdController @Inject() (
   override val messagesApi: MessagesApi,
@@ -45,7 +40,7 @@ class AgentClientIdController @Inject() (
   formProvider: AgentClientIdFormProvider,
   override val controllerComponents: MessagesControllerComponents,
   sessionRepository: SessionRepository,
-  dataRetrieval: DataRetrievalAction
+  agentSubscriptionService: AgentSubscriptionService
 )(implicit
   executionContext: ExecutionContext
 ) extends FrontendBaseController
@@ -54,8 +49,16 @@ class AgentClientIdController @Inject() (
 
   val form = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = identifier {
-    implicit request => Ok(view(form))
+  def onPageLoad(): Action[AnyContent] = identifier.async {
+    implicit request =>
+      agentSubscriptionService.getAgentContactDetails(UserAnswers(request.userId)) flatMap {
+        case Some(agentUserAnswers) =>
+          sessionRepository.set(agentUserAnswers).map {
+            _ =>
+              Ok(view(form))
+          }
+        case _ => Future.successful(Redirect(controllers.routes.ThereIsAProblemController.onPageLoad()))
+      }
   }
 
   def onSubmit(): Action[AnyContent] = identifier async {

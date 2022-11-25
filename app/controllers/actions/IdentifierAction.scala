@@ -19,6 +19,7 @@ package controllers.actions
 import com.google.inject.Inject
 import config.FrontendAppConfig
 import controllers.routes
+import models.UserAnswers
 import models.requests.IdentifierRequest
 import play.api.Logging
 import play.api.mvc.Results._
@@ -34,6 +35,8 @@ import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import scala.concurrent.{ExecutionContext, Future}
 import repositories.SessionRepository
 import pages.AgentClientIdPage
+import play.api.libs.json.Json
+import services.AgentSubscriptionService
 
 trait IdentifierAction
     extends ActionRefiner[Request, IdentifierRequest]
@@ -43,6 +46,7 @@ trait IdentifierAction
 class AuthenticatedIdentifierAction @Inject() (
   override val authConnector: AuthConnector,
   config: FrontendAppConfig,
+  agentSubscriptionService: AgentSubscriptionService,
   val parser: BodyParsers.Default,
   sessionRepository: SessionRepository
 )(implicit val executionContext: ExecutionContext)
@@ -105,10 +109,7 @@ class AuthenticatedIdentifierAction @Inject() (
       case Some(Enrolment("HMRC-AS-AGENT", Seq(EnrolmentIdentifier(_, arn)), _, _)) =>
         sessionRepository.get(internalId).flatMap {
           case None =>
-            logger.info(
-              s"IdentifierAction: Agent with HMRC-AS-AGENT Enrolment. No UserAnswers in SessionRepository. Redirecting to /agent/client-id. ${request.headers}"
-            )
-            Future.successful(Left(Redirect(controllers.agent.routes.AgentClientIdController.onPageLoad())))
+            redirectForAgentContactDetails(request, internalId).map(Left(_))
           case Some(userAnswers) =>
             userAnswers.get(AgentClientIdPage) match {
               case None =>
@@ -136,4 +137,18 @@ class AuthenticatedIdentifierAction @Inject() (
         Future.successful(Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad)))
     }
 
+  private def redirectForAgentContactDetails[A](request: Request[A], internalId: String)(implicit hc: HeaderCarrier): Future[Result] =
+    agentSubscriptionService.getAgentContactDetails(UserAnswers(internalId)) flatMap {
+      case Some(agentUserAnswers) if agentUserAnswers.data == Json.obj() =>
+        sessionRepository.set(agentUserAnswers).map {
+          _ =>
+            Redirect(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad())
+        }
+      case Some(_) =>
+        logger.info(
+          s"IdentifierAction: Agent with HMRC-AS-AGENT Enrolment. No UserAnswers in SessionRepository. Redirecting to /agent/client-id. ${request.headers}"
+        )
+        Future.successful(Redirect(controllers.agent.routes.AgentClientIdController.onPageLoad()))
+      case _ => Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+    }
 }

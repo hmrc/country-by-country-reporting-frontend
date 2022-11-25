@@ -44,7 +44,7 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
 
       "must return OK and the correct view for a GET and show 'confirm and send' button on updating contact details" in {
 
-        when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
+        when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers], any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some((true, true))))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -66,7 +66,7 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
 
       "must return OK and the correct view for a GET and hide 'confirm and send' button on not updating contact details" in {
 
-        when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
+        when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers], any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some((false, false))))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -88,7 +88,7 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
 
       "must load 'Internal server error' page on failing to read subscription details" in {
 
-        when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
+        when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers], any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(None))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -110,10 +110,10 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
     "onSubmit" - {
 
       "redirect to confirmation page on updating existing ContactDetails" in {
-        when(mockSubscriptionService.updateContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
+        when(mockSubscriptionService.updateContactDetails(any[UserAnswers], any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(true))
 
-        when(mockSubscriptionService.doContactDetailsExist()(any[HeaderCarrier]()))
+        when(mockSubscriptionService.doContactDetailsExist(any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -133,10 +133,10 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
       }
 
       "redirect to confirmation page on saving new ContactDetails" in {
-        when(mockSubscriptionService.updateContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
+        when(mockSubscriptionService.updateContactDetails(any[UserAnswers], any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(true))
 
-        when(mockSubscriptionService.doContactDetailsExist()(any[HeaderCarrier]()))
+        when(mockSubscriptionService.doContactDetailsExist(any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(false)))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -156,10 +156,10 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
       }
 
       "load 'technical difficulties' page on failing to update ContactDetails" in {
-        when(mockSubscriptionService.updateContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
+        when(mockSubscriptionService.updateContactDetails(any[UserAnswers], any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(false))
 
-        when(mockSubscriptionService.doContactDetailsExist()(any[HeaderCarrier]()))
+        when(mockSubscriptionService.doContactDetailsExist(any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(false)))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))

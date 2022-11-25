@@ -35,6 +35,8 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
 
   val mockSubscriptionConnector: SubscriptionConnector = mock[SubscriptionConnector]
 
+  private val cbcId = "111111111"
+
   override lazy val app: Application = new GuiceApplicationBuilder()
     .overrides(
       bind[SubscriptionConnector].toInstance(mockSubscriptionConnector)
@@ -74,9 +76,10 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
 
         val responseDetail = Json.parse(responseDetailString).as[ResponseDetail]
 
-        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(Some(responseDetail)))
+        when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(Some(responseDetail)))
 
-        val result = service.getContactDetails(emptyUserAnswers)
+        val result = service.getContactDetails(emptyUserAnswers, cbcId)
 
         val ua = result.futureValue.value
 
@@ -114,9 +117,10 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
 
         val responseDetail = Json.parse(responseDetailString).as[ResponseDetail]
 
-        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(Some(responseDetail)))
+        when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(Some(responseDetail)))
 
-        val result = service.getContactDetails(emptyUserAnswers)
+        val result = service.getContactDetails(emptyUserAnswers, cbcId)
 
         val ua = result.futureValue.value
 
@@ -149,30 +153,35 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
           .set(SecondContactPhonePage, "+3311211212")
           .success
           .value
-        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(Some(contactDetails)))
-        when(mockSubscriptionConnector.updateSubscription(any())(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(true))
+        when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(Some(contactDetails)))
+        when(mockSubscriptionConnector.updateSubscription(any())(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(true))
 
-        service.updateContactDetails(userAnswers).futureValue mustBe true
+        service.updateContactDetails(userAnswers, cbcId).futureValue mustBe true
 
       }
 
       "must return false on failing to update the contactDetails" in {
         val contactDetails = Arbitrary.arbitrary[ResponseDetail].sample.value
 
-        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(Some(contactDetails)))
+        when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(Some(contactDetails)))
         when(mockSubscriptionConnector.updateSubscription(any())(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(false))
 
-        service.updateContactDetails(emptyUserAnswers).futureValue mustBe false
+        service.updateContactDetails(emptyUserAnswers, cbcId).futureValue mustBe false
 
       }
 
       "must return false on failing to get response from readSubscription" in {
         val contactDetails = Arbitrary.arbitrary[ResponseDetail].sample.value
 
-        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(Some(contactDetails)))
-        when(mockSubscriptionConnector.updateSubscription(any())(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(false))
+        when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(Some(contactDetails)))
+        when(mockSubscriptionConnector.updateSubscription(any())(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(false))
 
-        service.updateContactDetails(emptyUserAnswers).futureValue mustBe false
+        service.updateContactDetails(emptyUserAnswers, cbcId).futureValue mustBe false
 
       }
     }
@@ -180,7 +189,7 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
     "hasResponseDetailDataChanged" - {
       "return false when ReadSubscription data is not changed for organisation flow" in {
         val responseDetail = ResponseDetail(
-          subscriptionID = "111111111",
+          subscriptionID = cbcId,
           tradingName = Some("name"),
           isGBUser = true,
           primaryContact = ContactInformation(OrganisationDetails("orgName"), "test@test.com", Some("+4411223344"), Some("4411223344")),
@@ -201,15 +210,16 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
           .success
           .value
 
-        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(Some(responseDetail)))
+        when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(Some(responseDetail)))
 
-        val result = service.isContactInformationUpdated(userAnswers = userAnswers)
+        val result = service.isContactInformationUpdated(userAnswers = userAnswers, cbcId)
         result.futureValue mustBe Some((false, false))
       }
 
       "return true when ReadSubscription data secondaryContact is None and user updated the secondary contact for organisation flow" in {
         val responseDetail = ResponseDetail(
-          subscriptionID = "111111111",
+          subscriptionID = cbcId,
           tradingName = Some("name"),
           isGBUser = true,
           primaryContact = ContactInformation(OrganisationDetails("orgName"), "test@test.com", Some("+4411223344"), Some("4411223344")),
@@ -245,15 +255,16 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
           .success
           .value
 
-        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(Some(responseDetail)))
+        when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(Some(responseDetail)))
 
-        val result = service.isContactInformationUpdated(userAnswers = userAnswers)
+        val result = service.isContactInformationUpdated(userAnswers = userAnswers, cbcId)
         result.futureValue mustBe Some((true, false))
       }
 
       "return true when ReadSubscription data is changed for organisation flow" in {
         val responseDetail = ResponseDetail(
-          subscriptionID = "111111111",
+          subscriptionID = cbcId,
           tradingName = Some("name"),
           isGBUser = true,
           primaryContact = ContactInformation(OrganisationDetails("orgName"), "test@test.com", Some("+4411223344"), Some("4411223344")),
@@ -274,9 +285,10 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
           .success
           .value
 
-        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(Some(responseDetail)))
+        when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(Some(responseDetail)))
 
-        val result = service.isContactInformationUpdated(userAnswers = userAnswers)
+        val result = service.isContactInformationUpdated(userAnswers = userAnswers, cbcId)
         result.futureValue mustBe Some((true, false))
       }
 
@@ -293,26 +305,26 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
           .success
           .value
 
-        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(None))
+        when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(None))
 
-        val result = service.isContactInformationUpdated(userAnswers = userAnswers)
+        val result = service.isContactInformationUpdated(userAnswers = userAnswers, cbcId)
         result.futureValue mustBe None
       }
     }
     "doContactDetailsExist" - {
       "must return true if contactDetails exists" in {
         val responseDetail = ResponseDetail(
-          subscriptionID = "111111111",
+          subscriptionID = cbcId,
           tradingName = Some("name"),
           isGBUser = true,
           primaryContact = ContactInformation(OrganisationDetails("orgName"), "test@test.com", Some("+4411223344"), Some("4411223344")),
           secondaryContact = None
         )
 
-        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]()))
+        when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
           .thenReturn(Future.successful(Some(responseDetail)))
 
-        val result = service.doContactDetailsExist()
+        val result = service.doContactDetailsExist(cbcId)
 
         result.futureValue.value mustBe true
       }
@@ -346,10 +358,10 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
 
         val responseDetail = Json.parse(responseDetailString).as[ResponseDetail]
 
-        when(mockSubscriptionConnector.readSubscription()(any[HeaderCarrier](), any[ExecutionContext]()))
+        when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
           .thenReturn(Future.successful(Some(responseDetail)))
 
-        val result = service.doContactDetailsExist()
+        val result = service.doContactDetailsExist(cbcId)
 
         result.futureValue.value mustBe false
       }

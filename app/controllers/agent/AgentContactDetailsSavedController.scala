@@ -37,6 +37,6 @@ class AgentContactDetailsSavedController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      Ok(view(request.userAnswers.get(ContactNamePage).isDefined))
+      Ok(view())
   }
 }

@@ -25,12 +25,13 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
+import scala.language.implicitConversions
 
 class SubscriptionConnector @Inject() (val config: FrontendAppConfig, val http: HttpClient) extends Logging {
 
-  def readSubscription()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[ResponseDetail]] = {
+  def readSubscription(subscriptionId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[ResponseDetail]] = {
 
-    val url = s"${config.cbcUrl}/country-by-country-reporting/subscription/read-subscription"
+    val url = s"${config.cbcUrl}/country-by-country-reporting/subscription/read-subscription/$subscriptionId"
     http
       .POSTEmpty(url)
       .map {
