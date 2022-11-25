@@ -17,18 +17,9 @@
 package controllers.agent
 
 import base.SpecBase
-import models.UserAnswers
-import org.mockito.ArgumentMatchers.any
-import pages.ContactNamePage
-import play.api.inject
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
-import services.SubscriptionService
-import uk.gov.hmrc.http.HeaderCarrier
 import views.html.agent.AgentContactDetailsNeededView
-
-import scala.concurrent.Future
 
 class AgentContactDetailsNeededControllerSpec extends SpecBase {
 

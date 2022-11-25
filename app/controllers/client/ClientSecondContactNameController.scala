@@ -19,8 +19,8 @@ package controllers.client
 import controllers.actions._
 import forms.ContactNameFormProvider
 import models.Mode
-import navigation.{ClientContactDetailsNavigator, ContactDetailsNavigator}
-import pages.{ContactNamePage, SecondContactNamePage}
+import navigation.ClientContactDetailsNavigator
+import pages.SecondContactNamePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

@@ -16,19 +16,14 @@
 
 package controllers.agent
 
-import controllers.actions._
 import controllers.actions.agent.{AgentDataRetrievalAction, AgentIdentifierAction}
-import models.UserAnswers
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
-import services.SubscriptionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.agent.AgentContactDetailsNeededView
 
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 class AgentContactDetailsNeededController @Inject() (
   override val messagesApi: MessagesApi,

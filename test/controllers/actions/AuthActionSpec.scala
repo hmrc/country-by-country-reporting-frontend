@@ -20,12 +20,16 @@ import base.SpecBase
 import com.google.inject.Inject
 import config.FrontendAppConfig
 import controllers.routes
-import org.mockito.ArgumentMatchers.any
+import models.UserAnswers
+import org.mockito.ArgumentMatchers.{any, eq => meq}
+import pages.AgentClientIdPage
 import play.api.inject
 import play.api.mvc.{BodyParsers, Results}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import services.AgentSubscriptionService
 import uk.gov.hmrc.auth.core.AffinityGroup.Individual
+import uk.gov.hmrc.auth.core.AuthProvider.GovernmentGateway
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.{~, Retrieval}
@@ -33,13 +37,6 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
-import controllers.agent.AgentUseAgentServicesController
-import uk.gov.hmrc.auth.core.retrieve.EmptyRetrieval
-import uk.gov.hmrc.auth.core.retrieve.SimpleRetrieval
-import models.UserAnswers
-import pages.AgentClientIdPage
-import repositories.SessionRepository
-import services.AgentSubscriptionService
 
 class AuthActionSpec extends SpecBase {
 
@@ -212,6 +209,60 @@ class AuthActionSpec extends SpecBase {
           val controller = new Harness(authAction)
           val result     = controller.onPageLoad()(FakeRequest())
           redirectLocation(result) mustBe Some(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad.url)
+        }
+      }
+
+      "must redirect to client not identified when AGENT and delegated auth rule passes but client ID does not match" in {
+        val authRetrievals: RetrievalType = new ~(new ~(Some("userId"),
+                                                        Enrolments(
+                                                          Set(
+                                                            Enrolment("HMRC-AS-AGENT").withIdentifier("AgentReferenceNumber", "arn123")
+                                                          )
+                                                        )
+                                                  ),
+                                                  Some(AffinityGroup.Agent)
+        )
+
+        val mockAuthConnector = mock[AuthConnector]
+        val application = applicationBuilder(userAnswers = None)
+          .overrides(
+            inject.bind[AuthConnector].toInstance(mockAuthConnector)
+          )
+          .build()
+
+        when(
+          mockAuthConnector.authorise(meq(AuthProviders(GovernmentGateway) and ConfidenceLevel.L50), any[Retrieval[Any]])(any(), any())
+        ).thenReturn(Future.successful(authRetrievals), Future.successful(()))
+
+        when(
+          mockAuthConnector.authorise(meq(
+                                        Enrolment("HMRC-CBC-ORG")
+                                          .withIdentifier("cbcId", "NonMatchingId")
+                                          .withDelegatedAuthRule("cbc-auth")
+                                      ),
+                                      any[Retrieval[Any]]
+          )(any(), any())
+        )
+          .thenReturn(Future.failed(new InsufficientEnrolments))
+
+        when(mockSessionRepository.get("userId"))
+          .thenReturn(
+            Future.successful(
+              UserAnswers("userId")
+                .set(AgentClientIdPage, "NonMatchingId")
+                .fold(_ => None, userAnswers => Some(userAnswers))
+            )
+          )
+
+        running(application) {
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
+
+          val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, mockAgentSubscriptionService, bodyParsers, mockSessionRepository)
+          val controller = new Harness(authAction)
+          val result     = controller.onPageLoad()(FakeRequest())
+          redirectLocation(result) mustBe Some(controllers.client.routes.ClientNotIdentifiedController.onPageLoad().url)
         }
       }
 
