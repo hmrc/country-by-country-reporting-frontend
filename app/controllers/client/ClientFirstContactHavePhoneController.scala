@@ -18,7 +18,7 @@ package controllers.client
 
 import controllers.actions._
 import forms.HaveTelephoneFormProvider
-import models.{CheckMode, Mode}
+import models.Mode
 import navigation.ClientContactDetailsNavigator
 import pages.HaveTelephonePage
 import play.api.i18n.{I18nSupport, MessagesApi}
