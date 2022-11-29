@@ -23,7 +23,6 @@ import repositories.SessionRepository
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
-import scala.language.higherKinds
 
 class AgentDataRetrievalActionImpl @Inject() (
   val sessionRepository: SessionRepository

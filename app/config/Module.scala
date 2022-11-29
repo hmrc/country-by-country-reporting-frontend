@@ -18,15 +18,7 @@ package config
 
 import com.google.inject.AbstractModule
 import controllers.actions._
-import controllers.actions.agent.{
-  AgentDataRequiredAction,
-  AgentDataRequiredActionImpl,
-  AgentDataRetrievalAction,
-  AgentDataRetrievalActionImpl,
-  AgentIdentifierAction,
-  AuthenticatedAgentIdentifierAction
-}
-import models.requests.agent.AgentIdentifierRequest
+import controllers.actions.agent._
 
 import java.time.{Clock, ZoneOffset}
 

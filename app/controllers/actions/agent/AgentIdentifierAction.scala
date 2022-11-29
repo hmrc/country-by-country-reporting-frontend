@@ -16,7 +16,7 @@
 
 package controllers.actions.agent
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import config.FrontendAppConfig
 import controllers.routes
 import models.requests.agent.AgentIdentifierRequest

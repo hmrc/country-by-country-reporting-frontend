@@ -17,18 +17,19 @@
 package controllers.actions
 
 import base.SpecBase
-import com.google.inject.Inject
+
+import javax.inject.Inject
 import config.FrontendAppConfig
 import controllers.routes
 import models.UserAnswers
-import org.mockito.ArgumentMatchers.{any, eq => meq}
+import org.mockito.ArgumentMatchers.{any, eq => mockEq}
 import pages.AgentClientIdPage
 import play.api.inject
 import play.api.mvc.{BodyParsers, Results}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.AgentSubscriptionService
-import uk.gov.hmrc.auth.core.AffinityGroup.Individual
+import uk.gov.hmrc.auth.core.AffinityGroup.{Individual, Organisation}
 import uk.gov.hmrc.auth.core.AuthProvider.GovernmentGateway
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.authorise.Predicate
@@ -231,11 +232,11 @@ class AuthActionSpec extends SpecBase {
           .build()
 
         when(
-          mockAuthConnector.authorise(meq(AuthProviders(GovernmentGateway) and ConfidenceLevel.L50), any[Retrieval[Any]])(any(), any())
+          mockAuthConnector.authorise(mockEq(AuthProviders(GovernmentGateway) and ConfidenceLevel.L50), any[Retrieval[Any]])(any(), any())
         ).thenReturn(Future.successful(authRetrievals), Future.successful(()))
 
         when(
-          mockAuthConnector.authorise(meq(
+          mockAuthConnector.authorise(mockEq(
                                         Enrolment("HMRC-CBC-ORG")
                                           .withIdentifier("cbcId", "NonMatchingId")
                                           .withDelegatedAuthRule("cbc-auth")
@@ -356,6 +357,37 @@ class AuthActionSpec extends SpecBase {
             bodyParsers,
             mockSessionRepository
           )
+          val controller = new Harness(authAction)
+          val result     = controller.onPageLoad()(FakeRequest())
+
+          status(result) mustBe SEE_OTHER
+          redirectLocation(result) mustBe Some(routes.UnauthorisedController.onPageLoad.url)
+        }
+      }
+    }
+
+    "the user has an no internal ID" - {
+
+      "must redirect the user to the unauthorised page" in {
+
+        val authRetrievals = Future.successful(new ~(new ~(None, Enrolments(Set.empty[Enrolment])), Some(Organisation)))
+
+        val mockAuthConnector = mock[AuthConnector]
+        val application = applicationBuilder(userAnswers = None)
+          .overrides(
+            inject.bind[AuthConnector].toInstance(mockAuthConnector)
+          )
+          .build()
+
+        when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]])(any(), any()))
+          .thenReturn(authRetrievals)
+
+        running(application) {
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
+
+          val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, mockAgentSubscriptionService, bodyParsers, mockSessionRepository)
           val controller = new Harness(authAction)
           val result     = controller.onPageLoad()(FakeRequest())
 

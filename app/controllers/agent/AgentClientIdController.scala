@@ -16,7 +16,7 @@
 
 package controllers.agent
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import controllers.actions.agent.AgentIdentifierAction
 import forms.AgentClientIdFormProvider
 import models.UserAnswers

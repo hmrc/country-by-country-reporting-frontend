@@ -16,7 +16,7 @@
 
 package controllers.testOnlyDoNotUseInAppConf
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import connectors.SubmissionConnector
 import controllers.actions.IdentifierAction
 import play.api.Logging

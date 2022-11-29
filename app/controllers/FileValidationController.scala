@@ -101,7 +101,7 @@ class FileValidationController @Inject() (
     uploadSessions match {
       case Some(uploadDetails) =>
         uploadDetails.status match {
-          case UploadedSuccessfully(name, downloadUrl) => Some(name, downloadUrl)
+          case UploadedSuccessfully(name, downloadUrl) => Some((name, downloadUrl))
           case _                                       => None
         }
       case _ => None

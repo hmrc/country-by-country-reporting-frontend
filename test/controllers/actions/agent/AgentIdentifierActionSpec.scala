@@ -17,7 +17,7 @@
 package controllers.actions.agent
 
 import base.SpecBase
-import com.google.inject.Inject
+import javax.inject.Inject
 import config.FrontendAppConfig
 import controllers.routes
 import org.mockito.ArgumentMatchers.any
