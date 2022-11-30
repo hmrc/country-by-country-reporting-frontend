@@ -30,7 +30,7 @@
     <p class="govuk-body">@messages("contactDetailsNeeded.p2")</p>
 
     @govukButton(
-        ButtonViewModel(messages("site.continue")).withAttribute("id", "submit")
+        ButtonViewModel(messages("site.continue")).withAttribute("id" -> "submit")
                 .asLink(controllers.routes.ContactNameController.onPageLoad(NormalMode).url)
     )
 }

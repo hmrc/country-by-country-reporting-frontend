@@ -30,7 +30,7 @@
     <p class="govuk-body">@messages("agentContactDetailsNeeded.p4")</p>
 
     @govukButton(
-        ButtonViewModel(messages("site.continue")).withAttribute("id", "submit")
+        ButtonViewModel(messages("site.continue")).withAttribute("id" -> "submit")
                 .asLink(controllers.agent.routes.AgentFirstContactNameController.onPageLoad(NormalMode).url)
     )
 }

@@ -16,7 +16,7 @@
 
 @this(govukTable : GovukTable)
 
-@(rows: Seq[Seq[TableRow]], head: Option[Seq[HeadCell]] = None, caption: Option[String] = None)(implicit messages: Messages)
+@(rows: Seq[Seq[TableRow]], head: Option[Seq[HeadCell]] = None, caption: Option[String] = None)
 
 @govukTable(Table(
  caption = caption,

@@ -18,7 +18,6 @@ package controllers
 
 import connectors.{UpscanConnector, ValidationConnector}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.requests.DataRequest
 import models.upscan.{UploadSessionDetails, UploadedSuccessfully, UpscanURL}
 import models.{InvalidXmlError, NormalMode, UserAnswers, ValidatedFileData, ValidationErrors}
 import navigation.Navigator
@@ -97,7 +96,7 @@ class FileValidationController @Inject() (
         }
   }
 
-  private def getDownloadUrl(uploadSessions: Option[UploadSessionDetails])(implicit request: DataRequest[_]): Option[(String, String)] =
+  private def getDownloadUrl(uploadSessions: Option[UploadSessionDetails]): Option[(String, String)] =
     uploadSessions match {
       case Some(uploadDetails) =>
         uploadDetails.status match {
