@@ -62,7 +62,7 @@ class IndexController @Inject() (
                     } else {
                       fileConnector.getAllFileDetails(request.subscriptionId) map {
                         fileDetails =>
-                          Ok(view(fileDetails.isDefined, request.subscriptionId))
+                          Ok(view(fileDetails.isDefined, request.subscriptionId, request.isAgent))
                       }
                     }
                 }
@@ -80,7 +80,7 @@ class IndexController @Inject() (
                 } else {
                   fileConnector.getAllFileDetails(request.subscriptionId) map {
                     fileDetails =>
-                      Ok(view(fileDetails.isDefined, request.subscriptionId))
+                      Ok(view(fileDetails.isDefined, request.subscriptionId, request.isAgent))
                   }
                 }
             }
