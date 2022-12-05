@@ -14,22 +14,13 @@
  * limitations under the License.
  */
 
-package controllers.agent
+package pages
 
-import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.agent.AgentUseAgentServicesView
+import play.api.libs.json.JsPath
 
-import javax.inject.Inject
+case object AgentClientIdPage extends QuestionPage[String] {
 
-class AgentUseAgentServicesController @Inject() (
-  val controllerComponents: MessagesControllerComponents,
-  view: AgentUseAgentServicesView
-) extends FrontendBaseController
-    with I18nSupport {
+  override def path: JsPath = JsPath \ toString
 
-  def onPageLoad: Action[AnyContent] = Action {
-    implicit request => Ok(view())
-  }
+  override def toString: String = "agentClientId"
 }

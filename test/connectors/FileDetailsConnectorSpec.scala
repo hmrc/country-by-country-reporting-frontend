@@ -37,9 +37,10 @@ class FileDetailsConnectorSpec extends Connector {
 
   lazy val connector: FileDetailsConnector = app.injector.instanceOf[FileDetailsConnector]
 
+  private val cbcId          = "cbcId"
   private val conversationId = ConversationId("conversationId3")
 
-  private val allFilesUrls  = "/country-by-country-reporting/files/details"
+  private val allFilesUrls  = s"/country-by-country-reporting/files/details/$cbcId"
   private val fileUrl       = s"/country-by-country-reporting/files/${conversationId.value}/details"
   private val fileStatusUrl = s"/country-by-country-reporting/files/${conversationId.value}/status"
 
@@ -127,7 +128,7 @@ class FileDetailsConnectorSpec extends Connector {
 
         stubGetResponse(allFilesUrls, OK, allFiles)
 
-        val result = connector.getAllFileDetails
+        val result = connector.getAllFileDetails(cbcId)
 
         result.futureValue mustBe expectedResult
       }
@@ -136,7 +137,7 @@ class FileDetailsConnectorSpec extends Connector {
 
         stubGetResponse(allFilesUrls, OK)
 
-        val result = connector.getAllFileDetails
+        val result = connector.getAllFileDetails(cbcId)
 
         result.futureValue mustBe None
       }
@@ -146,7 +147,7 @@ class FileDetailsConnectorSpec extends Connector {
         val errorCode = errorCodes.sample.value
         stubGetResponse(allFilesUrls, errorCode)
 
-        val result = connector.getAllFileDetails
+        val result = connector.getAllFileDetails(cbcId)
 
         result.futureValue mustBe None
 

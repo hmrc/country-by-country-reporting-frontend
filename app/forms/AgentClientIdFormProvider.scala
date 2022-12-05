@@ -14,22 +14,26 @@
  * limitations under the License.
  */
 
-package controllers.agent
+package forms
 
-import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.agent.AgentUseAgentServicesView
+import forms.mappings.Mappings
 
 import javax.inject.Inject
+import play.api.data.Form
+import utils.RegExConstants
 
-class AgentUseAgentServicesController @Inject() (
-  val controllerComponents: MessagesControllerComponents,
-  view: AgentUseAgentServicesView
-) extends FrontendBaseController
-    with I18nSupport {
+class AgentClientIdFormProvider @Inject() extends Mappings with RegExConstants {
 
-  def onPageLoad: Action[AnyContent] = Action {
-    implicit request => Ok(view())
-  }
+  private val maxLength = 132
+
+  def apply(): Form[String] =
+    Form(
+      "value" -> validatedText(
+        "agentClientId.error.required",
+        "agentClientId.error.invalid",
+        "agentClientId.error.length",
+        orgNameRegex,
+        maxLength
+      )
+    )
 }

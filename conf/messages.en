@@ -399,7 +399,6 @@ agentContactDetailsNeeded.p1 = Before you can send a country-by-country (CBC) re
 agentContactDetailsNeeded.p2 = We need up to 2 contacts. They can be for an individual or a team working on behalf of clients.
 agentContactDetailsNeeded.p3 = We will use these details if we have any questions about your CBC reports. These details can be changed at any time. You only need to go through this process once and it will apply for all your clients.
 agentContactDetailsNeeded.p4 = Do not provide your client’s contact details.
-agentContactDetailsNeeded.p5 = You will need to provide your client’s contact details later.
 
 agentFirstContactName.title = What is the name of your first contact?
 agentFirstContactName.heading = What is the name of your first contact?
@@ -474,10 +473,9 @@ agentSecondContactPhone.change.hidden = second contact telephone number
 agentContactDetailsSaved.title = Agent contact details saved
 agentContactDetailsSaved.heading = Agent contact details saved
 agentContactDetailsSaved.subheading = What happens next
-agentContactDetailsSaved.p1 = You can now {0}.
-agentContactDetailsSaved.p1.link = send CBC reports
-agentContactDetailsSaved.p2 = Before you can send CBC reports you must {0}.
-agentContactDetailsSaved.p2.link = provide contact details for your client
+agentContactDetailsSaved.p1 = You can now:
+agentContactDetailsSaved.bullet1 = select a client
+agentContactDetailsSaved.bullet2 = add CBC clients in your agent services account
 
 agentContactDetailsUpdated.title = Agent contact details updated
 agentContactDetailsUpdated.heading = Agent contact details updated
@@ -606,3 +604,9 @@ individualSignInProblem.heading = Sorry, you’re unable to use this service
 individualSignInProblem.p1 = You’ve signed in as an individual. Only organisations can send reports.
 individualSignInProblem.p2 = If you need to send reports for an organisation, {0}.
 individualSignInProblem.p2.link = sign in with your organisation’s Government Gateway details
+
+agentClientId.title = What is the CBC ID of the client you want to act on behalf of
+agentClientId.heading = What is the CBC ID of the client you want to act on behalf of
+agentClientId.hint = This is [??] characters, for example, [example].
+agentClientId.p1 = Or {0}
+agentClientId.p1.link = change your CBC agent contact details

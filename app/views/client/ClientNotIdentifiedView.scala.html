@@ -30,7 +30,7 @@
     <h2 class="govuk-heading-m">@messages("clientNotIdentified.subheading")</h2>
 
     <ol class="govuk-body govuk-list--number">
-        <li>@link("#", "clientNotIdentified.bullet1")</li> @*TODO: add CBC ID Entry page link URL when implemented*@
+        <li>@link(controllers.agent.routes.AgentClientIdController.onPageLoad().url, "clientNotIdentified.bullet1")</li>
         <li>@Html(messages("clientNotIdentified.bullet2", link("#", "clientNotIdentified.bullet2.link")))</li> @*TODO: add agent services link URL when known*@
         <li>@messages("clientNotIdentified.bullet3")</li>
     </ol>

@@ -18,15 +18,7 @@ package controllers
 
 import base.SpecBase
 import connectors.FileDetailsConnector
-import controllers.actions.{
-  DataRequiredAction,
-  DataRequiredActionImpl,
-  DataRetrievalAction,
-  FakeAgentIdentifierAction,
-  FakeDataRetrievalActionProvider,
-  FakeIdentifierAction,
-  IdentifierAction
-}
+import controllers.actions._
 import models.fileDetails.FileErrorCode.{FailedSchemaValidation, MessageRefIDHasAlreadyBeenUsed}
 import models.fileDetails.RecordErrorCode.{DocRefIDFormat, MissingCorrDocRefId}
 import models.fileDetails.{Pending, Rejected, ValidationErrors, Accepted => FileStatusAccepted, _}

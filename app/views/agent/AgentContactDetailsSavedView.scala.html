@@ -20,7 +20,7 @@
         link: components.Link
 )
 
-@(clientContactDetailsExist: Boolean)(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("agentContactDetailsSaved.title")), showBackLink = false) {
 
@@ -28,10 +28,13 @@
         title = Text(messages("agentContactDetailsSaved.heading"))
     ))
 
-  <h2 class="govuk-heading-m">@messages("agentContactDetailsSaved.subheading")</h2>
-  @if(clientContactDetailsExist) {
-    <p class="govuk-body">@Html(messages("agentContactDetailsSaved.p1", link(routes.IndexController.onPageLoad.url, "agentContactDetailsSaved.p1.link")))</p>
-  } else {
-    <p class="govuk-body">@Html(messages("agentContactDetailsSaved.p2", link(controllers.client.routes.ClientContactDetailsNeededController.onPageLoad.url, "agentContactDetailsSaved.p2.link")))</p> @*Todo: update link when client contact details journey complete*@
-  }
+    <h2 class="govuk-heading-m">@messages("agentContactDetailsSaved.subheading")</h2>
+
+    <p class="govuk-body">@messages("agentContactDetailsSaved.p1")</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@link(controllers.agent.routes.AgentClientIdController.onPageLoad().url, "agentContactDetailsSaved.bullet1")</li>
+        <li>@link("#", "agentContactDetailsSaved.bullet2")</li> @*TODO: Add link to agent services when known*@
+    </ul>
+
 }

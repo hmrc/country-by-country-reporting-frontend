@@ -220,3 +220,6 @@ GET        /agent/use-agent-services                                            
 GET        /agent/client-not-identified                                          controllers.client.ClientNotIdentifiedController.onPageLoad()
 
 GET        /problem/individual-sign-in-problem                                   controllers.IndividualSignInProblemController.onPageLoad()
+
+GET        /agent/client-id                                                      controllers.agent.AgentClientIdController.onPageLoad()
+POST       /agent/client-id                                                      controllers.agent.AgentClientIdController.onSubmit()

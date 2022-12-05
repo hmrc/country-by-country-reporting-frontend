@@ -16,43 +16,25 @@
 
 package controllers.agent
 
-import controllers.actions._
 import controllers.actions.agent.{AgentDataRetrievalAction, AgentIdentifierAction}
-import models.UserAnswers
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
-import services.SubscriptionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.agent.AgentContactDetailsNeededView
 
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
 
 class AgentContactDetailsNeededController @Inject() (
   override val messagesApi: MessagesApi,
   identify: AgentIdentifierAction,
   getData: AgentDataRetrievalAction,
-  requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: AgentContactDetailsNeededView,
-  subscriptionService: SubscriptionService,
-  sessionRepository: SessionRepository
-)(implicit ec: ExecutionContext)
-    extends FrontendBaseController
+  view: AgentContactDetailsNeededView
+) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData()).async {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData()) {
     implicit request =>
-      subscriptionService.getContactDetails(request.userAnswers.getOrElse(UserAnswers(request.userId))).flatMap {
-        case Some(userAnswers) =>
-          sessionRepository.set(userAnswers).map {
-            _ =>
-              val isContactDetailsDefined = userAnswers.data != Json.obj()
-              Ok(view(isContactDetailsDefined))
-          }
-        case _ => Future.successful(Redirect(controllers.routes.ThereIsAProblemController.onPageLoad()))
-      }
+      Ok(view())
   }
 }
