@@ -79,8 +79,9 @@ class AuthenticatedIdentifierAction @Inject() (
                                    affinityGroup: AffinityGroup
   ): Future[Either[Result, IdentifierRequest[A]]] = {
 
-    val cbcEnrolment  = "HMRC-CBC-ORG"
-    val cbcIdentifier = "cbcId"
+    val cbcEnrolment      = "HMRC-CBC-ORG"
+    val cbcNonUKEnrolment = "HMRC-CBC-NONUK-ORG"
+    val cbcIdentifier     = "cbcId"
 
     val subscriptionId: Option[String] = for {
       enrolment      <- enrolments.getEnrolment(cbcEnrolment)
@@ -88,8 +89,16 @@ class AuthenticatedIdentifierAction @Inject() (
       subscriptionId <- if (id.value.nonEmpty) Some(id.value) else None
     } yield subscriptionId
 
+    val nonUKSubscriptionId: Option[String] = for {
+      nonUKEnrolment <- enrolments.getEnrolment(cbcNonUKEnrolment)
+      id             <- nonUKEnrolment.getIdentifier(cbcIdentifier)
+      subscriptionId <- if (id.value.nonEmpty) Some(id.value) else None
+    } yield subscriptionId
+
     if (subscriptionId.isDefined) {
       Future.successful(Right(IdentifierRequest(request, internalId, subscriptionId.get, affinityGroup)))
+    } else if (nonUKSubscriptionId.isDefined) {
+      Future.successful(Right(IdentifierRequest(request, internalId, nonUKSubscriptionId.get, affinityGroup)))
     } else {
       logger.warn("Unable to retrieve CBC id from Enrolments")
       Future.successful(Left(Redirect(config.registerUrl)))
