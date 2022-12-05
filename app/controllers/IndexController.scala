@@ -58,7 +58,7 @@ class IndexController @Inject() (
                     if (agentAndClientUserAnswers.get(AgentFirstContactNamePage).isEmpty) {
                       Future.successful(Redirect(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad()))
                     } else if (agentAndClientUserAnswers.get(ContactNamePage).isEmpty) {
-                      Future.successful(Redirect(routes.ContactDetailsNeededController.onPageLoad()))
+                      Future.successful(Redirect(controllers.client.routes.ClientContactDetailsNeededController.onPageLoad()))
                     } else {
                       fileConnector.getAllFileDetails(request.subscriptionId) map {
                         fileDetails =>
