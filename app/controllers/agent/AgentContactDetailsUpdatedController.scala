@@ -16,7 +16,7 @@
 
 package controllers.agent
 
-import controllers.actions._
+import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -26,9 +26,9 @@ import javax.inject.Inject
 
 class AgentContactDetailsUpdatedController @Inject() (
   override val messagesApi: MessagesApi,
-  identify: IdentifierAction,
-  getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
+  identify: AgentIdentifierAction,
+  getData: AgentDataRetrievalAction,
+  requireData: AgentDataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: AgentContactDetailsUpdatedView
 ) extends FrontendBaseController

@@ -58,9 +58,9 @@ class IndexControllerSpec extends SpecBase {
         .build()
 
       val userAnswers = UserAnswers("id").set(HaveTelephonePage, false).success.value
-      when(mockSubscriptionService.getContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
+      when(mockSubscriptionService.getContactDetails(any[UserAnswers], any[String])(any[HeaderCarrier]()))
         .thenReturn(Future.successful(Some(userAnswers)))
-      when(mockFileDetailsConnector.getAllFileDetails(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(None))
+      when(mockFileDetailsConnector.getAllFileDetails(any[String])(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(None))
       when(mockSessionRepository.set(any[UserAnswers]())).thenReturn(Future.successful(true))
 
       running(application) {
@@ -87,7 +87,7 @@ class IndexControllerSpec extends SpecBase {
         )
         .build()
 
-      when(mockSubscriptionService.getContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
+      when(mockSubscriptionService.getContactDetails(any[UserAnswers], any[String])(any[HeaderCarrier]()))
         .thenReturn(Future.successful(Some(userAnswers)))
       when(mockSessionRepository.set(any[UserAnswers]())).thenReturn(Future.successful(true))
 
@@ -120,7 +120,7 @@ class IndexControllerSpec extends SpecBase {
       when(mockAgentSubscriptionService.getAgentContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
         .thenReturn(Future.successful(Some(userAnswers)))
 
-      when(mockSubscriptionService.getContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
+      when(mockSubscriptionService.getContactDetails(any[UserAnswers], any[String])(any[HeaderCarrier]()))
         .thenReturn(Future.successful(Some(userAnswers)))
       when(mockSessionRepository.set(any[UserAnswers]())).thenReturn(Future.successful(true))
 

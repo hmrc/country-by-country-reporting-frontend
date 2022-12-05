@@ -19,7 +19,7 @@
         govukButton: GovukButton
 )
 
-@(hasClientContactDetails: Boolean)(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("agentContactDetailsNeeded.title"))) {
 
@@ -27,14 +27,10 @@
     <p class="govuk-body">@messages("agentContactDetailsNeeded.p1")</p>
     <p class="govuk-body">@messages("agentContactDetailsNeeded.p2")</p>
     <p class="govuk-body">@messages("agentContactDetailsNeeded.p3")</p>
-    @if(hasClientContactDetails) {
-        <p class="govuk-body">@messages("agentContactDetailsNeeded.p4")</p>
-    } else {
-        <p class="govuk-body">@messages("agentContactDetailsNeeded.p5")</p>
-    }
+    <p class="govuk-body">@messages("agentContactDetailsNeeded.p4")</p>
 
     @govukButton(
-        ButtonViewModel(messages("site.continue")).withAttribute("id", "submit")
+        ButtonViewModel(messages("site.continue")).withAttribute("id" -> "submit")
                 .asLink(controllers.agent.routes.AgentFirstContactNameController.onPageLoad(NormalMode).url)
     )
 }

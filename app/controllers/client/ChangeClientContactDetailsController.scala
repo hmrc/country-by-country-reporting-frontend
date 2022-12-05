@@ -53,7 +53,7 @@ class ChangeClientContactDetailsController @Inject() (
         rows = checkUserAnswersHelper.getSecondaryContactDetails
       )
 
-      subscriptionService.isContactInformationUpdated(request.userAnswers) map {
+      subscriptionService.isContactInformationUpdated(request.userAnswers, request.subscriptionId) map {
         case Some((hasChanged, isFirstVisitAfterMigration)) =>
           Ok(
             view(primaryContactList, secondaryContactList, hasChanged, isFirstVisitAfterMigration)
@@ -64,9 +64,9 @@ class ChangeClientContactDetailsController @Inject() (
 
   def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
-      subscriptionService.doContactDetailsExist flatMap {
+      subscriptionService.doContactDetailsExist(request.subscriptionId) flatMap {
         contactDetailsExist =>
-          subscriptionService.updateContactDetails(request.userAnswers) map {
+          subscriptionService.updateContactDetails(request.userAnswers, request.subscriptionId) map {
             case true =>
               contactDetailsExist match {
                 case Some(true)  => Redirect(routes.ClientDetailsUpdatedController.onPageLoad())

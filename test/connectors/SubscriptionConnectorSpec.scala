@@ -34,8 +34,9 @@ class SubscriptionConnectorSpec extends Connector with ModelGenerators {
     )
     .build()
 
+  private val cbcId                         = "cbcId"
   lazy val connector: SubscriptionConnector = app.injector.instanceOf[SubscriptionConnector]
-  private val readSubscriptionUrl           = "/country-by-country-reporting/subscription/read-subscription"
+  private val readSubscriptionUrl           = s"/country-by-country-reporting/subscription/read-subscription/$cbcId"
   private val updateSubscriptionUrl         = "/country-by-country-reporting/subscription/update-subscription"
 
   val responseDetailString: String =
@@ -69,7 +70,7 @@ class SubscriptionConnectorSpec extends Connector with ModelGenerators {
       "must return a ResponseDetails when readSubscription is successful" in {
         stubPostResponse(readSubscriptionUrl, OK, responseDetailString)
 
-        whenReady(connector.readSubscription()) {
+        whenReady(connector.readSubscription(cbcId)) {
           result =>
             result mustBe Some(responseDetail)
         }
@@ -78,7 +79,7 @@ class SubscriptionConnectorSpec extends Connector with ModelGenerators {
       "must return a None when readSubscription  fails with InternalServerError" in {
         stubPostResponse(readSubscriptionUrl, INTERNAL_SERVER_ERROR)
 
-        whenReady(connector.readSubscription()) {
+        whenReady(connector.readSubscription(cbcId)) {
           result =>
             result mustBe None
         }

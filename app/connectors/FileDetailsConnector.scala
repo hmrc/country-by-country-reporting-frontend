@@ -29,8 +29,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class FileDetailsConnector @Inject() (httpClient: HttpClient, config: FrontendAppConfig) extends Logging {
 
-  def getAllFileDetails(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[Seq[FileDetails]]] = {
-    val url = s"${config.cbcUrl}/country-by-country-reporting/files/details"
+  def getAllFileDetails(subscriptionId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[Seq[FileDetails]]] = {
+    val url = s"${config.cbcUrl}/country-by-country-reporting/files/details/$subscriptionId"
     httpClient.GET[HttpResponse](url).map {
       case responseMessage if is2xx(responseMessage.status) =>
         responseMessage.json

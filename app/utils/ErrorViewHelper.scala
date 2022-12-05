@@ -16,7 +16,7 @@
 
 package utils
 
-import com.google.inject.Inject
+import javax.inject.Inject
 import models.GenericError
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text

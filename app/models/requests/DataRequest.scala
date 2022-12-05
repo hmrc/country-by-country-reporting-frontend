@@ -21,14 +21,36 @@ import models.UserAnswers
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual}
 
-case class OptionalDataRequest[A](request: Request[A], userId: String, userAnswers: Option[UserAnswers], userType: AffinityGroup, subscriptionId: String)
-    extends WrappedRequest[A](request) {
+case class OptionalAgentDataRequest[A](request: Request[A], userId: String, userAnswers: Option[UserAnswers], arn: String) extends WrappedRequest[A](request)
+case class AgentDataRequest[A](request: Request[A], userId: String, userAnswers: UserAnswers, arn: String) extends WrappedRequest[A](request)
+
+abstract class BaseDataRequest[A](request: Request[A]) extends WrappedRequest[A](request) {
+  val userId: String
+  val subscriptionId: String
+  val userType: AffinityGroup
+  val arn: Option[String]
+}
+
+case class OptionalDataRequest[A](
+  request: Request[A],
+  userId: String,
+  userAnswers: Option[UserAnswers],
+  userType: AffinityGroup,
+  subscriptionId: String,
+  arn: Option[String] = None
+) extends BaseDataRequest[A](request) {
+
   def isAgent      = userType == Agent
   def isIndividual = userType == Individual
 }
 
-case class DataRequest[A](request: Request[A], userId: String, subscriptionId: String, userType: AffinityGroup, userAnswers: UserAnswers)
-    extends WrappedRequest[A](request) {
+case class DataRequest[A](request: Request[A],
+                          userId: String,
+                          subscriptionId: String,
+                          userType: AffinityGroup,
+                          userAnswers: UserAnswers,
+                          arn: Option[String] = None
+) extends BaseDataRequest[A](request) {
 
   def isAgent      = userType == Agent
   def isIndividual = userType == Individual

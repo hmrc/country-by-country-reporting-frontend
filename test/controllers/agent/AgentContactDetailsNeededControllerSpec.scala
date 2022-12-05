@@ -17,37 +17,17 @@
 package controllers.agent
 
 import base.SpecBase
-import models.UserAnswers
-import org.mockito.ArgumentMatchers.any
-import pages.ContactNamePage
-import play.api.inject
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import repositories.SessionRepository
-import services.SubscriptionService
-import uk.gov.hmrc.http.HeaderCarrier
 import views.html.agent.AgentContactDetailsNeededView
-
-import scala.concurrent.Future
 
 class AgentContactDetailsNeededControllerSpec extends SpecBase {
 
   "AgentContactDetailsNeeded Controller" - {
 
-    "must return OK and the correct view for a GET when client details exist" in {
+    "must return OK and the correct view for a GET" in {
 
-      val mockSubscriptionService = mock[SubscriptionService]
-      val userAnswers             = emptyUserAnswers.set(ContactNamePage, "name").success.value
-
-      when(mockSessionRepository.set(any[UserAnswers])).thenReturn(Future.successful(true))
-      when(mockSubscriptionService.getContactDetails(any[UserAnswers])(any[HeaderCarrier])).thenReturn(Future.successful(Some(userAnswers)))
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers))
-        .overrides(
-          inject.bind[SessionRepository].toInstance(mockSessionRepository),
-          inject.bind[SubscriptionService].toInstance(mockSubscriptionService)
-        )
-        .build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
         val request = FakeRequest(GET, routes.AgentContactDetailsNeededController.onPageLoad().url)
@@ -57,57 +37,7 @@ class AgentContactDetailsNeededControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[AgentContactDetailsNeededView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(hasClientContactDetails = true)(request, messages(application)).toString
-      }
-    }
-
-    "must return OK and the correct view for a GET when client details do not exist" in {
-
-      val mockSubscriptionService = mock[SubscriptionService]
-
-      when(mockSessionRepository.set(any[UserAnswers])).thenReturn(Future.successful(true))
-      when(mockSubscriptionService.getContactDetails(any[UserAnswers])(any[HeaderCarrier])).thenReturn(Future.successful(Some(emptyUserAnswers)))
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-        .overrides(
-          inject.bind[SessionRepository].toInstance(mockSessionRepository),
-          inject.bind[SubscriptionService].toInstance(mockSubscriptionService)
-        )
-        .build()
-
-      running(application) {
-        val request = FakeRequest(GET, routes.AgentContactDetailsNeededController.onPageLoad().url)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[AgentContactDetailsNeededView]
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(hasClientContactDetails = false)(request, messages(application)).toString
-      }
-    }
-
-    "must redirect to there is a problem if getContactDetails returns none " in {
-
-      val mockSubscriptionService = mock[SubscriptionService]
-
-      when(mockSessionRepository.set(any[UserAnswers])).thenReturn(Future.successful(true))
-      when(mockSubscriptionService.getContactDetails(any[UserAnswers])(any[HeaderCarrier])).thenReturn(Future.successful(None))
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-        .overrides(
-          inject.bind[SessionRepository].toInstance(mockSessionRepository),
-          inject.bind[SubscriptionService].toInstance(mockSubscriptionService)
-        )
-        .build()
-
-      running(application) {
-        val request = FakeRequest(GET, routes.AgentContactDetailsNeededController.onPageLoad().url)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.ThereIsAProblemController.onPageLoad().url)
+        contentAsString(result) mustEqual view()(request, messages(application)).toString
       }
     }
   }

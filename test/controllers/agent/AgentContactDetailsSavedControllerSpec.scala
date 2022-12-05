@@ -17,7 +17,6 @@
 package controllers.agent
 
 import base.SpecBase
-import pages.ContactNamePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.agent.AgentContactDetailsSavedView
@@ -26,25 +25,7 @@ class AgentContactDetailsSavedControllerSpec extends SpecBase {
 
   "AgentContactDetailsSaved Controller" - {
 
-    "must return OK and the correct view for a GET when client contact details exist" in {
-
-      val userAnswers = emptyUserAnswers.set(ContactNamePage, "name").success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      running(application) {
-        val request = FakeRequest(GET, routes.AgentContactDetailsSavedController.onPageLoad().url)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[AgentContactDetailsSavedView]
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(clientContactDetailsExist = true)(request, messages(application)).toString
-      }
-    }
-
-    "must return OK and the correct view for a GET when client contact details don not exist" in {
+    "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
@@ -56,8 +37,9 @@ class AgentContactDetailsSavedControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[AgentContactDetailsSavedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(clientContactDetailsExist = false)(request, messages(application)).toString
+        contentAsString(result) mustEqual view()(request, messages(application)).toString
       }
     }
+
   }
 }

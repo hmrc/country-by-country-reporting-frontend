@@ -18,6 +18,7 @@ package config
 
 import com.google.inject.AbstractModule
 import controllers.actions._
+import controllers.actions.agent._
 
 import java.time.{Clock, ZoneOffset}
 
@@ -30,6 +31,10 @@ class Module extends AbstractModule {
 
     // For session based storage instead of cred based, change to SessionIdentifierAction
     bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
+
+    bind(classOf[AgentIdentifierAction]).to(classOf[AuthenticatedAgentIdentifierAction]).asEagerSingleton()
+    bind(classOf[AgentDataRetrievalAction]).to(classOf[AgentDataRetrievalActionImpl]).asEagerSingleton()
+    bind(classOf[AgentDataRequiredAction]).to(classOf[AgentDataRequiredActionImpl]).asEagerSingleton()
 
     bind(classOf[Clock]).toInstance(Clock.systemDefaultZone.withZone(ZoneOffset.UTC))
   }

@@ -33,7 +33,7 @@ class DataRequiredActionImpl @Inject() (implicit val executionContext: Execution
         logger.warn("DataRequiredAction: No UserAnswers found for request")
         Future.successful(Left(Redirect(routes.ThereIsAProblemController.onPageLoad())))
       case Some(data) =>
-        Future.successful(Right(DataRequest(request.request, request.userId, request.subscriptionId, request.userType, data)))
+        Future.successful(Right(DataRequest(request.request, request.userId, request.subscriptionId, request.userType, data, request.arn)))
     }
 }
 
