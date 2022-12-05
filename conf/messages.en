@@ -610,3 +610,4 @@ agentClientId.heading = What is the CBC ID of the client you want to act on beha
 agentClientId.hint = This is [??] characters, for example, [example].
 agentClientId.p1 = Or {0}
 agentClientId.p1.link = change your CBC agent contact details
+agentClientId.error.required = Enter the CBC ID of your client
