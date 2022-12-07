@@ -24,6 +24,7 @@ import pages.AgentIsThisYourClientPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.SubscriptionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.agent.AgentIsThisYourClientView
 
@@ -36,6 +37,7 @@ class AgentIsThisYourClientController @Inject() (
   navigator: Navigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
+  subscriptionService: SubscriptionService,
   requireData: DataRequiredAction,
   formProvider: AgentIsThisYourClientFormProvider,
   val controllerComponents: MessagesControllerComponents,
@@ -52,8 +54,8 @@ class AgentIsThisYourClientController @Inject() (
         case None        => form
         case Some(value) => form.fill(value)
       }
-
-      Ok(view(preparedForm, mode, request.userId))
+      val tradingName = subscriptionService.getTradingNames(request.userId)
+      Ok(view(preparedForm, mode, request.userId, tradingName))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
