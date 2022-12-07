@@ -19,9 +19,9 @@ package controllers.agent
 import javax.inject.Inject
 import controllers.actions.agent.AgentIdentifierAction
 import forms.AgentClientIdFormProvider
-import models.UserAnswers
+import models.{NormalMode, UserAnswers}
 import navigation.AgentContactDetailsNavigator
-import pages.AgentClientIdPage
+import pages.{AgentClientIdPage, AgentIsThisYourClientPage}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -71,7 +71,7 @@ class AgentClientIdController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(UserAnswers(request.userId).set(AgentClientIdPage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(controllers.routes.IndexController.onPageLoad)
+            } yield Redirect(navigator.nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers))
         )
   }
 }
