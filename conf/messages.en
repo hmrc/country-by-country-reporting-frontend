@@ -617,3 +617,4 @@ agentIsThisYourClient.checkYourAnswersLabel = Is this your client?
 agentIsThisYourClient.error.required = Select yes if this is your client
 agentIsThisYourClient.change.hidden = if this is your client
 agentIsThisYourClient.clientID = {0}
+agentIsThisYourClient.clientName = {1}
