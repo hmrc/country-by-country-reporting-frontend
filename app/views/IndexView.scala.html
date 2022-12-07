@@ -22,7 +22,7 @@
     appConfig: FrontendAppConfig
 )
 
-@(showRecentFiles: Boolean, cbcID: String)(implicit request: Request[_], messages: Messages)
+@(showRecentFiles: Boolean, cbcID: String, isAgent: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle    = titleNoForm(messages("index.title")),
@@ -33,23 +33,38 @@
 
     <p class="govuk-body">@Html(messages("index.p1", link(routes.UploadFileController.onPageLoad().url, "index.p1.link")))</p>
 
-    <p class="govuk-body">@messages("index.p2")</p>
-
-    <p class="govuk-body">@messages("index.p3", cbcID)</p>
-
-    @if(showRecentFiles){
+    @if(isAgent) {
         <p class="govuk-body">@messages("index.p4.withDetails")</p>
 
         <ul class="govuk-list govuk-list--bullet">
 
-            <li>@link(routes.FileStatusController.onPageLoad().url, "index.viewFileDetails")</li>
+            @if(showRecentFiles) {
+                <li>@link(routes.FileStatusController.onPageLoad().url, "index.viewFileDetailsForClient")</li>
+            }
 
-            <li>@link(controllers.routes.ChangeContactDetailsController.onPageLoad().url, "index.changeDetails")</li>
+            <li>@link(controllers.agent.routes.ChangeAgentContactDetailsController.onPageLoad().url, "index.changeAgentDetails")</li>
+
+            <li>@link(controllers.client.routes.ChangeClientContactDetailsController.onPageLoad().url, "index.changeClientDetails")</li>
 
         </ul>
     } else {
-        <p class="govuk-body">@Html(messages("index.p4.withoutDetails", link(routes.ChangeContactDetailsController.onPageLoad().url, "index.changeDetails")))</p>
-    }
+        <p class="govuk-body">@messages("index.p2")</p>
 
-    <p class="govuk-body">@Html(messages("index.p5", link(s"mailto:${appConfig.emailEnquiries}", appConfig.emailEnquiries)))</p>
+        <p class="govuk-body">@messages("index.p3", cbcID)</p>
+
+        @if(showRecentFiles) {
+            <p class="govuk-body">@messages("index.p4.withDetails")</p>
+
+            <ul class="govuk-list govuk-list--bullet">
+
+                <li>@link(routes.FileStatusController.onPageLoad().url, "index.viewFileDetails")</li>
+
+                <li>@link(controllers.routes.ChangeContactDetailsController.onPageLoad().url, "index.changeDetails")</li>
+
+            </ul>
+        } else {
+            <p class="govuk-body">@Html(messages("index.p4.withoutDetails", link(routes.ChangeContactDetailsController.onPageLoad().url, "index.changeDetails")))</p>
+        }
+    }
+        <p class="govuk-body">@Html(messages("index.p5", link(s"mailto:${appConfig.emailEnquiries}", appConfig.emailEnquiries)))</p>
 }

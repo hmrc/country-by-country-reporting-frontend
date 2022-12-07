@@ -39,7 +39,7 @@ class FakeIdentifierAction @Inject() (bodyParsers: PlayBodyParsers) extends Iden
 class FakeIdentifierActionAgent @Inject() (bodyParsers: PlayBodyParsers) extends IdentifierAction {
 
   override def refine[A](request: Request[A]): Future[Either[Result, IdentifierRequest[A]]] =
-    Future.successful(Right(IdentifierRequest(request, "id", "subscriptionId", Agent)))
+    Future.successful(Right(IdentifierRequest(request, "id", "subscriptionId", Agent, Some("arn"))))
 
   override def parser: BodyParser[AnyContent] =
     bodyParsers.default
