@@ -16,7 +16,6 @@
 
 package controllers.agent
 
-import javax.inject.Inject
 import controllers.actions.agent.AgentIdentifierAction
 import forms.AgentClientIdFormProvider
 import models.UserAnswers
@@ -26,10 +25,10 @@ import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import services.AgentSubscriptionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.agent.AgentClientIdView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class AgentClientIdController @Inject() (
@@ -39,8 +38,7 @@ class AgentClientIdController @Inject() (
   view: AgentClientIdView,
   formProvider: AgentClientIdFormProvider,
   override val controllerComponents: MessagesControllerComponents,
-  sessionRepository: SessionRepository,
-  agentSubscriptionService: AgentSubscriptionService
+  sessionRepository: SessionRepository
 )(implicit
   executionContext: ExecutionContext
 ) extends FrontendBaseController
@@ -49,16 +47,9 @@ class AgentClientIdController @Inject() (
 
   val form = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = identifier.async {
+  def onPageLoad(): Action[AnyContent] = identifier {
     implicit request =>
-      agentSubscriptionService.getAgentContactDetails(UserAnswers(request.userId)) flatMap {
-        case Some(agentUserAnswers) =>
-          sessionRepository.set(agentUserAnswers).map {
-            _ =>
-              Ok(view(form))
-          }
-        case _ => Future.successful(Redirect(controllers.routes.ThereIsAProblemController.onPageLoad()))
-      }
+      Ok(view(form))
   }
 
   def onSubmit(): Action[AnyContent] = identifier async {
