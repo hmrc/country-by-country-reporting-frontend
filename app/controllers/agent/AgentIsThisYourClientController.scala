@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.AgentIsThisYourClientFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.AgentIsThisYourClientPage
+import pages.{AgentClientIdPage, AgentIsThisYourClientPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -48,27 +48,33 @@ class AgentIsThisYourClientController @Inject() (
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
       val preparedForm = request.userAnswers.get(AgentIsThisYourClientPage) match {
         case None        => form
         case Some(value) => form.fill(value)
       }
-      val tradingName = subscriptionService.getTradingNames(request.userId)
-      Ok(view(preparedForm, mode, request.userId, tradingName))
+      subscriptionService.getTradingNames(request.subscriptionId).map {
+        tradingName => Ok(view(preparedForm, request.subscriptionId, tradingName.getOrElse("")))
+      }
+
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
+  def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
+
     implicit request =>
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, request.userId))),
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentIsThisYourClientPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(AgentIsThisYourClientPage, mode, updatedAnswers))
-        )
+      subscriptionService.getTradingNames(request.subscriptionId).flatMap {
+        tradingName =>
+          form
+            .bindFromRequest()
+            .fold(
+              formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.subscriptionId, tradingName.getOrElse("")))),
+              value =>
+                for {
+                  updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentIsThisYourClientPage, value))
+                  _              <- sessionRepository.set(updatedAnswers)
+                } yield Redirect(controllers.routes.IndexController.onPageLoad)
+            )
+      }
   }
 }

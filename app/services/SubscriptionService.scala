@@ -140,6 +140,6 @@ class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnecto
   def getTradingNames(subscriptionId: String)(implicit hc: HeaderCarrier): Future[Option[String]] =
     subscriptionConnector.readSubscription(subscriptionId: String) map {
       case Some(responseDetail: ResponseDetail) => responseDetail.tradingName
-      case _ => None
+      case _                                    => None
     }
 }

@@ -224,8 +224,6 @@ GET        /problem/individual-sign-in-problem                                  
 GET        /agent/client-id                                                      controllers.agent.AgentClientIdController.onPageLoad()
 POST       /agent/client-id                                                      controllers.agent.AgentClientIdController.onSubmit()
 
-GET        /agent/agent-is-this-your-client                                      controllers.agent.AgentIsThisYourClientController.onPageLoad(mode: Mode = NormalMode)
-POST       /agent/agent-is-this-your-client                                      controllers.agent.AgentIsThisYourClientController.onSubmit(mode: Mode = NormalMode)
-GET        /agent/agent-is-this-your-client                                      controllers.agent.AgentIsThisYourClientController.onPageLoad(mode: Mode = CheckMode)
-POST       /agent/agent-is-this-your-client                                      controllers.agent.AgentIsThisYourClientController.onSubmit(mode: Mode = CheckMode)
+GET        /agent/agent-is-this-your-client                                      controllers.agent.AgentIsThisYourClientController.onPageLoad
+POST       /agent/agent-is-this-your-client                                      controllers.agent.AgentIsThisYourClientController.onSubmit
 
