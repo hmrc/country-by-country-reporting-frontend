@@ -423,6 +423,76 @@ class AuthActionSpec extends SpecBase {
         }
       }
     }
+
+    "the user has sufficient enrolments" - {
+
+      "when using HMRC-CBC-ORG enrolment must allow the user to continue" in {
+        val authRetrievals: RetrievalType = new ~(new ~(Some("userId"),
+                                                        Enrolments(
+                                                          Set(
+                                                            Enrolment("HMRC-CBC-ORG").withIdentifier("cbcid", "cbcid1234").withDelegatedAuthRule("cbc-auth")
+                                                          )
+                                                        )
+                                                  ),
+                                                  Some(AffinityGroup.Organisation)
+        )
+
+        val mockAuthConnector = mock[AuthConnector]
+        val application = applicationBuilder(userAnswers = None)
+          .overrides(
+            inject.bind[AuthConnector].toInstance(mockAuthConnector)
+          )
+          .build()
+
+        when(mockAuthConnector.authorise(any(), any[Retrieval[Any]])(any(), any()))
+          .thenReturn(Future.successful(authRetrievals), Future.successful(()))
+
+        running(application) {
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
+
+          val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, mockAgentSubscriptionService, bodyParsers, mockSessionRepository)
+          val controller = new Harness(authAction)
+          val result     = controller.onPageLoad()(FakeRequest())
+          status(result) mustBe OK
+        }
+      }
+
+      "when using HMRC-CBC-NONUK-ORG enrolment must allow the user to continue" in {
+        val authRetrievals: RetrievalType =
+          new ~(new ~(Some("userId"),
+                      Enrolments(
+                        Set(
+                          Enrolment("HMRC-CBC-NONUK-ORG").withIdentifier("cbcid", "cbcid1234").withDelegatedAuthRule("cbc-auth")
+                        )
+                      )
+                ),
+                Some(AffinityGroup.Organisation)
+          )
+
+        val mockAuthConnector = mock[AuthConnector]
+        val application = applicationBuilder(userAnswers = None)
+          .overrides(
+            inject.bind[AuthConnector].toInstance(mockAuthConnector)
+          )
+          .build()
+
+        when(mockAuthConnector.authorise(any(), any[Retrieval[Any]])(any(), any()))
+          .thenReturn(Future.successful(authRetrievals), Future.successful(()))
+
+        running(application) {
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
+
+          val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, mockAgentSubscriptionService, bodyParsers, mockSessionRepository)
+          val controller = new Harness(authAction)
+          val result     = controller.onPageLoad()(FakeRequest())
+          status(result) mustBe OK
+        }
+      }
+    }
   }
 }
 
