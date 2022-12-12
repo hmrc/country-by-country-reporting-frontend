@@ -137,7 +137,7 @@ class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnecto
       updatedAnswers      <- uaWithHaveTelephone.set(contactTypePage.contactNamePage, contactInformation.organisationDetails.organisationName)
     } yield updatedAnswers).toOption
 
-  def getTradingNames(subscriptionId: String)(implicit hc: HeaderCarrier): Future[Option[String]] =
+  def getTradingName(subscriptionId: String)(implicit hc: HeaderCarrier): Future[Option[String]] =
     subscriptionConnector.readSubscription(subscriptionId: String) map {
       case Some(responseDetail: ResponseDetail) => responseDetail.tradingName
       case _                                    => None

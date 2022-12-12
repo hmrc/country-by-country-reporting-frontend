@@ -54,7 +54,7 @@ class AgentIsThisYourClientController @Inject() (
         case None        => form
         case Some(value) => form.fill(value)
       }
-      subscriptionService.getTradingNames(request.subscriptionId).map {
+      subscriptionService.getTradingName(request.subscriptionId).map {
         tradingName => Ok(view(preparedForm, request.subscriptionId, tradingName.getOrElse("")))
       }
 
@@ -63,7 +63,7 @@ class AgentIsThisYourClientController @Inject() (
   def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
 
     implicit request =>
-      subscriptionService.getTradingNames(request.subscriptionId).flatMap {
+      subscriptionService.getTradingName(request.subscriptionId).flatMap {
         tradingName =>
           form
             .bindFromRequest()
