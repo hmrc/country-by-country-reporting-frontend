@@ -29,7 +29,9 @@ class Navigator @Inject() () {
   private val normalRoutes: Page => UserAnswers => Call = {
     case InvalidXMLPage => _ => routes.FileDataErrorController.onPageLoad()
     case ValidXMLPage   => _ => routes.CheckYourFileDetailsController.onPageLoad()
-    case _              => _ => routes.IndexController.onPageLoad
+    case AgentIsThisYourClientPage =>
+      ua => yesNoPage(ua, AgentIsThisYourClientPage, routes.IndexController.onPageLoad, controllers.agent.routes.AgentIsThisYourClientController.onPageLoad)
+    case _ => _ => routes.IndexController.onPageLoad
   }
 
   private val checkRouteMap: Page => UserAnswers => Call = {
@@ -42,4 +44,9 @@ class Navigator @Inject() () {
     case CheckMode =>
       checkRouteMap(page)(userAnswers)
   }
+
+  def yesNoPage(ua: UserAnswers, fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call =
+    ua.get(fromPage)
+      .map(if (_) yesCall else noCall)
+      .getOrElse(controllers.routes.ThereIsAProblemController.onPageLoad())
 }

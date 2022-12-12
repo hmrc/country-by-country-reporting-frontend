@@ -17,11 +17,15 @@
 package navigation
 
 import base.SpecBase
+import controllers.agent.routes
 import controllers.routes
+import generators.Generators
 import pages._
 import models._
+import org.scalacheck.Arbitrary.arbitrary
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
-class NavigatorSpec extends SpecBase {
+class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generators {
 
   val navigator = new Navigator
 
@@ -32,17 +36,40 @@ class NavigatorSpec extends SpecBase {
       "must go from a page that doesn't exist in the route map to Index" in {
 
         case object UnknownPage extends Page
-        navigator.nextPage(UnknownPage, NormalMode, UserAnswers("id")) mustBe routes.IndexController.onPageLoad
+        navigator.nextPage(UnknownPage, NormalMode, UserAnswers("id")) mustBe controllers.routes.IndexController.onPageLoad
+      }
+
+      "must go from AgentIsYourClientPage to landing page when Yes" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            val updatedAnswers =
+              answers.set(AgentIsThisYourClientPage, true).success.value
+
+            navigator
+              .nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers)
+              .mustBe(controllers.routes.IndexController.onPageLoad)
+        }
+
+        "must go from AgentIsYourClientPage to AgentClientIdPage when No" in {
+          forAll(arbitrary[UserAnswers]) {
+            answers =>
+              val updatedAnswers =
+                answers.set(AgentIsThisYourClientPage, false).success.value
+
+              navigator
+                .nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers)
+                .mustBe(controllers.agent.routes.AgentClientIdController.onPageLoad())
+          }
+        }
+
+        "in Check mode" - {
+
+          "must go from a page that doesn't exist in the edit route map to CheckYourAnswers" in {
+
+            case object UnknownPage extends Page
+            navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id")) mustBe routes.IndexController.onPageLoad
+          }
+        }
+
       }
     }
-
-    "in Check mode" - {
-
-      "must go from a page that doesn't exist in the edit route map to CheckYourAnswers" in {
-
-        case object UnknownPage extends Page
-        navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id")) mustBe routes.IndexController.onPageLoad
-      }
-    }
-  }
-}
