@@ -62,11 +62,11 @@ class IndexController @Inject() (
                             if (agentUserAnswers.data == Json.obj()) {
                               Future.successful(Redirect(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad()))
                             } else if (clientUserAnswers.get(ContactNamePage).isEmpty) {
-                              Future.successful(Redirect(routes.ContactDetailsNeededController.onPageLoad()))
+                              Future.successful(Redirect(controllers.client.routes.ClientContactDetailsNeededController.onPageLoad()))
                             } else {
                               fileConnector.getAllFileDetails(request.subscriptionId) map {
                                 fileDetails =>
-                                  Ok(view(fileDetails.isDefined, request.subscriptionId))
+                                  Ok(view(fileDetails.isDefined, request.subscriptionId, request.isAgent))
                               }
                             }
                         }
@@ -86,7 +86,7 @@ class IndexController @Inject() (
                 } else {
                   fileConnector.getAllFileDetails(request.subscriptionId) map {
                     fileDetails =>
-                      Ok(view(fileDetails.isDefined, request.subscriptionId))
+                      Ok(view(fileDetails.isDefined, request.subscriptionId, request.isAgent))
                   }
                 }
             }

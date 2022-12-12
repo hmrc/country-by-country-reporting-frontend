@@ -24,11 +24,12 @@ import controllers.actions.{
   DataRetrievalAction,
   FakeAgentIdentifierAction,
   FakeDataRetrievalActionProvider,
+  FakeIdentifierActionAgent,
   IdentifierAction
 }
 import models.UserAnswers
 import org.mockito.ArgumentMatchers.any
-import pages.HaveTelephonePage
+import pages.{AgentClientIdPage, AgentFirstContactHavePhonePage, AgentFirstContactNamePage, ContactNamePage, HaveTelephonePage}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
@@ -44,7 +45,7 @@ class IndexControllerSpec extends SpecBase {
 
   "Index Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "must return OK and the correct view for a GET for an Org user" in {
 
       val mockSubscriptionService  = mock[SubscriptionService]
       val mockFileDetailsConnector = mock[FileDetailsConnector]
@@ -72,7 +73,56 @@ class IndexControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
 
-        contentAsString(result) mustEqual view(showRecentFiles = false, "subscriptionId")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(showRecentFiles = false, "subscriptionId", isAgent = false)(request, messages(application)).toString
+      }
+    }
+
+    "must return OK and the correct view for a GET for an Agent user" in {
+
+      val mockSubscriptionService      = mock[SubscriptionService]
+      val mockAgentSubscriptionService = mock[AgentSubscriptionService]
+      val mockFileDetailsConnector     = mock[FileDetailsConnector]
+
+      val userAnswers = UserAnswers("id")
+        .set(AgentFirstContactNamePage, "AgentName")
+        .success
+        .value
+        .set(ContactNamePage, "ClientName")
+        .success
+        .value
+        .set(AgentClientIdPage, "subscriptionId")
+        .success
+        .value
+
+      val application = new GuiceApplicationBuilder()
+        .overrides(
+          bind[DataRequiredAction].to[DataRequiredActionImpl],
+          bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(Some(userAnswers))),
+          bind[SubscriptionService].toInstance(mockSubscriptionService),
+          bind[AgentSubscriptionService].toInstance(mockAgentSubscriptionService),
+          bind[FileDetailsConnector].toInstance(mockFileDetailsConnector),
+          bind[SessionRepository].toInstance(mockSessionRepository),
+          bind[IdentifierAction].to[FakeIdentifierActionAgent]
+        )
+        .build()
+
+      when(mockAgentSubscriptionService.getAgentContactDetails(any[UserAnswers])(any[HeaderCarrier]()))
+        .thenReturn(Future.successful(Some(userAnswers)))
+      when(mockSubscriptionService.getContactDetails(any[UserAnswers], any[String])(any[HeaderCarrier]()))
+        .thenReturn(Future.successful(Some(userAnswers)))
+      when(mockFileDetailsConnector.getAllFileDetails(any[String])(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(None))
+      when(mockSessionRepository.set(any[UserAnswers]())).thenReturn(Future.successful(true))
+
+      running(application) {
+        val request = FakeRequest(GET, routes.IndexController.onPageLoad.url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[IndexView]
+
+        status(result) mustEqual OK
+
+        contentAsString(result) mustEqual view(showRecentFiles = false, "subscriptionId", isAgent = true)(request, messages(application)).toString
       }
     }
 
@@ -131,6 +181,45 @@ class IndexControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad().url)
+      }
+    }
+
+    "must return SEE_OTHER and redirect to 'Contact details needed' page for agent with returning client after migration" in {
+      val userAnswers = UserAnswers("id")
+        .set(AgentFirstContactNamePage, "AgentName")
+        .success
+        .value
+        .set(AgentClientIdPage, "subscriptionId")
+        .success
+        .value
+      val mockSubscriptionService      = mock[SubscriptionService]
+      val mockAgentSubscriptionService = mock[AgentSubscriptionService]
+
+      val application = new GuiceApplicationBuilder()
+        .overrides(
+          bind[DataRequiredAction].to[DataRequiredActionImpl],
+          bind[IdentifierAction].to[FakeAgentIdentifierAction],
+          bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(Some(userAnswers))),
+          bind[SubscriptionService].toInstance(mockSubscriptionService),
+          bind[AgentSubscriptionService].toInstance(mockAgentSubscriptionService),
+          bind[SessionRepository].toInstance(mockSessionRepository)
+        )
+        .build()
+
+      when(mockAgentSubscriptionService.getAgentContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
+        .thenReturn(Future.successful(Some(userAnswers)))
+
+      when(mockSubscriptionService.getContactDetails(any[UserAnswers], any[String])(any[HeaderCarrier]()))
+        .thenReturn(Future.successful(Some(userAnswers)))
+      when(mockSessionRepository.set(any[UserAnswers]())).thenReturn(Future.successful(true))
+
+      running(application) {
+        val request = FakeRequest(GET, routes.IndexController.onPageLoad.url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.client.routes.ClientContactDetailsNeededController.onPageLoad().url)
       }
     }
   }

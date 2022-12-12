@@ -47,9 +47,12 @@ index.p2 = The file must be 20MB or less and include your CBC ID.
 index.p3 = Your CBC ID is {0}
 index.p4.withoutDetails = You can also {0}.
 index.p4.withDetails = You can also:
+index.changeAgentDetails = change your agent contact details
+index.changeClientDetails = change your client’s contact details
 index.changeDetails = change your contact details
+index.viewFileDetailsForClient = view details about recently sent files for this client
 index.viewFileDetails = view details about your recently sent files
-index.p5 = Email {0} if you’re having problems with the service.
+index.p5 = Contact {0} if you’re having problems with this service.
 
 checkYourAnswers.title = Check Your Answers
 checkYourAnswers.heading = Check Your Answers
@@ -608,8 +611,7 @@ individualSignInProblem.p2.link = sign in with your organisation’s Government 
 agentClientId.title = What is the CBC ID of the client you want to act on behalf of
 agentClientId.heading = What is the CBC ID of the client you want to act on behalf of
 agentClientId.hint = This is [??] characters, for example, [example].
-agentClientId.p1 = Or {0}
-agentClientId.p1.link = change your CBC agent contact details
+agentClientId.error.required = Enter the CBC ID of your client
 
 agentIsThisYourClient.title = Is this your client?
 agentIsThisYourClient.heading = Is this your client?
