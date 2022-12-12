@@ -49,27 +49,29 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
               .nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers)
               .mustBe(controllers.routes.IndexController.onPageLoad)
         }
-
-        "must go from AgentIsYourClientPage to AgentClientIdPage when No" in {
-          forAll(arbitrary[UserAnswers]) {
-            answers =>
-              val updatedAnswers =
-                answers.set(AgentIsThisYourClientPage, false).success.value
-
-              navigator
-                .nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers)
-                .mustBe(controllers.agent.routes.AgentClientIdController.onPageLoad())
-          }
-        }
-
-        "in Check mode" - {
-
-          "must go from a page that doesn't exist in the edit route map to CheckYourAnswers" in {
-
-            case object UnknownPage extends Page
-            navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id")) mustBe routes.IndexController.onPageLoad
-          }
-        }
-
       }
+
+      "must go from AgentIsYourClientPage to AgentClientIdPage when No" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            val updatedAnswers =
+              answers.set(AgentIsThisYourClientPage, false).success.value
+
+            navigator
+              .nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers)
+              .mustBe(controllers.agent.routes.AgentClientIdController.onPageLoad())
+        }
+      }
+
+      "in Check mode" - {
+
+        "must go from a page that doesn't exist in the edit route map to CheckYourAnswers" in {
+
+          case object UnknownPage extends Page
+          navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id")) mustBe controllers.routes.IndexController.onPageLoad
+        }
+      }
+
     }
+  }
+}
