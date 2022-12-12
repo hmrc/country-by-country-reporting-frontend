@@ -19,9 +19,9 @@ package controllers.agent
 import base.SpecBase
 import forms.AgentIsThisYourClientFormProvider
 import models.UserAnswers
-import navigation.{AgentContactDetailsNavigator, FakeAgentContactDetailsNavigator}
+import navigation.{AgentContactDetailsNavigator, FakeAgentContactDetailsNavigator, FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
-import pages.AgentIsThisYourClientPage
+import pages.{AgentClientIdPage, AgentIsThisYourClientPage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -104,10 +104,14 @@ class AgentIsThisYourClientControllerSpec extends SpecBase {
         .set(AgentIsThisYourClientPage, value = true)
         .success
         .value
+        .set(AgentClientIdPage, value = clientId)
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
         .overrides(
-          bind[SubscriptionService].toInstance(mockSubscriptionService)
+          bind[SubscriptionService].toInstance(mockSubscriptionService),
+          bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
         )
         .build()
 

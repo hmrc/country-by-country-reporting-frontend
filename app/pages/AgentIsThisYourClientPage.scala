@@ -32,7 +32,6 @@ case object AgentIsThisYourClientPage extends QuestionPage[Boolean] {
       case Some(false) =>
         userAnswers
           .remove(AgentClientIdPage)
-          .flatMap(_.remove(AgentIsThisYourClientPage))
       case _ => super.cleanup(value, userAnswers)
     }
 }
