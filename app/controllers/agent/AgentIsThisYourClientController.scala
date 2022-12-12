@@ -18,9 +18,9 @@ package controllers.agent
 
 import controllers.actions._
 import forms.AgentIsThisYourClientFormProvider
-import models.{Mode, NormalMode}
+import models.NormalMode
 import navigation.Navigator
-import pages.{AgentClientIdPage, AgentIsThisYourClientPage}
+import pages.AgentIsThisYourClientPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -73,7 +73,7 @@ class AgentIsThisYourClientController @Inject() (
                 for {
                   updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentIsThisYourClientPage, value))
                   _              <- sessionRepository.set(updatedAnswers)
-                } yield Redirect(navigator.nextPage(AgentIsThisYourClientPage, NormalMode, request.userAnswers))
+                } yield Redirect(navigator.nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers))
             )
       }
   }
