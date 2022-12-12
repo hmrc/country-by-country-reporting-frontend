@@ -98,14 +98,20 @@ class AgentIsThisYourClientControllerSpec extends SpecBase {
 
     "must redirect to the next page when valid data is submitted" in {
 
-      when(mockSessionRepository.set(any[UserAnswers])) thenReturn Future.successful(true)
+      val mockSubscriptionService: SubscriptionService = mock[SubscriptionService]
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[SessionRepository].toInstance(mockSessionRepository)
-          )
-          .build()
+      val userAnswers = emptyUserAnswers
+        .set(AgentIsThisYourClientPage, value = true)
+        .success
+        .value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SubscriptionService].toInstance(mockSubscriptionService)
+        )
+        .build()
+
+      when(mockSubscriptionService.getTradingNames(any[String])(any[HeaderCarrier])).thenReturn(Future.successful(Some(tradingName)))
 
       running(application) {
         val request =
