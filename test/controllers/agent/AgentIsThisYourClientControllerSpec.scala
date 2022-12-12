@@ -18,10 +18,14 @@ package controllers.agent
 
 import base.SpecBase
 import forms.AgentIsThisYourClientFormProvider
+import models.UserAnswers
+import navigation.{AgentContactDetailsNavigator, FakeAgentContactDetailsNavigator}
 import org.mockito.ArgumentMatchers.any
+import pages.AgentIsThisYourClientPage
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import services.SubscriptionService
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.agent.AgentIsThisYourClientView
@@ -62,12 +66,23 @@ class AgentIsThisYourClientControllerSpec extends SpecBase {
         contentAsString(result) mustEqual view(form, clientId, tradingName)(request, messages(application)).toString
       }
     }
-    /*
+
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(AgentIsThisYourClientPage, true).success.value
+      val mockSubscriptionService: SubscriptionService = mock[SubscriptionService]
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val userAnswers = emptyUserAnswers
+        .set(AgentIsThisYourClientPage, value = true)
+        .success
+        .value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SubscriptionService].toInstance(mockSubscriptionService)
+        )
+        .build()
+
+      when(mockSubscriptionService.getTradingNames(any[String])(any[HeaderCarrier])).thenReturn(Future.successful(Some(tradingName)))
 
       running(application) {
         val request = FakeRequest(GET, agentIsThisYourClientRoute)
@@ -77,20 +92,17 @@ class AgentIsThisYourClientControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), clientId, tradingName)(request, messages(application)).toString
       }
     }
 
     "must redirect to the next page when valid data is submitted" in {
 
-      val mockSessionRepository = mock[SessionRepository]
-
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+      when(mockSessionRepository.set(any[UserAnswers])) thenReturn Future.successful(true)
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
@@ -106,7 +118,7 @@ class AgentIsThisYourClientControllerSpec extends SpecBase {
         redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
-
+    /*
     "must return a Bad Request and errors when invalid data is submitted" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
