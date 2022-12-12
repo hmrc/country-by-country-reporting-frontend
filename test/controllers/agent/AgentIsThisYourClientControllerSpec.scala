@@ -128,10 +128,24 @@ class AgentIsThisYourClientControllerSpec extends SpecBase {
         redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
-    /*
+
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val mockSubscriptionService: SubscriptionService = mock[SubscriptionService]
+
+      val userAnswers = emptyUserAnswers
+        .set(AgentIsThisYourClientPage, value = true)
+        .success
+        .value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SubscriptionService].toInstance(mockSubscriptionService),
+          bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
+        )
+        .build()
+
+      when(mockSubscriptionService.getTradingNames(any[String])(any[HeaderCarrier])).thenReturn(Future.successful(Some(tradingName)))
 
       running(application) {
         val request =
@@ -145,10 +159,11 @@ class AgentIsThisYourClientControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, clientId, tradingName)(request, messages(application)).toString
       }
     }
 
+    /*
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None).build()
