@@ -103,3 +103,4 @@ lazy val itSettings = Defaults.itSettings ++ Seq(
     "-Dconfig.resource=it.application.conf"
   )
 )
+
