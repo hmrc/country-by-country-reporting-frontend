@@ -30,7 +30,7 @@ class Navigator @Inject() () {
     case InvalidXMLPage => _ => routes.FileDataErrorController.onPageLoad()
     case ValidXMLPage   => _ => routes.CheckYourFileDetailsController.onPageLoad()
     case AgentIsThisYourClientPage =>
-      ua => yesNoPage(ua, AgentIsThisYourClientPage, routes.IndexController.onPageLoad, controllers.agent.routes.AgentClientIdController.onPageLoad())
+      ua => yesNoPage(ua, AgentIsThisYourClientPage, routes.IndexController.onPageLoad, controllers.client.routes.ClientNotIdentifiedController.onPageLoad())
     case _ => _ => routes.IndexController.onPageLoad
   }
 
