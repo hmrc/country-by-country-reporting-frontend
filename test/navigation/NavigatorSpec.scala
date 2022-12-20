@@ -51,7 +51,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
         }
       }
 
-      "must go from AgentIsYourClientPage to AgentClientIdPage when No" in {
+      "must go from AgentIsYourClientPage to ClientNotIdentified when No" in {
         forAll(arbitrary[UserAnswers]) {
           answers =>
             val updatedAnswers =
@@ -59,7 +59,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
             navigator
               .nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers)
-              .mustBe(controllers.agent.routes.AgentClientIdController.onPageLoad())
+              .mustBe(controllers.client.routes.ClientNotIdentifiedController.onPageLoad())
         }
       }
 
