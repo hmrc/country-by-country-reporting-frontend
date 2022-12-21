@@ -27,7 +27,6 @@ import views.html.ThereIsAProblemView
 import views.html.client.ChangeClientContactDetailsView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class ChangeClientContactDetailsController @Inject() (
   override val messagesApi: MessagesApi,

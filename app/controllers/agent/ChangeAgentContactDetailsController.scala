@@ -27,7 +27,6 @@ import views.html.ThereIsAProblemView
 import views.html.agent.ChangeAgentContactDetailsView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ChangeAgentContactDetailsController @Inject() (
