@@ -57,7 +57,7 @@ class AgentClientIdControllerSpec extends SpecBase {
         val request = FakeRequest(POST, agentClientIdRoute).withFormUrlEncodedBody(("value", "answer"))
         val result  = route(application, request).value
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.IndexController.onPageLoad.url
+        redirectLocation(result).value mustEqual controllers.agent.routes.AgentIsThisYourClientController.onPageLoad.url
       }
     }
 

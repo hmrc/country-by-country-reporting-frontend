@@ -223,3 +223,7 @@ GET        /problem/individual-sign-in-problem                                  
 
 GET        /agent/client-id                                                      controllers.agent.AgentClientIdController.onPageLoad()
 POST       /agent/client-id                                                      controllers.agent.AgentClientIdController.onSubmit()
+
+GET        /agent/agent-is-this-your-client                                      controllers.agent.AgentIsThisYourClientController.onPageLoad
+POST       /agent/agent-is-this-your-client                                      controllers.agent.AgentIsThisYourClientController.onSubmit
+

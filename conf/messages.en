@@ -612,3 +612,9 @@ agentClientId.title = What is the CBC ID of the client you want to act on behalf
 agentClientId.heading = What is the CBC ID of the client you want to act on behalf of
 agentClientId.hint = This is [??] characters, for example, [example].
 agentClientId.error.required = Enter the CBC ID of your client
+
+agentIsThisYourClient.title = Is this your client?
+agentIsThisYourClient.heading = Is this your client?
+agentIsThisYourClient.checkYourAnswersLabel = Is this your client?
+agentIsThisYourClient.error.required = Select yes if this is your client
+agentIsThisYourClient.change.hidden = if this is your client
