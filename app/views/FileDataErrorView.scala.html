@@ -23,7 +23,7 @@
 
 @(fileName: String, errorRows: Seq[Seq[TableRow]])(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("fileDataError.title"))) {
+@layout(pageTitle = titleNoForm(messages("fileDataError.title")), showAgentHeader = true) {
 
     <h1 class="govuk-heading-l">@messages("fileDataError.heading")</h1>
 

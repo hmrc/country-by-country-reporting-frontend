@@ -21,7 +21,7 @@
 
 @()(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("fileProblemNotXml.title")), showBackLink=false) {
+@layout(pageTitle = titleNoForm(messages("fileProblemNotXml.title")), showBackLink=false, showAgentHeader = true) {
 
     <h1 class="govuk-heading-l">@messages("fileProblemNotXml.heading")</h1>
 

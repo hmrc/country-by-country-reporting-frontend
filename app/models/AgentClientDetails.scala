@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,25 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import views.html.components.Link
+package models
 
-@this(
-        layout: templates.Layout,
-        govukPanel : GovukPanel,
-        link: Link
-)
+import play.api.libs.json.{Json, OFormat}
 
-@()(implicit request: Request[_], messages: Messages)
+case class AgentClientDetails(id: String, tradingName: Option[String])
 
-@layout(pageTitle = titleNoForm(messages("clientDetailsUpdated.title")), showBackLink = false, showAgentHeader = true) {
-
-    @govukPanel(Panel(
-        title = Text(messages("clientDetailsUpdated.heading"))
-    ))
-
-    <p class="govuk-body">@messages("clientDetailsUpdated.p1")</p>
-
-  <p class="govuk-body">@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</p>
+object AgentClientDetails {
+  implicit val format: OFormat[AgentClientDetails] = Json.format[AgentClientDetails]
 }
