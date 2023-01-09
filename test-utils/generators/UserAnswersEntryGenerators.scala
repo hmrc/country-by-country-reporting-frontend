@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,21 @@
 
 package generators
 
+import models.WhatToDoNext
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
 import play.api.libs.json.{JsValue, Json}
 
 trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
+
+  implicit lazy val arbitraryWhatToDoNextUserAnswersEntry: Arbitrary[(WhatToDoNextPage.type, JsValue)] =
+    Arbitrary {
+      for {
+        page  <- arbitrary[WhatToDoNextPage.type]
+        value <- arbitrary[WhatToDoNext].map(Json.toJson(_))
+      } yield (page, value)
+    }
 
   implicit lazy val arbitraryAgentIsThisYourClientUserAnswersEntry: Arbitrary[(AgentIsThisYourClientPage.type, JsValue)] =
     Arbitrary {
