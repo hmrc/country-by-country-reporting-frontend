@@ -589,7 +589,7 @@ clientContactDetailsSaved.p2.link = send a CBC report
 
 agentUseAgentServices.title = Use Agent Services
 agentUseAgentServices.h1 = You must use agent services to send a country-by-country report
-agentUseAgentServices.p1 = We have made changes to this service. You now need to sign in to your agent services account to send a country-by-country report.
+agentUseAgentServices.p1 = We have made changes to this service. You will need to create an agent services account to send country-by-country (CBC) reports.
 agentUseAgentServices.p2 = If you do not have an agent services account {0}.
 agentUseAgentServices.p2.link = check if you can create one
 
