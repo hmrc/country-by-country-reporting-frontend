@@ -31,7 +31,7 @@
 
     <ol class="govuk-body govuk-list--number">
         <li>@link(controllers.agent.routes.AgentClientIdController.onPageLoad().url, "clientNotIdentified.bullet1")</li>
-        <li>@Html(messages("clientNotIdentified.bullet2", link(controllers.agent.routes.WhatToDoNextController.onPageLoad().url, "clientNotIdentified.bullet2.link")))</li>
+        <li>@Html(messages("clientNotIdentified.bullet2", link("#", "clientNotIdentified.bullet2.link")))</li> @*TODO: add agent services link URL when known*@
         <li>@messages("clientNotIdentified.bullet3")</li>
     </ol>
 }
