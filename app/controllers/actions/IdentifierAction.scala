@@ -157,7 +157,7 @@ class AuthenticatedIdentifierAction @Inject() (
         logger.info(
           s"IdentifierAction: Agent with HMRC-AS-AGENT Enrolment. No UserAnswers in SessionRepository. Redirecting to /agent/client-id. ${request.headers}"
         )
-        Future.successful(Redirect(controllers.agent.routes.AgentClientIdController.onPageLoad()))
+        Future.successful(Redirect(controllers.agent.routes.WhatToDoNextController.onPageLoad()))
       case _ => Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
     }
 }

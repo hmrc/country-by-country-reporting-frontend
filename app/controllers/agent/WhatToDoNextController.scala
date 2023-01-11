@@ -17,13 +17,16 @@
 package controllers.agent
 
 import controllers.actions._
+import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
+import controllers.routes
 import forms.WhatToDoNextFormProvider
-import models.Mode
+import models.{Mode, UserAnswers}
 import navigation.Navigator
 import pages.WhatToDoNextPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.AgentSubscriptionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.WhatToDoNextView
 
@@ -34,10 +37,11 @@ class WhatToDoNextController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
-  identify: IdentifierAction,
-  getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
+  identify: AgentIdentifierAction,
+  getData: AgentDataRetrievalAction,
+  requireData: AgentDataRequiredAction,
   formProvider: WhatToDoNextFormProvider,
+  agentSubscriptionService: AgentSubscriptionService,
   val controllerComponents: MessagesControllerComponents,
   view: WhatToDoNextView
 )(implicit ec: ExecutionContext)
@@ -46,17 +50,24 @@ class WhatToDoNextController @Inject() (
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData.apply).async {
     implicit request =>
-      val preparedForm = request.userAnswers.get(WhatToDoNextPage) match {
-        case None        => form
-        case Some(value) => form.fill(value)
+      agentSubscriptionService.getAgentContactDetails(request.userAnswers.getOrElse(UserAnswers(request.userId))) flatMap {
+        case Some(agentUserAnswers) =>
+          sessionRepository.set(agentUserAnswers).map {
+            _ =>
+              val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(WhatToDoNextPage) match {
+                case None        => form
+                case Some(value) => form.fill(value)
+              }
+              Ok(view(preparedForm, mode))
+          }
+        case _ =>
+          Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
       }
-
-      Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData.apply andThen requireData).async {
     implicit request =>
       form
         .bindFromRequest()

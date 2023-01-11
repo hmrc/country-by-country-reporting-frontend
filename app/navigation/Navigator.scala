@@ -56,7 +56,7 @@ class Navigator @Inject() () {
       .map {
         case SelectAClient                        => controllers.agent.routes.AgentClientIdController.onPageLoad()
         case AddAClientToYourAgentServicesAccount => controllers.agent.routes.WhatToDoNextController.onPageLoad()
-        case ChangeYourCBCAgentContactDetails     => routes.CheckYourFileDetailsController.onPageLoad()
+        case ChangeYourCBCAgentContactDetails     => controllers.agent.routes.ChangeAgentContactDetailsController.onPageLoad()
       }
       .getOrElse(routes.ThereIsAProblemController.onPageLoad())
 }
