@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,8 @@ trait UserAnswersGenerator extends TryValues {
   self: Generators =>
 
   val generators: Seq[Gen[(QuestionPage[_], JsValue)]] =
-    arbitrary[(AgentIsThisYourClientPage.type, JsValue)] ::
+    arbitrary[(WhatToDoNextPage.type, JsValue)] ::
+      arbitrary[(AgentIsThisYourClientPage.type, JsValue)] ::
       arbitrary[(AgentFirstContactNamePage.type, JsValue)] ::
       arbitrary[(AgentFirstContactEmailPage.type, JsValue)] ::
       arbitrary[(AgentFirstContactHavePhonePage.type, JsValue)] ::

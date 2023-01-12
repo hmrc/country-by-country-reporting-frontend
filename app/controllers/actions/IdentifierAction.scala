@@ -19,7 +19,7 @@ package controllers.actions
 import javax.inject.Inject
 import config.FrontendAppConfig
 import controllers.routes
-import models.UserAnswers
+import models.{NormalMode, UserAnswers}
 import models.requests.IdentifierRequest
 import play.api.Logging
 import play.api.mvc.Results._
@@ -125,7 +125,7 @@ class AuthenticatedIdentifierAction @Inject() (
                 logger.info(
                   s"IdentifierAction: Agent with HMRC-AS-AGENT Enrolment. No ClientId in UserAnswers in SessionRepository. Redirecting to /agent/client-id. ${request.headers}"
                 )
-                Future.successful(Left(Redirect(controllers.agent.routes.AgentClientIdController.onPageLoad())))
+                Future.successful(Left(Redirect(controllers.agent.routes.WhatToDoNextController.onPageLoad())))
               case Some(clientId) => // clientId is cbcid
                 logger.info(s"IdentifierAction: Attempting Agent authorisation checking with ${cbcDelegatedAuthRule(clientId)}")
                 authorised(cbcDelegatedAuthRule(clientId)) {
@@ -157,7 +157,7 @@ class AuthenticatedIdentifierAction @Inject() (
         logger.info(
           s"IdentifierAction: Agent with HMRC-AS-AGENT Enrolment. No UserAnswers in SessionRepository. Redirecting to /agent/client-id. ${request.headers}"
         )
-        Future.successful(Redirect(controllers.agent.routes.AgentClientIdController.onPageLoad()))
+        Future.successful(Redirect(controllers.agent.routes.WhatToDoNextController.onPageLoad()))
       case _ => Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
     }
 }

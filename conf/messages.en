@@ -616,3 +616,12 @@ agentIsThisYourClient.heading = Is this your client?
 agentIsThisYourClient.checkYourAnswersLabel = Is this your client?
 agentIsThisYourClient.error.required = Select yes if this is your client
 agentIsThisYourClient.change.hidden = if this is your client
+
+whatToDoNext.title = What do you want to do next?
+whatToDoNext.heading = What do you want to do next?
+whatToDoNext.selectAClient = Select a client
+whatToDoNext.addAClient = Add a client to your agent services account
+whatToDoNext.changeAgentContactDetails = Change your CBC agent contact details
+whatToDoNext.checkYourAnswersLabel = What do you want to do next?
+whatToDoNext.error.required = Select what you want to do next
+whatToDoNext.change.hidden = Select what you want to do next
