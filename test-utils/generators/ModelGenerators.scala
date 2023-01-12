@@ -16,6 +16,7 @@
 
 package generators
 
+import models.WhatToDoNext
 import models.agentSubscription.{
   AgentContactInformation,
   AgentDetails,
@@ -33,6 +34,11 @@ import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
+
+  implicit lazy val arbitraryWhatToDoNext: Arbitrary[WhatToDoNext] =
+    Arbitrary {
+      Gen.oneOf(WhatToDoNext.values.toSeq)
+    }
 
   implicit val arbitraryOrganisationDetails: Arbitrary[OrganisationDetails] = Arbitrary {
     for {

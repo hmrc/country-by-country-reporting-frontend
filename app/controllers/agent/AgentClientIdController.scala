@@ -16,7 +16,7 @@
 
 package controllers.agent
 
-import controllers.actions.agent.AgentIdentifierAction
+import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
 import forms.AgentClientIdFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.AgentContactDetailsNavigator
@@ -37,6 +37,8 @@ class AgentClientIdController @Inject() (
   identifier: AgentIdentifierAction,
   view: AgentClientIdView,
   formProvider: AgentClientIdFormProvider,
+  getData: AgentDataRetrievalAction,
+  requireData: AgentDataRequiredAction,
   override val controllerComponents: MessagesControllerComponents,
   sessionRepository: SessionRepository
 )(implicit
@@ -47,12 +49,12 @@ class AgentClientIdController @Inject() (
 
   val form = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = identifier {
+  def onPageLoad(): Action[AnyContent] = (identifier andThen getData() andThen requireData) {
     implicit request =>
       Ok(view(form))
   }
 
-  def onSubmit(): Action[AnyContent] = identifier async {
+  def onSubmit(): Action[AnyContent] = (identifier andThen getData() andThen requireData).async {
     implicit request =>
       form
         .bindFromRequest()
@@ -60,7 +62,7 @@ class AgentClientIdController @Inject() (
           formWithErrors => Future.successful(BadRequest((view(formWithErrors)))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(UserAnswers(request.userId).set(AgentClientIdPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentClientIdPage, value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(routes.AgentIsThisYourClientController.onPageLoad)
         )

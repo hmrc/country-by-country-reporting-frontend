@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryWhatToDoNextPage: Arbitrary[WhatToDoNextPage.type] =
+    Arbitrary(WhatToDoNextPage)
+
   implicit lazy val arbitraryAgentIsThisYourClientPage: Arbitrary[AgentIsThisYourClientPage.type] =
     Arbitrary(AgentIsThisYourClientPage)
 

@@ -17,9 +17,9 @@
 package navigation
 
 import javax.inject.{Inject, Singleton}
-
 import play.api.mvc.Call
 import controllers.routes
+import models.WhatToDoNext.{AddAClientToYourAgentServicesAccount, ChangeYourCBCAgentContactDetails, SelectAClient}
 import pages._
 import models._
 
@@ -27,8 +27,9 @@ import models._
 class Navigator @Inject() () {
 
   private val normalRoutes: Page => UserAnswers => Call = {
-    case InvalidXMLPage => _ => routes.FileDataErrorController.onPageLoad()
-    case ValidXMLPage   => _ => routes.CheckYourFileDetailsController.onPageLoad()
+    case InvalidXMLPage   => _ => routes.FileDataErrorController.onPageLoad()
+    case ValidXMLPage     => _ => routes.CheckYourFileDetailsController.onPageLoad()
+    case WhatToDoNextPage => ua => whatToDoNextNavigation(ua)
     case AgentIsThisYourClientPage =>
       ua => yesNoPage(ua, AgentIsThisYourClientPage, routes.IndexController.onPageLoad, controllers.client.routes.ClientNotIdentifiedController.onPageLoad())
     case _ => _ => routes.IndexController.onPageLoad
@@ -49,4 +50,13 @@ class Navigator @Inject() () {
     ua.get(fromPage)
       .map(if (_) yesCall else noCall)
       .getOrElse(controllers.routes.ThereIsAProblemController.onPageLoad())
+
+  def whatToDoNextNavigation(ua: UserAnswers) =
+    ua.get(WhatToDoNextPage)
+      .map {
+        case SelectAClient                        => controllers.agent.routes.AgentClientIdController.onPageLoad()
+        case AddAClientToYourAgentServicesAccount => controllers.agent.routes.WhatToDoNextController.onPageLoad()
+        case ChangeYourCBCAgentContactDetails     => controllers.agent.routes.ChangeAgentContactDetailsController.onPageLoad()
+      }
+      .getOrElse(routes.ThereIsAProblemController.onPageLoad())
 }
