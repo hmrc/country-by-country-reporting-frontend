@@ -49,8 +49,7 @@ class AgentContactDetailsNavigator @Inject() () {
           routes.AgentSecondContactPhoneController.onPageLoad(NormalMode),
           routes.ChangeAgentContactDetailsController.onPageLoad()
         )
-    case AgentSecondContactPhonePage => _ => routes.ChangeAgentContactDetailsController.onPageLoad()
-    case _                           => _ => controllers.routes.ThereIsAProblemController.onPageLoad()
+    case _ => _ => controllers.routes.ThereIsAProblemController.onPageLoad()
   }
 
   val checkRouteMap: Page => UserAnswers => Call = {

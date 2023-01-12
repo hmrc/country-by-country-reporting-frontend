@@ -33,8 +33,9 @@
 
     <p class="govuk-body">@messages("agentUseAgentServices.p1")</p>
 
-    <!--appConfig.guidanceAgentService-->
     @govukButton(
-        ButtonViewModel(messages("site.continue")).withAttribute("id" -> "submit")
+        ButtonViewModel(Text(messages("site.continue")))
+                .withAttribute( "id" -> "submit")
+                .asLink(appConfig.guidanceAgentService)
     )
 }
