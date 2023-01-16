@@ -21,14 +21,23 @@
   link: components.Link
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[_], messages: Messages )
 
 @layout(pageTitle = titleNoForm(messages("agentContactDetailsUpdated.title")), showBackLink = false) {
 
-@govukPanel(Panel(
-title = Text(messages("agentContactDetailsUpdated.heading"))
-))
+  @govukPanel(Panel(
+    title = Text(messages("agentContactDetailsUpdated.heading"))
+  ))
 
 <p class="govuk-body">@Html(messages("agentContactDetailsUpdated.p1"))</p>
-<p class="govuk-body">@Html(messages("agentContactDetailsUpdated.p2", link(controllers.routes.IndexController.onPageLoad.url, "site.backToReportPage")))</p>
+
+@if(false){
+   <p class="govuk-body">@Html(messages("agentContactDetailsUpdated.p2", link(controllers.routes.IndexController.onPageLoad.url, "site.backToReportPage")))</p>
+}else{
+   <p class="govuk-body">@messages("agentContactDetailsSaved.p1")</p>
+   <ul class="govuk-list govuk-list--bullet">
+   <li>@link(controllers.agent.routes.AgentClientIdController.onPageLoad().url, "agentContactDetailsSaved.bullet1")</li>
+   <li>@link("#", "agentContactDetailsSaved.bullet2")</li> @*TODO: Add link to agent services when known*@
+   </ul>
+  }
 }
