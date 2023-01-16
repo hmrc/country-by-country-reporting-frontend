@@ -27,8 +27,7 @@ import views.html.ThereIsAProblemView
 import views.html.agent.ChangeAgentContactDetailsView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class ChangeAgentContactDetailsController @Inject() (
   override val messagesApi: MessagesApi,
@@ -39,7 +38,8 @@ class ChangeAgentContactDetailsController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: ChangeAgentContactDetailsView,
   errorView: ThereIsAProblemView
-) extends FrontendBaseController
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
