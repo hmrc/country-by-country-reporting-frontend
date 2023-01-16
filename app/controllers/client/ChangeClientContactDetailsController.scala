@@ -27,7 +27,7 @@ import views.html.ThereIsAProblemView
 import views.html.client.ChangeClientContactDetailsView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.ExecutionContext
 
 class ChangeClientContactDetailsController @Inject() (
   override val messagesApi: MessagesApi,
@@ -38,7 +38,7 @@ class ChangeClientContactDetailsController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: ChangeClientContactDetailsView,
   errorView: ThereIsAProblemView
-) extends FrontendBaseController
+)(implicit ec: ExecutionContext) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData.apply andThen requireData).async {
