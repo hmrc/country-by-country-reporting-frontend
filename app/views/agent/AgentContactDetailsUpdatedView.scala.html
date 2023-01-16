@@ -21,7 +21,7 @@
   link: components.Link
 )
 
-@()(implicit request: Request[_], messages: Messages )
+@(clientSelected : Boolean)(implicit request: Request[_], messages: Messages  )
 
 @layout(pageTitle = titleNoForm(messages("agentContactDetailsUpdated.title")), showBackLink = false) {
 
@@ -31,7 +31,7 @@
 
 <p class="govuk-body">@Html(messages("agentContactDetailsUpdated.p1"))</p>
 
-@if(false){
+@if(clientSelected){
    <p class="govuk-body">@Html(messages("agentContactDetailsUpdated.p2", link(controllers.routes.IndexController.onPageLoad.url, "site.backToReportPage")))</p>
 }else{
    <p class="govuk-body">@messages("agentContactDetailsSaved.p1")</p>
