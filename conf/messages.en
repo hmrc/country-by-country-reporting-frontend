@@ -598,7 +598,7 @@ clientNotIdentified.subheading = What to do next
 clientNotIdentified.bullet1 = Try entering your client’s CBC ID again
 clientNotIdentified.bullet2 = Use your agent services account to {0}
 clientNotIdentified.bullet2.link = ask a client to authorise you
-clientNotIdentified.bullet3 = Tell your client that they must authorise you before you can use CBC for them
+clientNotIdentified.bullet3 = Confirm your client has authorised you to start using CBC for them.
 
 individualSignInProblem.title = Sorry, you’re unable to use this service
 individualSignInProblem.heading = Sorry, you’re unable to use this service
