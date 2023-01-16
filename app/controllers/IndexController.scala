@@ -41,7 +41,8 @@ class IndexController @Inject() (
   agentSubscriptionService: AgentSubscriptionService,
   fileConnector: FileDetailsConnector,
   view: IndexView
-)(implicit ec: ExecutionContext) extends FrontendBaseController
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport
     with Logging {
 

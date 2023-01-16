@@ -38,7 +38,8 @@ class ChangeClientContactDetailsController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: ChangeClientContactDetailsView,
   errorView: ThereIsAProblemView
-)(implicit ec: ExecutionContext) extends FrontendBaseController
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData.apply andThen requireData).async {

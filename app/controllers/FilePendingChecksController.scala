@@ -40,7 +40,8 @@ class FilePendingChecksController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: FilePendingChecksView,
   errorView: ThereIsAProblemView
-)(implicit ec: ExecutionContext) extends FrontendBaseController
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData).async {

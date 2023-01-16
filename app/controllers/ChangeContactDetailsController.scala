@@ -41,7 +41,8 @@ class ChangeContactDetailsController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: ChangeContactDetailsView,
   errorView: ThereIsAProblemView
-)(implicit ec: ExecutionContext) extends FrontendBaseController
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
   private def isOrganisationAndFirstVisitAfterMigration(isFirstVisitAfterMigration: Boolean)(implicit request: DataRequest[AnyContent]): Boolean =
