@@ -19,7 +19,7 @@ package controllers.client
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.client.problemCBCIdView
+import views.html.client.ProblemCBCIdView
 
 class ProblemCBCIdControllerSpec extends SpecBase {
 
@@ -34,7 +34,7 @@ class ProblemCBCIdControllerSpec extends SpecBase {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[problemCBCIdView]
+        val view = application.injector.instanceOf[ProblemCBCIdView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view()(request, messages(application)).toString
