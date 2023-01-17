@@ -19,14 +19,14 @@ package controllers.client
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.client.problemCBCIdView
+import views.html.client.ProblemCBCIdView
 
 import javax.inject.Inject
 
 class ProblemCBCIdController @Inject() (
   override val messagesApi: MessagesApi,
   val controllerComponents: MessagesControllerComponents,
-  view: problemCBCIdView
+  view: ProblemCBCIdView
 ) extends FrontendBaseController
     with I18nSupport {
 
