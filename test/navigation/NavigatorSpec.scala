@@ -59,7 +59,7 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
 
             navigator
               .nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers)
-              .mustBe(controllers.client.routes.ClientNotIdentifiedController.onPageLoad())
+              .mustBe(controllers.client.routes.ProblemCBCIdController.onPageLoad())
         }
       }
 

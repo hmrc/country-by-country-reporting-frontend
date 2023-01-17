@@ -137,7 +137,7 @@ class AuthenticatedIdentifierAction @Inject() (
                     Left(Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl))))
                   case _: AuthorisationException =>
                     logger.warn("IdentifierAction: Agent does not have delegated authority for Client. Redirecting to /agent/client-not-identified")
-                    Left(Redirect(controllers.client.routes.ClientNotIdentifiedController.onPageLoad))
+                    Left(Redirect(controllers.client.routes.ProblemCBCIdController.onPageLoad))
                 }
             }
         }

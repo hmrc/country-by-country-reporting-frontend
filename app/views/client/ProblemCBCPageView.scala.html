@@ -21,17 +21,17 @@
 
 @()(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("clientNotIdentified.title"))) {
+@layout(pageTitle = titleNoForm(messages("problemCbcPage.title"))) {
 
-    <h1 class="govuk-heading-l">@messages("clientNotIdentified.heading")</h1>
+    <h1 class="govuk-heading-l">@messages("problemCbcPage.heading")</h1>
 
-    <p class="govuk-body">@messages("clientNotIdentified.p1")</p>
+    <p class="govuk-body">@messages("problemCbcPage.p1")</p>
 
-    <h2 class="govuk-heading-m">@messages("clientNotIdentified.subheading")</h2>
+    <h2 class="govuk-heading-m">@messages("problemCbcPage.subheading")</h2>
 
     <ol class="govuk-body govuk-list--number">
-        <li>@link(controllers.agent.routes.AgentClientIdController.onPageLoad().url, "clientNotIdentified.bullet1")</li>
-        <li>@Html(messages("clientNotIdentified.bullet2", link("#", "clientNotIdentified.bullet2.link")))</li> @*TODO: add agent services link URL when known*@
-        <li>@messages("clientNotIdentified.bullet3")</li>
+        <li>@link(controllers.agent.routes.AgentClientIdController.onPageLoad().url, "problemCbcPage.bullet1")</li>
+        <li>@Html(messages("problemCbcPage.bullet2", link("#", "problemCbcPage.bullet2.link")))</li> @*TODO: add agent services link URL when known*@
+        <li>@messages("problemCbcPage.bullet3")</li>
     </ol>
 }

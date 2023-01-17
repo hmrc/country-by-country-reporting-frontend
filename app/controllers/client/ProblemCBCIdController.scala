@@ -23,7 +23,7 @@ import views.html.client.ClientNotIdentifiedView
 
 import javax.inject.Inject
 
-class ClientNotIdentifiedController @Inject() (
+class ProblemCBCIdController @Inject() (
   override val messagesApi: MessagesApi,
   val controllerComponents: MessagesControllerComponents,
   view: ClientNotIdentifiedView

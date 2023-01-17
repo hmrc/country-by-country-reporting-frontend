@@ -591,14 +591,14 @@ agentUseAgentServices.title = Use Agent Services
 agentUseAgentServices.h1 = You must use agent services to send a country-by-country report
 agentUseAgentServices.p1 = We have made changes to this service. You will need to create an agent services account to send country-by-country (CBC) reports.
 
-clientNotIdentified.title = There is a problem
-clientNotIdentified.heading = There is a problem
-clientNotIdentified.p1 = The CBC ID you entered did not match any clients that have authorised you in your agent services account.
-clientNotIdentified.subheading = What to do next
-clientNotIdentified.bullet1 = Try entering your client’s CBC ID again
-clientNotIdentified.bullet2 = Use your agent services account to {0}
-clientNotIdentified.bullet2.link = ask a client to authorise you
-clientNotIdentified.bullet3 = Confirm your client has authorised you to start using CBC for them.
+problemCbcPage.title = There is a problem
+problemCbcPage.heading = There is a problem
+problemCbcPage.p1 = The CBC ID you entered did not match any clients that have authorised you in your agent services account.
+problemCbcPage.subheading = What to do next
+problemCbcPage.bullet1 = Try entering your client’s CBC ID again
+problemCbcPage.bullet2 = Use your agent services account to {0}
+problemCbcPage.bullet2.link = ask a client to authorise you
+problemCbcPage.bullet3 = Confirm your client has authorised you to start using CBC for them.
 
 individualSignInProblem.title = Sorry, you’re unable to use this service
 individualSignInProblem.heading = Sorry, you’re unable to use this service
