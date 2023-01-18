@@ -19,3 +19,5 @@ POST       /send-a-country-by-country-report/test-only/process-eis-response     
 +nocsrf
 POST       /send-a-country-by-country-report/test-only/insert-test-submission/:fileName         controllers.testOnlyDoNotUseInAppConf.TestSubmissionController.insertTestSubmission(fileName)
 
++nocsrf
+POST       /send-a-country-by-country-report/test-only/agent/insert-test-submission/:fileName   controllers.testOnlyDoNotUseInAppConf.TestSubmissionController.insertTestSubmissionAsAgent(fileName)
