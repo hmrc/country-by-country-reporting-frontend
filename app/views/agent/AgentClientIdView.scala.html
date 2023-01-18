@@ -39,9 +39,11 @@
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("agentClientId.heading")).asPageHeading().withCssClass("govuk-visually-hidden")
+                label = LabelViewModel(messages("agentClientId.heading"))
+                        .asPageHeading()
+                        .withCssClass("govuk-visually-hidden")
             )
-            .withWidth(Full)
+                    .withCssClass("govuk-input--width-20")
             .withHint(Hint(content=messages("agentClientId.hint")))
 
         )

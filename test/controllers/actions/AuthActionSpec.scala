@@ -263,7 +263,7 @@ class AuthActionSpec extends SpecBase {
           val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, mockAgentSubscriptionService, bodyParsers, mockSessionRepository)
           val controller = new Harness(authAction)
           val result     = controller.onPageLoad()(FakeRequest())
-          redirectLocation(result) mustBe Some(controllers.client.routes.ClientNotIdentifiedController.onPageLoad().url)
+          redirectLocation(result) mustBe Some(controllers.client.routes.ProblemCBCIdController.onPageLoad().url)
         }
       }
 

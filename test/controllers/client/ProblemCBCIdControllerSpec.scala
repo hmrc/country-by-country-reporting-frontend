@@ -19,9 +19,9 @@ package controllers.client
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.client.ClientNotIdentifiedView
+import views.html.client.ProblemCBCIdView
 
-class ClientNotIdentifiedControllerSpec extends SpecBase {
+class ProblemCBCIdControllerSpec extends SpecBase {
 
   "ClientNotIdentified Controller" - {
 
@@ -30,11 +30,11 @@ class ClientNotIdentifiedControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.ClientNotIdentifiedController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.ProblemCBCIdController.onPageLoad().url)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[ClientNotIdentifiedView]
+        val view = application.injector.instanceOf[ProblemCBCIdView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view()(request, messages(application)).toString
