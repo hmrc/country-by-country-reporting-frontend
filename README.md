@@ -1,12 +1,12 @@
-Country by country reporting frontend
+# Country By Country Reporting Frontend
 
-Info
+## Info
 
 This service allows a user to upload the correct tax file which further goes for validation and once validated it finally gets uploaded.
 
 This service has a corresponding back-end service, namely country-by-country-reporting.
 
-[](Dependencies)
+### Dependencies
 
 | Service           | Link                                                          |
 |-------------------|---------------------------------------------------------------| 
@@ -16,7 +16,7 @@ This service has a corresponding back-end service, namely country-by-country-rep
 | Tax Enrolments    | https://github.com/hmrc/tax-enrolments                        |
 | origin            | https://github.com/hmrc/country-by-country-reporting-frontend |
 
-[](Endpoints used)
+### Endpoints used
 
 | Service             | HTTP Method | Route                                              | Purpose                                               |
 |---------------------|-------------|----------------------------------------------------|-------------------------------------------------------|
@@ -41,7 +41,7 @@ This service has a corresponding back-end service, namely country-by-country-rep
 
 
 
-[](Running the service)
+## Running the service
 
 Service Manager: CBCR_NEW_ALL
 
@@ -50,7 +50,9 @@ Port: 10024
 Link: http://localhost:10024/send-a-country-by-country-report
 
 
-[](Tests and prototype)
+## Tests and prototype
+
+[View the prototype here](https://cross-border-arrangements.herokuapp.com)
 
 | Repositories  | Link                                            |
 |---------------|-------------------------------------------------|
