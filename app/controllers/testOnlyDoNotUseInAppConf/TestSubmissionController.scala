@@ -29,13 +29,14 @@ import scala.xml.NodeSeq
 
 class TestSubmissionController @Inject() (
   identifierAction: IdentifierAction,
+  agentDelegatedAuthAction: TestAgentAddDelegatedAuthAction,
   connector: SubmissionConnector,
   override val controllerComponents: MessagesControllerComponents
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with Logging {
 
-  def insertTestSubmission(fileName: String): Action[NodeSeq] = identifierAction(parse.xml).async {
+  def insertTestSubmission(fileName: String): Action[NodeSeq] = (agentDelegatedAuthAction(parse.xml) andThen identifierAction).async {
     implicit request =>
       logger.debug(s"inserting test submission: ${request.body}")
       connector
