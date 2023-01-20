@@ -68,7 +68,7 @@ Link: http://localhost:10024/send-a-country-by-country-report
 
 ### Prototype and tests
 
-The prototype for this service can be viewed [here](https://cross-border-arrangements.herokuapp.com)
+The prototype for this service can be viewed [here](https://cbc-reporting-prototype.herokuapp.com)
 
 The journey tests can be found [here](https://github.com/hmrc/country-by-country-reporting-upload-ui-tests)
 
