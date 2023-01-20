@@ -54,3 +54,14 @@ The backend to this service can be found [here](https://github.com/hmrc/country-
 | Address Lookup                       | GET         | /v2/uk/addresses                                                                | Returns a list of addresses that match a given postcode                                                   | 
 | Email                                | POST        | /hmrc/email                                                                     | Sends an email to an email address                                                                        |
 ---
+
+
+### Running the service
+
+Service manager: CBCR_NEW_ALL
+
+Port: 10024
+
+Link: http://localhost:10024/send-a-country-by-country-report
+
+---
