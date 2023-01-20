@@ -18,25 +18,22 @@ This service has a corresponding back-end service, namely country-by-country-rep
 
 ### Endpoints used
 
-| Service             | HTTP Method | Route                                              | Purpose                                               |
-|---------------------|-------------|----------------------------------------------------|-------------------------------------------------------|
-| Tax Enrolments      | POST        | /tax-enrolments/service/:serviceName/enrolment     | Enrols a user synchronously for a given service name  |
-| Email               | POST        | /hmrc/email                                        | Sends an email to an email address                    |
-| subscription        | POST        | /subscription/read-subscription                    |                                                       |
-| subscription        | POST        | /subscription/update-subscription                  |                                                       |
-| validation          | POST        | /validate-submission                               |                                                       |
-| validation          | POST        | /validation-result                                 |                                                       |
-| upscan              | POST        | /callback                                          |                                                       |
-| upscan              | GET         | /upscan/details/:uploadId                          |                                                       |
-| upscan              | GET         | /upscan/status/:uploadId                           |                                                       |
-| upscan              | POST        | /upscan/upload                                     |                                                       |
-| files               | GET         | /files/:conversationId/details                     |                                                       |
-| files               | GET         | /files/details                                     |                                                       |
-| files               | GET         | /files/:conversationId/status                      |                                                       |
-| submit              | POST        | /submit                                            |                                                       |
-| Agent Subscription  | POST        | /agent/subscription/create-subscription            |                                                       |
-| Agent Subscription  | POST        | /agent/subscription/read-subscription              |                                                       |
-| Agent Subscription  | POST        | /agent/subscription/update-subscription            |                                                       |
+| Service             | HTTP Method | Route                                   | Purpose                                                          |
+|---------------------|-------------|-----------------------------------------|------------------------------------------------------------------|
+| subscription        | POST        | /subscription/read-subscription         | Enables user to read subscription details using subscription Id  |
+| subscription        | POST        | /subscription/update-subscription       | Enables user to update subscription details                      |
+| validation          | POST        | /validate-submission                    | Enables user to validate subscription details                    |
+| validation          | POST        | /validation-result                      | Enables user to validate results                                 |
+| upscan              | GET         | /upscan/details/:uploadId               | Enables user to check file scanning details based on upload ID   |
+| upscan              | GET         | /upscan/status/:uploadId                | Enables user to check file validation status based on upload id  |
+| upscan              | POST        | /upscan/upload                          | Enables user to upload tax file for validation.                  |
+| files               | GET         | /files/:conversationId/details          | Enables user to check file details based on conversation ID      |
+| files               | GET         | /files/details                          | Enables user to check file details                               |
+| files               | GET         | /files/:conversationId/status           | Enables user to check tax file status                            |
+| submit              | POST        | /submit                                 | Enables user to submit tax file                                  |
+| Agent Subscription  | POST        | /agent/subscription/create-subscription | Enables agents to create subscription                            |
+| Agent Subscription  | POST        | /agent/subscription/read-subscription   | Enables agents to read subscription                              |
+| Agent Subscription  | POST        | /agent/subscription/update-subscription | Enables agents to update subscription                            |
 
 
 
