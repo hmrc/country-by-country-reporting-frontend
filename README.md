@@ -66,17 +66,6 @@ Link: http://localhost:10024/send-a-country-by-country-report
 
 ---
 
-
-### Running the service
-
-Service manager: CBCR_NEW_ALL
-
-Port: 10024
-
-Link: http://localhost:10024/send-a-country-by-country-report
-
----
-
 ### Prototype and tests
 
 The prototype for this service can be viewed [here](https://cross-border-arrangements.herokuapp.com)
