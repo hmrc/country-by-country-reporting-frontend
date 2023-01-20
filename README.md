@@ -49,12 +49,12 @@ Link: http://localhost:10024/send-a-country-by-country-report
 
 ## Tests and prototype
 
-[View the prototype here](https://cross-border-arrangements.herokuapp.com)
+[View the prototype here]()
 
 | Repositories  | Link                                                                 |
 |---------------|----------------------------------------------------------------------|
 | Journey tests | https://github.com/hmrc/country-by-country-reporting-upload-ui-tests |
-| Prototype     | https://cross-border-arrangements.herokuapp.com                      |
+| Prototype     |                      |
 
 
 
