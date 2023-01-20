@@ -84,3 +84,8 @@ The prototype for this service can be viewed [here](https://cross-border-arrange
 The journey tests can be found [here](https://github.com/hmrc/country-by-country-reporting-upload-ui-tests)
 
 ---
+
+
+### License
+
+This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html").
