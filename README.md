@@ -27,7 +27,6 @@ The backend to this service can be found [here](https://github.com/hmrc/country-
 | Register country by country reporting frontend |https://github.com/hmrc/register-country-by-country-reporting-frontend      |
 | Register country by country reporting frontend stubs |https://github.com/hmrc/register-country-by-country-reporting-stubs      |
 | Register country by country reporting |https://github.com/hmrc/register-country-by-country-reporting      |
-| origin | https://github.com/hmrc/country-by-country-reporting-frontend      |
 
 ---
 
