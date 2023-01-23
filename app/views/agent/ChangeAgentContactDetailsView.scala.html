@@ -21,7 +21,7 @@
         govukButton: GovukButton
 )
 
-@(primary: SummaryList, secondary: SummaryList, hasContactDetailsChanged: Boolean, doContactDetailsExist: Boolean)(implicit request: Request[_], messages: Messages)
+@(primary: SummaryList, secondary: SummaryList, hasContactDetailsChanged: Boolean, doClientDetailsExist: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("changeAgentContactDetails.title"))) {
     @formHelper(action = controllers.agent.routes.ChangeAgentContactDetailsController.onSubmit()) {
@@ -43,7 +43,7 @@
         }
     }
 
-    @if(doContactDetailsExist) {
+    @if(doClientDetailsExist) {
         <p class="govuk-!-padding-top-5 govuk-body">
             <a class="govuk-link" href=@routes.IndexController.onPageLoad.url>@messages("site.backToReportPage")</a>
         </p>

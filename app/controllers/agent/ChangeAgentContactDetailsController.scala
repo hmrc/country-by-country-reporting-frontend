@@ -17,6 +17,7 @@
 package controllers.agent
 
 import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
+import pages.{AgentClientIdPage, WhatToDoNextPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.AgentSubscriptionService
@@ -57,7 +58,9 @@ class ChangeAgentContactDetailsController @Inject() (
         case Some(hasContactDetailsChanged) =>
           agentSubscriptionService.doAgentContactDetailsExist map {
             case Some(doContactDetailsExist) =>
-              Ok(view(agentPrimaryContactList, agentSecondaryContactList, hasContactDetailsChanged, doContactDetailsExist))
+              Ok(
+                view(agentPrimaryContactList, agentSecondaryContactList, hasContactDetailsChanged, request.userAnswers.get(AgentClientIdPage).isDefined)
+              )
             case _ => InternalServerError(errorView())
           }
         case _ => Future.successful(InternalServerError(errorView()))

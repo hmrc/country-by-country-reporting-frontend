@@ -21,6 +21,7 @@ import models.UserAnswers
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers.any
 import org.scalatest.BeforeAndAfterEach
+import pages.AgentClientIdPage
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -92,7 +93,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         }
       }
 
-      "must return OK and the correct view for a GET and show 'Back to send a CBC report' link if contact details exist (change journey)" in {
+      "must return OK and the correct view for a GET and show 'Back to send a CBC report' link if client journey contact details are answered" in {
 
         when(mockAgentSubscriptionService.isAgentContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
@@ -100,7 +101,12 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val userAnswers: UserAnswers = UserAnswers(userAnswersId)
+          .set(AgentClientIdPage, "XACBC0000123778")
+          .success
+          .value
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[AgentSubscriptionService].toInstance(mockAgentSubscriptionService)
           )
