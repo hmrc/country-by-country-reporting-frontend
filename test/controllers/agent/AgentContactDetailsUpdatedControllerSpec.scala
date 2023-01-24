@@ -17,7 +17,7 @@
 package controllers.agent
 
 import base.SpecBase
-import pages.ContactNamePage
+import pages.{AgentClientIdPage, ContactNamePage}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.agent.AgentContactDetailsUpdatedView
@@ -41,6 +41,24 @@ class AgentContactDetailsUpdatedControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(clientSelected = false)(request, messages(application)).toString
+      }
+    }
+
+    "must return OK and the correct view for a GET when client is selected by agent" in {
+
+      val userAnswers = emptyUserAnswers.set(AgentClientIdPage, "clientID").success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.AgentContactDetailsUpdatedController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[AgentContactDetailsUpdatedView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(clientSelected = true)(request, messages(application)).toString
       }
     }
 
