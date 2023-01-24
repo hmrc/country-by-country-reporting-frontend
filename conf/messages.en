@@ -90,7 +90,7 @@ contactEmail.change.hidden = email address
 haveTelephone.title = Can we contact them by telephone?
 haveTelephone.heading = Can we contact {0} by telephone?
 haveTelephone.checkYourAnswersLabel = Telephone number
-haveTelephone.hint = We will use this to keep in touch and if we have any questions about your reports.
+haveTelephone.hint = We will call if we have any questions about your reports.
 haveTelephone.error.required = Select yes if they can be contacted by telephone
 
 contactPhone.checkYourAnswersLabel = Telephone number
@@ -129,7 +129,7 @@ secondContactEmail.change.hidden = second contact email address
 
 secondContactHavePhone.title = Can we contact them by telephone?
 secondContactHavePhone.heading = Can we contact {0} by telephone?
-secondContactHavePhone.hint = We will use this to keep in touch and if we have any questions about your reports.
+secondContactHavePhone.hint = We will call if we have any questions about your reports.
 secondContactHavePhone.error.required = Select yes if they can be contacted by telephone
 
 secondContactPhone.title = What is their telephone number?
