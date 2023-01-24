@@ -40,7 +40,7 @@ class AgentContactDetailsUpdatedControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[AgentContactDetailsUpdatedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(request, messages(application)).toString
+        contentAsString(result) mustEqual view(clientSelected = false)(request, messages(application)).toString
       }
     }
 
