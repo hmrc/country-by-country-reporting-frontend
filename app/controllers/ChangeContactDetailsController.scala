@@ -29,7 +29,7 @@ import viewmodels.govuk.summarylist._
 import views.html.{ChangeContactDetailsView, ThereIsAProblemView}
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.ExecutionContext
 
 class ChangeContactDetailsController @Inject() (
   override val messagesApi: MessagesApi,
@@ -41,7 +41,8 @@ class ChangeContactDetailsController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   view: ChangeContactDetailsView,
   errorView: ThereIsAProblemView
-) extends FrontendBaseController
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
   private def isOrganisationAndFirstVisitAfterMigration(isFirstVisitAfterMigration: Boolean)(implicit request: DataRequest[AnyContent]): Boolean =

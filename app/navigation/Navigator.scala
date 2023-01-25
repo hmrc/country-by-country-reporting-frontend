@@ -31,7 +31,7 @@ class Navigator @Inject() () {
     case ValidXMLPage     => _ => routes.CheckYourFileDetailsController.onPageLoad()
     case WhatToDoNextPage => ua => whatToDoNextNavigation(ua)
     case AgentIsThisYourClientPage =>
-      ua => yesNoPage(ua, AgentIsThisYourClientPage, routes.IndexController.onPageLoad, controllers.client.routes.ClientNotIdentifiedController.onPageLoad())
+      ua => yesNoPage(ua, AgentIsThisYourClientPage, routes.IndexController.onPageLoad, controllers.client.routes.ProblemCBCIdController.onPageLoad())
     case _ => _ => routes.IndexController.onPageLoad
   }
 

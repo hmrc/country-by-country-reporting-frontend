@@ -90,7 +90,7 @@ contactEmail.change.hidden = email address
 haveTelephone.title = Can we contact them by telephone?
 haveTelephone.heading = Can we contact {0} by telephone?
 haveTelephone.checkYourAnswersLabel = Telephone number
-haveTelephone.hint = We will use this to keep in touch and if we have any questions about your reports.
+haveTelephone.hint = We will call if we have any questions about your reports.
 haveTelephone.error.required = Select yes if they can be contacted by telephone
 
 contactPhone.checkYourAnswersLabel = Telephone number
@@ -129,7 +129,7 @@ secondContactEmail.change.hidden = second contact email address
 
 secondContactHavePhone.title = Can we contact them by telephone?
 secondContactHavePhone.heading = Can we contact {0} by telephone?
-secondContactHavePhone.hint = We will use this to keep in touch and if we have any questions about your reports.
+secondContactHavePhone.hint = We will call if we have any questions about your reports.
 secondContactHavePhone.error.required = Select yes if they can be contacted by telephone
 
 secondContactPhone.title = What is their telephone number?
@@ -589,18 +589,16 @@ clientContactDetailsSaved.p2.link = send a CBC report
 
 agentUseAgentServices.title = Use Agent Services
 agentUseAgentServices.h1 = You must use agent services to send a country-by-country report
-agentUseAgentServices.p1 = We have made changes to this service. You now need to sign in to your agent services account to send a country-by-country report.
-agentUseAgentServices.p2 = If you do not have an agent services account {0}.
-agentUseAgentServices.p2.link = check if you can create one
+agentUseAgentServices.p1 = We have made changes to this service. You will need to create an agent services account to send country-by-country (CBC) reports.
 
-clientNotIdentified.title = There is a problem
-clientNotIdentified.heading = There is a problem
-clientNotIdentified.p1 = The CBC ID you entered did not match any clients that have authorised you in your agent services account.
-clientNotIdentified.subheading = What to do next
-clientNotIdentified.bullet1 = Try entering your client’s CBC ID again
-clientNotIdentified.bullet2 = Use your agent services account to {0}
-clientNotIdentified.bullet2.link = ask a client to authorise you
-clientNotIdentified.bullet3 = Tell your client that they must authorise you before you can use CBC for them
+problemCBCId.title = There is a problem
+problemCBCId.heading = There is a problem
+problemCBCId.p1 = The CBC ID you entered did not match any clients that have authorised you in your agent services account.
+problemCBCId.subheading = What to do next
+problemCBCId.bullet1 = Try entering your client’s CBC ID again
+problemCBCId.bullet2 = Use your agent services account to {0}
+problemCBCId.bullet2.link = ask a client to authorise you
+problemCBCId.bullet3 = Confirm your client has authorised you to start using CBC for them.
 
 individualSignInProblem.title = Sorry, you’re unable to use this service
 individualSignInProblem.heading = Sorry, you’re unable to use this service
@@ -608,10 +606,10 @@ individualSignInProblem.p1 = You’ve signed in as an individual. Only organisat
 individualSignInProblem.p2 = If you need to send reports for an organisation, {0}.
 individualSignInProblem.p2.link = sign in with your organisation’s Government Gateway details
 
-agentClientId.title = What is the CBC ID of the client you want to act on behalf of
-agentClientId.heading = What is the CBC ID of the client you want to act on behalf of
-agentClientId.hint = This is [??] characters, for example, [example].
-agentClientId.error.required = Enter the CBC ID of your client
+agentClientId.title = What is the CBC ID of the client you want to act on behalf of?
+agentClientId.heading = What is the CBC ID of the client you want to act on behalf of?
+agentClientId.hint = For example, XACBC0000999999.
+agentClientId.error.required = Enter your client’s CBC ID
 
 agentIsThisYourClient.title = Is this your client?
 agentIsThisYourClient.heading = Is this your client?

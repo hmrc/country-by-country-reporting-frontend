@@ -217,7 +217,7 @@ GET        /agent/change-client-contact/details-saved                           
 
 GET        /agent/use-agent-services                                             controllers.agent.AgentUseAgentServicesController.onPageLoad()
 
-GET        /agent/client-not-identified                                          controllers.client.ClientNotIdentifiedController.onPageLoad()
+GET        /agent/problem-cbc-id                                               controllers.client.ProblemCBCIdController.onPageLoad()
 
 GET        /problem/individual-sign-in-problem                                   controllers.IndividualSignInProblemController.onPageLoad()
 
