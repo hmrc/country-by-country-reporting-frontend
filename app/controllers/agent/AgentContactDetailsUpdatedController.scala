@@ -17,6 +17,7 @@
 package controllers.agent
 
 import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
+import pages.AgentClientIdPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -36,6 +37,7 @@ class AgentContactDetailsUpdatedController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      Ok(view())
+      val clientSelected = request.userAnswers.get(AgentClientIdPage).isDefined
+      Ok(view(clientSelected))
   }
 }
