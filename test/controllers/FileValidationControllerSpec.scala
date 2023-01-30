@@ -89,7 +89,7 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
 
       val errors: Seq[GenericError]                      = Seq(GenericError(1, Message("error")))
       val userAnswersCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
-      val expectedData                                   = Json.obj("invalidXML" -> "afile", "errors" -> errors)
+      val expectedData                                   = Json.obj("invalidXML" -> "afile", "errors" -> errors, "uploadID" -> UploadId("123"))
 
       fakeUpscanConnector.setDetails(uploadDetails)
 
