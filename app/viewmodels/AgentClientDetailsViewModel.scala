@@ -16,7 +16,7 @@
 
 package viewmodels
 
-import models.AgentClientDetails
+import models.{AgentClientDetails, NormalMode}
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -36,6 +36,7 @@ object AgentClientDetailsViewModel {
         value = ValueViewModel(HtmlFormat.escape(s"${acd.id}").toString),
         actions = Seq(
           ActionItemViewModel("site.change", controllers.agent.routes.WhatToDoNextController.onPageLoad().url)
+            .withAttribute(("id", "change"))
             .withVisuallyHiddenText(messages("whatToDoNext.change.hidden"))
         )
       )

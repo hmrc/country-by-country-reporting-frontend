@@ -37,12 +37,7 @@ class AgentClientDetailsViewModelSpec extends SpecBase {
             Actions(
               "",
               Seq(
-                ActionItem("/send-a-country-by-country-report/what-do-you-want-to-do-next",
-                           Text("Change"),
-                           Some("Select what you want to do next"),
-                           "",
-                           Map.empty[String, String]
-                )
+                ActionItem("/send-a-country-by-country-report/what-do-you-want-to-do-next", Text("Change"), Some("client"), "", Map("id" -> "change"))
               )
             )
           )
