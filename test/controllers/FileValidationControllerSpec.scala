@@ -108,7 +108,7 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
     "must redirect to file error page if XML parser fails" in {
 
       val userAnswersCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
-      val expectedData                                   = Json.obj("invalidXML" -> "afile")
+      val expectedData                                   = Json.obj("invalidXML" -> "afile", "uploadID" -> UploadId("123"))
 
       fakeUpscanConnector.setDetails(uploadDetails)
       //noinspection ScalaStyle
