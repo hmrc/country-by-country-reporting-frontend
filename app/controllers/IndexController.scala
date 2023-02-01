@@ -19,10 +19,9 @@ package controllers
 import connectors.FileDetailsConnector
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import models.UserAnswers
-import pages.ContactNamePage
+import pages.{AgentFirstContactNamePage, ContactNamePage, JourneyInProgressPage}
 import play.api.Logging
 import play.api.i18n.I18nSupport
-import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import services.{AgentSubscriptionService, SubscriptionService}
@@ -48,51 +47,57 @@ class IndexController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData.apply) async {
     implicit request =>
-      if (request.isAgent) {
-        agentSubscriptionService.getAgentContactDetails(request.userAnswers.getOrElse(UserAnswers(request.userId))) flatMap {
-          agentContactDetails =>
-            subscriptionService.getContactDetails(agentContactDetails.getOrElse(UserAnswers(request.userId)), request.subscriptionId) flatMap {
-              clientContactDetails =>
-                (agentContactDetails, clientContactDetails) match {
-                  case (Some(agentUserAnswers), Some(clientUserAnswers)) =>
-                    sessionRepository.set(agentUserAnswers).flatMap {
-                      _ =>
-                        sessionRepository.set(clientUserAnswers).flatMap {
-                          _ =>
-                            if (agentUserAnswers.data == Json.obj()) {
-                              Future.successful(Redirect(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad()))
-                            } else if (clientUserAnswers.get(ContactNamePage).isEmpty) {
-                              Future.successful(Redirect(controllers.client.routes.ClientContactDetailsNeededController.onPageLoad()))
-                            } else {
-                              fileConnector.getAllFileDetails(request.subscriptionId) map {
-                                fileDetails =>
-                                  Ok(view(fileDetails.isDefined, request.subscriptionId, request.isAgent))
-                              }
+      Future.fromTry(request.userAnswers.getOrElse(UserAnswers(request.userId)).set(JourneyInProgressPage, true)).flatMap {
+        ua =>
+          sessionRepository.set(ua).flatMap {
+            _ =>
+              if (request.isAgent) {
+                agentSubscriptionService.getAgentContactDetails(ua) flatMap {
+                  agentContactDetails =>
+                    subscriptionService.getContactDetails(agentContactDetails.getOrElse(ua), request.subscriptionId) flatMap {
+                      clientContactDetails =>
+                        (agentContactDetails, clientContactDetails) match {
+                          case (Some(agentUserAnswers), Some(clientUserAnswers)) =>
+                            sessionRepository.set(agentUserAnswers).flatMap {
+                              _ =>
+                                sessionRepository.set(clientUserAnswers).flatMap {
+                                  _ =>
+                                    if (agentUserAnswers.get(AgentFirstContactNamePage).isEmpty) {
+                                      Future.successful(Redirect(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad()))
+                                    } else if (clientUserAnswers.get(ContactNamePage).isEmpty) {
+                                      Future.successful(Redirect(controllers.client.routes.ClientContactDetailsNeededController.onPageLoad()))
+                                    } else {
+                                      fileConnector.getAllFileDetails(request.subscriptionId) map {
+                                        fileDetails =>
+                                          Ok(view(fileDetails.isDefined, request.subscriptionId, request.isAgent))
+                                      }
+                                    }
+                                }
                             }
+                          case _ =>
+                            Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+                        }
+                    }
+                }
+              } else {
+                subscriptionService.getContactDetails(ua, request.subscriptionId) flatMap {
+                  case Some(userAnswers) =>
+                    sessionRepository.set(userAnswers) flatMap {
+                      _ =>
+                        if (userAnswers.get(ContactNamePage).isEmpty) {
+                          Future.successful(Redirect(routes.ContactDetailsNeededController.onPageLoad()))
+                        } else {
+                          fileConnector.getAllFileDetails(request.subscriptionId) map {
+                            fileDetails =>
+                              Ok(view(fileDetails.isDefined, request.subscriptionId, request.isAgent))
+                          }
                         }
                     }
                   case _ =>
                     Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
                 }
-            }
-        }
-      } else {
-        subscriptionService.getContactDetails(request.userAnswers.getOrElse(UserAnswers(request.userId)), request.subscriptionId) flatMap {
-          case Some(userAnswers) =>
-            sessionRepository.set(userAnswers) flatMap {
-              _ =>
-                if (userAnswers.data == Json.obj()) {
-                  Future.successful(Redirect(routes.ContactDetailsNeededController.onPageLoad()))
-                } else {
-                  fileConnector.getAllFileDetails(request.subscriptionId) map {
-                    fileDetails =>
-                      Ok(view(fileDetails.isDefined, request.subscriptionId, request.isAgent))
-                  }
-                }
-            }
-          case _ =>
-            Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
-        }
+              }
+          }
       }
   }
 }

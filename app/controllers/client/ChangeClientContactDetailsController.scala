@@ -34,6 +34,7 @@ class ChangeClientContactDetailsController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
+  checkForSubmission: CheckForSubmissionAction,
   subscriptionService: SubscriptionService,
   val controllerComponents: MessagesControllerComponents,
   view: ChangeClientContactDetailsView,
@@ -42,7 +43,7 @@ class ChangeClientContactDetailsController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData.apply andThen requireData).async {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData.apply andThen requireData andThen checkForSubmission()).async {
     implicit request =>
       val checkUserAnswersHelper = ClientCheckYourAnswersHelper(request.userAnswers)
 

@@ -41,6 +41,7 @@ class SendYourFileController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
+  checkForSubmission: CheckForSubmissionAction,
   appConfig: FrontendAppConfig,
   submissionConnector: SubmissionConnector,
   fileDetailsConnector: FileDetailsConnector,
@@ -52,7 +53,7 @@ class SendYourFileController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData andThen checkForSubmission(true)).async {
     implicit request =>
       val displayWarning = request.userAnswers
         .get(ValidXMLPage)

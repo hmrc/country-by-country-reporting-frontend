@@ -83,7 +83,7 @@ class FileValidationController @Inject() (
 
                         case Left(InvalidXmlError(_)) =>
                           for {
-                            updatedAnswers <- Future.fromTry(UserAnswers(request.userId).set(InvalidXMLPage, fileName))
+                            updatedAnswers <- Future.fromTry(request.userAnswers.set(InvalidXMLPage, fileName))
                             _              <- sessionRepository.set(updatedAnswers)
                           } yield Redirect(routes.FileErrorController.onPageLoad())
 
