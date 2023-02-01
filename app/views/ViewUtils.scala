@@ -16,8 +16,14 @@
 
 package views
 
+import models.AgentClientDetails
+import models.requests.{AgentDataRequest, DataRequest, OptionalDataRequest}
+import pages.AgentClientDetailsPage
 import play.api.data.Form
 import play.api.i18n.Messages
+import play.api.mvc.{AnyContent, Request}
+
+import scala.util.{Failure, Success, Try}
 
 object ViewUtils {
 
@@ -32,4 +38,16 @@ object ViewUtils {
 
   def errorPrefix(form: Form[_])(implicit messages: Messages): String =
     if (form.hasErrors || form.hasGlobalErrors) messages("error.browser.title.prefix") else ""
+
+  def getAgentClientDetails()(implicit request: Request[_]): Option[AgentClientDetails] =
+    request match {
+      case odr: OptionalDataRequest[_] =>
+        odr.userAnswers flatMap {
+          ua => ua.get(AgentClientDetailsPage)
+        }
+      case dr: DataRequest[_]       => dr.userAnswers.get(AgentClientDetailsPage)
+      case adr: AgentDataRequest[_] => adr.userAnswers.get(AgentClientDetailsPage)
+      case _                        => None
+    }
+
 }

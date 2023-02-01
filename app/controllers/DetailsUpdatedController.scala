@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import models.requests.DataRequest
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -35,7 +36,7 @@ class DetailsUpdatedController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) {
-    implicit request =>
+    implicit request: DataRequest[AnyContent] =>
       Ok(view())
   }
 }

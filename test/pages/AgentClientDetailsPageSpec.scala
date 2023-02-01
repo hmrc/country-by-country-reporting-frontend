@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,26 +12,21 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.table.Table
+package pages
 
-@this(
-        layout: templates.Layout,
-        govukTable: GovukTable,
-        link: components.Link
-)
+import models.AgentClientDetails
+import pages.behaviours.PageBehaviours
 
-@(table: Table)(implicit request: Request[_], messages: Messages)
+class AgentClientDetailsPageSpec extends PageBehaviours {
 
-@layout(pageTitle = titleNoForm(messages("fileStatus.title")), showAgentHeader = true) {
+  "AgentClientDetailsPage" - {
 
-    <h1 class="govuk-heading-l">@messages("fileStatus.heading")</h1>
+    beRetrievable[AgentClientDetails](AgentClientDetailsPage)
 
-    <p class="govuk-body">@messages("fileStatus.p1")</p>
+    beSettable[AgentClientDetails](AgentClientDetailsPage)
 
-    @govukTable(table)
-
-    <p class="govuk-body govuk-!-padding-top-5">@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</p>
-
+    beRemovable[AgentClientDetails](AgentClientDetailsPage)
+  }
 }

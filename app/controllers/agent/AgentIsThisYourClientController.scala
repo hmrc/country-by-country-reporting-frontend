@@ -18,9 +18,10 @@ package controllers.agent
 
 import controllers.actions._
 import forms.AgentIsThisYourClientFormProvider
-import models.NormalMode
+import models.requests.{AgentDataRequest, DataRequest}
+import models.{AgentClientDetails, NormalMode, UserAnswers}
 import navigation.Navigator
-import pages.AgentIsThisYourClientPage
+import pages.{AgentClientDetailsPage, AgentIsThisYourClientPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -54,10 +55,11 @@ class AgentIsThisYourClientController @Inject() (
         case None        => form
         case Some(value) => form.fill(value)
       }
-      subscriptionService.getTradingName(request.subscriptionId).map {
-        tradingName => Ok(view(preparedForm, request.subscriptionId, tradingName.getOrElse("")))
-      }
 
+      for {
+        _           <- removeClient(request.userAnswers)
+        tradingName <- subscriptionService.getTradingName(request.subscriptionId)
+      } yield Ok(view(preparedForm, request.subscriptionId, tradingName.getOrElse("")))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
@@ -71,10 +73,20 @@ class AgentIsThisYourClientController @Inject() (
               formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.subscriptionId, tradingName.getOrElse("")))),
               value =>
                 for {
-                  updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentIsThisYourClientPage, value))
-                  _              <- sessionRepository.set(updatedAnswers)
+                  updatedAnswers       <- Future.fromTry(request.userAnswers.set(AgentIsThisYourClientPage, value))
+                  updatedClientDetails <- setClient(value, request.subscriptionId, tradingName, updatedAnswers)
+                  _                    <- sessionRepository.set(updatedClientDetails)
                 } yield Redirect(navigator.nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers))
             )
       }
   }
+
+  private def setClient(isThisYourClient: Boolean, subscriptionId: String, tradingName: Option[String], userAnswers: UserAnswers): Future[UserAnswers] =
+    if (isThisYourClient) {
+      Future.fromTry(userAnswers.set(AgentClientDetailsPage, AgentClientDetails(subscriptionId, tradingName)))
+    } else { Future.successful(userAnswers) }
+
+  private def removeClient(userAnswers: UserAnswers): Future[UserAnswers] =
+    Future.fromTry(userAnswers.remove(AgentClientDetailsPage))
+
 }

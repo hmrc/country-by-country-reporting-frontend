@@ -624,4 +624,7 @@ whatToDoNext.addAClient = Add a client to your agent services account
 whatToDoNext.changeAgentContactDetails = Change your CBC agent contact details
 whatToDoNext.checkYourAnswersLabel = What do you want to do next?
 whatToDoNext.error.required = Select what you want to do next
-whatToDoNext.change.hidden = Select what you want to do next
+whatToDoNext.change.hidden = client
+
+agentClientDetails.name = Client name
+agentClientDetails.id = Client CBC ID
