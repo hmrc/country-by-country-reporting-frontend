@@ -21,6 +21,7 @@ import controllers.actions.agent.{
   AgentCheckForSubmissionAction,
   AgentDataRetrievalAction,
   AgentIdentifierAction,
+  FakeAgentCheckForSubmissionAction,
   FakeAgentDataRetrievalAction,
   FakeAgentIdentifierActionForAgentIdentifierAction
 }

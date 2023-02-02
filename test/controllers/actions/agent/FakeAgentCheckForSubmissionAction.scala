@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package controllers.actions.agent
 
-import controllers.actions.agent.AgentCheckForSubmissionAction
 import models.requests.AgentDataRequest
 import play.api.mvc.Result
 

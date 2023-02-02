@@ -36,7 +36,10 @@ class CheckForSubmissionActionProvider @Inject() (checkFileSubmission: Boolean)(
     extends ActionRefiner[DataRequest, DataRequest] {
 
   override protected def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] =
-    if ((checkFileSubmission && request.userAnswers.get(UploadIDPage).isEmpty) || request.userAnswers.get(JourneyInProgressPage).isEmpty) {
+    if (
+      (checkFileSubmission && request.userAnswers.get(UploadIDPage).isEmpty) ||
+      (!checkFileSubmission && request.userAnswers.get(JourneyInProgressPage).isEmpty)
+    ) {
       Future.successful(Left(Redirect(routes.IndexController.onPageLoad)))
     } else {
       Future.successful(Right(request))
