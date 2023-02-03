@@ -40,7 +40,7 @@ class CheckForSubmissionActionProvider @Inject() (checkFileSubmission: Boolean)(
       (checkFileSubmission && request.userAnswers.get(UploadIDPage).isEmpty) ||
       (!checkFileSubmission && request.userAnswers.get(JourneyInProgressPage).isEmpty)
     ) {
-      Future.successful(Left(Redirect(routes.IndexController.onPageLoad)))
+      Future.successful(Left(Redirect(routes.InformationSentController.onPageLoad())))
     } else {
       Future.successful(Right(request))
     }

@@ -625,3 +625,7 @@ whatToDoNext.changeAgentContactDetails = Change your CBC agent contact details
 whatToDoNext.checkYourAnswersLabel = What do you want to do next?
 whatToDoNext.error.required = Select what you want to do next
 whatToDoNext.change.hidden = Select what you want to do next
+
+informationSent.title = Information Sent
+informationSent.heading = Information Sent
+informationSent.p1 = We will contact you if we have any questions about the details you have provided.

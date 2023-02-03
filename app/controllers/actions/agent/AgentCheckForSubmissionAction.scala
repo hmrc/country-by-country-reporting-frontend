@@ -29,7 +29,7 @@ class AgentCheckForSubmissionActionImpl @Inject() (implicit val executionContext
 
   override protected def refine[A](request: AgentDataRequest[A]): Future[Either[Result, AgentDataRequest[A]]] =
     if (request.userAnswers.get(JourneyInProgressPage).isEmpty) {
-      Future.successful(Left(Redirect(routes.IndexController.onPageLoad)))
+      Future.successful(Left(Redirect(routes.InformationSentController.onPageLoad())))
     } else {
       Future.successful(Right(request))
     }

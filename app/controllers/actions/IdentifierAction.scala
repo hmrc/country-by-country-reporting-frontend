@@ -34,7 +34,7 @@ import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 import repositories.SessionRepository
-import pages.AgentClientIdPage
+import pages.{AgentClientIdPage, JourneyInProgressPage}
 import play.api.libs.json.Json
 import services.AgentSubscriptionService
 
@@ -149,9 +149,12 @@ class AuthenticatedIdentifierAction @Inject() (
   private def redirectForAgentContactDetails[A](request: Request[A], internalId: String)(implicit hc: HeaderCarrier): Future[Result] =
     agentSubscriptionService.getAgentContactDetails(UserAnswers(internalId)) flatMap {
       case Some(agentUserAnswers) if agentUserAnswers.data == Json.obj() =>
-        sessionRepository.set(agentUserAnswers).map {
-          _ =>
-            Redirect(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad())
+        Future.fromTry(agentUserAnswers.set(JourneyInProgressPage, true)).flatMap {
+          updatedAnswers =>
+            sessionRepository.set(updatedAnswers).map {
+              _ =>
+                Redirect(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad())
+            }
         }
       case Some(_) =>
         logger.info(

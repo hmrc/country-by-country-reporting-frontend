@@ -46,7 +46,7 @@ class AgentCheckForSubmissionActionSpec extends SpecBase with EitherValues {
         val result = action.callRefine(AgentDataRequest(FakeRequest(), "id", emptyUserAnswers, "ARN")).map(_.left.value)
 
         status(result) mustBe SEE_OTHER
-        redirectLocation(result).value mustEqual routes.IndexController.onPageLoad.url
+        redirectLocation(result).value mustEqual routes.InformationSentController.onPageLoad().url
       }
     }
 
