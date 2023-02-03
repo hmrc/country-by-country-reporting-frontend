@@ -22,7 +22,7 @@
 
 @(fileDetails: SummaryList)(implicit request: Request[_], messages: Messages)
 
-    @layout(pageTitle = titleNoForm(messages("checkYourFileDetails.title"))) {
+    @layout(pageTitle = titleNoForm(messages("checkYourFileDetails.title")), showAgentHeader = true) {
 
         <h1 class="govuk-heading-l">@messages("checkYourFileDetails.heading")</h1>
 

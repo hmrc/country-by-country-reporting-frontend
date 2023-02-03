@@ -21,7 +21,7 @@
 
 @()(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("problemCBCId.title"))) {
+@layout(pageTitle = titleNoForm(messages("problemCBCId.title")) , showAgentHeader = true) {
 
     <h1 class="govuk-heading-l">@messages("problemCBCId.heading")</h1>
 

@@ -17,16 +17,18 @@
 @import config.FrontendAppConfig
 @import uk.gov.hmrc.hmrcfrontend.views.config.StandardAlphaBanner
 @import views.html.helper.CSPNonce
+@import viewmodels.AgentClientDetailsViewModel
 
 @this(
         appConfig: FrontendAppConfig,
         hmrcLayout: HmrcLayout,
         hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
-        alphaBanner: StandardAlphaBanner
+        alphaBanner: StandardAlphaBanner,
+        clientHeader: components.AgentClientHeader
 )
 
-@(pageTitle: String, showBackLink: Boolean = true, timeout: Boolean = true, showSignOut: Boolean = true)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+@(pageTitle: String, showBackLink: Boolean = true, timeout: Boolean = true, showSignOut: Boolean = true, showAgentHeader: Boolean = false)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @timeOutDialog = {
     @hmrcTimeoutDialogHelper(
@@ -48,7 +50,6 @@
 }
 
 
-
 @content = {
 @contentBlock
 
@@ -65,5 +66,6 @@
     phaseBanner = Some(alphaBanner(appConfig.feedbackUrl)),
     nonce = CSPNonce.get,
     additionalScriptsBlock = Some(additionalScripts),
-    backLink = if(showBackLink) Some(BackLinkViewModel(href = "#").withCssClass("js-enabled govuk-!-display-none-print")) else None
+    backLink = if(showBackLink) Some(BackLinkViewModel(href = "#").withCssClass("js-enabled govuk-!-display-none-print")) else None,
+    beforeContentBlock = if(showAgentHeader) Some(clientHeader(showBackLink)) else None
 )(content)

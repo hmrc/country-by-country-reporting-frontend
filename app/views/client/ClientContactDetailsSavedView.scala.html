@@ -22,7 +22,7 @@
 
 @()(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("clientContactDetailsSaved.title")), showBackLink = false) {
+@layout(pageTitle = titleNoForm(messages("clientContactDetailsSaved.title")), showBackLink = false, showAgentHeader = true) {
 
     @govukPanel(Panel(
         title = Text(messages("clientContactDetailsSaved.heading"))

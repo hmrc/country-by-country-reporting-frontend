@@ -23,7 +23,7 @@
 
 @(primary: SummaryList, secondary: SummaryList, hasChanged: Boolean, isOrganisationsFirstVisitAfterMigration: Boolean)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("ChangeClientContactDetails.title"))) {
+@layout(pageTitle = titleNoForm(messages("ChangeClientContactDetails.title")), showAgentHeader = true) {
     @formHelper(action = controllers.client.routes.ChangeClientContactDetailsController.onSubmit()) {
         <h1 class="govuk-heading-l">@messages("ChangeClientContactDetails.heading")</h1>
 

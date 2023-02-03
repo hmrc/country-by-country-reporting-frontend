@@ -14,23 +14,23 @@
  * limitations under the License.
  *@
 
+@import viewmodels.AgentClientDetailsViewModel
+
 @this(
-    layout: templates.Layout,
     govukSummaryList: GovukSummaryList,
-    govukButton: GovukButton
+    govukBackLink: GovukBackLink
 )
 
-@(fileSummary: Seq[SummaryListRow], action: String)(implicit request: Request[_], messages: Messages)
+@(showBackLink: Boolean = true)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("filePassedChecks.title")), showBackLink = false, showAgentHeader = true) {
-
-    <h1 class="govuk-heading-l">@messages("filePassedChecks.heading")</h1>
-
-    @govukSummaryList(
-        SummaryListViewModel(fileSummary)
-    )
-
-    @govukButton(
-        ButtonViewModel(Text(messages("fileSummary.viewConfirmation"))).withAttribute( "id" -> "submit").asLink(action)
-    )
+@if(showBackLink) {
+    @govukBackLink(BackLinkViewModel(href = "#").withCssClass("js-enabled govuk-!-display-none-print"))
+}
+@getAgentClientDetails.map { acd =>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            @govukSummaryList(AgentClientDetailsViewModel.getSummaryListViewModel(AgentClientDetailsViewModel.getSummaryRows(acd)))
+            <hr>
+        </div>
+    </div>
 }

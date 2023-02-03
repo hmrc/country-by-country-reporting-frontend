@@ -26,7 +26,7 @@
 
 @(form: Form[_], firstContactName: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("clientFirstContactPhone.title"))) {
+@layout(pageTitle = title(form, messages("clientFirstContactPhone.title")), showAgentHeader = true) {
 
     @formHelper(action = controllers.client.routes.ClientFirstContactPhoneController.onSubmit(mode)) {
 

@@ -25,7 +25,7 @@
 
 @(displayWarning:  Boolean, appConfig: FrontendAppConfig)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("sendYourFile.title"))) {
+@layout(pageTitle = titleNoForm(messages("sendYourFile.title")), showAgentHeader = true) {
 
     @formHelper(action = routes.SendYourFileController.onSubmit(), args= 'id -> "sendYourFileForm") {
         <input type="hidden" id="fileStatusRefreshUrl" value="@routes.SendYourFileController.getStatus().url" />
