@@ -59,8 +59,7 @@ class IndexController @Inject() (
       }
   }
 
-
-  private def checkForAgentContactDetails(subscriptionId: String, ua: UserAnswers)(implicit hc: HeaderCarrier, request: Request[_]): Future[Result] = {
+  private def checkForAgentContactDetails(subscriptionId: String, ua: UserAnswers)(implicit hc: HeaderCarrier, request: Request[_]): Future[Result] =
     agentSubscriptionService.getAgentContactDetails(ua) flatMap {
       agentContactDetails =>
         subscriptionService.getContactDetails(agentContactDetails.getOrElse(ua), subscriptionId) flatMap {
@@ -88,9 +87,8 @@ class IndexController @Inject() (
             }
         }
     }
-  }
 
-  private def checkForOrgContactDetails(subscriptionId: String, ua: UserAnswers)(implicit hc: HeaderCarrier, request: Request[_]): Future[Result] = {
+  private def checkForOrgContactDetails(subscriptionId: String, ua: UserAnswers)(implicit hc: HeaderCarrier, request: Request[_]): Future[Result] =
     subscriptionService.getContactDetails(ua, subscriptionId) flatMap {
       case Some(userAnswers) =>
         sessionRepository.set(userAnswers) flatMap {
@@ -107,7 +105,6 @@ class IndexController @Inject() (
       case _ =>
         Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
     }
-  }
 
   private def setContactDetailsFlag(userAnswers: UserAnswers): Future[UserAnswers] =
     Future.fromTry(userAnswers.set(JourneyInProgressPage, true)).flatMap {
