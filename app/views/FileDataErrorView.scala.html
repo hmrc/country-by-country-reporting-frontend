@@ -18,6 +18,7 @@
         layout: templates.Layout,
         table: components.Table,
         link: components.Link,
+        printLink: components.PrintLink,
         govukButton: GovukButton
 )
 
@@ -32,7 +33,7 @@
     <h2 class="govuk-heading-m">@messages("fileDataError.subheading1")</h2>
 
     <ol class="govuk-list govuk-list--number" >
-        <li><a class="govuk-link" href="#" onclick="window.print();return false;">@messages("fileDataError.bullet1")</a></li>
+        <li>@printLink("invalidXMLFile.print")</li>
         <li>@messages("fileDataError.bullet2")</li>
         <li>@Html(messages("fileDataError.bullet3", link("#", "fileDataError.bullet3.link", openInNewWindow = true)))</li>
         <li>@link(routes.UploadFileController.onPageLoad().url, "fileDataError.bullet4")</li>
