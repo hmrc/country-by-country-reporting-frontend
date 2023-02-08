@@ -58,7 +58,7 @@ class IndexControllerSpec extends SpecBase {
         )
         .build()
 
-      val userAnswers = UserAnswers("id").set(HaveTelephonePage, false).success.value
+      val userAnswers = UserAnswers("id").set(ContactNamePage, "Name").success.value
       when(mockSubscriptionService.getContactDetails(any[UserAnswers], any[String])(any[HeaderCarrier]()))
         .thenReturn(Future.successful(Some(userAnswers)))
       when(mockFileDetailsConnector.getAllFileDetails(any[String])(any[HeaderCarrier](), any[ExecutionContext]())).thenReturn(Future.successful(None))

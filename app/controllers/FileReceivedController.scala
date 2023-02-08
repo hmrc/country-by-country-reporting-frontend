@@ -18,10 +18,12 @@ package controllers
 
 import connectors.FileDetailsConnector
 import controllers.actions._
-import models.ConversationId
+import models.{ConversationId, UserAnswers}
+import pages.UploadIDPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -30,7 +32,7 @@ import viewmodels.FileReceivedViewModel
 import views.html.{FileReceivedAgentView, FileReceivedView, ThereIsAProblemView}
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 class FileReceivedController @Inject() (
   override val messagesApi: MessagesApi,
@@ -38,6 +40,7 @@ class FileReceivedController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   fileDetailsConnector: FileDetailsConnector,
+  sessionRepository: SessionRepository,
   val controllerComponents: MessagesControllerComponents,
   view: FileReceivedView,
   agentView: FileReceivedAgentView,
@@ -50,7 +53,7 @@ class FileReceivedController @Inject() (
 
   def onPageLoad(conversationId: ConversationId): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
-      fileDetailsConnector.getFileDetails(conversationId) map {
+      fileDetailsConnector.getFileDetails(conversationId) flatMap {
         fileDetails =>
           (for {
             emails  <- getContactEmails
@@ -59,7 +62,10 @@ class FileReceivedController @Inject() (
             case AffinityGroup.Agent =>
               getAgentContactEmails match {
                 case Some(agentContactEmails) =>
-                  Ok(
+                  for {
+                    updatedAnswers <- Future.fromTry(request.userAnswers.remove(UploadIDPage))
+                    _              <- sessionRepository.set(updatedAnswers)
+                  } yield Ok(
                     agentView(
                       FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getAgentSummaryRows(details)),
                       emails.firstContact,
@@ -70,16 +76,19 @@ class FileReceivedController @Inject() (
                   )
                 case None =>
                   logger.warn("FileReceivedController: Agent detected but cannot retrieve agent email")
-                  InternalServerError(errorView())
+                  Future.successful(InternalServerError(errorView()))
               }
             case Organisation =>
-              Ok(
+              for {
+                updatedAnswers <- Future.fromTry(request.userAnswers.remove(UploadIDPage))
+                _              <- sessionRepository.set(updatedAnswers)
+              } yield Ok(
                 view(FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getSummaryRows(details)), emails.firstContact, emails.secondContact)
               )
             case _ =>
               logger.warn("FileReceivedController: The User is neither an Organisation or an Agent")
-              InternalServerError(errorView())
-          }).getOrElse(InternalServerError(errorView()))
+              Future.successful(InternalServerError(errorView()))
+          }).getOrElse(Future.successful(InternalServerError(errorView())))
       }
   }
 }

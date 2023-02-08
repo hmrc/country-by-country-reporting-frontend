@@ -90,6 +90,8 @@ GET        /problem/data-errors                                                 
 
 GET        /problem/rules-errors/:conversationId                                controllers.FileRejectedController.onPageLoad(conversationId: ConversationId)
 
+GET        /problem/information-sent                                            controllers.InformationSentController.onPageLoad()
+
 GET        /upload-file                                                         controllers.UploadFileController.onPageLoad()
 
 GET        /status                                                              controllers.UploadFileController.getStatus()

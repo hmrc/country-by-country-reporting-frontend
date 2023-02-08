@@ -21,9 +21,7 @@ import models.requests.{AgentDataRequest, DataRequest, OptionalDataRequest}
 import pages.AgentClientDetailsPage
 import play.api.data.Form
 import play.api.i18n.Messages
-import play.api.mvc.{AnyContent, Request}
-
-import scala.util.{Failure, Success, Try}
+import play.api.mvc.Request
 
 object ViewUtils {
 
