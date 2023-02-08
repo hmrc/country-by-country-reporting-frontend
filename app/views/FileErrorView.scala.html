@@ -16,7 +16,8 @@
 
 @this(
   layout: templates.Layout,
-  link: components.Link
+  link: components.Link,
+  printLink: components.PrintLink
 )
 
 @(fileName: String)(implicit request: Request[_], messages: Messages)
@@ -36,7 +37,7 @@
     <p class="govuk-body">@Html(messages("invalidXMLFile.p5", link("#", "invalidXMLFile.p5.link")))</p> @*Todo: update link href*@
 
     <ul class="govuk-list">
-        <li>@link("javascript:window.print()", "invalidXMLFile.print")</li>
+        <li>@printLink("invalidXMLFile.print")</li>
         <li>@link(routes.UploadFileController.onPageLoad().url, "invalidXMLFile.uploadLink")</li>
       <li>@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</li>
     </ul>

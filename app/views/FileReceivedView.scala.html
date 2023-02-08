@@ -21,6 +21,7 @@
         layout: templates.Layout,
         govukInsetText: GovukInsetText,
         link: components.Link,
+        printLink: components.PrintLink,
         govukPanel: GovukPanel,
         govukSummaryList: GovukSummaryList,
         govukButton: GovukButton,
@@ -48,7 +49,7 @@
   <p class="govuk-body">@messages("fileReceived.p2")</p>
 
   <ul class="govuk-list">
-   <li>@link("javascript:window.print()", "fileReceived.print")</li>
+   <li>@printLink("invalidXMLFile.print")</li>
    <li>@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</li>
    <li>@link(appConfig.feedbackUrl, "fileReceived.thoughts", openInNewWindow = true)</li>
   </ul>
