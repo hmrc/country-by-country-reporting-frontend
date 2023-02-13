@@ -19,10 +19,11 @@ package controllers
 import connectors.FileDetailsConnector
 import controllers.actions._
 import models.fileDetails.{Pending, Rejected, ValidationErrors, Accepted => FileStatusAccepted}
-import pages.{ConversationIdPage, ValidXMLPage}
+import pages.{ConversationIdPage, UploadIDPage, ValidXMLPage}
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.FileProblemHelper.isProblemStatus
 import viewmodels.FileCheckViewModel
@@ -37,6 +38,7 @@ class FilePendingChecksController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   fileConnector: FileDetailsConnector,
+  sessionRepository: SessionRepository,
   val controllerComponents: MessagesControllerComponents,
   view: FilePendingChecksView,
   errorView: ThereIsAProblemView
@@ -60,7 +62,10 @@ class FilePendingChecksController @Inject() (
               val summary = FileCheckViewModel.createFileSummary(xmlDetails.fileName, Pending.toString)
               request.userAnswers.get(ConversationIdPage) match {
                 case Some(conversationId) =>
-                  Future.successful(Ok(view(summary, routes.FilePendingChecksController.onPageLoad().url, conversationId.value, request.isAgent)))
+                  for {
+                    updatedAnswers <- Future.fromTry(request.userAnswers.remove(UploadIDPage))
+                    _ <- sessionRepository.set(updatedAnswers)
+                  } yield Ok(view(summary, routes.FilePendingChecksController.onPageLoad().url, conversationId.value, request.isAgent))
                 case _ => Future.successful(InternalServerError(errorView()))
               }
             case _ =>
