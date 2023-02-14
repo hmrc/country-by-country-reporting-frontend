@@ -628,6 +628,6 @@ whatToDoNext.change.hidden = client
 agentClientDetails.name = Client name
 agentClientDetails.id = Client CBC ID
 
-informationSent.title = Information Sent
-informationSent.heading = Information Sent
+informationSent.title = Information sent
+informationSent.heading = Information sent
 informationSent.p1 = We will contact you if we have any questions about the details you have provided.
