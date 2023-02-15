@@ -17,6 +17,7 @@
 package controllers.agent
 
 import controllers.actions.agent.{AgentCheckForSubmissionAction, AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
+import pages.AgentClientIdPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.AgentSubscriptionService
@@ -51,6 +52,8 @@ class ChangeAgentContactDetailsController @Inject() (
         rows = checkUserAnswersHelper.getAgentPrimaryContactDetails
       )
 
+      val clientSelected = request.userAnswers.get(AgentClientIdPage).isDefined
+
       val agentSecondaryContactList = SummaryListViewModel(
         rows = checkUserAnswersHelper.getAgentSecondaryContactDetails
       )
@@ -58,7 +61,7 @@ class ChangeAgentContactDetailsController @Inject() (
         case Some(hasContactDetailsChanged) =>
           agentSubscriptionService.doAgentContactDetailsExist map {
             case Some(doContactDetailsExist) =>
-              Ok(view(agentPrimaryContactList, agentSecondaryContactList, hasContactDetailsChanged, doContactDetailsExist))
+              Ok(view(agentPrimaryContactList, agentSecondaryContactList, hasContactDetailsChanged, doContactDetailsExist, clientSelected))
             case _ => InternalServerError(errorView())
           }
         case _ => Future.successful(InternalServerError(errorView()))
