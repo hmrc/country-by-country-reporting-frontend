@@ -610,6 +610,7 @@ agentClientId.title = What is the CBC ID of the client you want to act on behalf
 agentClientId.heading = What is the CBC ID of the client you want to act on behalf of?
 agentClientId.hint = For example, XACBC0000999999.
 agentClientId.error.required = Enter your client’s CBC ID
+agentClientId.error.invalid = Your client’s CBC ID must start with an ‘X’ followed by a letter, then ‘CBC’ and then 10 numbers
 
 agentIsThisYourClient.title = Is this your client?
 agentIsThisYourClient.heading = Is this your client?

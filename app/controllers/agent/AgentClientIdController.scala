@@ -33,7 +33,6 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class AgentClientIdController @Inject() (
   override val messagesApi: MessagesApi,
-  navigator: AgentContactDetailsNavigator,
   identifier: AgentIdentifierAction,
   view: AgentClientIdView,
   formProvider: AgentClientIdFormProvider,
@@ -62,7 +61,7 @@ class AgentClientIdController @Inject() (
           formWithErrors => Future.successful(BadRequest((view(formWithErrors)))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentClientIdPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentClientIdPage, value.toUpperCase))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(routes.AgentIsThisYourClientController.onPageLoad)
         )

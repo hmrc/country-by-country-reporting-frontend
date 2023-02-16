@@ -55,7 +55,8 @@ trait Mappings extends Formatters with Constraints {
                               lengthKey: String,
                               regex: String,
                               maxLength: Int,
+                              minLength: Int = 1,
                               msgArg: String = ""
   ): FieldMapping[String] =
-    of(validatedTextFormatter(requiredKey, invalidKey, lengthKey, regex, maxLength, msgArg))
+    of(validatedTextFormatter(requiredKey, invalidKey, lengthKey, regex, maxLength, minLength, msgArg))
 }
