@@ -18,9 +18,7 @@ package controllers.agent
 
 import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
 import forms.AgentClientIdFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.AgentContactDetailsNavigator
-import pages.{AgentClientIdPage, AgentIsThisYourClientPage}
+import pages.AgentClientIdPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

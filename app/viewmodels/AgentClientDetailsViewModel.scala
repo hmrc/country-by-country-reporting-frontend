@@ -16,12 +16,11 @@
 
 package viewmodels
 
-import models.{AgentClientDetails, NormalMode}
+import models.AgentClientDetails
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
-import controllers.routes
 
 object AgentClientDetailsViewModel {
 

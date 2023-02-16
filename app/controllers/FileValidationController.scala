@@ -19,7 +19,7 @@ package controllers
 import connectors.{UpscanConnector, ValidationConnector}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.upscan.{UploadSessionDetails, UploadedSuccessfully, UpscanURL}
-import models.{InvalidXmlError, NormalMode, UserAnswers, ValidatedFileData, ValidationErrors}
+import models.{InvalidXmlError, NormalMode, ValidatedFileData, ValidationErrors}
 import navigation.Navigator
 import pages._
 import play.api.Logging

@@ -18,7 +18,6 @@ package controllers.agent
 
 import controllers.actions._
 import forms.AgentIsThisYourClientFormProvider
-import models.requests.{AgentDataRequest, DataRequest}
 import models.{AgentClientDetails, NormalMode, UserAnswers}
 import navigation.Navigator
 import pages.{AgentClientDetailsPage, AgentIsThisYourClientPage}
