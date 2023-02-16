@@ -14,7 +14,6 @@
  * limitations under the License.
  *@
 
-@import views.html.components.Link
 @this(
   layout: templates.Layout,
   govukPanel : GovukPanel,
@@ -32,7 +31,7 @@
 <p class="govuk-body">@Html(messages("agentContactDetailsUpdated.p1"))</p>
 
 @if(clientSelected){
-   <p class="govuk-body">@Html(messages("agentContactDetailsUpdated.p2", link(controllers.routes.IndexController.onPageLoad.url, "site.backToReportPage")))</p>
+   <p class="govuk-body">@link(controllers.routes.IndexController.onPageLoad.url, "site.backToReportPage")</p>
 }else{
    <p class="govuk-body">@messages("agentContactDetailsSaved.p1")</p>
    <ul class="govuk-list govuk-list--bullet">

@@ -483,7 +483,6 @@ agentContactDetailsSaved.bullet2 = add CBC clients in your agent services accoun
 agentContactDetailsUpdated.title = Agent contact details updated
 agentContactDetailsUpdated.heading = Agent contact details updated
 agentContactDetailsUpdated.p1 = We will use your new details if we have any questions about your reports.
-agentContactDetailsUpdated.p2 = {0}
 
 changeAgentContactDetails.title = Check your agent contact details
 changeAgentContactDetails.heading = Check your agent contact details
@@ -629,3 +628,7 @@ whatToDoNext.change.hidden = client
 
 agentClientDetails.name = Client name
 agentClientDetails.id = Client CBC ID
+
+informationSent.title = Information sent
+informationSent.heading = Information sent
+informationSent.p1 = We will contact you if we have any questions about the details you have provided.

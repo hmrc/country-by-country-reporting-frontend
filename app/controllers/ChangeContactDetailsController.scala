@@ -37,6 +37,7 @@ class ChangeContactDetailsController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
+  checkForSubmission: CheckForSubmissionAction,
   subscriptionService: SubscriptionService,
   val controllerComponents: MessagesControllerComponents,
   view: ChangeContactDetailsView,
@@ -48,7 +49,7 @@ class ChangeContactDetailsController @Inject() (
   private def isOrganisationAndFirstVisitAfterMigration(isFirstVisitAfterMigration: Boolean)(implicit request: DataRequest[AnyContent]): Boolean =
     (request.userType == AffinityGroup.Organisation) & isFirstVisitAfterMigration
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData.apply andThen requireData).async {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData.apply andThen requireData andThen checkForSubmission()).async {
     implicit request =>
       val checkUserAnswersHelper = CheckYourAnswersHelper(request.userAnswers)
 

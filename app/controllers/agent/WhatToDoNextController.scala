@@ -21,7 +21,7 @@ import controllers.routes
 import forms.WhatToDoNextFormProvider
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.WhatToDoNextPage
+import pages.{JourneyInProgressPage, WhatToDoNextPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -51,18 +51,24 @@ class WhatToDoNextController @Inject() (
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData.apply).async {
     implicit request =>
-      agentSubscriptionService.getAgentContactDetails(request.userAnswers.getOrElse(UserAnswers(request.userId))) flatMap {
-        case Some(agentUserAnswers) =>
-          sessionRepository.set(agentUserAnswers).map {
+      Future.fromTry(request.userAnswers.getOrElse(UserAnswers(request.userId)).set(JourneyInProgressPage, true)).flatMap {
+        ua =>
+          sessionRepository.set(ua).flatMap {
             _ =>
-              val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(WhatToDoNextPage) match {
-                case None        => form
-                case Some(value) => form.fill(value)
+              agentSubscriptionService.getAgentContactDetails(ua) flatMap {
+                case Some(agentUserAnswers) =>
+                  sessionRepository.set(agentUserAnswers).map {
+                    _ =>
+                      val preparedForm = ua.get(WhatToDoNextPage) match {
+                        case None        => form
+                        case Some(value) => form.fill(value)
+                      }
+                      Ok(view(preparedForm, mode))
+                  }
+                case _ =>
+                  Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
               }
-              Ok(view(preparedForm, mode))
           }
-        case _ =>
-          Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
       }
   }
 

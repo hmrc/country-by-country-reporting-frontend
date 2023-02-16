@@ -17,25 +17,34 @@
 package controllers.agent
 
 import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
+import models.UserAnswers
+import pages.{AgentClientIdPage, JourneyInProgressPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.agent.AgentContactDetailsSavedView
 
 import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
 class AgentContactDetailsSavedController @Inject() (
   override val messagesApi: MessagesApi,
   identify: AgentIdentifierAction,
   getData: AgentDataRetrievalAction,
   requireData: AgentDataRequiredAction,
+  sessionRepository: SessionRepository,
   val controllerComponents: MessagesControllerComponents,
   view: AgentContactDetailsSavedView
-) extends FrontendBaseController
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
-      Ok(view())
+      for {
+        updatedAnswers <- Future.fromTry(request.userAnswers.remove(JourneyInProgressPage))
+        _              <- sessionRepository.set(updatedAnswers)
+      } yield Ok(view())
   }
 }

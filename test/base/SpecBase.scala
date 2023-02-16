@@ -18,8 +18,10 @@ package base
 
 import controllers.actions._
 import controllers.actions.agent.{
+  AgentCheckForSubmissionAction,
   AgentDataRetrievalAction,
   AgentIdentifierAction,
+  FakeAgentCheckForSubmissionAction,
   FakeAgentDataRetrievalAction,
   FakeAgentIdentifierActionForAgentIdentifierAction
 }
@@ -67,6 +69,8 @@ trait SpecBase
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].to[FakeIdentifierAction],
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(userAnswers)),
+        bind[CheckForSubmissionAction].toInstance(new FakeCheckForSubmissionActionProvider),
+        bind[AgentCheckForSubmissionAction].to[FakeAgentCheckForSubmissionAction],
         bind[AgentIdentifierAction].to[FakeAgentIdentifierActionForAgentIdentifierAction],
         bind[AgentDataRetrievalAction].toInstance(new FakeAgentDataRetrievalAction(userAnswers))
       )
