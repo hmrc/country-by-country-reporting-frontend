@@ -64,7 +64,7 @@ class FilePendingChecksController @Inject() (
                 case Some(conversationId) =>
                   for {
                     updatedAnswers <- Future.fromTry(request.userAnswers.remove(UploadIDPage))
-                    _ <- sessionRepository.set(updatedAnswers)
+                    _              <- sessionRepository.set(updatedAnswers)
                   } yield Ok(view(summary, routes.FilePendingChecksController.onPageLoad().url, conversationId.value, request.isAgent))
                 case _ => Future.successful(InternalServerError(errorView()))
               }
