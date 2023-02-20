@@ -31,6 +31,7 @@ import scala.concurrent.Future
 class AgentClientIdControllerSpec extends SpecBase {
   val formProvider                    = new AgentClientIdFormProvider()
   val form                            = formProvider()
+  val validCbcId                      = "XACBC0000999999"
   lazy val agentClientIdRoute: String = routes.AgentClientIdController.onPageLoad().url
 
   "AgentClientIdController" - {
@@ -54,7 +55,7 @@ class AgentClientIdControllerSpec extends SpecBase {
         )
         .build()
       running(application) {
-        val request = FakeRequest(POST, agentClientIdRoute).withFormUrlEncodedBody(("value", "answer"))
+        val request = FakeRequest(POST, agentClientIdRoute).withFormUrlEncodedBody(("value", validCbcId))
         val result  = route(application, request).value
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual controllers.agent.routes.AgentIsThisYourClientController.onPageLoad.url

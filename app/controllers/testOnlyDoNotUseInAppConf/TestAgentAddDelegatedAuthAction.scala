@@ -16,25 +16,19 @@
 
 package controllers.testOnlyDoNotUseInAppConf
 
-import javax.inject.Inject
-import config.FrontendAppConfig
 import controllers.routes
 import models.UserAnswers
-import models.requests.agent.AgentIdentifierRequest
 import pages.AgentClientIdPage
 import play.api.Logging
 import play.api.mvc.Results.Redirect
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
-import uk.gov.hmrc.auth.core.AuthProvider.GovernmentGateway
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
-import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
-import views.html.agent.AgentUseAgentServicesView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class TestAgentAddDelegatedAuthAction @Inject() (

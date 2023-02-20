@@ -18,9 +18,7 @@ package controllers.agent
 
 import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
 import forms.AgentClientIdFormProvider
-import models.{NormalMode, UserAnswers}
-import navigation.AgentContactDetailsNavigator
-import pages.{AgentClientIdPage, AgentIsThisYourClientPage}
+import pages.AgentClientIdPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -33,7 +31,6 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class AgentClientIdController @Inject() (
   override val messagesApi: MessagesApi,
-  navigator: AgentContactDetailsNavigator,
   identifier: AgentIdentifierAction,
   view: AgentClientIdView,
   formProvider: AgentClientIdFormProvider,
@@ -62,7 +59,7 @@ class AgentClientIdController @Inject() (
           formWithErrors => Future.successful(BadRequest((view(formWithErrors)))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentClientIdPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentClientIdPage, value.toUpperCase))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(routes.AgentIsThisYourClientController.onPageLoad)
         )

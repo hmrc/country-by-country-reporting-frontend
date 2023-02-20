@@ -135,6 +135,7 @@ trait Formatters {
                                        lengthKey: String,
                                        regex: String,
                                        maxLength: Int,
+                                       minLength: Int = 1,
                                        msgArg: String = ""
   ): Formatter[String] =
     new Formatter[String] {
@@ -143,10 +144,10 @@ trait Formatters {
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
         dataFormatter
           .bind(key, data)
-          .right
           .flatMap {
             case str if !str.matches(regex)    => Left(Seq(FormError(key, invalidKey)))
             case str if str.length > maxLength => Left(Seq(FormError(key, lengthKey)))
+            case str if str.length < minLength => Left(Seq(FormError(key, lengthKey)))
             case str                           => Right(str)
           }
 

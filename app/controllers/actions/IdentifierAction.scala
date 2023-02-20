@@ -16,14 +16,17 @@
 
 package controllers.actions
 
-import javax.inject.Inject
 import config.FrontendAppConfig
 import controllers.routes
-import models.{NormalMode, UserAnswers}
+import models.UserAnswers
 import models.requests.IdentifierRequest
+import pages.{AgentClientIdPage, JourneyInProgressPage}
 import play.api.Logging
+import play.api.libs.json.Json
 import play.api.mvc.Results._
 import play.api.mvc._
+import repositories.SessionRepository
+import services.AgentSubscriptionService
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual}
 import uk.gov.hmrc.auth.core.AuthProvider.GovernmentGateway
 import uk.gov.hmrc.auth.core._
@@ -32,11 +35,8 @@ import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
-import repositories.SessionRepository
-import pages.{AgentClientIdPage, JourneyInProgressPage}
-import play.api.libs.json.Json
-import services.AgentSubscriptionService
 
 trait IdentifierAction
     extends ActionRefiner[Request, IdentifierRequest]

@@ -24,16 +24,17 @@ import utils.RegExConstants
 
 class AgentClientIdFormProvider @Inject() extends Mappings with RegExConstants {
 
-  private val maxLength = 132
+  private val fixedLength = 15
 
   def apply(): Form[String] =
     Form(
       "value" -> validatedText(
         "agentClientId.error.required",
         "agentClientId.error.invalid",
-        "agentClientId.error.length",
-        orgNameRegex,
-        maxLength
+        "agentClientId.error.invalid",
+        cbcIdRegex,
+        fixedLength,
+        fixedLength
       )
     )
 }

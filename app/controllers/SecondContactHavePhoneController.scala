@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions._
 import forms.SecondContactHavePhoneFormProvider
-import models.{CheckMode, Mode}
+import models.Mode
 import navigation.ContactDetailsNavigator
 import pages.SecondContactHavePhonePage
 import play.api.i18n.{I18nSupport, MessagesApi}
