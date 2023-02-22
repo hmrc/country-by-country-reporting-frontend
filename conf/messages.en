@@ -477,8 +477,11 @@ agentContactDetailsSaved.title = Agent contact details saved
 agentContactDetailsSaved.heading = Agent contact details saved
 agentContactDetailsSaved.subheading = What happens next
 agentContactDetailsSaved.p1 = You can now:
-agentContactDetailsSaved.bullet1 = Select a client
-agentContactDetailsSaved.bullet2 = Add CBC clients in your agent services account
+agentContactDetailsSaved.bullet1 = select a client
+agentContactDetailsSaved.bullet2 = add CBC clients in your agent services account
+
+changeAgentContactDetails.bullet1 = Select a client
+changeAgentContactDetails.bullet2 = Add CBC clients in your agent services account
 
 agentContactDetailsUpdated.title = Agent contact details updated
 agentContactDetailsUpdated.heading = Agent contact details updated
