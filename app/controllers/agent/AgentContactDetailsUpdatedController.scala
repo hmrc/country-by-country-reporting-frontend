@@ -17,7 +17,6 @@
 package controllers.agent
 
 import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
-import models.UserAnswers
 import pages.{AgentClientIdPage, JourneyInProgressPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
