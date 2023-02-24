@@ -26,9 +26,6 @@ import javax.inject.Inject
 
 class IndividualSignInProblemController @Inject() (
   override val messagesApi: MessagesApi,
-  identify: IdentifierAction,
-  getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: IndividualSignInProblemView
 ) extends FrontendBaseController

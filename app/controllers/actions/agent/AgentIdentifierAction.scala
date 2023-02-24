@@ -39,8 +39,7 @@ trait AgentIdentifierAction extends ActionBuilder[AgentIdentifierRequest, AnyCon
 class AuthenticatedAgentIdentifierAction @Inject() (
   override val authConnector: AuthConnector,
   config: FrontendAppConfig,
-  override val parser: BodyParsers.Default,
-  view: AgentUseAgentServicesView
+  override val parser: BodyParsers.Default
 )(implicit val executionContext: ExecutionContext)
     extends AgentIdentifierAction
     with AuthorisedFunctions

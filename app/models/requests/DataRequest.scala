@@ -41,8 +41,7 @@ case class OptionalDataRequest[A](
   arn: Option[String] = None
 ) extends BaseDataRequest[A](request) {
 
-  def isAgent      = userType == Agent
-  def isIndividual = userType == Individual
+  def isAgent = userType == Agent
 }
 
 case class DataRequest[A](request: Request[A],
@@ -53,6 +52,5 @@ case class DataRequest[A](request: Request[A],
                           arn: Option[String] = None
 ) extends BaseDataRequest[A](request) {
 
-  def isAgent      = userType == Agent
-  def isIndividual = userType == Individual
+  def isAgent = userType == Agent
 }

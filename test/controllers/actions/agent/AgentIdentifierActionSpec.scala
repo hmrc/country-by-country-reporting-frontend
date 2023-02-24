@@ -58,7 +58,7 @@ class AgentIdentifierActionSpec extends SpecBase with TableDrivenPropertyChecks 
           val appConfig   = application.injector.instanceOf[FrontendAppConfig]
           val view        = application.injector.instanceOf[AgentUseAgentServicesView]
 
-          val authAction = new AuthenticatedAgentIdentifierAction(new FakeFailingAuthConnector(new MissingBearerToken), appConfig, bodyParsers, view)
+          val authAction = new AuthenticatedAgentIdentifierAction(new FakeFailingAuthConnector(new MissingBearerToken), appConfig, bodyParsers)
           val controller = new Harness(authAction)
           val result     = controller.onPageLoad()(FakeRequest())
 
@@ -79,7 +79,7 @@ class AgentIdentifierActionSpec extends SpecBase with TableDrivenPropertyChecks 
           val appConfig   = application.injector.instanceOf[FrontendAppConfig]
           val view        = application.injector.instanceOf[AgentUseAgentServicesView]
 
-          val authAction = new AuthenticatedAgentIdentifierAction(new FakeFailingAuthConnector(new BearerTokenExpired), appConfig, bodyParsers, view)
+          val authAction = new AuthenticatedAgentIdentifierAction(new FakeFailingAuthConnector(new BearerTokenExpired), appConfig, bodyParsers)
           val controller = new Harness(authAction)
           val result     = controller.onPageLoad()(FakeRequest())
 
@@ -111,7 +111,7 @@ class AgentIdentifierActionSpec extends SpecBase with TableDrivenPropertyChecks 
           val appConfig   = application.injector.instanceOf[FrontendAppConfig]
           val view        = application.injector.instanceOf[AgentUseAgentServicesView]
 
-          val authAction = new AuthenticatedAgentIdentifierAction(mockAuthConnector, appConfig, bodyParsers, view)
+          val authAction = new AuthenticatedAgentIdentifierAction(mockAuthConnector, appConfig, bodyParsers)
           val controller = new Harness(authAction)
           val result     = controller.onPageLoad()(FakeRequest())
 
@@ -129,7 +129,7 @@ class AgentIdentifierActionSpec extends SpecBase with TableDrivenPropertyChecks 
           val appConfig   = application.injector.instanceOf[FrontendAppConfig]
           val view        = application.injector.instanceOf[AgentUseAgentServicesView]
 
-          val authAction = new AuthenticatedAgentIdentifierAction(new FakeFailingAuthConnector(new InsufficientEnrolments), appConfig, bodyParsers, view)
+          val authAction = new AuthenticatedAgentIdentifierAction(new FakeFailingAuthConnector(new InsufficientEnrolments), appConfig, bodyParsers)
           val controller = new Harness(authAction)
           val result     = controller.onPageLoad()(FakeRequest())
 
@@ -150,7 +150,7 @@ class AgentIdentifierActionSpec extends SpecBase with TableDrivenPropertyChecks 
           val appConfig   = application.injector.instanceOf[FrontendAppConfig]
           val view        = application.injector.instanceOf[AgentUseAgentServicesView]
 
-          val authAction = new AuthenticatedAgentIdentifierAction(new FakeFailingAuthConnector(new InsufficientConfidenceLevel), appConfig, bodyParsers, view)
+          val authAction = new AuthenticatedAgentIdentifierAction(new FakeFailingAuthConnector(new InsufficientConfidenceLevel), appConfig, bodyParsers)
           val controller = new Harness(authAction)
           val result     = controller.onPageLoad()(FakeRequest())
 
@@ -171,7 +171,7 @@ class AgentIdentifierActionSpec extends SpecBase with TableDrivenPropertyChecks 
           val appConfig   = application.injector.instanceOf[FrontendAppConfig]
           val view        = application.injector.instanceOf[AgentUseAgentServicesView]
 
-          val authAction = new AuthenticatedAgentIdentifierAction(new FakeFailingAuthConnector(new UnsupportedAuthProvider), appConfig, bodyParsers, view)
+          val authAction = new AuthenticatedAgentIdentifierAction(new FakeFailingAuthConnector(new UnsupportedAuthProvider), appConfig, bodyParsers)
           val controller = new Harness(authAction)
           val result     = controller.onPageLoad()(FakeRequest())
 
@@ -205,7 +205,7 @@ class AgentIdentifierActionSpec extends SpecBase with TableDrivenPropertyChecks 
               val appConfig   = application.injector.instanceOf[FrontendAppConfig]
               val view        = application.injector.instanceOf[AgentUseAgentServicesView]
 
-              val authAction = new AuthenticatedAgentIdentifierAction(mockAuthConnector, appConfig, bodyParsers, view)
+              val authAction = new AuthenticatedAgentIdentifierAction(mockAuthConnector, appConfig, bodyParsers)
               val controller = new Harness(authAction)
               val result     = controller.onPageLoad()(FakeRequest())
 
@@ -224,7 +224,7 @@ class AgentIdentifierActionSpec extends SpecBase with TableDrivenPropertyChecks 
           val appConfig   = application.injector.instanceOf[FrontendAppConfig]
           val view        = application.injector.instanceOf[AgentUseAgentServicesView]
 
-          val authAction = new AuthenticatedAgentIdentifierAction(new FakeFailingAuthConnector(new UnsupportedAffinityGroup), appConfig, bodyParsers, view)
+          val authAction = new AuthenticatedAgentIdentifierAction(new FakeFailingAuthConnector(new UnsupportedAffinityGroup), appConfig, bodyParsers)
           val controller = new Harness(authAction)
           val result     = controller.onPageLoad()(FakeRequest())
 
@@ -245,7 +245,7 @@ class AgentIdentifierActionSpec extends SpecBase with TableDrivenPropertyChecks 
           val appConfig   = application.injector.instanceOf[FrontendAppConfig]
           val view        = application.injector.instanceOf[AgentUseAgentServicesView]
 
-          val authAction = new AuthenticatedAgentIdentifierAction(new FakeFailingAuthConnector(new UnsupportedCredentialRole), appConfig, bodyParsers, view)
+          val authAction = new AuthenticatedAgentIdentifierAction(new FakeFailingAuthConnector(new UnsupportedCredentialRole), appConfig, bodyParsers)
           val controller = new Harness(authAction)
           val result     = controller.onPageLoad()(FakeRequest())
 

@@ -31,8 +31,6 @@ object AgentDetails {
   implicit val writes: Writes[AgentDetails] =
     (__ \ "organisation" \ "organisationName").write[String] contramap unlift(AgentDetails.unapply)
 
-  def convertTo(contactName: Option[String]): Option[AgentDetails] =
-    contactName.map(AgentDetails(_))
 }
 
 case class AgentContactInformation(agentDetails: AgentDetails, email: String, phone: Option[String], mobile: Option[String])
