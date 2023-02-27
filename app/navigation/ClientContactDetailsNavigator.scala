@@ -59,6 +59,7 @@ class ClientContactDetailsNavigator @Inject() () {
         )
 
     case SecondContactPhonePage => _ => routes.ChangeClientContactDetailsController.onPageLoad()
+    case _                      => _ => controllers.routes.ThereIsAProblemController.onPageLoad()
   }
 
   val checkRoutes: (Page) => UserAnswers => Call = {
@@ -93,6 +94,7 @@ class ClientContactDetailsNavigator @Inject() () {
         )
 
     case SecondContactPhonePage => _ => routes.ChangeClientContactDetailsController.onPageLoad()
+    case _                      => _ => controllers.routes.ThereIsAProblemController.onPageLoad()
   }
 
   def yesNoPage(ua: UserAnswers, fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call =

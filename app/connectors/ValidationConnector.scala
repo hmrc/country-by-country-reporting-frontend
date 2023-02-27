@@ -44,6 +44,11 @@ class ValidationConnector @Inject() (http: HttpClient, config: FrontendAppConfig
                 case x: SubmissionValidationFailure =>
                   Left(x.validationErrors)
               }
+            case _ =>
+              response.json.as[SubmissionValidationResult] match {
+                case x: SubmissionValidationFailure =>
+                  Left(x.validationErrors)
+              }
           }
       }
       .recover {

@@ -145,6 +145,7 @@ package object models {
                     }
                   }
             }
+        case _ => JsError("Unknown genericc error")
       }
   }
 }

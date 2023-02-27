@@ -77,6 +77,7 @@ object CallbackBody {
       case JsDefined(JsString("FAILED")) => implicitly[Reads[FailedCallbackBody]].reads(json)
       case JsDefined(value)              => JsError(s"Invalid type distriminator: $value")
       case JsUndefined()                 => JsError(s"Missing type distriminator")
+      case _                             => JsError(s"Unknown generic error")
     }
   }
 }

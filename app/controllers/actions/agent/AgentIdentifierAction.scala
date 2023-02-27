@@ -62,6 +62,9 @@ class AuthenticatedAgentIdentifierAction @Inject() (
             case None =>
               logger.debug(s"AgentIdentifierAction: Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
               Future.successful(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad))
+            case _ =>
+              logger.debug(s"AgentIdentifierAction: Agent without enrolment. Enrolments: $enrolments")
+              Future.successful(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad))
           }
         case _ ~ _ ~ Some(affinityGroup) =>
           logger.debug(s"AgentIdentifierAction: Affinity group not Agent. Affinity group: $affinityGroup")
