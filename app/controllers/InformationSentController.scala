@@ -25,9 +25,6 @@ import views.html.InformationSentView
 
 class InformationSentController @Inject() (
   override val messagesApi: MessagesApi,
-  identify: IdentifierAction,
-  getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: InformationSentView
 ) extends FrontendBaseController

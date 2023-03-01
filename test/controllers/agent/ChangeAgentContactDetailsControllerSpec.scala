@@ -62,8 +62,6 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
 
           val result = route(application, request).value
 
-          val view = application.injector.instanceOf[ChangeAgentContactDetailsView]
-
           status(result) mustEqual OK
           val doc = Jsoup.parse(contentAsString(result))
           doc.getElementsContainingText("Select a client").isEmpty mustBe false

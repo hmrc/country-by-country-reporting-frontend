@@ -26,9 +26,6 @@ import javax.inject.Inject
 
 class ThereIsAProblemController @Inject() (
   override val messagesApi: MessagesApi,
-  identify: IdentifierAction,
-  getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: ThereIsAProblemView
 ) extends FrontendBaseController
