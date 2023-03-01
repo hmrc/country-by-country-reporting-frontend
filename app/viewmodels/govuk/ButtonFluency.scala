@@ -35,9 +35,18 @@ trait ButtonFluency {
   implicit class FluentButton(button: Button) {
 
     def asLink(href: String): Button =
-      button copy (
+      Button(
         element = Some("a"),
-        href = Some(href)
+        href = Some(href),
+        name = button.name,
+        inputType = button.inputType,
+        value = button.value,
+        disabled = button.disabled,
+        classes = button.classes,
+        attributes = button.attributes,
+        preventDoubleClick = button.preventDoubleClick,
+        isStartButton = button.isStartButton,
+        content = button.content
       )
 
     def asInput(inputType: String): Button =
