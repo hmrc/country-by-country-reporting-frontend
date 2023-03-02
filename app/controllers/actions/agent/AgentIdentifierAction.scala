@@ -30,8 +30,6 @@ import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
-import views.html.agent.AgentUseAgentServicesView
-
 import scala.concurrent.{ExecutionContext, Future}
 
 trait AgentIdentifierAction extends ActionBuilder[AgentIdentifierRequest, AnyContent]

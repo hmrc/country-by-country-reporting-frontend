@@ -21,7 +21,6 @@ import controllers.actions._
 import forms.UploadFileFormProvider
 import models.requests.DataRequest
 import models.upscan.{Failed, Quarantined, URL, UploadRejected, UploadedSuccessfully}
-import navigation.Navigator
 import pages.UploadIDPage
 import play.api.Logging
 import play.api.data.Form
