@@ -141,12 +141,9 @@ class AuthenticatedIdentifierAction @Inject() (
                 }
             }
         }
-      case None =>
+      case _ =>
         logger.warn(s"IdentifierAction: Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments. Redirecting to /agent/use-agent-services")
         Future.successful(Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad)))
-      case _ =>
-        logger.warn("IdentifierAction: Agent does not have delegated authority for Client. Redirecting to /agent/client-not-identified")
-        Future.successful(Left(Redirect(controllers.client.routes.ProblemCBCIdController.onPageLoad)))
     }
 
   private def redirectForAgentContactDetails[A](request: Request[A], internalId: String)(implicit hc: HeaderCarrier): Future[Result] =
