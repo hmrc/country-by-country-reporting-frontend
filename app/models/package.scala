@@ -145,7 +145,7 @@ package object models {
                     }
                   }
             }
-        case _ => JsError("Unknown genericc error")
+        case (_, _) => JsError("Invalid path or value")
       }
   }
 }
