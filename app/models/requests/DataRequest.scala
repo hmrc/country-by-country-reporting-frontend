@@ -16,11 +16,10 @@
 
 package models.requests
 
-import play.api.mvc.{Request, WrappedRequest}
 import models.UserAnswers
-import pages.AgentClientIdPage
+import play.api.mvc.{Request, WrappedRequest}
 import uk.gov.hmrc.auth.core.AffinityGroup
-import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual}
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 
 case class OptionalAgentDataRequest[A](request: Request[A], userId: String, userAnswers: Option[UserAnswers], arn: String) extends WrappedRequest[A](request)
 case class AgentDataRequest[A](request: Request[A], userId: String, userAnswers: UserAnswers, arn: String) extends WrappedRequest[A](request)

@@ -141,7 +141,7 @@ class AuthenticatedIdentifierAction @Inject() (
                 }
             }
         }
-      case None =>
+      case _ =>
         logger.warn(s"IdentifierAction: Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments. Redirecting to /agent/use-agent-services")
         Future.successful(Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad)))
     }

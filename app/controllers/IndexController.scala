@@ -19,11 +19,10 @@ package controllers
 import connectors.FileDetailsConnector
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import models.UserAnswers
-import models.requests.OptionalDataRequest
 import pages.{AgentFirstContactNamePage, ContactNamePage, JourneyInProgressPage}
 import play.api.Logging
-import play.api.i18n.{I18nSupport, Messages}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request, Result}
+import play.api.i18n.I18nSupport
+import play.api.mvc._
 import repositories.SessionRepository
 import services.{AgentSubscriptionService, SubscriptionService}
 import uk.gov.hmrc.http.HeaderCarrier

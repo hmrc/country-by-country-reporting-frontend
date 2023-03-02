@@ -18,7 +18,7 @@ package controllers
 
 import connectors.FileDetailsConnector
 import controllers.actions._
-import models.{ConversationId, UserAnswers}
+import models.ConversationId
 import pages.UploadIDPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
