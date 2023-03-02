@@ -44,11 +44,9 @@ class ValidationConnector @Inject() (http: HttpClient, config: FrontendAppConfig
                 case x: SubmissionValidationFailure =>
                   Left(x.validationErrors)
               }
-            case _ =>
-              response.json.as[SubmissionValidationResult] match {
-                case x: SubmissionValidationFailure =>
-                  Left(x.validationErrors)
-              }
+            case status =>
+              logger.warn(s"Unexpected response status $status: ${response.body}")
+              Left(NonFatalErrors(s"Unexpected response status $status: ${response.body}"))
           }
       }
       .recover {
