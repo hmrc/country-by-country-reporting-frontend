@@ -58,11 +58,8 @@ class AuthenticatedAgentIdentifierAction @Inject() (
             case Some(Enrolment(AGENT_ENROLMENT_ID, Seq(EnrolmentIdentifier(_, arn)), _, _)) =>
               logger.debug("AgentIdentifierAction: Authenticated as an Agent")
               block(AgentIdentifierRequest(request, userId, arn))
-            case None =>
-              logger.debug(s"AgentIdentifierAction: Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
-              Future.successful(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad))
             case _ =>
-              logger.debug(s"AgentIdentifierAction: Agent without enrolment. Enrolments: $enrolments")
+              logger.debug(s"AgentIdentifierAction: Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
               Future.successful(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad))
           }
         case _ ~ _ ~ Some(affinityGroup) =>
