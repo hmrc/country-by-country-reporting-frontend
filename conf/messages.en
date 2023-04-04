@@ -246,7 +246,7 @@ fileProblem.title = Sorry, there is a problem with the service
 fileProblem.heading = Sorry, there is a problem with the service
 fileProblem.p1 = We have not accepted your file.
 fileProblem.p2 = You must email {0} so we can investigate the problem.
-fileProblem.link = enquiries.aeoi@hmrc.gov.uk
+fileProblem.link = aeoi.enquiries@hmrc.gov.uk
 
 fileStatus.title = Result of automatic checks
 fileStatus.heading = Result of automatic checks
