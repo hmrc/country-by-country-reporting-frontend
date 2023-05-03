@@ -232,3 +232,5 @@ POST       /agent/agent-is-this-your-client                                     
 
 GET        /what-do-you-want-to-do-next                                         controllers.agent.WhatToDoNextController.onPageLoad(mode: Mode = NormalMode)
 POST       /what-do-you-want-to-do-next                                         controllers.agent.WhatToDoNextController.onSubmit(mode: Mode = NormalMode)
+
+GET        /page-not-found                                                      controllers.PageNotFoundController.onPageLoad()
