@@ -162,20 +162,20 @@ thereIsAProblem.heading = Sorry, there is a problem with the service
 thereIsAProblem.p1 = Try again later.
 thereIsAProblem.p2 = You can email {0} if you have any questions about this service.
 
-fileProblemVirus.title = There is a problem with your file
-fileProblemVirus.heading = There is a problem with your file
-fileProblemVirus.p1 = The selected file could not be uploaded. It contains a virus.
+fileProblemVirus.title = There is a virus in your file
+fileProblemVirus.heading = There is a virus in your file
+fileProblemVirus.p1 = We cannot accept this file as it contains a virus.
 
 problemPage.uploadLink = Upload a different file
 problemPage.CBC.guidanceLink = Read the CBC technical guidance for XML files (opens in new tab)
 
-fileProblemTooLarge.title = There is a problem with your file
-fileProblemTooLarge.heading = There is a problem with your file
-fileProblemTooLarge.p1 = The selected file could not be uploaded. The file must be 20MB or less.
+fileProblemTooLarge.title = There is a problem with the size of your file
+fileProblemTooLarge.heading = There is a problem with the size of your file
+fileProblemTooLarge.p1 = We cannot accept this file as it much be 100MB or less in size.
 
-fileProblemNotXml.title = There is a problem with your file
-fileProblemNotXml.heading = There is a problem with your file
-fileProblemNotXml.p1 = The selected file could not be uploaded. The file type must be XML.
+fileProblemNotXml.title = There is a problem with the file type
+fileProblemNotXml.heading = There is a problem with the file type
+fileProblemNotXml.p1 = We cannot accept this file as it must be an XML file.
 
 checkYourFileDetails.title = Check your file details are correct
 checkYourFileDetails.heading = Check your file details are correct
@@ -218,17 +218,19 @@ uploadFile.p1 = We will run two sets of automatic checks to make sure your file 
 uploadFile.error.file.invalid = The selected file must be an XML
 uploadFile.error.file.empty = Select a file to upload
 
-invalidXMLFile.title = There is a problem with your file
-invalidXMLFile.heading = There is a problem with your file
+invalidXMLFile.title = There is a problem with the formatting of your file
+invalidXMLFile.heading = There is a problem with the formatting of your file
 invalidXMLFile.p1 = We cannot accept the file {0} because it has not been formatted correctly.
-invalidXMLFile.p2 = Check all elements in your file have an opening and a closing tag. Check all tags are correctly nested.
-invalidXMLFile.p3 = The CBC_OECD element’s opening tag should be:
-invalidXMLFile.p3Example = <CBC_OECD xmlns="urn:oecd:ties:cbc:v2" xmlns:urn1="urn:oecd:ties:cbcstf:v5">
-invalidXMLFile.p4 = In the second namespace, {0} can be anything if it matches the name prefix used within the DocSpec child elements, for example:
-invalidXMLFile.p4Urn = urn1
-invalidXMLFile.p4Example = <urn1:DocTypeIndic>OECD1</urn1:DocTypeIndic>
-invalidXMLFile.p5 = To ensure your XML has proper formatting, {0}.
-invalidXMLFile.p5.link = read the CBC technical guidance for XML files
+invalidXMLFile.p2 = Check that all:
+invalidXMLFile.p3 = elements in your file have an opening and a closing tag
+invalidXMLFile.p4 = all tags are correctly nested
+invalidXMLFile.p5 = The CBC_OECD element’s opening tag should be:
+invalidXMLFile.p5Example = <CBC_OECD xmlns="urn:oecd:ties:cbc:v2" xmlns:urn1="urn:oecd:ties:cbcstf:v5">
+invalidXMLFile.p6 = In the second namespace, {0} can be anything if it matches the name prefix used within the DocSpec child elements, for example:
+invalidXMLFile.p6Urn = urn1
+invalidXMLFile.p6Example = <urn1:DocTypeIndic>OECD1</urn1:DocTypeIndic>
+invalidXMLFile.p7 = To ensure your XML has proper formatting, {0}.
+invalidXMLFile.p7.link = read the CBC technical guidance for XML files
 invalidXMLFile.uploadLink = Upload a different file
 invalidXMLFile.print = Print or save this page
 
@@ -593,10 +595,10 @@ agentUseAgentServices.title = Use Agent Services
 agentUseAgentServices.h1 = You must use agent services to send a country-by-country report
 agentUseAgentServices.p1 = We have made changes to this service. You will need to create an agent services account to send country-by-country (CBC) reports.
 
-problemCBCId.title = There is a problem
-problemCBCId.heading = There is a problem
-problemCBCId.p1 = The CBC ID you entered did not match any clients that have authorised you in your agent services account.
-problemCBCId.subheading = What to do next
+problemCBCId.title = There is a problem with your CBC ID
+problemCBCId.heading = There is a problem with your CBC ID
+problemCBCId.p1 = The CBC ID you entered does not match any clients that have authorised you in your agent services account.
+problemCBCId.subheading = What you can do next
 problemCBCId.bullet1 = Try entering your client’s CBC ID again
 problemCBCId.bullet2 = Use your agent services account to {0}
 problemCBCId.bullet2.link = ask a client to authorise you
