@@ -35,6 +35,8 @@
     <p class="govuk-body">@Html(messages("index.p1", link(routes.UploadFileController.onPageLoad().url, "index.p1.link")))</p>
 
     @if(isAgent) {
+        <p class="govuk-body">@messages("index.p2.agent")</p>
+
         <p class="govuk-body">@messages("index.p4.withDetails")</p>
 
         <ul class="govuk-list govuk-list--bullet">
