@@ -41,7 +41,7 @@ error.summary.title = There is a problem
 
 index.title = Manage your country-by-country report
 index.heading = Manage your country-by-country report
-index.p1 = You can {0}.
+index.p1 = You can report new information, or corrections and deletions, by {0}.
 index.p1.link = upload an XML file to send a CBC report
 index.p2 = The file must be 20MB or less and include your CBC ID.
 index.p3 = Your CBC ID is {0}
