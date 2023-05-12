@@ -289,8 +289,8 @@ fileFailedChecks.heading = Your file has failed our checks
 fileFailedChecks.orgWarning = You may be fined if you do not send another version.
 fileFailedChecks.agentWarning = Your client may be fined if a revised version of this file is not sent.
 
-fileDataError.title = There is a problem with your file
-fileDataError.heading = There is a problem with your file
+fileDataError.title = There is a problem with your file data
+fileDataError.heading = There is a problem with your file data
 fileDataError.p1 = We cannot accept the file {0} because it does not meet the CBC data requirements.
 fileDataError.subheading1 = What you can do next
 fileDataError.bullet1 = Print or save this page
