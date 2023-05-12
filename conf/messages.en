@@ -215,7 +215,7 @@ fileReceivedAgent.thoughts = What did you think of this service? (opens in new t
 
 uploadFile.title = Upload an XML file
 uploadFile.heading = Upload an XML file
-uploadFile.p1 = We will run two sets of automatic checks to make sure your file meets the CBC XML requirements.
+uploadFile.p1 = We will automatically check the formatting of the file.
 uploadFile.error.file.invalid = The selected file must be an XML
 uploadFile.error.file.empty = Select a file to upload
 
