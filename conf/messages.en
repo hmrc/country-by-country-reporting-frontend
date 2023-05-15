@@ -298,7 +298,6 @@ fileDataError.bullet2 = View the errors on this page
 fileDataError.bullet3 = {0} and update your file
 fileDataError.bullet3.link = Refer to the CBC technical guidance for XML files
 fileDataError.bullet4 = Upload the file
-fileDataError.p2 = Be aware there could be further problems with submitting your XML file because we have not checked it against our business rules.
 fileDataError.tableCaption = Errors
 fileDataError.tableHeading1 = Line
 fileDataError.tableHeading2 = Error
