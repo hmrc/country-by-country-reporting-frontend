@@ -35,7 +35,7 @@
     <ol class="govuk-list govuk-list--number" >
         <li>@printLink("invalidXMLFile.print")</li>
         <li>@messages("fileDataError.bullet2")</li>
-        <li>@Html(messages("fileDataError.bullet3", link("#", "fileDataError.bullet3.link", openInNewWindow = true)))</li>
+        <li>@Html(messages("fileDataError.bullet3", link("#", "fileDataError.bullet3.link")))</li>
         <li>@link(routes.UploadFileController.onPageLoad().url, "fileDataError.bullet4")</li>
     </ol>
 
