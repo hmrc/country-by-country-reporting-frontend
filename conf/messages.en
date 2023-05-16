@@ -7,6 +7,7 @@ site.no = No
 site.yes = Yes
 site.continue = Continue
 site.confirmAndSend = Confirm and send
+site.uploadFile = Upload file
 site.start = Start now
 site.startAgain = Start again
 site.signIn = Sign in
@@ -214,7 +215,7 @@ fileReceivedAgent.thoughts = What did you think of this service? (opens in new t
 
 uploadFile.title = Upload an XML file
 uploadFile.heading = Upload an XML file
-uploadFile.p1 = We will run two sets of automatic checks to make sure your file meets the CBC XML requirements.
+uploadFile.p1 = We will automatically check the formatting of the file.
 uploadFile.error.file.invalid = The selected file must be an XML
 uploadFile.error.file.empty = Select a file to upload
 
@@ -239,7 +240,7 @@ fileCheck.heading = We are checking your file
 
 sendYourFile.title = Send your file
 sendYourFile.heading = Send your file
-sendYourFile.p1 = We will automatically check if your file meets our requirements. If it does not, we will tell you what is wrong with it. The checks could take a few minutes.
+sendYourFile.p1 = We will now automatically check your file for business rule errors. This could take a few minutes.
 sendYourFile.p2 = By sending this file, you are confirming that the information is correct and complete to the best of your knowledge.
 sendYourFile.warning = This will permanently change your reported information.
 sendYourFile.status.heading = We are checking your file
