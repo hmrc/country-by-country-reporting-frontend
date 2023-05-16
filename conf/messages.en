@@ -168,7 +168,7 @@ fileProblemVirus.heading = There is a virus in your file
 fileProblemVirus.p1 = We cannot accept this file as it contains a virus.
 
 problemPage.uploadLink = Upload a different file
-problemPage.CBC.guidanceLink = Refer to the CBC technical guidance for XML files
+problemPage.CBC.guidanceLink = Read the CBC technical guidance for XML files
 
 fileProblemTooLarge.title = There is a problem with the size of your file
 fileProblemTooLarge.heading = There is a problem with the size of your file
@@ -231,7 +231,7 @@ invalidXMLFile.p6 = In the second namespace, {0} can be anything if it matches t
 invalidXMLFile.p6Urn = urn1
 invalidXMLFile.p6Example = <urn1:DocTypeIndic>OECD1</urn1:DocTypeIndic>
 invalidXMLFile.p7 = To ensure your XML has proper formatting, {0}.
-invalidXMLFile.p7.link = read the CBC technical guidance for XML files
+invalidXMLFile.p7.link = Refer to the CBC technical guidance for XML files
 invalidXMLFile.uploadLink = Upload a different file
 invalidXMLFile.print = Print or save this page
 
