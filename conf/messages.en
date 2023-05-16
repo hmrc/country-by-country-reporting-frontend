@@ -168,7 +168,7 @@ fileProblemVirus.heading = There is a virus in your file
 fileProblemVirus.p1 = We cannot accept this file as it contains a virus.
 
 problemPage.uploadLink = Upload a different file
-problemPage.CBC.guidanceLink = Read the CBC technical guidance for XML files
+problemPage.CBC.guidanceLink = Refer to the CBC technical guidance for XML files
 
 fileProblemTooLarge.title = There is a problem with the size of your file
 fileProblemTooLarge.heading = There is a problem with the size of your file
