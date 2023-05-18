@@ -36,8 +36,10 @@ object AgentClientDetailsViewModel {
         value = ValueViewModel(HtmlFormat.escape(s"${acd.id}").toString),
         actions = Seq(
           ActionItemViewModel(
-            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages("whatToDoNext.change.hidden")}</span>"""),
-            href = controllers.agent.routes.AgentSecondContactEmailController.onPageLoad(CheckMode).url
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "whatToDoNext.change.hidden"
+            )}</span>"""),
+            href = controllers.agent.routes.WhatToDoNextController.onPageLoad().url
           )
             .withAttribute(("id", "change"))
         )

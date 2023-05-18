@@ -17,7 +17,7 @@
 package viewmodels
 
 import controllers.routes
-import models.{CBC401, CBC402, CheckMode, MessageTypeIndic, ValidatedFileData}
+import models.{CBC401, CBC402, MessageTypeIndic, ValidatedFileData}
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
@@ -43,7 +43,9 @@ object CheckYourFileDetailsViewModel {
         value = ValueViewModel(HtmlFormat.escape(s"${displayTypeIndictator(vfd.messageSpecData.messageTypeIndic)}").toString),
         actions = Seq(
           ActionItemViewModel(
-            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages("checkYourFileDetails.uploadedFile.change.hidden")}</span>"""),
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "checkYourFileDetails.uploadedFile.change.hidden"
+            )}</span>"""),
             href = routes.UploadFileController.onPageLoad().url
           )
             .withAttribute(("id", "your-file"))

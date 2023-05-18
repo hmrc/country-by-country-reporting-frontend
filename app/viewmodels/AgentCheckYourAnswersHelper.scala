@@ -40,7 +40,9 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
         value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
         actions = Seq(
           ActionItemViewModel(
-            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages("agentFirstContactName.change.hidden")}</span>"""),
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "agentFirstContactName.change.hidden"
+            )}</span>"""),
             href = routes.AgentFirstContactNameController.onPageLoad(CheckMode).url
           )
             .withAttribute(("id", "contact-name"))
@@ -55,7 +57,9 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
         value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
         actions = Seq(
           ActionItemViewModel(
-            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages("agentFirstContactEmail.change.hidden")}</span>"""),
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "agentFirstContactEmail.change.hidden"
+            )}</span>"""),
             href = routes.AgentFirstContactEmailController.onPageLoad(CheckMode).url
           )
             .withAttribute(("id", "contact-email"))
@@ -70,7 +74,9 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
         value = ValueViewModel(HtmlFormat.escape(value).toString),
         actions = Seq(
           ActionItemViewModel(
-            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages("agentFirstContactPhone.change.hidden")}</span>"""),
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "agentFirstContactPhone.change.hidden"
+            )}</span>"""),
             href = routes.AgentFirstContactHavePhoneController.onPageLoad(CheckMode).url
           )
             .withAttribute(("id", "contact-phone"))
@@ -92,7 +98,9 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
         value = ValueViewModel(HtmlFormat.escape(s"${messages(yesNo)}").toString),
         actions = Seq(
           ActionItemViewModel(
-            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages("agentHaveSecondContact.change.hidden")}</span>"""),
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "agentHaveSecondContact.change.hidden"
+            )}</span>"""),
             href = routes.AgentHaveSecondContactController.onPageLoad(CheckMode).url
           )
             .withAttribute(("id", "second-contact"))
@@ -119,7 +127,9 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
         value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
         actions = Seq(
           ActionItemViewModel(
-            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages("agentSecondContactName.change.hidden")}</span>"""),
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "agentSecondContactName.change.hidden"
+            )}</span>"""),
             href = routes.AgentSecondContactNameController.onPageLoad(CheckMode).url
           )
             .withAttribute(("id", "snd-contact-name"))
@@ -134,7 +144,9 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
         value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
         actions = Seq(
           ActionItemViewModel(
-            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages("agentSecondContactEmail.change.hidden")}</span>"""),
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "agentSecondContactEmail.change.hidden"
+            )}</span>"""),
             href = routes.AgentSecondContactEmailController.onPageLoad(CheckMode).url
           )
             .withAttribute(("id", "snd-contact-email"))
@@ -149,7 +161,9 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
         value = ValueViewModel(HtmlFormat.escape(value).toString),
         actions = Seq(
           ActionItemViewModel(
-            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages("agentSecondContactHavePhone.change.hidden")}</span>"""),
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "agentSecondContactHavePhone.change.hidden"
+            )}</span>"""),
             href = routes.AgentSecondContactPhoneController.onPageLoad(CheckMode).url
           )
             .withAttribute(("id", "snd-contact-phone"))
