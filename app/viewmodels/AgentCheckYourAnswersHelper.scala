@@ -162,7 +162,7 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
         actions = Seq(
           ActionItemViewModel(
             content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
-              "agentSecondContactHavePhone.change.hidden"
+              "agentSecondContactPhone.change.hidden"
             )}</span>"""),
             href = routes.AgentSecondContactPhoneController.onPageLoad(CheckMode).url
           )
