@@ -41,8 +41,11 @@
   ))
 
     @govukSummaryList(fileDetails)
-
+ @if(secondContactEmail.isDefined){
   <p class="govuk-body">@messages("fileReceived.p1", firstContactEmail, secondContactMessage)</p>
+ } else{
+   <p class="govuk-body">@messages("fileReceived.p1.0", firstContactEmail)</p>
+ }
 
   <h2 class="govuk-heading-m">@messages("fileReceived.subheading")</h2>
 
