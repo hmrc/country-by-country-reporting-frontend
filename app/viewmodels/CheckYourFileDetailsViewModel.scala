@@ -20,6 +20,7 @@ import controllers.routes
 import models.{CBC401, CBC402, MessageTypeIndic, ValidatedFileData}
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 
@@ -41,9 +42,13 @@ object CheckYourFileDetailsViewModel {
         key = "checkYourFileDetails.messageTypeIndic",
         value = ValueViewModel(HtmlFormat.escape(s"${displayTypeIndictator(vfd.messageSpecData.messageTypeIndic)}").toString),
         actions = Seq(
-          ActionItemViewModel("site.change", routes.UploadFileController.onPageLoad().url)
+          ActionItemViewModel(
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "checkYourFileDetails.uploadedFile.change.hidden"
+            )}</span>"""),
+            href = routes.UploadFileController.onPageLoad().url
+          )
             .withAttribute(("id", "your-file"))
-            .withVisuallyHiddenText(messages("checkYourFileDetails.uploadedFile.change.hidden"))
         )
       )
     )

@@ -19,7 +19,7 @@ package viewmodels
 import base.SpecBase
 import models.AgentClientDetails
 import uk.gov.hmrc.govukfrontend.views.Aliases.{ActionItem, Value}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Actions, Key, SummaryListRow}
 
 class AgentClientDetailsViewModelSpec extends SpecBase {
@@ -37,7 +37,13 @@ class AgentClientDetailsViewModelSpec extends SpecBase {
             Actions(
               "",
               Seq(
-                ActionItem("/send-a-country-by-country-report/what-do-you-want-to-do-next", Text("Change"), Some("client"), "", Map("id" -> "change"))
+                ActionItem(
+                  "/send-a-country-by-country-report/what-do-you-want-to-do-next",
+                  HtmlContent("""<span aria-hidden="true">Change</span><span class="govuk-visually-hidden">Change client</span>"""),
+                  None,
+                  "",
+                  Map("id" -> "change")
+                )
               )
             )
           )

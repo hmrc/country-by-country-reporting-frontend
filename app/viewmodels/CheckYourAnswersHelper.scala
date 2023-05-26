@@ -21,6 +21,7 @@ import models.{CheckMode, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist._
 
@@ -38,9 +39,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         key = "contactName.checkYourAnswersLabel",
         value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
         actions = Seq(
-          ActionItemViewModel("site.change", routes.ContactNameController.onPageLoad(CheckMode).url)
+          ActionItemViewModel(
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "contactName.change.hidden"
+            )}</span>"""),
+            href = routes.ContactNameController.onPageLoad(CheckMode).url
+          )
             .withAttribute(("id", "contact-name"))
-            .withVisuallyHiddenText(messages("contactName.change.hidden"))
         )
       )
   }
@@ -51,9 +56,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         key = "contactEmail.checkYourAnswersLabel",
         value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
         actions = Seq(
-          ActionItemViewModel("site.change", routes.ContactEmailController.onPageLoad(CheckMode).url)
+          ActionItemViewModel(
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "contactEmail.change.hidden"
+            )}</span>"""),
+            href = routes.ContactEmailController.onPageLoad(CheckMode).url
+          )
             .withAttribute(("id", "contact-email"))
-            .withVisuallyHiddenText(messages("contactEmail.change.hidden"))
         )
       )
   }
@@ -64,9 +73,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         key = "contactPhone.checkYourAnswersLabel",
         value = ValueViewModel(HtmlFormat.escape(value).toString),
         actions = Seq(
-          ActionItemViewModel("site.change", routes.HaveTelephoneController.onPageLoad(CheckMode).url)
+          ActionItemViewModel(
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "contactPhone.change.hidden"
+            )}</span>"""),
+            href = routes.ContactPhoneController.onPageLoad(CheckMode).url
+          )
             .withAttribute(("id", "contact-phone"))
-            .withVisuallyHiddenText(messages("contactPhone.change.hidden"))
         )
       )
 
@@ -84,9 +97,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         key = "haveSecondContact.checkYourAnswersLabel",
         value = ValueViewModel(HtmlFormat.escape(s"${messages(yesNo)}").toString),
         actions = Seq(
-          ActionItemViewModel("site.change", routes.HaveSecondContactController.onPageLoad(CheckMode).url)
+          ActionItemViewModel(
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "haveSecondContact.change.hidden"
+            )}</span>"""),
+            href = routes.HaveSecondContactController.onPageLoad(CheckMode).url
+          )
             .withAttribute(("id", "second-contact"))
-            .withVisuallyHiddenText(messages("haveSecondContact.change.hidden"))
         )
       )
     Some(userAnswers.get(HaveSecondContactPage) match {
@@ -109,9 +126,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         key = "secondContactName.checkYourAnswersLabel",
         value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
         actions = Seq(
-          ActionItemViewModel("site.change", routes.SecondContactNameController.onPageLoad(CheckMode).url)
+          ActionItemViewModel(
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "secondContactName.change.hidden"
+            )}</span>"""),
+            href = routes.SecondContactNameController.onPageLoad(CheckMode).url
+          )
             .withAttribute(("id", "snd-contact-name"))
-            .withVisuallyHiddenText(messages("secondContactName.change.hidden"))
         )
       )
   }
@@ -122,9 +143,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         key = "secondContactEmail.checkYourAnswersLabel",
         value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
         actions = Seq(
-          ActionItemViewModel("site.change", routes.SecondContactEmailController.onPageLoad(CheckMode).url)
+          ActionItemViewModel(
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "secondContactEmail.change.hidden"
+            )}</span>"""),
+            href = routes.SecondContactEmailController.onPageLoad(CheckMode).url
+          )
             .withAttribute(("id", "snd-contact-email"))
-            .withVisuallyHiddenText(messages("secondContactEmail.change.hidden"))
         )
       )
   }
@@ -135,9 +160,13 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         key = "secondContactPhone.checkYourAnswersLabel",
         value = ValueViewModel(HtmlFormat.escape(value).toString),
         actions = Seq(
-          ActionItemViewModel("site.change", routes.SecondContactHavePhoneController.onPageLoad(CheckMode).url)
+          ActionItemViewModel(
+            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "secondContactPhone.change.hidden"
+            )}</span>"""),
+            href = routes.SecondContactPhoneController.onPageLoad(CheckMode).url
+          )
             .withAttribute(("id", "snd-contact-phone"))
-            .withVisuallyHiddenText(messages("secondContactPhone.change.hidden"))
         )
       )
 
