@@ -434,9 +434,9 @@ agentFirstContactHavePhone.error.required = Select yes if we can call your first
 agentFirstContactPhone.title = What is your first contact’s telephone number?
 agentFirstContactPhone.heading = What is {0} telephone number?
 agentFirstContactPhone.checkYourAnswersLabel = First contact telephone number
-agentFirstContactPhone.p1 = Provide a telephone number from your organisation, not your client’s.
+agentFirstContactPhone.hint = Provide a telephone number from your organisation, not your client's. For international numbers, include the country code
 agentFirstContactPhone.error.required = Enter your first contact’s telephone number
-agentFirstContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
+agentFirstContactPhone.error.invalid = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192
 agentFirstContactPhone.error.length = Your first contact’s telephone number must be 24 characters or less
 agentFirstContactPhone.change.hidden = Change first contact telephone number
 

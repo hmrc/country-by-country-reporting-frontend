@@ -34,14 +34,12 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <h1 class="govuk-heading-l">@messages(s"agentFirstContactPhone.heading", agentFirstContactName)</h1>
-        <p class="govuk-body">@messages("agentFirstContactPhone.p1")</p>
-
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages(s"agentFirstContactPhone.heading", agentFirstContactName)).asPageHeading().withCssClass("govuk-visually-hidden")
-            )
+                label = LabelViewModel(messages(s"agentFirstContactPhone.heading", agentFirstContactName)).asPageHeading()
+            ).withHint(HintViewModel(Text(messages("agentFirstContactPhone.hint"))))
+                    .withWidth(Fixed20)
         )
 
         @govukButton(
