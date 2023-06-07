@@ -20,7 +20,7 @@ import connectors.UpscanConnector
 import controllers.actions._
 import forms.UploadFileFormProvider
 import models.requests.DataRequest
-import models.upscan.{Failed, Quarantined, URL, UploadRejected, UploadedSuccessfully}
+import models.upscan.{Failed, Quarantined, URL, UploadId, UploadRejected, UploadedSuccessfully}
 import pages.UploadIDPage
 import play.api.Logging
 import play.api.data.Form
@@ -57,10 +57,11 @@ class UploadFileController @Inject() (
       toResponse(form)
   }
 
-  private def toResponse(preparedForm: Form[String])(implicit request: DataRequest[AnyContent], hc: HeaderCarrier): Future[Result] =
+  private def toResponse(preparedForm: Form[String])(implicit request: DataRequest[AnyContent], hc: HeaderCarrier): Future[Result] = {
+    val uploadId: UploadId = UploadId.generate
     (for {
-      upscanInitiateResponse <- upscanConnector.getUpscanFormData
-      uploadId               <- upscanConnector.requestUpload(upscanInitiateResponse.fileReference)
+      upscanInitiateResponse <- upscanConnector.getUpscanFormData(uploadId)
+      uploadId               <- upscanConnector.requestUpload(uploadId, upscanInitiateResponse.fileReference)
       updatedAnswers         <- Future.fromTry(request.userAnswers.set(UploadIDPage, uploadId))
       _                      <- sessionRepository.set(updatedAnswers)
     } yield Ok(view(preparedForm, upscanInitiateResponse)))
@@ -69,6 +70,7 @@ class UploadFileController @Inject() (
           logger.warn(s"UploadFileController: An exception occurred when contacting Upscan: $e")
           Redirect(routes.ThereIsAProblemController.onPageLoad())
       }
+  }
 
   def showError(errorCode: String, errorMessage: String, errorRequestId: String): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
@@ -84,33 +86,28 @@ class UploadFileController @Inject() (
       }
   }
 
-  def getStatus: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
+  def getStatus(uploadId: UploadId): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
-      request.userAnswers.get(UploadIDPage) match {
-        case Some(uploadId) =>
-          upscanConnector.getUploadStatus(uploadId) flatMap {
-            case Some(_: UploadedSuccessfully) =>
-              Future.successful(Ok(Json.toJson(URL(routes.FileValidationController.onPageLoad().url))))
-            case Some(r: UploadRejected) =>
-              if (r.details.message.contains("octet-stream")) {
-                logger.warn(s"Show errorForm on rejection $r")
-                val errorReason = r.details.failureReason
-                Future.successful(Ok(Json.toJson(URL(routes.UploadFileController.showError("OctetStream", errorReason, "").url))))
-              } else {
-                logger.warn(s"Upload rejected. Error details: ${r.details}")
-                Future.successful(Ok(Json.toJson(URL(routes.FileProblemNotXmlController.onPageLoad().url))))
-              }
-            case Some(Quarantined) =>
-              Future.successful(Ok(Json.toJson(URL(routes.FileProblemVirusController.onPageLoad().url))))
-            case Some(Failed) =>
-              Future.successful(Ok(Json.toJson(URL(routes.ThereIsAProblemController.onPageLoad().url))))
-            case Some(_) =>
-              Future.successful(Continue)
-            case None =>
-              Future.successful(Ok(Json.toJson(URL(routes.ThereIsAProblemController.onPageLoad().url))))
+      upscanConnector.getUploadStatus(uploadId) map {
+        case Some(_: UploadedSuccessfully) =>
+          Redirect(routes.FileValidationController.onPageLoad().url)
+        case Some(r: UploadRejected) =>
+          if (r.details.message.contains("octet-stream")) {
+            logger.warn(s"Show errorForm on rejection $r")
+            val errorReason = r.details.failureReason
+            Redirect(routes.UploadFileController.showError("OctetStream", errorReason, "").url)
+          } else {
+            logger.warn(s"Upload rejected. Error details: ${r.details}")
+            Redirect(routes.FileProblemNotXmlController.onPageLoad().url)
           }
+        case Some(Quarantined) =>
+          Redirect(routes.FileProblemVirusController.onPageLoad().url)
+        case Some(Failed) =>
+          Redirect(routes.ThereIsAProblemController.onPageLoad().url)
+        case Some(_) =>
+          Redirect(routes.UploadFileController.getStatus(uploadId).url)
         case None =>
-          Future.successful(Ok(Json.toJson(URL(routes.ThereIsAProblemController.onPageLoad().url))))
+          Redirect(routes.ThereIsAProblemController.onPageLoad().url)
       }
   }
 }

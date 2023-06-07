@@ -35,17 +35,23 @@ class UpscanConnector @Inject() (configuration: FrontendAppConfig, httpClient: H
     HeaderNames.CONTENT_TYPE -> "application/json"
   )
 
-  def getUpscanFormData(implicit hc: HeaderCarrier): Future[UpscanInitiateResponse] = {
+  def getUpscanFormData(uploadId: UploadId)(implicit hc: HeaderCarrier): Future[UpscanInitiateResponse] = {
     val callbackUrl = s"$backendUrl/callback"
-    val body        = UpscanInitiateRequest(callbackUrl, None, Some(upscanMaxSize * 1048576), Some("text/xml"))
+    val body = UpscanInitiateRequest(
+      callbackUrl,
+      Some(upscanRedirectBase + controllers.routes.UploadFileController.getStatus(uploadId).url),
+      Some(s"$upscanRedirectBase/send-a-country-by-country-report/error"),
+      None,
+      Some(upscanMaxSize * 1048576),
+      Some("text/xml")
+    )
     httpClient.POST[UpscanInitiateRequest, PreparedUpload](upscanInitiateUrl, body, headers.toSeq).map {
       _.toUpscanInitiateResponse
     }
   }
 
-  def requestUpload(fileReference: Reference)(implicit hc: HeaderCarrier): Future[UploadId] = {
-    val uploadId: UploadId = UploadId.generate
-    val uploadUrl          = s"$backendUrl/upscan/upload"
+  def requestUpload(uploadId: UploadId, fileReference: Reference)(implicit hc: HeaderCarrier): Future[UploadId] = {
+    val uploadUrl = s"$backendUrl/upscan/upload"
     httpClient.POST[UpscanIdentifiers, HttpResponse](uploadUrl, UpscanIdentifiers(uploadId, fileReference)).map {
       _ => uploadId
     }
@@ -93,5 +99,6 @@ class UpscanConnector @Inject() (configuration: FrontendAppConfig, httpClient: H
   private[connectors] val upscanInitiatePath: String = "/upscan/v2/initiate"
   private val backendUrl                             = s"${configuration.cbcUrl}/country-by-country-reporting"
   private val upscanInitiateUrl                      = s"${configuration.upscanInitiateHost}$upscanInitiatePath"
+  private val upscanRedirectBase                     = configuration.upscanRedirectBase
   private val upscanMaxSize                          = configuration.upscanMaxFileSize
 }

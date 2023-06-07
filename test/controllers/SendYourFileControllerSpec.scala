@@ -119,7 +119,8 @@ class SendYourFileControllerSpec extends SpecBase {
 
           val result = route(application, request).value
 
-          status(result) mustEqual OK
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result) mustBe Some(controllers.routes.FilePendingChecksController.onPageLoad().url)
 
           verify(mockSubmissionConnector, times(1))
             .submitDocument(any(), any(), any())(any(), any())
