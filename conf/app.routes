@@ -94,7 +94,7 @@ GET        /problem/information-sent                                            
 
 GET        /upload-file                                                         controllers.UploadFileController.onPageLoad()
 
-GET        /status                                                              controllers.UploadFileController.getStatus()
+GET        /status                                                              controllers.UploadFileController.getStatus(uploadId: upscan.UploadId)
 
 GET        /error                                                               controllers.UploadFileController.showError(errorCode: String, errorMessage: String, errorRequestId: String)
 

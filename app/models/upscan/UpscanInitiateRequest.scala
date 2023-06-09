@@ -20,6 +20,8 @@ import play.api.libs.json.{Json, OFormat}
 
 case class UpscanInitiateRequest(
   callbackUrl: String,
+  successRedirect: Option[String] = None,
+  errorRedirect: Option[String] = None,
   minimumFileSize: Option[Int] = None,
   maximumFileSize: Option[Int] = None,
   expectedContentType: Option[String] = None

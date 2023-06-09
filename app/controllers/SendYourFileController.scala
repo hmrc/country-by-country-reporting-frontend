@@ -73,7 +73,7 @@ class SendYourFileController @Inject() (
               for {
                 userAnswers <- Future.fromTry(request.userAnswers.set(ConversationIdPage, conversationId))
                 _           <- sessionRepository.set(userAnswers)
-              } yield Ok
+              } yield Redirect(controllers.routes.FilePendingChecksController.onPageLoad())
             case _ => Future.successful(InternalServerError)
           }
         case _ =>

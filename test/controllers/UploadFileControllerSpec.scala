@@ -37,6 +37,8 @@ import scala.concurrent.Future
 
 class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks with Generators {
 
+  val uploadId: UploadId = UploadId("12345")
+
   val fakeUpscanConnector: FakeUpscanConnector = app.injector.instanceOf[FakeUpscanConnector]
 
   val userAnswers: UserAnswers = UserAnswers(userAnswersId)
@@ -67,9 +69,9 @@ class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks wi
 
     "must read the progress of the upload from the backend" in {
 
-      val request = FakeRequest(GET, routes.UploadFileController.getStatus().url)
+      val request = FakeRequest(GET, routes.UploadFileController.getStatus(uploadId).url)
 
-      def verifyResult(uploadStatus: UploadStatus, expectedStatus: Int = OK, expectedResult: Option[URL] = None): Unit = {
+      def verifyResult(uploadStatus: UploadStatus, expectedResult: Option[String] = None): Unit = {
 
         val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
@@ -80,21 +82,16 @@ class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks wi
         fakeUpscanConnector.setStatus(uploadStatus)
         val result = route(application, request).value
 
-        status(result) mustBe expectedStatus
-        val actualResult = Option(contentAsString(result)).collect { case x if x.trim.nonEmpty => x }.map(Json.parse(_).as[URL])
-        actualResult mustBe expectedResult
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result) mustBe expectedResult
         application.stop()
       }
 
-      verifyResult(InProgress, CONTINUE, None)
-      verifyResult(Quarantined, OK, Some(URL("/send-a-country-by-country-report/problem/virus-found")))
-      verifyResult(
-        UploadRejected(ErrorDetails("REJECTED", "message")),
-        OK,
-        Some(URL("/send-a-country-by-country-report/problem/not-xml"))
-      )
-      verifyResult(Failed, OK, Some(URL("/send-a-country-by-country-report/problem/there-is-a-problem")))
-      verifyResult(UploadedSuccessfully("name", "downloadUrl"), OK, Some(URL("/send-a-country-by-country-report/file-validation")))
+      verifyResult(InProgress, Some(routes.UploadFileController.getStatus(uploadId).url))
+      verifyResult(Quarantined, Some(routes.FileProblemVirusController.onPageLoad().url))
+      verifyResult(UploadRejected(ErrorDetails("REJECTED", "message")), Some(routes.FileProblemNotXmlController.onPageLoad().url))
+      verifyResult(Failed, Some(routes.ThereIsAProblemController.onPageLoad().url))
+      verifyResult(UploadedSuccessfully("name", "downloadUrl"), Some(routes.FileValidationController.onPageLoad().url))
 
     }
 
