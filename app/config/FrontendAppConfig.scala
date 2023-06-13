@@ -41,12 +41,12 @@ class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig:
   val registerUrl: String          = configuration.get[String]("urls.register")
   val guidanceAgentService: String = configuration.get[String]("urls.guidance.agentService")
 
-  val upscanInitiateHost: String = servicesConfig.baseUrl("upscan")
-  val upscanBucketHost: String   = servicesConfig.baseUrl("upscan")
-  val upscanProtocol: String     = servicesConfig.getConfString("upscan.protocol", "https")
-  val upscanRedirectBase: String = configuration.get[String]("microservice.services.upscan.redirect-base")
+  val upscanInitiateHost: String        = servicesConfig.baseUrl("upscan")
+  val upscanBucketHost: String          = servicesConfig.baseUrl("upscan")
+  val upscanProtocol: String            = servicesConfig.getConfString("upscan.protocol", "https")
+  val upscanRedirectBase: String        = configuration.get[String]("microservice.services.upscan.redirect-base")
   val upscanCallbackDelayInSeconds: Int = configuration.get[Int]("microservice.services.upscan.callbackDelayInSeconds")
-  val upscanMaxFileSize: Int     = configuration.get[Int]("microservice.services.upscan.max-file-size-in-mb")
+  val upscanMaxFileSize: Int            = configuration.get[Int]("microservice.services.upscan.max-file-size-in-mb")
 
   val emailEnquiries: String = configuration.get[String]("urls.emailEnquiries")
 
