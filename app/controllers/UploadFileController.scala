@@ -16,6 +16,7 @@
 
 package controllers
 
+import config.FrontendAppConfig
 import connectors.UpscanConnector
 import controllers.actions._
 import forms.UploadFileFormProvider
@@ -43,6 +44,7 @@ class UploadFileController @Inject() (
   requireData: DataRequiredAction,
   upscanConnector: UpscanConnector,
   formProvider: UploadFileFormProvider,
+  config: FrontendAppConfig,
   val controllerComponents: MessagesControllerComponents,
   view: UploadFileView
 )(implicit ec: ExecutionContext)
@@ -88,6 +90,7 @@ class UploadFileController @Inject() (
 
   def getStatus(uploadId: UploadId): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
+      Thread.sleep(config.upscanCallbackDelayInSeconds * 1000L) // Delay to make sure the backend db has been populated by the upscan callback first
       upscanConnector.getUploadStatus(uploadId) map {
         case Some(_: UploadedSuccessfully) =>
           Redirect(routes.FileValidationController.onPageLoad().url)
