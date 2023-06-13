@@ -16,6 +16,7 @@
 
 package controllers
 
+import akka.actor.ActorSystem
 import config.FrontendAppConfig
 import connectors.UpscanConnector
 import controllers.actions._
@@ -35,6 +36,7 @@ import views.html.UploadFileView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.duration._
 
 class UploadFileController @Inject() (
   override val messagesApi: MessagesApi,
@@ -45,6 +47,7 @@ class UploadFileController @Inject() (
   upscanConnector: UpscanConnector,
   formProvider: UploadFileFormProvider,
   config: FrontendAppConfig,
+  actorSystem: ActorSystem,
   val controllerComponents: MessagesControllerComponents,
   view: UploadFileView
 )(implicit ec: ExecutionContext)
@@ -90,27 +93,29 @@ class UploadFileController @Inject() (
 
   def getStatus(uploadId: UploadId): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
-      Thread.sleep(config.upscanCallbackDelayInSeconds * 1000L) // Delay to make sure the backend db has been populated by the upscan callback first
-      upscanConnector.getUploadStatus(uploadId) map {
-        case Some(_: UploadedSuccessfully) =>
-          Redirect(routes.FileValidationController.onPageLoad().url)
-        case Some(r: UploadRejected) =>
-          if (r.details.message.contains("octet-stream")) {
-            logger.warn(s"Show errorForm on rejection $r")
-            val errorReason = r.details.failureReason
-            Redirect(routes.UploadFileController.showError("OctetStream", errorReason, "").url)
-          } else {
-            logger.warn(s"Upload rejected. Error details: ${r.details}")
-            Redirect(routes.FileProblemNotXmlController.onPageLoad().url)
-          }
-        case Some(Quarantined) =>
-          Redirect(routes.FileProblemVirusController.onPageLoad().url)
-        case Some(Failed) =>
-          Redirect(routes.ThereIsAProblemController.onPageLoad().url)
-        case Some(_) =>
-          Redirect(routes.UploadFileController.getStatus(uploadId).url)
-        case None =>
-          Redirect(routes.ThereIsAProblemController.onPageLoad().url)
+      // Delay the call to make sure the backend db has been populated by the upscan callback first
+      akka.pattern.after(config.upscanCallbackDelayInSeconds.seconds, actorSystem.scheduler) {
+        upscanConnector.getUploadStatus(uploadId) map {
+          case Some(_: UploadedSuccessfully) =>
+            Redirect(routes.FileValidationController.onPageLoad().url)
+          case Some(r: UploadRejected) =>
+            if (r.details.message.contains("octet-stream")) {
+              logger.warn(s"Show errorForm on rejection $r")
+              val errorReason = r.details.failureReason
+              Redirect(routes.UploadFileController.showError("OctetStream", errorReason, "").url)
+            } else {
+              logger.warn(s"Upload rejected. Error details: ${r.details}")
+              Redirect(routes.FileProblemNotXmlController.onPageLoad().url)
+            }
+          case Some(Quarantined) =>
+            Redirect(routes.FileProblemVirusController.onPageLoad().url)
+          case Some(Failed) =>
+            Redirect(routes.ThereIsAProblemController.onPageLoad().url)
+          case Some(_) =>
+            Redirect(routes.UploadFileController.getStatus(uploadId).url)
+          case None =>
+            Redirect(routes.ThereIsAProblemController.onPageLoad().url)
+        }
       }
   }
 }
