@@ -43,7 +43,7 @@ object CheckYourFileDetailsViewModel {
         value = ValueViewModel(HtmlFormat.escape(s"${displayTypeIndictator(vfd.messageSpecData.messageTypeIndic)}").toString),
         actions = Seq(
           ActionItemViewModel(
-            content = HtmlContent(s"""<span aria-hidden="true">${messages("checkYourFileDetails.uploadedFile.change.hidden")}</span>"""),
+            content = HtmlContent(s"""${messages("checkYourFileDetails.uploadedFile.change.hidden")}"""),
             href = routes.UploadFileController.onPageLoad().url
           )
             .withAttribute(("id", "your-file"))
