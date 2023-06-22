@@ -20,7 +20,7 @@
     layout: templates.Layout,
     link: components.Link,
     appConfig: FrontendAppConfig,
-        govukButton: GovukButton
+    govukButton: GovukButton
 )
 
 @()(implicit request: Request[_], messages: Messages)
@@ -31,11 +31,8 @@
 ) {
     <h1 class="govuk-heading-l">@messages("agentUseAgentServices.h1")</h1>
 
-    <p class="govuk-body">@messages("agentUseAgentServices.p1")</p>
+    <p class="govuk-body">
+        @Html(messages("agentUseAgentServices.p1", link(appConfig.guidanceAgentService, "agentUseAgentServices.p1.link")))
+    </p>
 
-    @govukButton(
-        ButtonViewModel(Text(messages("site.continue")))
-                .withAttribute( "id" -> "submit")
-                .asLink(appConfig.guidanceAgentService)
-    )
 }
