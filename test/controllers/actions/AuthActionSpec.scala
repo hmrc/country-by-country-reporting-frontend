@@ -236,12 +236,16 @@ class AuthActionSpec extends SpecBase {
         ).thenReturn(Future.successful(authRetrievals), Future.successful(()))
 
         when(
-          mockAuthConnector.authorise(mockEq(
-                                        Enrolment("HMRC-CBC-ORG")
-                                          .withIdentifier("cbcId", "NonMatchingId")
-                                          .withDelegatedAuthRule("cbc-auth")
-                                      ),
-                                      any[Retrieval[Any]]
+          mockAuthConnector.authorise(
+            mockEq(
+              Enrolment("HMRC-CBC-ORG")
+                .withIdentifier("cbcId", "NonMatchingId")
+                .withDelegatedAuthRule("cbc-auth") or
+                Enrolment("HMRC-CBC-NONUK-ORG")
+                  .withIdentifier("cbcId", "NonMatchingId")
+                  .withDelegatedAuthRule("cbc-auth")
+            ),
+            any[Retrieval[Any]]
           )(any(), any())
         )
           .thenReturn(Future.failed(new InsufficientEnrolments))
@@ -267,12 +271,56 @@ class AuthActionSpec extends SpecBase {
         }
       }
 
-      "must allow the user to continue the journey when AGENT and delegated auth rule passes" in {
+      "must allow the user enrolment to continue the journey when AGENT and delegated auth rule passes for HMRC-CBC-ORG enrolment" in {
         val authRetrievals: RetrievalType = new ~(new ~(Some("userId"),
                                                         Enrolments(
                                                           Set(
                                                             Enrolment("HMRC-AS-AGENT").withIdentifier("AgentReferenceNumber", "arn123"),
                                                             Enrolment("HMRC-CBC-ORG").withIdentifier("cbcid", "cbcid1234").withDelegatedAuthRule("cbc-auth")
+                                                          )
+                                                        )
+                                                  ),
+                                                  Some(AffinityGroup.Agent)
+        )
+
+        val mockAuthConnector = mock[AuthConnector]
+        val application = applicationBuilder(userAnswers = None)
+          .overrides(
+            inject.bind[AuthConnector].toInstance(mockAuthConnector)
+          )
+          .build()
+
+        when(mockAuthConnector.authorise(any(), any[Retrieval[Any]])(any(), any()))
+          .thenReturn(Future.successful(authRetrievals), Future.successful(()))
+
+        when(mockSessionRepository.get("userId"))
+          .thenReturn(
+            Future.successful(
+              UserAnswers("userId")
+                .set(AgentClientIdPage, "cbcid1234")
+                .fold(_ => None, userAnswers => Some(userAnswers))
+            )
+          )
+
+        running(application) {
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
+
+          val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, mockAgentSubscriptionService, bodyParsers, mockSessionRepository)
+          val controller = new Harness(authAction)
+          val result     = controller.onPageLoad()(FakeRequest())
+          status(result) mustBe OK
+        }
+      }
+      "must allow the user enrolment to continue the journey when AGENT and delegated auth rule passes for HMRC-CBC-NONUK-ORG enrolment" in {
+        val authRetrievals: RetrievalType = new ~(new ~(Some("userId"),
+                                                        Enrolments(
+                                                          Set(
+                                                            Enrolment("HMRC-AS-AGENT").withIdentifier("AgentReferenceNumber", "arn123"),
+                                                            Enrolment("HMRC-CBC-NONUK-ORG")
+                                                              .withIdentifier("cbcid", "cbcid1234")
+                                                              .withDelegatedAuthRule("cbc-auth")
                                                           )
                                                         )
                                                   ),

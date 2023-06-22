@@ -30,6 +30,7 @@ import services.AgentSubscriptionService
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual}
 import uk.gov.hmrc.auth.core.AuthProvider.GovernmentGateway
 import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.HeaderCarrier
@@ -105,10 +106,13 @@ class AuthenticatedIdentifierAction @Inject() (
     }
   }
 
-  private def cbcDelegatedAuthRule(clientId: String): Enrolment =
+  private def cbcDelegatedAuthRule(clientId: String): Predicate =
     Enrolment("HMRC-CBC-ORG")
       .withIdentifier("cbcId", clientId)
-      .withDelegatedAuthRule("cbc-auth")
+      .withDelegatedAuthRule("cbc-auth") or
+      Enrolment("HMRC-CBC-NONUK-ORG")
+        .withIdentifier("cbcId", clientId)
+        .withDelegatedAuthRule("cbc-auth")
 
   private def agentAuthCheck[A](request: Request[A], enrolments: Enrolments, internalId: String)(implicit
     executionContext: ExecutionContext,
