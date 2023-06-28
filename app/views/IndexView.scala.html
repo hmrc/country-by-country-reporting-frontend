@@ -35,7 +35,9 @@
     <p class="govuk-body">@Html(messages("index.p1", link(routes.UploadFileController.onPageLoad().url, "index.p1.link")))</p>
 
     @if(isAgent) {
-        <p class="govuk-body">@messages("index.p4.withDetails")</p>
+        <p class="govuk-body">@messages("index.p2.agent")</p>
+
+        <p class="govuk-body">@messages("index.p3.withDetails")</p>
 
         <ul class="govuk-list govuk-list--bullet">
 
@@ -49,12 +51,10 @@
 
         </ul>
     } else {
-        <p class="govuk-body">@messages("index.p2")</p>
-
-        <p class="govuk-body">@messages("index.p3", cbcID)</p>
+        <p class="govuk-body">@messages("index.p2.org", cbcID)</p>
 
         @if(showRecentFiles) {
-            <p class="govuk-body">@messages("index.p4.withDetails")</p>
+            <p class="govuk-body">@messages("index.p3.withDetails")</p>
 
             <ul class="govuk-list govuk-list--bullet">
 
@@ -64,8 +64,8 @@
 
             </ul>
         } else {
-            <p class="govuk-body">@Html(messages("index.p4.withoutDetails", link(routes.ChangeContactDetailsController.onPageLoad().url, "index.changeDetails")))</p>
+            <p class="govuk-body">@Html(messages("index.p3.withoutDetails", link(routes.ChangeContactDetailsController.onPageLoad().url, "index.changeDetails")))</p>
         }
     }
-        <p class="govuk-body">@Html(messages("index.p5", link(s"mailto:${appConfig.emailEnquiries}", appConfig.emailEnquiries)))</p>
+        <p class="govuk-body">@Html(messages("index.p4", link(s"mailto:${appConfig.emailEnquiries}", appConfig.emailEnquiries)))</p>
 }
