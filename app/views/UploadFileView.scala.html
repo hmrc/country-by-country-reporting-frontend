@@ -43,7 +43,6 @@
             <input type="hidden" name="@key" value="@value" />
         }
         <input type="hidden" id="upScanErrorRedirectUrl" value="/send-a-country-by-country-report/error" />
-        <input type="hidden" id="processingMessage" value="@messages("fileCheck.heading")" />
         <div id="file-upload-container" class="js-visible mt-3">
 
         @govukFileUpload(
@@ -68,5 +67,7 @@
             ButtonViewModel(messages("site.uploadFile")).withAttribute( "id" -> "submit").preventingDoubleClick()
         )
         </p>
+
+        <input class="hidden" id="processingMessage" value="@messages("fileCheck.p1")"/>
     </form>
 }
