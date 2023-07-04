@@ -52,5 +52,4 @@ object FileReceivedViewModel {
 
   def formattedSummaryListView(rows: Seq[SummaryListRow]) = SummaryListViewModel(rows)
     .withMargin()
-    .withCssClass("govuk-!-margin-bottom-0")
 }
