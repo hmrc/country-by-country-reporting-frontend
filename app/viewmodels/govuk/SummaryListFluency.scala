@@ -34,6 +34,9 @@ trait SummaryListFluency {
     def withoutBorders(): SummaryList =
       list copy (classes = s"${list.classes} govuk-summary-list--no-border")
 
+    def withMargin(): SummaryList =
+      list copy (classes = s"${list.classes} govuk-!-margin-bottom-5")
+
     def withCssClass(className: String): SummaryList =
       list copy (classes = s"${list.classes} $className")
 

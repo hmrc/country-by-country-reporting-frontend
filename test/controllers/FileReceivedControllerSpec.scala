@@ -99,8 +99,7 @@ class FileReceivedControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[FileReceivedView]
 
         val list = SummaryListViewModel(FileReceivedViewModel.getSummaryRows(fileDetails)(messages(application)))
-          .withoutBorders()
-          .withCssClass("govuk-!-margin-bottom-0")
+          .withMargin()
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(list, firstContactEmail, Some(secondContactEmail))(request, messages(application)).toString
@@ -165,8 +164,7 @@ class FileReceivedControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[FileReceivedAgentView]
 
         val list = SummaryListViewModel(FileReceivedViewModel.getAgentSummaryRows(fileDetails)(messages(application)))
-          .withoutBorders()
-          .withCssClass("govuk-!-margin-bottom-0")
+          .withMargin()
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(list, firstContactEmail, Some(secondContactEmail), agentFirstContactEmail, Some(agentSecondContactEmail))(
