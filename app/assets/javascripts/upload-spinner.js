@@ -14,11 +14,11 @@ $("#uploadForm").submit(function(e){
         };
 
         function addUploadSpinner(){
+            $("#processing").append('<h2 class="govuk-heading-m">'+$("#processingMessage").val()+'</h2><div><svg class="ccms-loader" height="100" width="100"><circle cx="50" cy="50" r="40"  fill="none"/></svg></div>')
             $(".govuk-form-group--error").removeClass("govuk-form-group--error")
             $("#file-upload-error").remove()
             $("#error-summary").remove()
             $("#submit").remove()
-            $("#processing").append('<h2 class="govuk-heading-m">'+$("#processingMessage").val()+'</h2><div><div class="ccms-loader"></div></div>')
         };
 
         addUploadSpinner();
