@@ -13,17 +13,20 @@ $("#uploadForm").submit(function(e){
             $("#file-upload").attr('disabled', 'disabled')
         };
 
-        function addUploadSpinner(){
-            $("#processing").append('<p class="govuk-visually-hidden">'+$("#processingMessage").val()+'</p><div><svg class="ccms-loader" height="100" width="100"><circle cx="50" cy="50" r="40"  fill="none"/></svg></div>')
-            $(".govuk-form-group--error").removeClass("govuk-form-group--error")
-            $("#file-upload-error").remove()
-            $("#error-summary").remove()
-            $("#submit").remove()
-        };
+        function addUploadSpinner() {
+            $("#processing").empty();
+            $("#processing").append('<div><p class="govuk-visually-hidden">' + $("#processingMessage").val() + '</p><div><svg class="ccms-loader" height="100" width="100"><circle cx="50" cy="50" r="40"  fill="none"/></svg></div></div>');
+            $(".govuk-form-group--error").removeClass("govuk-form-group--error");
+            $("#file-upload-error").remove();
+            $("#error-summary").remove();
+            $("#submit").remove();
+        }
 
         addUploadSpinner();
-        this.submit();
-        disableFileUpload();
+        setTimeout(function() {
+            this.submit();
+            disableFileUpload();
+        }.bind(this), 0);
     }
 
 });
