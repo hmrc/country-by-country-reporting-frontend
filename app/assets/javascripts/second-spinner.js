@@ -8,7 +8,7 @@ e.preventDefault();
      var sendYourFileForm = this;
 
        function addSpinner(){
-           $("#processing").append('<p class="govuk-visually-hidden" aria-live="polite">'+$("#processingMessage").val()+'</p><div><svg class="ccms-loader" height="100" width="100"><circle cx="50" cy="50" r="40"  fill="none"/></svg></div>')
+           $("#processing").append('<p class="govuk-visually-hidden">'+$("#processingMessage").val()+'</p><div><svg class="ccms-loader" height="100" width="100"><circle cx="50" cy="50" r="40"  fill="none"/></svg></div>')
            $("#submit").remove()
        };
 

@@ -4,12 +4,12 @@
 $("#uploadForm").submit(function(e){
     e.preventDefault();
     const fileLength = $("#file-upload")[0].files.length;
-    if(fileLength === 0){
-        var errorRequestId = $("#x-amz-meta-request-id").val()
-        var errorUrl = $("#upScanErrorRedirectUrl").val() + "?errorCode=InvalidArgument&errorMessage=FileNotSelected&errorRequestId="+errorRequestId
-        window.location = errorUrl
+    if (fileLength === 0) {
+        var errorRequestId = $("#x-amz-meta-request-id").val();
+        var errorUrl = $("#upScanErrorRedirectUrl").val() + "?errorCode=InvalidArgument&errorMessage=FileNotSelected&errorRequestId=" + errorRequestId;
+        window.location = errorUrl;
     } else {
-        function disableFileUpload(){
+        function disableFileUpload() {
             $("#file-upload").attr('disabled', 'disabled')
         };
 
@@ -33,8 +33,8 @@ $("#uploadForm").submit(function(e){
 
 $(document).ready(function ()
 {
-    var hasError = (window.location.href.indexOf("errorCode") > -1)
-    var preFixError = hasError ? "Error: " : ""
-    var appendError = preFixError + $("title").html()
-    $("title").html(appendError)
+    var hasError = (window.location.href.indexOf("errorCode") > -1);
+    var preFixError = hasError ? "Error: " : "";
+    var appendError = preFixError + $("title").html();
+    $("title").html(appendError);
 });
