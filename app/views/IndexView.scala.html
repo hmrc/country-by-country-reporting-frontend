@@ -19,6 +19,7 @@
 @this(
     layout: templates.Layout,
     link: components.Link,
+    govukButton: GovukButton,
     appConfig: FrontendAppConfig
 )
 
@@ -32,7 +33,7 @@
 
     <h1 class="govuk-heading-l">@messages("index.heading")</h1>
 
-    <p class="govuk-body">@Html(messages("index.p1", link(routes.UploadFileController.onPageLoad().url, "index.p1.link")))</p>
+    <p class="govuk-body">@Html(messages("index.p1"))</p>
 
     @if(isAgent) {
         <p class="govuk-body">@messages("index.p2.agent")</p>
@@ -67,5 +68,11 @@
             <p class="govuk-body">@Html(messages("index.p3.withoutDetails", link(routes.ChangeContactDetailsController.onPageLoad().url, "index.changeDetails")))</p>
         }
     }
+
+      @govukButton(
+      ButtonViewModel(Text(messages("index.upload")))
+      .withAttribute( "id" -> "submit")
+      .asLink(routes.UploadFileController.onPageLoad().url)
+      )
         <p class="govuk-body">@Html(messages("index.p4", link(s"mailto:${appConfig.emailEnquiries}", appConfig.emailEnquiries)))</p>
 }
