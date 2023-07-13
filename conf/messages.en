@@ -419,13 +419,13 @@ agentFirstContactName.error.length = The name of your first contact must be 35 c
 agentFirstContactName.error.invalid = The name of your first contact must only include letters a to z, hyphens, spaces, and apostrophes
 agentFirstContactName.change.hidden = Change first contact name
 
-agentFirstContactEmail.title = What is your first contact’s email address?
-agentFirstContactEmail.heading = What is {0} email address?
+agentFirstContactEmail.title = What is the email address for the first contact?
+agentFirstContactEmail.heading = What is the email address for {0}?
 agentFirstContactEmail.checkYourAnswersLabel = First contact email address
-agentFirstContactEmail.p1 = We will use this email to send confirmation of the reports sent or if we have any questions about your client’s report.
-agentFirstContactEmail.error.required = Enter your first contact’s email address
-agentFirstContactEmail.error.length = Your first contact’s email address must be 132 characters or less
-agentFirstContactEmail.error.invalid = Enter your first contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
+agentFirstContactEmail.p1 = We will use this email address to send confirmation of your reports or if we have any questions about them.
+agentFirstContactEmail.error.required = Enter an email address for the first contact
+agentFirstContactEmail.error.length = The email address must be 132 characters or less
+agentFirstContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
 agentFirstContactEmail.change.hidden = Change first contact email address
 
 agentFirstContactHavePhone.title = Can we call your first contact by telephone?
