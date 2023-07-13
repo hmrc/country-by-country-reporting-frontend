@@ -457,13 +457,13 @@ agentSecondContactName.error.length = Your second contact’s name must be 35 ch
 agentSecondContactName.error.invalid = The name of your second contact must only include letters a to z, hyphens, spaces and apostrophes
 agentSecondContactName.change.hidden = Change second contact name
 
-agentSecondContactEmail.title = What is your second contact’s email address?
-agentSecondContactEmail.heading = What is {0} email address?
+agentSecondContactEmail.title = What is the email address for the second contact?
+agentSecondContactEmail.heading = What is the email address for {0}?
 agentSecondContactEmail.checkYourAnswersLabel = Second contact email address
-agentSecondContactEmail.p1 = We will use this email to send confirmation of the reports we receive or if we have any questions about your client’s report.
-agentSecondContactEmail.error.required = Enter your second contact’s email address
-agentSecondContactEmail.error.invalid = Enter your second contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
-agentSecondContactEmail.error.length = Your second contact’s email address must be 132 characters or less
+agentSecondContactEmail.p1 = We will use this email address to send confirmation of your reports or if we have any questions about them.
+agentSecondContactEmail.error.required = Enter an email address for the second contact
+agentSecondContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
+agentSecondContactEmail.error.length = The email address must be 132 characters or less
 agentSecondContactEmail.change.hidden = Change second contact email address
 
 agentSecondContactHavePhone.title = Can we call your second contact by telephone?
