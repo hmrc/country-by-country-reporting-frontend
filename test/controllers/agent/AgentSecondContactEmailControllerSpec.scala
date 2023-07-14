@@ -33,10 +33,9 @@ import scala.concurrent.Future
 
 class AgentSecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider      = new AgentSecondContactEmailFormProvider()
-  val form              = formProvider()
-  val contactName       = "contact name"
-  val contactNamePlural = "contact name’s"
+  val formProvider = new AgentSecondContactEmailFormProvider()
+  val form         = formProvider()
+  val contactName  = "contact name"
 
   lazy val agentSecondContactEmailRoute = routes.AgentSecondContactEmailController.onPageLoad(NormalMode).url
 
@@ -59,7 +58,7 @@ class AgentSecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[AgentSecondContactEmailView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, contactNamePlural)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, contactName)(request, messages(application)).toString
       }
     }
 
@@ -83,7 +82,7 @@ class AgentSecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode, contactNamePlural)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode, contactName)(request, messages(application)).toString
       }
     }
 
@@ -132,7 +131,7 @@ class AgentSecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, contactNamePlural)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, contactName)(request, messages(application)).toString
       }
     }
   }
