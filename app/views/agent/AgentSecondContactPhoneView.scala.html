@@ -42,6 +42,7 @@
                     field = form("value"),
                     label = LabelViewModel(messages("agentSecondContactPhone.heading", secondContactName)).asPageHeading().withCssClass("govuk-visually-hidden")
                 ).withWidth(ThreeQuarters)
+                .withHint(HintViewModel(Text(messages("agentSecondContactPhone.hint"))))
         )
 
         @govukButton(
