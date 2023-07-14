@@ -440,11 +440,11 @@ agentFirstContactPhone.error.invalid = Telephone number can only include numbers
 agentFirstContactPhone.error.length = Your first contact’s telephone number must be 24 characters or less
 agentFirstContactPhone.change.hidden = Change first contact telephone number
 
-agentHaveSecondContact.title = Do you have a second contact if your first contact is not available?
+agentHaveSecondContact.title = Do you have a second contact?
 agentHaveSecondContact.heading = Do you have a second contact if {0} is not available?
-agentHaveSecondContact.checkYourAnswersLabel = Do you have a second contact if your first contact is not available?
+agentHaveSecondContact.checkYourAnswersLabel = Do you have a second contact?
 agentHaveSecondContact.error.required = Select yes if you have a second contact if your first contact is not available
-agentHaveSecondContact.change.hidden = Change do you have a second contact if your first contact is not available?
+agentHaveSecondContact.change.hidden = Change if you have a second contact
 
 agentSecondContactName.title = What is the name of your second contact?
 agentSecondContactName.heading = What is the name of your second contact?
@@ -485,19 +485,24 @@ agentContactDetailsSaved.p1 = You can now:
 agentContactDetailsSaved.bullet1 = select a client
 agentContactDetailsSaved.bullet2 = add CBC clients in your agent services account
 
-changeAgentContactDetails.bullet1 = Select a client
-changeAgentContactDetails.bullet2 = Add CBC clients in your agent services account
+changeAgentContactDetails.bullet1 = select a client
+changeAgentContactDetails.bullet2 = add CBC clients in your agent services account
 
 agentContactDetailsUpdated.title = Agent contact details updated
 agentContactDetailsUpdated.heading = Agent contact details updated
 agentContactDetailsUpdated.p1 = We will use your new details if we have any questions about your reports.
 
-changeAgentContactDetails.title = Check your agent contact details
-changeAgentContactDetails.heading = Check your agent contact details
+checkAgentContactDetails.title = Check your agent contact details
+checkAgentContactDetails.heading = Check your agent contact details
+
+changeAgentContactDetails.title = Change your agent contact details
+changeAgentContactDetails.heading = Change your agent contact details
+
 changeAgentContactDetails.primary.heading = First contact
 changeAgentContactDetails.secondary.heading = Second contact
-changeAgentContactDetails.nowSendContactDetails = Send us your agent contact details
+changeAgentContactDetails.nowSendContactDetails = Send your agent contact details
 changeAgentContactDetails.confirmingInformation = By sending these contact details, you are confirming that the information provided is correct and complete to the best of your knowledge.
+changeAgentContactDetails.leading = If you do not want to change your agent contact details , you can:
 
 clientContactDetailsNeeded.title = You must provide your client’s contact details
 clientContactDetailsNeeded.heading = You must provide your client’s contact details
@@ -538,11 +543,11 @@ clientFirstContactPhone.error.invalid = Telephone number can only include number
 clientFirstContactPhone.error.length = The first client contact’s telephone number must be 24 characters or less
 clientFirstContactPhone.change.hidden = Change first client contact telephone number
 
-clientHaveSecondContact.title = Do you have a second client contact if your first contact is not available?
+clientHaveSecondContact.title = Do you have a second contact?
 clientHaveSecondContact.heading = Do you have a second client contact if {0} is not available?
-clientHaveSecondContact.checkYourAnswersLabel = Do you have a second client contact if the first client contact is not available?
+clientHaveSecondContact.checkYourAnswersLabel = Do you have a second contact?
 clientHaveSecondContact.error.required = Select yes if you have a second client contact if the first client contact is not available
-clientHaveSecondContact.change.hidden = Change do you have a second client contact if the first client contact is not available?
+clientHaveSecondContact.change.hidden = Change if you have a second contact
 
 clientSecondContactName.title = What is the name of the second client contact?
 clientSecondContactName.heading = What is the name of the second client contact?
