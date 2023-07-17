@@ -32,10 +32,9 @@ import views.html.client.ClientFirstContactEmailView
 import scala.concurrent.Future
 
 class ClientFirstContactEmailControllerSpec extends SpecBase with MockitoSugar {
-  val formProvider      = new ContactEmailFormProvider()
-  val form              = formProvider("clientFirstContactEmail")
-  val contactName       = "contact name"
-  val contactNamePlural = "contact name’s"
+  val formProvider = new ContactEmailFormProvider()
+  val form         = formProvider("clientFirstContactEmail")
+  val contactName  = "contact name"
 
   lazy val clientFirstContactEmailRoute: String = controllers.client.routes.ClientFirstContactEmailController.onPageLoad(NormalMode).url
 
@@ -54,7 +53,7 @@ class ClientFirstContactEmailControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[ClientFirstContactEmailView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, contactNamePlural)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, contactName)(request, messages(application)).toString
       }
     }
 
@@ -72,7 +71,7 @@ class ClientFirstContactEmailControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode, contactNamePlural)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode, contactName)(request, messages(application)).toString
       }
     }
 
@@ -121,7 +120,7 @@ class ClientFirstContactEmailControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, contactNamePlural)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, contactName)(request, messages(application)).toString
       }
     }
 
