@@ -432,13 +432,14 @@ agentFirstContactHavePhone.title = Can we call your first contact by telephone?
 agentFirstContactHavePhone.heading = Can we call {0} by telephone?
 agentFirstContactHavePhone.error.required = Select yes if we can call your first contact by telephone
 
-agentFirstContactPhone.title = What is your first contact’s telephone number?
-agentFirstContactPhone.heading = What is {0} telephone number?
+agentFirstContactPhone.title = What is the telephone number for the first client contact?
+agentFirstContactPhone.heading = What is the telephone number for {0}?
 agentFirstContactPhone.checkYourAnswersLabel = First contact telephone number
 agentFirstContactPhone.p1 = Provide a telephone number from your organisation, not your client’s.
-agentFirstContactPhone.error.required = Enter your first contact’s telephone number
-agentFirstContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
-agentFirstContactPhone.error.length = Your first contact’s telephone number must be 24 characters or less
+agentFirstContactPhone.hint = For international numbers, include the country code.
+agentFirstContactPhone.error.required = Enter the telephone number for the first client contact
+agentFirstContactPhone.error.invalid = The telephone number must only include numbers 0 to 9 and a plus sign, like 01632 960 001, 07700 900 982 or +44 808 157 0192
+agentFirstContactPhone.error.length = The telephone number must be 24 characters or less
 agentFirstContactPhone.change.hidden = Change first contact telephone number
 
 agentHaveSecondContact.title = Do you have a second contact if your first contact is not available?
