@@ -502,7 +502,7 @@ changeAgentContactDetails.primary.heading = First contact
 changeAgentContactDetails.secondary.heading = Second contact
 changeAgentContactDetails.nowSendContactDetails = Send your agent contact details
 changeAgentContactDetails.confirmingInformation = By sending these contact details, you are confirming that the information provided is correct and complete to the best of your knowledge.
-changeAgentContactDetails.leading = If you do not want to change your agent contact details , you can:
+changeAgentContactDetails.leading = If you do not want to change your agent contact details, you can:
 
 clientContactDetailsNeeded.title = You must provide your client’s contact details
 clientContactDetailsNeeded.heading = You must provide your client’s contact details
