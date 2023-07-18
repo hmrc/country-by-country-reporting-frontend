@@ -55,7 +55,7 @@ class ClientFirstContactEmailController @Inject() (
         case Some(value) => form.fill(value)
       }
 
-      Ok(view(preparedForm, mode, getPluralFirstContactName(request.userAnswers)))
+      Ok(view(preparedForm, mode, getFirstContactName(request.userAnswers)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
@@ -63,7 +63,7 @@ class ClientFirstContactEmailController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getPluralFirstContactName(request.userAnswers)))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getFirstContactName(request.userAnswers)))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ContactEmailPage, value))

@@ -517,13 +517,13 @@ clientFirstContactName.error.length = The name of the first client contact must 
 clientFirstContactName.error.invalid = The name of the first client contact must only include letters a to z, hyphens, spaces, and apostrophes
 clientFirstContactName.change.hidden = Change first client contact name
 
-clientFirstContactEmail.title = What is the first client contact’s email address?
-clientFirstContactEmail.heading = What is {0} email address?
-clientFirstContactEmail.p1 = We will use this to send confirmation of the CBC reports or if we have any questions about them.
+clientFirstContactEmail.title = What is the email address for the first client contact?
+clientFirstContactEmail.heading = What is the email address for {0}?
+clientFirstContactEmail.p1 = We will use this email address to send confirmation of your reports or if we have any questions about them.
 clientFirstContactEmail.checkYourAnswersLabel = First client contact email address
-clientFirstContactEmail.error.required = Enter the first client contact’s email address
-clientFirstContactEmail.error.invalid = Enter the first client contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
-clientFirstContactEmail.error.length = The first client contact’s email address must be 132 characters or less
+clientFirstContactEmail.error.required = Enter an email address for the first client contact
+clientFirstContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
+clientFirstContactEmail.error.length = The email address must be 132 characters or less
 clientFirstContactEmail.change.hidden = Change first client contact email address
 
 clientFirstContactHavePhone.title = Can we call the first client contact by telephone?
