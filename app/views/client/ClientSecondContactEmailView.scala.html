@@ -34,13 +34,16 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
+        <h1 class="govuk-heading-l">@messages("clientSecondContactEmail.heading", secondContactName)</h1>
+        <p class="govuk-body">@messages("clientSecondContactEmail.p1")</p>
+
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages(s"clientSecondContactEmail.heading", secondContactName)).asPageHeading()
-                ).withHint(HintViewModel(Text(messages("clientSecondContactEmail.hint"))))
-                .withWidth(Full)
+                label = LabelViewModel(messages("clientSecondContactEmail.heading", secondContactName)).asPageHeading().withCssClass("govuk-visually-hidden")
             )
+            .withWidth(Full)
+        )
 
         @govukButton(
             ButtonViewModel(messages("site.continue")).withAttribute("id" -> "submit")

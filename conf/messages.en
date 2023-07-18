@@ -557,13 +557,13 @@ clientSecondContactName.error.length = The second client contact’s name must b
 clientSecondContactName.error.invalid = The name of the second client contact must only include letters a to z, hyphens, spaces, and apostrophes
 clientSecondContactName.change.hidden = Change second client contact name
 
-clientSecondContactEmail.title = What is the second client contact’s email address?
-clientSecondContactEmail.heading = What is {0} email address?
-clientSecondContactEmail.hint = We will use this email to send confirmation of the reports we receive or if we have any questions about your client’s report.
+clientSecondContactEmail.title = What is the email address for the second client contact?
+clientSecondContactEmail.heading = What is the email address for {0}?
+clientSecondContactEmail.p1 = We will use this email address to send confirmation of your reports or if we have any questions about them.
 clientSecondContactEmail.checkYourAnswersLabel = Second client contact email address
-clientSecondContactEmail.error.required = Enter the second client contact’s email address
-clientSecondContactEmail.error.length = The second client contact’s email address must be 132 characters or less
-clientSecondContactEmail.error.invalid = Enter the second client contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
+clientSecondContactEmail.error.required = Enter an email address for the second client contact
+clientSecondContactEmail.error.length = The email address must be 132 characters or less
+clientSecondContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
 clientSecondContactEmail.change.hidden = Change second client contact email address
 
 clientSecondContactHavePhone.title = Can we call your second client contact by telephone?
