@@ -95,12 +95,12 @@ haveTelephone.hint = We will call if we have any questions about your reports.
 haveTelephone.error.required = Select yes if they can be contacted by telephone
 
 contactPhone.checkYourAnswersLabel = Telephone number
-contactPhone.title = What is the telephone number for the first contact?
+contactPhone.title = What is their telephone number?
 contactPhone.heading = What is the telephone number for {0}?
-contactPhone.hint = For international numbers, include the country code.
-contactPhone.error.required = Enter a telephone number for the first contact
- contactPhone.error.length = The telephone number must be 24 characters or less
- contactPhone.error.invalid = The telephone number must only include numbers 0 to 9 and a plus sign, like 01632 960 001, 07700 900 982 or +44 808 157 0192
+contactPhone.hint = Enter a telephone number, like&nbsp;01632&nbsp;960&nbsp;001, 07700&nbsp;900&nbsp;982 or +44&nbsp;808&nbsp;157&nbsp;0192.
+contactPhone.error.required = Enter a telephone number
+contactPhone.error.invalid = Enter a telephone number in the correct format
+contactPhone.error.length = Telephone number must be 24 characters or less
 contactPhone.change.hidden = Change telephone number
 
 haveSecondContact.title = Is there someone else we can contact if your first contact is not available?
