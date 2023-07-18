@@ -531,13 +531,14 @@ clientFirstContactHavePhone.heading = Can we call {0} by telephone?
 clientFirstContactHavePhone.hint = This can be a team mailbox or another contact.
 clientFirstContactHavePhone.error.required = Select yes if we can call the first client contact by telephone
 
-clientFirstContactPhone.title = What is the first client contact‘s telephone number?
-clientFirstContactPhone.heading = What is {0} telephone number?
+clientFirstContactPhone.title = What is the telephone number for the first client contact?
+clientFirstContactPhone.heading = What is the telephone number for {0}?
 clientFirstContactPhone.checkYourAnswersLabel = First client contact telephone number
 clientFirstContactPhone.p1 = Provide a telephone number from your client’s organisation.
-clientFirstContactPhone.error.required = Enter the first client contact’s telephone number
-clientFirstContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
-clientFirstContactPhone.error.length = The first client contact’s telephone number must be 24 characters or less
+clientFirstContactPhone.hint = For international numbers, include the country code.
+clientFirstContactPhone.error.required = Enter the telephone number for the first client contact
+clientFirstContactPhone.error.invalid = The telephone number must only include numbers 0 to 9 and a plus sign, like 01632 960 001, 07700 900 982 or +44 808 157 0192
+clientFirstContactPhone.error.length = The telephone number must be 24 characters or less
 clientFirstContactPhone.change.hidden = Change first client contact telephone number
 
 clientHaveSecondContact.title = Do you have a second client contact if your first contact is not available?
