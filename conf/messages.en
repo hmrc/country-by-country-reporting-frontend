@@ -286,7 +286,7 @@ fileSummary.viewErrors = View file errors
 
 filePendingChecks.title = We need a few more minutes to check your file
 filePendingChecks.heading = We need a few more minutes to check your file
-filePendingChecks.p1 = If you have been refreshing for more than 10 minutes,you can {0}. We will email you to tell you if your file has passed the checks or not.
+filePendingChecks.p1 = If you have been refreshing for more than 10 minutes, you can {0}. We will email you to tell you if your file has passed the checks or not.
 filePendingChecks.link = sign out and check later
 filePendingChecks.agent.p2 = if the file passes the checks, we will also email your client.
 fileFailedChecks.title = Your file has failed our checks
