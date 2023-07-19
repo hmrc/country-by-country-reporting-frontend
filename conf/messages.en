@@ -134,13 +134,13 @@ secondContactHavePhone.heading = Can we contact {0} by telephone?
 secondContactHavePhone.hint = We will call if we have any questions about your reports.
 secondContactHavePhone.error.required = Select yes if they can be contacted by telephone
 
-secondContactPhone.title = What is their telephone number?
+secondContactPhone.title = What is the telephone number for the second contact?
 secondContactPhone.heading = What is the telephone number for {0}?
-secondContactPhone.hint = Enter a telephone number, like&nbsp;01632&nbsp;960&nbsp;001, 07700&nbsp;900&nbsp;982 or +44&nbsp;808&nbsp;157&nbsp;0192.
+secondContactPhone.hint = For international numbers, include the country code.
 secondContactPhone.checkYourAnswersLabel = Second contact telephone number
-secondContactPhone.error.required = Enter a telephone number
-secondContactPhone.error.invalid = Enter a telephone number in the correct format
-secondContactPhone.error.length = Telephone number must be 24 characters or less
+secondContactPhone.error.required = Enter a telephone number for the second contact
+secondContactPhone.error.invalid = The telephone number must only include numbers 0 to 9 and a plus sign, like 01632 960 001, 07700 900 982 or +44 808 157 0192
+secondContactPhone.error.length = The telephone number must be 24 characters or less
 secondContactPhone.change.hidden = Change second contact telephone number
 
 detailsUpdated.title = Contact details updated
