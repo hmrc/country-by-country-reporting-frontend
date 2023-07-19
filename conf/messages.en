@@ -570,13 +570,14 @@ clientSecondContactHavePhone.title = Can we call your second client contact by t
 clientSecondContactHavePhone.heading = Can we call {0} by telephone?
 clientSecondContactHavePhone.error.required = Select yes if we can call the second client contact by telephone
 
-clientSecondContactPhone.title = What is the second client contact’s telephone number?
-clientSecondContactPhone.heading = What is {0} telephone number?
+clientSecondContactPhone.title = What is the telephone number for the second client contact?
+clientSecondContactPhone.heading = What is the telephone number for {0}?
 clientSecondContactPhone.checkYourAnswersLabel = Second client contact telephone number
 clientSecondContactPhone.p1 = Provide a telephone number from your client’s organisation.
-clientSecondContactPhone.error.required = Enter the second client contact’s telephone number
-clientSecondContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
-clientSecondContactPhone.error.length = The second client contact’s telephone number must be 24 characters or less
+clientSecondContactPhone.hint = For international numbers, include the country code.
+clientSecondContactPhone.error.required = Enter the telephone number for the second client contact
+clientSecondContactPhone.error.invalid = The telephone number must only include numbers 0 to 9 and a plus sign, like 01632 960 001, 07700 900 982 or +44 808 157 0192
+clientSecondContactPhone.error.length = The telephone number must be 24 characters or less
 clientSecondContactPhone.change.hidden = Change second client contact telephone number
 
 ChangeClientContactDetails.title = Check your client’s contact details
