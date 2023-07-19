@@ -82,11 +82,11 @@ contact.name.plural.withS = {0}’
 
 contactEmail.title = What is their email address?
 contactEmail.heading = What is the email address for {0}?
-contactEmail.hint = We will use this to send confirmation of your reports or if we have any questions about them.
+contactEmail.hint = We will use this email address to send confirmation of your reports or if we have any questions about them.
 contactEmail.checkYourAnswersLabel = Email address
-contactEmail.error.required = Enter an email address
+contactEmail.error.required = Enter an email address for the first contact
 contactEmail.error.length = Email address must be 132 characters or less
-contactEmail.error.invalid = Enter an email address in the correct format, like name@example.com
+contactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
 contactEmail.change.hidden = Change email address
 
 haveTelephone.title = Can we contact them by telephone?
