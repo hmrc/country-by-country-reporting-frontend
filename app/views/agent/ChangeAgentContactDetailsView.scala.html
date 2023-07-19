@@ -26,8 +26,11 @@
 
 @layout(pageTitle = titleNoForm(messages("changeAgentContactDetails.title"))) {
     @formHelper(action = controllers.agent.routes.ChangeAgentContactDetailsController.onSubmit()) {
-        <h1 class="govuk-heading-l">@messages("changeAgentContactDetails.heading")</h1>
-
+         @if(hasContactDetailsChanged) {
+         <h1 class="govuk-heading-l">@messages("checkAgentContactDetails.heading")</h1>
+        }else{
+         <h1 class="govuk-heading-l">@messages("changeAgentContactDetails.heading")</h1>
+        }
         <h2 class="govuk-heading-m">@messages("changeAgentContactDetails.primary.heading")</h2>
 
         @govukSummaryList(primary)
@@ -45,7 +48,8 @@
     }
 
     @if(!clientSelected && doContactDetailsExist) {
-    <ul class="govuk-list">
+    <p class="govuk-body">@messages("changeAgentContactDetails.leading")</p>
+    <ul class="govuk-list govuk-list--bullet">
     <li>@link(controllers.agent.routes.AgentClientIdController.onPageLoad().url, "changeAgentContactDetails.bullet1")</li>
     <li>@link("#", "changeAgentContactDetails.bullet2")</li> @*TODO: Add link to agent services when known*@
     </ul>
