@@ -57,7 +57,7 @@ class AgentFirstContactPhoneController @Inject() (
 
       Ok(view(preparedForm, getAgentFirstContactName(request.userAnswers), mode))
   }
-§
+
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
       form
