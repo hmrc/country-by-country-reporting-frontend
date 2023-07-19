@@ -124,9 +124,9 @@ secondContactEmail.title = What is the email address for the second contact?
 secondContactEmail.heading = What is the email address for {0}?
 secondContactEmail.p1 = We will use this email address to send confirmation of your reports or if we have any questions about them.
 secondContactEmail.checkYourAnswersLabel = Second contact email address
-secondContactEmail.error.required = Enter an email address
-secondContactEmail.error.length = Email address must be 132 characters or less
-secondContactEmail.error.invalid = Enter an email address in the correct format, like name@example.com
+secondContactEmail.error.required = Enter an email address for the second contact
+secondContactEmail.error.length = The email address must be 132 characters or less
+secondContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
 secondContactEmail.change.hidden = Change second contact email address
 
 secondContactHavePhone.title = Can we contact them by telephone?
