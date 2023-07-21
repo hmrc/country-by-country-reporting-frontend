@@ -164,7 +164,7 @@ class AgentCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: M
             content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
               "agentSecondContactPhone.change.hidden"
             )}</span>"""),
-            href = routes.AgentSecondContactPhoneController.onPageLoad(CheckMode).url
+            href = routes.AgentSecondContactHavePhoneController.onPageLoad(CheckMode).url
           )
             .withAttribute(("id", "snd-contact-phone"))
         )
