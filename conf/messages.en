@@ -440,11 +440,11 @@ agentFirstContactPhone.error.invalid = Telephone number can only include numbers
 agentFirstContactPhone.error.length = Your first contact’s telephone number must be 24 characters or less
 agentFirstContactPhone.change.hidden = Change first contact telephone number
 
-agentHaveSecondContact.title = Do you have a second contact if your first contact is not available?
+agentHaveSecondContact.title = Do you have a second contact?
 agentHaveSecondContact.heading = Do you have a second contact if {0} is not available?
-agentHaveSecondContact.checkYourAnswersLabel = Do you have a second contact if your first contact is not available?
+agentHaveSecondContact.checkYourAnswersLabel = Do you have a second contact?
 agentHaveSecondContact.error.required = Select yes if you have a second contact if your first contact is not available
-agentHaveSecondContact.change.hidden = Change do you have a second contact if your first contact is not available?
+agentHaveSecondContact.change.hidden = Change if you have a second contact
 
 agentSecondContactName.title = What is the name of your second contact?
 agentSecondContactName.heading = What is the name of your second contact?
