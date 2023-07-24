@@ -42,7 +42,7 @@ error.summary.title = There is a problem
 
 index.title = Manage your country-by-country report
 index.heading = Manage your country-by-country report
-index.p1 = You can report new information, or corrections and deletions, by {0}.
+index.p1 = You can report new information, or corrections and deletions, by uploading an XML file.
 index.p1.link = uploading an XML file
 index.p2.agent = The file must be 100MB or less.
 index.p2.org = The file must include your CBC ID {0} and be 100MB or less.
@@ -53,7 +53,8 @@ index.changeClientDetails = change this client’s contact details
 index.changeDetails = change your contact details
 index.viewFileDetailsForClient = view results of checks on recently sent files for this client
 index.viewFileDetails = view results of checks on your recently sent files
-index.p4 = Email {0} if you are having problems with this service.
+index.p4 = Email {0} if you are having problems with the service.
+index.upload = Upload an XML file
 
 checkYourAnswers.title = Check Your Answers
 checkYourAnswers.heading = Check Your Answers
@@ -81,11 +82,11 @@ contact.name.plural.withS = {0}’
 
 contactEmail.title = What is their email address?
 contactEmail.heading = What is the email address for {0}?
-contactEmail.hint = We will use this to send confirmation of your reports or if we have any questions about them.
+contactEmail.p1 = We will use this email address to send confirmation of your reports or if we have any questions about them.
 contactEmail.checkYourAnswersLabel = Email address
-contactEmail.error.required = Enter an email address
-contactEmail.error.length = Email address must be 132 characters or less
-contactEmail.error.invalid = Enter an email address in the correct format, like name@example.com
+contactEmail.error.required = Enter an email address for the first contact
+contactEmail.error.length = The email address must be 132 characters or less
+contactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
 contactEmail.change.hidden = Change email address
 
 haveTelephone.title = Can we contact them by telephone?
@@ -95,12 +96,12 @@ haveTelephone.hint = We will call if we have any questions about your reports.
 haveTelephone.error.required = Select yes if they can be contacted by telephone
 
 contactPhone.checkYourAnswersLabel = Telephone number
-contactPhone.title = What is their telephone number?
+contactPhone.title = What is the telephone number for the first contact?
 contactPhone.heading = What is the telephone number for {0}?
-contactPhone.hint = Enter a telephone number, like&nbsp;01632&nbsp;960&nbsp;001, 07700&nbsp;900&nbsp;982 or +44&nbsp;808&nbsp;157&nbsp;0192.
-contactPhone.error.required = Enter a telephone number
-contactPhone.error.invalid = Enter a telephone number in the correct format
-contactPhone.error.length = Telephone number must be 24 characters or less
+contactPhone.hint = For international numbers, include the country code.
+contactPhone.error.required = Enter a telephone number for the first contact
+contactPhone.error.invalid = The telephone number must only include numbers 0 to 9 and a plus sign, like 01632 960 001, 07700 900 982 or +44 808 157 0192
+contactPhone.error.length = The telephone number must be 24 characters or less
 contactPhone.change.hidden = Change telephone number
 
 haveSecondContact.title = Is there someone else we can contact if your first contact is not available?
@@ -119,13 +120,13 @@ secondContactName.error.invalid = Name of the individual or team must only inclu
 secondContactName.error.length = Individual or team must be 35 characters or less
 secondContactName.change.hidden = Change second contact name
 
-secondContactEmail.title = What is their email address?
+secondContactEmail.title = What is the email address for the second contact?
 secondContactEmail.heading = What is the email address for {0}?
-secondContactEmail.hint = We will use this to send confirmation of your reports and if we have any questions about them.
+secondContactEmail.p1 = We will use this email address to send confirmation of your reports or if we have any questions about them.
 secondContactEmail.checkYourAnswersLabel = Second contact email address
-secondContactEmail.error.required = Enter an email address
-secondContactEmail.error.length = Email address must be 132 characters or less
-secondContactEmail.error.invalid = Enter an email address in the correct format, like name@example.com
+secondContactEmail.error.required = Enter an email address for the second contact
+secondContactEmail.error.length = The email address must be 132 characters or less
+secondContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
 secondContactEmail.change.hidden = Change second contact email address
 
 secondContactHavePhone.title = Can we contact them by telephone?
@@ -133,13 +134,13 @@ secondContactHavePhone.heading = Can we contact {0} by telephone?
 secondContactHavePhone.hint = We will call if we have any questions about your reports.
 secondContactHavePhone.error.required = Select yes if they can be contacted by telephone
 
-secondContactPhone.title = What is their telephone number?
+secondContactPhone.title = What is the telephone number for the second contact?
 secondContactPhone.heading = What is the telephone number for {0}?
-secondContactPhone.hint = Enter a telephone number, like&nbsp;01632&nbsp;960&nbsp;001, 07700&nbsp;900&nbsp;982 or +44&nbsp;808&nbsp;157&nbsp;0192.
+secondContactPhone.hint = For international numbers, include the country code.
 secondContactPhone.checkYourAnswersLabel = Second contact telephone number
-secondContactPhone.error.required = Enter a telephone number
-secondContactPhone.error.invalid = Enter a telephone number in the correct format
-secondContactPhone.error.length = Telephone number must be 24 characters or less
+secondContactPhone.error.required = Enter a telephone number for the second contact
+secondContactPhone.error.invalid = The telephone number must only include numbers 0 to 9 and a plus sign, like 01632 960 001, 07700 900 982 or +44 808 157 0192
+secondContactPhone.error.length = The telephone number must be 24 characters or less
 secondContactPhone.change.hidden = Change second contact telephone number
 
 detailsUpdated.title = Contact details updated
@@ -285,7 +286,7 @@ fileSummary.viewErrors = View file errors
 
 filePendingChecks.title = We need a few more minutes to check your file
 filePendingChecks.heading = We need a few more minutes to check your file
-filePendingChecks.p1 = If you have been refreshing for more than 10 minutes,you can {0}. We will email you to tell you if your file has passed the checks or not.
+filePendingChecks.p1 = If you have been refreshing for more than 10 minutes, you can {0}. We will email you to tell you if your file has passed the checks or not.
 filePendingChecks.link = sign out and check later
 filePendingChecks.agent.p2 = if the file passes the checks, we will also email your client.
 fileFailedChecks.title = Your file has failed our checks
@@ -418,26 +419,27 @@ agentFirstContactName.error.length = The name of your first contact must be 35 c
 agentFirstContactName.error.invalid = The name of your first contact must only include letters a to z, hyphens, spaces, and apostrophes
 agentFirstContactName.change.hidden = Change first contact name
 
-agentFirstContactEmail.title = What is your first contact’s email address?
-agentFirstContactEmail.heading = What is {0} email address?
+agentFirstContactEmail.title = What is the email address for the first contact?
+agentFirstContactEmail.heading = What is the email address for {0}?
 agentFirstContactEmail.checkYourAnswersLabel = First contact email address
-agentFirstContactEmail.p1 = We will use this email to send confirmation of the reports sent or if we have any questions about your client’s report.
-agentFirstContactEmail.error.required = Enter your first contact’s email address
-agentFirstContactEmail.error.length = Your first contact’s email address must be 132 characters or less
-agentFirstContactEmail.error.invalid = Enter your first contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
+agentFirstContactEmail.p1 = We will use this email address to send confirmation of your reports or if we have any questions about them.
+agentFirstContactEmail.error.required = Enter an email address for the first contact
+agentFirstContactEmail.error.length = The email address must be 132 characters or less
+agentFirstContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
 agentFirstContactEmail.change.hidden = Change first contact email address
 
 agentFirstContactHavePhone.title = Can we call your first contact by telephone?
 agentFirstContactHavePhone.heading = Can we call {0} by telephone?
 agentFirstContactHavePhone.error.required = Select yes if we can call your first contact by telephone
 
-agentFirstContactPhone.title = What is your first contact’s telephone number?
-agentFirstContactPhone.heading = What is {0} telephone number?
+agentFirstContactPhone.title = What is the telephone number for the first contact?
+agentFirstContactPhone.heading = What is the telephone number for {0}?
 agentFirstContactPhone.checkYourAnswersLabel = First contact telephone number
+agentFirstContactPhone.hint = For international numbers, include the country code.
 agentFirstContactPhone.p1 = Provide a telephone number from your organisation, not your client’s.
-agentFirstContactPhone.error.required = Enter your first contact’s telephone number
-agentFirstContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
-agentFirstContactPhone.error.length = Your first contact’s telephone number must be 24 characters or less
+agentFirstContactPhone.error.required = Enter the telephone number for your first contact
+agentFirstContactPhone.error.invalid = The telephone number must only include numbers 0 to 9 and a plus sign, like 01632 960 001, 07700 900 982 or +44 808 157 0192
+agentFirstContactPhone.error.length = The telephone number must be 24 characters or less
 agentFirstContactPhone.change.hidden = Change first contact telephone number
 
 agentHaveSecondContact.title = Do you have a second contact?
@@ -456,26 +458,27 @@ agentSecondContactName.error.length = Your second contact’s name must be 35 ch
 agentSecondContactName.error.invalid = The name of your second contact must only include letters a to z, hyphens, spaces and apostrophes
 agentSecondContactName.change.hidden = Change second contact name
 
-agentSecondContactEmail.title = What is your second contact’s email address?
-agentSecondContactEmail.heading = What is {0} email address?
+agentSecondContactEmail.title = What is the email address for the second contact?
+agentSecondContactEmail.heading = What is the email address for {0}?
 agentSecondContactEmail.checkYourAnswersLabel = Second contact email address
-agentSecondContactEmail.p1 = We will use this email to send confirmation of the reports we receive or if we have any questions about your client’s report.
-agentSecondContactEmail.error.required = Enter your second contact’s email address
-agentSecondContactEmail.error.invalid = Enter your second contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
-agentSecondContactEmail.error.length = Your second contact’s email address must be 132 characters or less
+agentSecondContactEmail.p1 = We will use this email address to send confirmation of your reports or if we have any questions about them.
+agentSecondContactEmail.error.required = Enter an email address for the second contact
+agentSecondContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
+agentSecondContactEmail.error.length = The email address must be 132 characters or less
 agentSecondContactEmail.change.hidden = Change second contact email address
 
 agentSecondContactHavePhone.title = Can we call your second contact by telephone?
 agentSecondContactHavePhone.heading = Can we call {0} by telephone?
 agentSecondContactHavePhone.error.required = Select yes if we can call your second contact by telephone
 
-agentSecondContactPhone.title = What is your second contact’s telephone number?
-agentSecondContactPhone.heading = What is {0} telephone number?
+agentSecondContactPhone.title = What is the telephone number for your second contact?
+agentSecondContactPhone.heading = What is the telephone number for {0}?
 agentSecondContactPhone.checkYourAnswersLabel = Second contact telephone number
 agentSecondContactPhone.p1 = Provide a telephone number from your organisation, not your client’s.
-agentSecondContactPhone.error.required = Enter your second contact’s telephone number
-agentSecondContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
-agentSecondContactPhone.error.length = Your second contact’s telephone number must be 24 characters or less
+agentSecondContactPhone.hint = For international numbers, include the country code.
+agentSecondContactPhone.error.required = Enter the telephone number for your second contact
+agentSecondContactPhone.error.invalid = The telephone number must only include numbers 0 to 9 and a plus sign, like 01632 960 001, 07700 900 982 or +44 808 157 0192
+agentSecondContactPhone.error.length = The telephone number must be 24 characters or less
 agentSecondContactPhone.change.hidden = Change second contact telephone number
 
 agentContactDetailsSaved.title = Agent contact details saved
@@ -521,13 +524,13 @@ clientFirstContactName.error.length = The name of the first client contact must 
 clientFirstContactName.error.invalid = The name of the first client contact must only include letters a to z, hyphens, spaces, and apostrophes
 clientFirstContactName.change.hidden = Change first client contact name
 
-clientFirstContactEmail.title = What is the first client contact’s email address?
-clientFirstContactEmail.heading = What is {0} email address?
-clientFirstContactEmail.p1 = We will use this to send confirmation of the CBC reports or if we have any questions about them.
+clientFirstContactEmail.title = What is the email address for the first client contact?
+clientFirstContactEmail.heading = What is the email address for {0}?
+clientFirstContactEmail.p1 = We will use this email address to send confirmation of your reports or if we have any questions about them.
 clientFirstContactEmail.checkYourAnswersLabel = First client contact email address
-clientFirstContactEmail.error.required = Enter the first client contact’s email address
-clientFirstContactEmail.error.invalid = Enter the first client contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
-clientFirstContactEmail.error.length = The first client contact’s email address must be 132 characters or less
+clientFirstContactEmail.error.required = Enter an email address for the first client contact
+clientFirstContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
+clientFirstContactEmail.error.length = The email address must be 132 characters or less
 clientFirstContactEmail.change.hidden = Change first client contact email address
 
 clientFirstContactHavePhone.title = Can we call the first client contact by telephone?
@@ -535,13 +538,14 @@ clientFirstContactHavePhone.heading = Can we call {0} by telephone?
 clientFirstContactHavePhone.hint = This can be a team mailbox or another contact.
 clientFirstContactHavePhone.error.required = Select yes if we can call the first client contact by telephone
 
-clientFirstContactPhone.title = What is the first client contact‘s telephone number?
-clientFirstContactPhone.heading = What is {0} telephone number?
+clientFirstContactPhone.title = What is the telephone number for the first client contact?
+clientFirstContactPhone.heading = What is the telephone number for {0}?
 clientFirstContactPhone.checkYourAnswersLabel = First client contact telephone number
 clientFirstContactPhone.p1 = Provide a telephone number from your client’s organisation.
-clientFirstContactPhone.error.required = Enter the first client contact’s telephone number
-clientFirstContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
-clientFirstContactPhone.error.length = The first client contact’s telephone number must be 24 characters or less
+clientFirstContactPhone.hint = For international numbers, include the country code.
+clientFirstContactPhone.error.required = Enter the telephone number for the first client contact
+clientFirstContactPhone.error.invalid = The telephone number must only include numbers 0 to 9 and a plus sign, like 01632 960 001, 07700 900 982 or +44 808 157 0192
+clientFirstContactPhone.error.length = The telephone number must be 24 characters or less
 clientFirstContactPhone.change.hidden = Change first client contact telephone number
 
 clientHaveSecondContact.title = Do you have a second client contact if your first contact is not available?
@@ -560,26 +564,27 @@ clientSecondContactName.error.length = The second client contact’s name must b
 clientSecondContactName.error.invalid = The name of the second client contact must only include letters a to z, hyphens, spaces, and apostrophes
 clientSecondContactName.change.hidden = Change second client contact name
 
-clientSecondContactEmail.title = What is the second client contact’s email address?
-clientSecondContactEmail.heading = What is {0} email address?
-clientSecondContactEmail.hint = We will use this email to send confirmation of the reports we receive or if we have any questions about your client’s report.
+clientSecondContactEmail.title = What is the email address for the second client contact?
+clientSecondContactEmail.heading = What is the email address for {0}?
+clientSecondContactEmail.p1 = We will use this email address to send confirmation of your reports or if we have any questions about them.
 clientSecondContactEmail.checkYourAnswersLabel = Second client contact email address
-clientSecondContactEmail.error.required = Enter the second client contact’s email address
-clientSecondContactEmail.error.length = The second client contact’s email address must be 132 characters or less
-clientSecondContactEmail.error.invalid = Enter the second client contact’s email address in the correct format with a name, @ symbol and a domain name, like yourname@example.com
+clientSecondContactEmail.error.required = Enter an email address for the second client contact
+clientSecondContactEmail.error.length = The email address must be 132 characters or less
+clientSecondContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
 clientSecondContactEmail.change.hidden = Change second client contact email address
 
 clientSecondContactHavePhone.title = Can we call your second client contact by telephone?
 clientSecondContactHavePhone.heading = Can we call {0} by telephone?
 clientSecondContactHavePhone.error.required = Select yes if we can call the second client contact by telephone
 
-clientSecondContactPhone.title = What is the second client contact’s telephone number?
-clientSecondContactPhone.heading = What is {0} telephone number?
+clientSecondContactPhone.title = What is the telephone number for the second client contact?
+clientSecondContactPhone.heading = What is the telephone number for {0}?
 clientSecondContactPhone.checkYourAnswersLabel = Second client contact telephone number
 clientSecondContactPhone.p1 = Provide a telephone number from your client’s organisation.
-clientSecondContactPhone.error.required = Enter the second client contact’s telephone number
-clientSecondContactPhone.error.invalid = Telephone number can only include numbers 0 to 9 and a plus sign. For example, 03453 234 432, 07453432432 or +44 345 654 3456
-clientSecondContactPhone.error.length = The second client contact’s telephone number must be 24 characters or less
+clientSecondContactPhone.hint = For international numbers, include the country code.
+clientSecondContactPhone.error.required = Enter the telephone number for the second client contact
+clientSecondContactPhone.error.invalid = The telephone number must only include numbers 0 to 9 and a plus sign, like 01632 960 001, 07700 900 982 or +44 808 157 0192
+clientSecondContactPhone.error.length = The telephone number must be 24 characters or less
 clientSecondContactPhone.change.hidden = Change second client contact telephone number
 
 ChangeClientContactDetails.title = Check your client’s contact details

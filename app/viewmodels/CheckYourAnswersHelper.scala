@@ -77,7 +77,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
             content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
               "contactPhone.change.hidden"
             )}</span>"""),
-            href = routes.ContactPhoneController.onPageLoad(CheckMode).url
+            href = routes.HaveTelephoneController.onPageLoad(CheckMode).url
           )
             .withAttribute(("id", "contact-phone"))
         )
@@ -164,7 +164,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
             content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
               "secondContactPhone.change.hidden"
             )}</span>"""),
-            href = routes.SecondContactPhoneController.onPageLoad(CheckMode).url
+            href = routes.SecondContactHavePhoneController.onPageLoad(CheckMode).url
           )
             .withAttribute(("id", "snd-contact-phone"))
         )
