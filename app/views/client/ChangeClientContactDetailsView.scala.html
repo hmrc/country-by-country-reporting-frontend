@@ -25,12 +25,7 @@
 
 @layout(pageTitle = titleNoForm(messages("ChangeClientContactDetails.title")), showAgentHeader = true) {
     @formHelper(action = controllers.client.routes.ChangeClientContactDetailsController.onSubmit()) {
-
-        @if(hasChanged) {
-        <h1 class="govuk-heading-l">@messages("CheckClientContactDetails.heading")</h1>
-        }else{
         <h1 class="govuk-heading-l">@messages("ChangeClientContactDetails.heading")</h1>
-        }
 
         <h2 class="govuk-heading-m">@messages("ChangeClientContactDetails.primary.heading")</h2>
 

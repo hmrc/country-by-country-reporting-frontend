@@ -516,22 +516,22 @@ clientContactDetailsNeeded.p3 = We will use these details if we have any questio
 
 clientFirstContactName.title = What is the name of the first contact at your client’s organisation?
 clientFirstContactName.heading = What is the name of the first contact at your client’s organisation?
-clientFirstContactName.checkYourAnswersLabel = First contact name
+clientFirstContactName.checkYourAnswersLabel = First client contact name
 clientFirstContactName.p1 = This can be an individual or the name of a team.
 clientFirstContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
 clientFirstContactName.error.required = Enter the name of the first client contact
 clientFirstContactName.error.length = The name of the first client contact must be 35 characters or less
 clientFirstContactName.error.invalid = The name of the first client contact must only include letters a to z, hyphens, spaces, and apostrophes
-clientFirstContactName.change.hidden = Change first contact name
+clientFirstContactName.change.hidden = Change first client contact name
 
 clientFirstContactEmail.title = What is the email address for the first client contact?
 clientFirstContactEmail.heading = What is the email address for {0}?
 clientFirstContactEmail.p1 = We will use this email address to send confirmation of your reports or if we have any questions about them.
-clientFirstContactEmail.checkYourAnswersLabel = First contact email address
+clientFirstContactEmail.checkYourAnswersLabel = First client contact email address
 clientFirstContactEmail.error.required = Enter an email address for the first client contact
 clientFirstContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
 clientFirstContactEmail.error.length = The email address must be 132 characters or less
-clientFirstContactEmail.change.hidden = Change first contact email address
+clientFirstContactEmail.change.hidden = Change first client contact email address
 
 clientFirstContactHavePhone.title = Can we call the first client contact by telephone?
 clientFirstContactHavePhone.heading = Can we call {0} by telephone?
@@ -540,38 +540,38 @@ clientFirstContactHavePhone.error.required = Select yes if we can call the first
 
 clientFirstContactPhone.title = What is the telephone number for the first client contact?
 clientFirstContactPhone.heading = What is the telephone number for {0}?
-clientFirstContactPhone.checkYourAnswersLabel = First contact telephone number
+clientFirstContactPhone.checkYourAnswersLabel = First client contact telephone number
 clientFirstContactPhone.p1 = Provide a telephone number from your client’s organisation.
 clientFirstContactPhone.hint = For international numbers, include the country code.
 clientFirstContactPhone.error.required = Enter the telephone number for the first client contact
 clientFirstContactPhone.error.invalid = The telephone number must only include numbers 0 to 9 and a plus sign, like 01632 960 001, 07700 900 982 or +44 808 157 0192
 clientFirstContactPhone.error.length = The telephone number must be 24 characters or less
-clientFirstContactPhone.change.hidden = Change first contact telephone number
+clientFirstContactPhone.change.hidden = Change first client contact telephone number
 
 clientHaveSecondContact.title = Do you have a second client contact if your first contact is not available?
 clientHaveSecondContact.heading = Do you have a second client contact if {0} is not available?
-clientHaveSecondContact.checkYourAnswersLabel = Do you have a second contact?
+clientHaveSecondContact.checkYourAnswersLabel = Do you have a second client contact if the first client contact is not available?
 clientHaveSecondContact.error.required = Select yes if you have a second client contact if the first client contact is not available
-clientHaveSecondContact.change.hidden = Change if you have a second contact
+clientHaveSecondContact.change.hidden = Change do you have a second client contact if the first client contact is not available?
 
 clientSecondContactName.title = What is the name of the second client contact?
 clientSecondContactName.heading = What is the name of the second client contact?
-clientSecondContactName.checkYourAnswersLabel = Second contact name
+clientSecondContactName.checkYourAnswersLabel = Second client contact name
 clientSecondContactName.p1 = This can be an individual or the name of a team at your client’s organisation.
 clientSecondContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
 clientSecondContactName.error.required = Enter the second client contact’s name
 clientSecondContactName.error.length = The second client contact’s name must be 35 characters or less
 clientSecondContactName.error.invalid = The name of the second client contact must only include letters a to z, hyphens, spaces, and apostrophes
-clientSecondContactName.change.hidden = Change second contact name
+clientSecondContactName.change.hidden = Change second client contact name
 
 clientSecondContactEmail.title = What is the email address for the second client contact?
 clientSecondContactEmail.heading = What is the email address for {0}?
 clientSecondContactEmail.p1 = We will use this email address to send confirmation of your reports or if we have any questions about them.
-clientSecondContactEmail.checkYourAnswersLabel = Second contact email address
+clientSecondContactEmail.checkYourAnswersLabel = Second client contact email address
 clientSecondContactEmail.error.required = Enter an email address for the second client contact
 clientSecondContactEmail.error.length = The email address must be 132 characters or less
 clientSecondContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
-clientSecondContactEmail.change.hidden = Change second contact email address
+clientSecondContactEmail.change.hidden = Change second client contact email address
 
 clientSecondContactHavePhone.title = Can we call your second client contact by telephone?
 clientSecondContactHavePhone.heading = Can we call {0} by telephone?
@@ -579,17 +579,16 @@ clientSecondContactHavePhone.error.required = Select yes if we can call the seco
 
 clientSecondContactPhone.title = What is the telephone number for the second client contact?
 clientSecondContactPhone.heading = What is the telephone number for {0}?
-clientSecondContactPhone.checkYourAnswersLabel = Second contact telephone number
+clientSecondContactPhone.checkYourAnswersLabel = Second client contact telephone number
 clientSecondContactPhone.p1 = Provide a telephone number from your client’s organisation.
 clientSecondContactPhone.hint = For international numbers, include the country code.
 clientSecondContactPhone.error.required = Enter the telephone number for the second client contact
 clientSecondContactPhone.error.invalid = The telephone number must only include numbers 0 to 9 and a plus sign, like 01632 960 001, 07700 900 982 or +44 808 157 0192
 clientSecondContactPhone.error.length = The telephone number must be 24 characters or less
-clientSecondContactPhone.change.hidden = Change second contact telephone number
+clientSecondContactPhone.change.hidden = Change second client contact telephone number
 
 ChangeClientContactDetails.title = Check your client’s contact details
-ChangeClientContactDetails.heading = Change your client’s contact details
-CheckClientContactDetails.heading = Check your client’s contact details
+ChangeClientContactDetails.heading = Check your client’s contact details
 ChangeClientContactDetails.primary.heading = First client contact
 ChangeClientContactDetails.secondary.heading = Second client contact
 ChangeClientContactDetails.subheading = Send us your client’s contact details
