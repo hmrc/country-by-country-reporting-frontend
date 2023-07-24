@@ -544,7 +544,7 @@ clientFirstContactPhone.change.hidden = Change first client contact telephone nu
 
 clientHaveSecondContact.title = Do you have a second client contact if your first contact is not available?
 clientHaveSecondContact.heading = Do you have a second client contact if {0} is not available?
-clientHaveSecondContact.checkYourAnswersLabel = Do you have a second client contact if the first client contact is not available?
+clientHaveSecondContact.checkYourAnswersLabel = Do you have a second contact?
 clientHaveSecondContact.error.required = Select yes if you have a second client contact if the first client contact is not available
 clientHaveSecondContact.change.hidden = Change do you have a second client contact if the first client contact is not available?
 
@@ -585,7 +585,7 @@ ChangeClientContactDetails.title = Check your client’s contact details
 ChangeClientContactDetails.heading = Check your client’s contact details
 ChangeClientContactDetails.primary.heading = First client contact
 ChangeClientContactDetails.secondary.heading = Second client contact
-ChangeClientContactDetails.subheading = Send us your client’s contact details
+ChangeClientContactDetails.subheading = Send your client’s contact details
 ChangeClientContactDetails.confirmingInformation = By sending these details, you are confirming that the information provided is correct and complete to the best of your knowledge.
 
 clientDetailsUpdated.title = Client contact details updated
