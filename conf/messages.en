@@ -584,8 +584,8 @@ clientSecondContactPhone.change.hidden = Change second contact telephone number
 ChangeClientContactDetails.title = Check your client’s contact details
 ChangeClientContactDetails.heading = Change your client’s contact details
 CheckClientContactDetails.heading = Check your client’s contact details
-ChangeClientContactDetails.primary.heading = First client contact
-ChangeClientContactDetails.secondary.heading = Second client contact
+ChangeClientContactDetails.primary.heading = First contact
+ChangeClientContactDetails.secondary.heading = Second contact
 ChangeClientContactDetails.subheading = Send your client’s contact details
 ChangeClientContactDetails.confirmingInformation = By sending these details, you are confirming that the information provided is correct and complete to the best of your knowledge.
 
