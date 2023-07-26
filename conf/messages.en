@@ -91,7 +91,7 @@ contactEmail.change.hidden = Change first contact email address
 
 haveTelephone.title = Can we contact them by telephone?
 haveTelephone.heading = Can we contact {0} by telephone?
-haveTelephone.checkYourAnswersLabel = First contact telephone number
+haveTelephone.checkYourAnswersLabel = Telephone number
 haveTelephone.hint = We will call if we have any questions about your reports.
 haveTelephone.error.required = Select yes if they can be contacted by telephone
 
