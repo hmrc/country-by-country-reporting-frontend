@@ -151,8 +151,8 @@ ChangeContactDetails.title = Contact details at your organisation
 ChangeContactDetails.heading = Contact details at your organisation
 ChangeContactDetails.primary.heading = First contact
 ChangeContactDetails.secondary.heading = Second contact
-ChangeContactDetails.nowSendContactDetails = Now send your new contact details
-ChangeContactDetails.confirmingInformation = By sending these details, you are confirming that the information is correct and complete to the best of your knowledge.
+ChangeContactDetails.nowSendContactDetails = Send your new contact details
+ChangeContactDetails.confirmingInformation = By sending these details, you are confirming that the information provided is correct and complete to the best of your knowledge.
 
 contactDetailsNeeded.title = We need your contact details
 contactDetailsNeeded.heading = We need your contact details
