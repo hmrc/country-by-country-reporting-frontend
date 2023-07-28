@@ -594,7 +594,7 @@ CheckClientContactDetails.heading = Check your client’s contact details
 ChangeClientContactDetails.primary.heading = First contact
 ChangeClientContactDetails.secondary.heading = Second contact
 ChangeClientContactDetails.subheading = Send your client’s contact details
-ChangeClientContactDetails.confirmingInformation = By sending these details, you are confirming that the information provided is correct and complete to the best of your knowledge.
+ChangeClientContactDetails.confirmingInformation = By sending these contact details, you are confirming that the information provided is correct and complete to the best of your knowledge.
 
 clientDetailsUpdated.title = Client contact details updated
 clientDetailsUpdated.heading = Client contact details updated
