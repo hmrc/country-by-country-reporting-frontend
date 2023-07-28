@@ -68,11 +68,11 @@ unauthorised.heading = You can’t access this service with this account
 contactName.title = Who can we contact if we have questions about your reports?
 contactName.heading = Who can we contact if we have questions about your reports?
 contactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
-contactName.checkYourAnswersLabel = Contact name
+contactName.checkYourAnswersLabel = First contact name
 contactName.error.required = Enter the name of the individual or team we should contact if we have any questions about your reports
 contactName.error.invalid = Name must only include letters a to z, apostrophes, grave accents, ampersands, hyphens, backslashes, carets and spaces
 contactName.error.length = Name must be 35 characters or less
-contactName.change.hidden = Change contact name
+contactName.change.hidden = Change first contact name
 
 default.firstContact.name = your first contact
 default.secondContact.name = your second contact
@@ -83,11 +83,11 @@ contact.name.plural.withS = {0}’
 contactEmail.title = What is their email address?
 contactEmail.heading = What is the email address for {0}?
 contactEmail.p1 = We will use this email address to send confirmation of your reports or if we have any questions about them.
-contactEmail.checkYourAnswersLabel = Email address
+contactEmail.checkYourAnswersLabel = First contact email address
 contactEmail.error.required = Enter an email address for the first contact
 contactEmail.error.length = The email address must be 132 characters or less
 contactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
-contactEmail.change.hidden = Change email address
+contactEmail.change.hidden = Change first contact email address
 
 haveTelephone.title = Can we contact them by telephone?
 haveTelephone.heading = Can we contact {0} by telephone?
@@ -95,14 +95,14 @@ haveTelephone.checkYourAnswersLabel = Telephone number
 haveTelephone.hint = We will call if we have any questions about your reports.
 haveTelephone.error.required = Select yes if they can be contacted by telephone
 
-contactPhone.checkYourAnswersLabel = Telephone number
+contactPhone.checkYourAnswersLabel = First contact telephone number
 contactPhone.title = What is the telephone number for the first contact?
 contactPhone.heading = What is the telephone number for {0}?
 contactPhone.hint = For international numbers, include the country code.
 contactPhone.error.required = Enter a telephone number for the first contact
 contactPhone.error.invalid = The telephone number must only include numbers 0 to 9 and a plus sign, like 01632 960 001, 07700 900 982 or +44 808 157 0192
 contactPhone.error.length = The telephone number must be 24 characters or less
-contactPhone.change.hidden = Change telephone number
+contactPhone.change.hidden = Change first contact telephone number
 
 haveSecondContact.title = Is there someone else we can contact if your first contact is not available?
 haveSecondContact.heading = Is there someone else we can contact if {0} is not available?
@@ -148,11 +148,12 @@ detailsUpdated.heading = Contact details updated
 detailsUpdated.p1 = We will use your new details if we need to contact you.
 
 ChangeContactDetails.title = Contact details at your organisation
-ChangeContactDetails.heading = Contact details at your organisation
+ChangeContactDetails.heading = Change your contact details for your organisation
+CheckContactDetails.heading = Check your contact details for your organisation
 ChangeContactDetails.primary.heading = First contact
 ChangeContactDetails.secondary.heading = Second contact
-ChangeContactDetails.nowSendContactDetails = Now send your new contact details
-ChangeContactDetails.confirmingInformation = By sending these details, you are confirming that the information is correct and complete to the best of your knowledge.
+ChangeContactDetails.nowSendContactDetails = Send your new contact details
+ChangeContactDetails.confirmingInformation = By sending these details, you are confirming that the information provided is correct and complete to the best of your knowledge.
 
 contactDetailsNeeded.title = We need your contact details
 contactDetailsNeeded.heading = We need your contact details
