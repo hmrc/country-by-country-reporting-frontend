@@ -32,8 +32,8 @@ object FileStatusViewModel {
   private def htmlStatus(fileStatus: FileStatus)(implicit messages: Messages): Content = {
     val (cssClass, status): (String, String) = fileStatus match {
       case Rejected(errors) if FileProblemHelper.isProblemStatus(errors) => (Messages(s"cssColour.Problem"), Messages(s"status.Problem"))
-      case RejectedSDES => (Messages(s"cssColour.Problem"), Messages(s"status.Problem"))
-      case RejectedSDESVirus => (Messages(s"cssColour.Rejected"), Messages(s"status.Rejected"))
+      case RejectedSDES                                                  => (Messages(s"cssColour.Problem"), Messages(s"status.Problem"))
+      case RejectedSDESVirus                                             => (Messages(s"cssColour.Rejected"), Messages(s"status.Rejected"))
       case _ =>
         (Messages(s"cssColour.${fileStatus.toString}"), Messages(s"status.${fileStatus.toString}"))
     }
