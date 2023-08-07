@@ -40,6 +40,9 @@ body:not(.js-enabled) .js-enabled {
     color: #0b0c0c;
     font-size: 14px;
 }
+.cbc-table-filename {
+  word-break: break-all;
+}
 
 .cbc-width-file {
    width: 40%;

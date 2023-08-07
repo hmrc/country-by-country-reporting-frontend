@@ -63,7 +63,7 @@ object FileStatusViewModel {
     val tableRow: Seq[Seq[TableRow]] = allFileDetails.sortBy(_.submitted)(Ordering[LocalDateTime].reverse) map {
       fileDetails =>
         Seq(
-          TableRow(Text(fileDetails.name)),
+          TableRow(content = Text(fileDetails.name), classes = "cbc-table-filename"),
           TableRow(Text(DateTimeFormatUtil.dateFormatted(fileDetails.submitted))),
           TableRow(htmlStatus(fileDetails.status)),
           buildTableRow(fileDetails.status, fileDetails.conversationId)
