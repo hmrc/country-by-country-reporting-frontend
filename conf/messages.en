@@ -226,17 +226,18 @@ uploadFile.error.file.empty = Select a file to upload
 
 invalidXMLFile.title = There is a problem with the formatting of your file
 invalidXMLFile.heading = There is a problem with the formatting of your file
-invalidXMLFile.p1 = We cannot accept the file {0} because it has not been formatted correctly.
+invalidXMLFile.p1 = We cannot accept the file {0} because there is a problem with its formatting.
 invalidXMLFile.p2 = Check that all:
-invalidXMLFile.p3 = elements in your file have an opening and a closing tag
-invalidXMLFile.p4 = all tags are correctly nested
-invalidXMLFile.p5 = The CBC_OECD element’s opening tag should be:
-invalidXMLFile.p5Example = <CBC_OECD xmlns="urn:oecd:ties:cbc:v2" xmlns:urn1="urn:oecd:ties:cbcstf:v5">
-invalidXMLFile.p6 = In the second namespace, {0} can be anything if it matches the name prefix used within the DocSpec child elements, for example:
-invalidXMLFile.p6Urn = urn1
-invalidXMLFile.p6Example = <urn1:DocTypeIndic>OECD1</urn1:DocTypeIndic>
-invalidXMLFile.p7 = To ensure your XML has proper formatting, {0}.
-invalidXMLFile.p7.link = refer to the CBC technical guidance for XML files
+invalidXMLFile.p3 = element names are correct
+invalidXMLFile.p4 = elements in your file have an opening and a closing tag
+invalidXMLFile.p5 = tags are correctly nested
+invalidXMLFile.p6 = The CBC_OECD element’s opening tag must be:
+invalidXMLFile.p6Example = <CBC_OECD xmlns="urn:oecd:ties:cbc:v2" xmlns:urn1="urn:oecd:ties:cbcstf:v5">
+invalidXMLFile.p7 = In the second namespace, {0} can be anything if it matches the name prefix used within the DocSpec child elements, for example:
+invalidXMLFile.p7Urn = urn1
+invalidXMLFile.p7Example = <urn1:DocTypeIndic>OECD1</urn1:DocTypeIndic>
+invalidXMLFile.p8 = To make sure your XML is formatted correctly. {0}.
+invalidXMLFile.p8.link = refer to the CBC technical guidance for XML files
 invalidXMLFile.uploadLink = Upload a different file
 invalidXMLFile.print = Print this page
 
