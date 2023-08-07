@@ -72,10 +72,10 @@ object FileStatusViewModel {
 
     val header = Some(
       Seq(
-        HeadCell(Text(Messages("fileStatus.file")), classes = "app-custom-class govuk-!-width-one-half"),
-        HeadCell(Text(Messages("fileStatus.uploaded")), classes = "app-custom-class govuk-!-width-one-half"),
-        HeadCell(Text(Messages("fileStatus.result")), classes = "app-custom-class"),
-        HeadCell(Text(Messages("fileStatus.nextSteps")), classes = "app-custom-class")
+        HeadCell(Text(Messages("fileStatus.file")), classes = "app-custom-class cbc-width-file"),
+        HeadCell(Text(Messages("fileStatus.uploaded")), classes = "app-custom-class cbc-width-uploaded"),
+        HeadCell(Text(Messages("fileStatus.result")), classes = "app-custom-class cbc-width-result"),
+        HeadCell(Text(Messages("fileStatus.nextSteps")), classes = "app-custom-class cbc-width-next")
       )
     )
     Table(
