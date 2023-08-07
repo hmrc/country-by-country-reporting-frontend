@@ -32,6 +32,8 @@ object FileStatusViewModel {
   private def htmlStatus(fileStatus: FileStatus)(implicit messages: Messages): Content = {
     val (cssClass, status): (String, String) = fileStatus match {
       case Rejected(errors) if FileProblemHelper.isProblemStatus(errors) => (Messages(s"cssColour.Problem"), Messages(s"status.Problem"))
+      case RejectedSDES => (Messages(s"cssColour.Problem"), Messages(s"status.Problem"))
+      case RejectedSDESVirus => (Messages(s"cssColour.Rejected"), Messages(s"status.Rejected"))
       case _ =>
         (Messages(s"cssColour.${fileStatus.toString}"), Messages(s"status.${fileStatus.toString}"))
     }
@@ -47,6 +49,10 @@ object FileStatusViewModel {
         s"<a href='${routes.FileProblemController.onPageLoad().url}' class='govuk-link'>${Messages("fileStatus.problem")}</a>"
       case Rejected(_) =>
         s"<a href='${routes.FileRejectedController.onPageLoad(conversationId).url}' class='govuk-link'>${Messages("fileStatus.rejected")}</a>"
+      case RejectedSDES =>
+        s"<a href='${routes.UploadFileController.onPageLoad().url}' class='govuk-link'>${Messages("fileStatus.problemSDES")}</a>"
+      case RejectedSDESVirus =>
+        s"<a href='${routes.FileProblemVirusController.onPageLoad().url}' class='govuk-link'>${Messages("fileStatus.problemSDESVirus")}</a>"
     }
 
     TableRow(HtmlContent(action), classes = "app-custom-class govuk-!-width-one-half")
