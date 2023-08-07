@@ -38,6 +38,9 @@
 
         @govukSummaryList(primary)
 
+        <h2 class="govuk-heading-m govuk-!-padding-top-5">@messages("ChangeContactDetails.secondary.heading")</h2>
+
+        @govukSummaryList(secondary)
 
         @if(hasChanged) {
             <h2 class="govuk-heading-m govuk-!-padding-top-5">@messages("ChangeContactDetails.nowSendContactDetails")</h2>
