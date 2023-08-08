@@ -236,7 +236,7 @@ invalidXMLFile.p6Example = <CBC_OECD xmlns="urn:oecd:ties:cbc:v2" xmlns:urn1="ur
 invalidXMLFile.p7 = In the second namespace, {0} can be anything if it matches the name prefix used within the DocSpec child elements, for example:
 invalidXMLFile.p7Urn = urn1
 invalidXMLFile.p7Example = <urn1:DocTypeIndic>OECD1</urn1:DocTypeIndic>
-invalidXMLFile.p8 = To make sure your XML is formatted correctly. {0}.
+invalidXMLFile.p8 = To make sure your XML is formatted correctly, {0}.
 invalidXMLFile.p8.link = refer to the CBC technical guidance for XML files
 invalidXMLFile.uploadLink = Upload a different file
 invalidXMLFile.print = Print this page
