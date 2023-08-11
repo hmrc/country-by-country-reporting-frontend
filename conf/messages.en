@@ -491,9 +491,6 @@ agentContactDetailsSaved.p1 = You can now:
 agentContactDetailsSaved.bullet1 = select a client
 agentContactDetailsSaved.bullet2 = add CBC clients in your agent services account
 
-changeAgentContactDetails.bullet1 = select a client
-changeAgentContactDetails.bullet2 = add CBC clients in your agent services account
-
 agentContactDetailsUpdated.title = Agent contact details updated
 agentContactDetailsUpdated.heading = Agent contact details updated
 agentContactDetailsUpdated.p1 = We will use your new details if we have any questions about your reports.
@@ -509,7 +506,7 @@ changeAgentContactDetails.primary.heading = First contact
 changeAgentContactDetails.secondary.heading = Second contact
 changeAgentContactDetails.nowSendContactDetails = Send your agent contact details
 changeAgentContactDetails.confirmingInformation = By sending these contact details, you are confirming that the information provided is correct and complete to the best of your knowledge.
-changeAgentContactDetails.leading = If you do not want to change your agent contact details, you can:
+changeAgentContactDetails.link = Back to manage your clients
 
 clientContactDetailsNeeded.title = You must provide your client’s contact details
 clientContactDetailsNeeded.heading = You must provide your client’s contact details

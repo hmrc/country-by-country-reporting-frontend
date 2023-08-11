@@ -43,32 +43,6 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
 
     "onPageLoad" - {
 
-      "must return OK and the correct view for a GET when client is selected" in {
-
-        when(mockAgentSubscriptionService.isAgentContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
-          .thenReturn(Future.successful(Some(true)))
-
-        when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
-          .thenReturn(Future.successful(Some(true)))
-
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[AgentSubscriptionService].toInstance(mockAgentSubscriptionService)
-          )
-          .build()
-
-        running(application) {
-          val request = FakeRequest(GET, routes.ChangeAgentContactDetailsController.onPageLoad().url)
-
-          val result = route(application, request).value
-
-          status(result) mustEqual OK
-          val doc = Jsoup.parse(contentAsString(result))
-          doc.getElementsContainingText("Select a client").isEmpty mustBe false
-          doc.getElementsContainingText("Add CBC clients in your agent services account").isEmpty mustBe false
-        }
-      }
-
       "must return OK and the correct view for a GET and show 'confirm and send' button on updating contact details" in {
 
         when(mockAgentSubscriptionService.isAgentContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
