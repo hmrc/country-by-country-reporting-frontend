@@ -40,3 +40,22 @@ body:not(.js-enabled) .js-enabled {
     color: #0b0c0c;
     font-size: 14px;
 }
+.cbc-table-filename {
+  word-break: break-all;
+}
+
+.cbc-width-file {
+   width: 40%;
+ }
+
+ .cbc-width-uploaded {
+   width: 20%;
+ }
+
+ .cbc-width-result {
+   width: 18%;
+ }
+
+ .cbc-width-next {
+   width: 22%;
+ }
