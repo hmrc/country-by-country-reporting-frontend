@@ -17,10 +17,10 @@
 package connectors
 
 import config.FrontendAppConfig
-import models.SubscriptionID
-import models.agentSubscription.{AgentRequestDetailForUpdate, AgentResponseDetail, CreateAgentSubscriptionRequest, CreateAgentSubscriptionResponse}
+import models.agentSubscription.{AgentRequestDetailForUpdate, AgentResponseDetail, CreateAgentSubscriptionRequest}
 import play.api.Logging
 import play.api.http.Status.NOT_FOUND
+import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
 import uk.gov.hmrc.http.HttpReads.is2xx
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
@@ -32,7 +32,7 @@ class AgentSubscriptionConnector @Inject() (val config: FrontendAppConfig, val h
 
   def createSubscription(
     createAgentSubscriptionRequest: CreateAgentSubscriptionRequest
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[SubscriptionID]] = {
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[JsValue]] = {
 
     val submissionUrl = s"${config.cbcUrl}/country-by-country-reporting/agent/subscription/create-subscription"
     http
@@ -42,7 +42,7 @@ class AgentSubscriptionConnector @Inject() (val config: FrontendAppConfig, val h
       )
       .map {
         case response if is2xx(response.status) =>
-          response.json.asOpt[CreateAgentSubscriptionResponse].map(_.subscriptionID)
+          Option(response.json)
         case response =>
           logger.warn(s"Unable to create an agent subscription to ETMP. ${response.status} response status")
           None
