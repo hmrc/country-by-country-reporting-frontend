@@ -17,7 +17,6 @@
 package connectors
 
 import generators.ModelGenerators
-import models.SubscriptionID
 import models.agentSubscription.{AgentRequestDetailForUpdate, AgentResponseDetail, CreateAgentSubscriptionRequest}
 import org.scalacheck.Arbitrary
 import play.api.Application
@@ -26,7 +25,6 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
 
@@ -71,9 +69,7 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
     "createSubscription" - {
       val createAgentSubscriptionRequest = Arbitrary.arbitrary[CreateAgentSubscriptionRequest].sample.value
 
-      "must return SubscriptionID for valid input request" in {
-        val expectedResponse = SubscriptionID("XACBC0000123456")
-
+      "must return Json response for valid input request" in {
         val subscriptionResponse: String =
           s"""
              |{
@@ -89,27 +85,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
 
         stubPostResponse(createSubscriptionUrl, OK, subscriptionResponse)
 
-        val result: Future[Option[SubscriptionID]] = connector.createSubscription(createAgentSubscriptionRequest)
-        result.futureValue.value mustBe expectedResponse
-      }
-
-      "must return None for invalid json response" in {
-        val subscriptionResponse: String =
-          s"""
-             |{
-             | "createAgentSubscriptionForCBCResponse": {
-             |"responseCommon": {
-             |"status": "OK",
-             |"processingDate": "1000-01-01T00:00:00Z"
-             |  },
-             |  "responseDetail": {
-             |  }
-             |} }""".stripMargin
-
-        stubPostResponse(createSubscriptionUrl, OK, subscriptionResponse)
-
         val result = connector.createSubscription(createAgentSubscriptionRequest)
-        result.futureValue mustBe None
+        result.futureValue.value mustBe Json.parse(subscriptionResponse)
       }
 
       "must return None when create subscription fails" in {
