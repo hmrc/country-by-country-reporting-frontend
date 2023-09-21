@@ -40,7 +40,7 @@
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("clientFirstContactName.heading")).asPageHeading().withCssClass("govuk-visually-hidden")
+                label = LabelViewModel(messages("clientFirstContactName.heading")).withCssClass("govuk-visually-hidden")
             ).withHint(HintViewModel(Text(messages("clientFirstContactName.hint"))))
             .withWidth(ThreeQuarters)
         )
