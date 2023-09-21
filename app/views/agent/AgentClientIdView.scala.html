@@ -34,14 +34,12 @@
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
-        <h1 class="govuk-heading-l">@messages("agentClientId.heading")</h1>
 
         @govukInput(
             InputViewModel(
                 field = form("value"),
                 label = LabelViewModel(messages("agentClientId.heading"))
                         .asPageHeading()
-                        .withCssClass("govuk-visually-hidden")
             )
                     .withCssClass("govuk-input--width-20")
             .withHint(Hint(content=messages("agentClientId.hint")))
