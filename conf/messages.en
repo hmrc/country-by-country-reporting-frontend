@@ -518,11 +518,11 @@ clientContactDetailsNeeded.p3 = We will use these details if we have any questio
 clientFirstContactName.title = What is the name of the first contact at your client’s organisation?
 clientFirstContactName.heading = What is the name of the first contact at your client’s organisation?
 clientFirstContactName.checkYourAnswersLabel = First contact name
-clientFirstContactName.p1 = This can be an individual or the name of a team.
-clientFirstContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
-clientFirstContactName.error.required = Enter the name of the first client contact
-clientFirstContactName.error.length = The name of the first client contact must be 35 characters or less
-clientFirstContactName.error.invalid = The name of the first client contact must only include letters a to z, hyphens, spaces, and apostrophes
+clientFirstContactName.p1 = This can be a person or the name of a team.
+clientFirstContactName.hint = For example, ‘Ashley Smith’ or ‘Tax team’.
+clientFirstContactName.error.required = Enter a name for your client’s first contact
+clientFirstContactName.error.length = The name must be 35 characters or less
+clientFirstContactName.error.invalid = 	The name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, backslashes, carets (^), grave accents (`), hyphens and spaces
 clientFirstContactName.change.hidden = Change first contact name
 
 clientFirstContactEmail.title = What is the email address for the first client contact?
