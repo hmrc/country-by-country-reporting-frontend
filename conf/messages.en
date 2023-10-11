@@ -534,7 +534,7 @@ clientFirstContactEmail.error.invalid = Enter an email address in the right form
 clientFirstContactEmail.error.length = The email address must be 132 characters or less
 clientFirstContactEmail.change.hidden = Change first contact email address
 
-clientFirstContactHavePhone.title = Can we contact the first client contact by telephone?
+clientFirstContactHavePhone.title = Can we contact your client by telephone?
 clientFirstContactHavePhone.heading = Can we contact {0} by telephone?
 clientFirstContactHavePhone.hint = This can be a team mailbox or another contact.
 clientFirstContactHavePhone.error.required = Select yes if they can be contacted by telephone
@@ -549,7 +549,7 @@ clientFirstContactPhone.error.invalid = The telephone number must only include n
 clientFirstContactPhone.error.length = The telephone number must be 24 characters or less
 clientFirstContactPhone.change.hidden = Change first contact telephone number
 
-clientHaveSecondContact.title = Is there someone else we can contact if your first contact is not available?
+clientHaveSecondContact.title = Is there someone else we can contact if your first client contact is not available?
 clientHaveSecondContact.heading = Is there someone else we can contact if {0} is not available?
 clientHaveSecondContact.checkYourAnswersLabel = Do you have a second contact?
 clientHaveSecondContact.error.required = Select yes if there is someone else we can contact
@@ -574,7 +574,7 @@ clientSecondContactEmail.error.length = The email address must be 132 characters
 clientSecondContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
 clientSecondContactEmail.change.hidden = Change second contact email address
 
-clientSecondContactHavePhone.title = Can we contact your second client contact by telephone?
+clientSecondContactHavePhone.title = Can we contact your client by telephone?
 clientSecondContactHavePhone.heading = Can we contact {0} by telephone?
 clientSecondContactHavePhone.error.required = Select yes if they can be contacted by telephone
 
