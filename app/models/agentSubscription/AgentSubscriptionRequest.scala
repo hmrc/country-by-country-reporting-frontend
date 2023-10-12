@@ -72,9 +72,9 @@ object AgentSubscriptionRequest extends Logging {
       case (Some(true), Some(_)) =>
         Right(
           for {
-            agentSecondaryContactInfo <- userAnswers.get(SecondContactNamePage).map(AgentDetails(_))
-            agentSecondaryEmail       <- userAnswers.get(SecondContactEmailPage)
-          } yield AgentContactInformation(agentSecondaryContactInfo, agentSecondaryEmail, userAnswers.get(SecondContactPhonePage), None)
+            agentSecondaryContactInfo <- userAnswers.get(AgentSecondContactNamePage).map(AgentDetails(_))
+            agentSecondaryEmail       <- userAnswers.get(AgentSecondContactEmailPage)
+          } yield AgentContactInformation(agentSecondaryContactInfo, agentSecondaryEmail, userAnswers.get(AgentSecondContactPhonePage), None)
         )
       case (Some(true), None) => Left(SubscriptionCreateInformationMissingError("AgentSecondContactHavePhone Page not answered"))
       case (None, _)          => Left(SubscriptionCreateInformationMissingError("AgentHaveSecondContact Page not answered"))
