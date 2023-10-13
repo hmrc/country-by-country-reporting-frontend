@@ -58,13 +58,13 @@ object AgentSubscriptionRequest extends Logging {
         Left(SubscriptionCreateInformationMissingError("Primary AgentContactInformation"))
     }
 
-  def getPrimaryContactInformation(userAnswers: UserAnswers): Option[AgentContactInformation] =
+  private def getPrimaryContactInformation(userAnswers: UserAnswers): Option[AgentContactInformation] =
     for {
       agentEmail       <- userAnswers.get(AgentFirstContactEmailPage)
       agentContactInfo <- userAnswers.get(AgentFirstContactNamePage).map(AgentDetails(_))
-    } yield AgentContactInformation(agentContactInfo, agentEmail, userAnswers.get(ContactPhonePage), None)
+    } yield AgentContactInformation(agentContactInfo, agentEmail, userAnswers.get(AgentFirstContactPhonePage), None)
 
-  def getSecondaryContactInformation(userAnswers: UserAnswers): Either[ApiError, Option[AgentContactInformation]] = {
+  private def getSecondaryContactInformation(userAnswers: UserAnswers): Either[ApiError, Option[AgentContactInformation]] = {
     val doYouHaveSecondContact      = userAnswers.get(AgentHaveSecondContactPage)
     val doYouHaveSecondContactPhone = userAnswers.get(AgentSecondContactHavePhonePage)
     (doYouHaveSecondContact, doYouHaveSecondContactPhone) match {
@@ -72,9 +72,9 @@ object AgentSubscriptionRequest extends Logging {
       case (Some(true), Some(_)) =>
         Right(
           for {
-            agentSecondaryContactInfo <- userAnswers.get(SecondContactNamePage).map(AgentDetails(_))
-            agentSecondaryEmail       <- userAnswers.get(SecondContactEmailPage)
-          } yield AgentContactInformation(agentSecondaryContactInfo, agentSecondaryEmail, userAnswers.get(SecondContactPhonePage), None)
+            agentSecondaryContactInfo <- userAnswers.get(AgentSecondContactNamePage).map(AgentDetails(_))
+            agentSecondaryEmail       <- userAnswers.get(AgentSecondContactEmailPage)
+          } yield AgentContactInformation(agentSecondaryContactInfo, agentSecondaryEmail, userAnswers.get(AgentSecondContactPhonePage), None)
         )
       case (Some(true), None) => Left(SubscriptionCreateInformationMissingError("AgentSecondContactHavePhone Page not answered"))
       case (None, _)          => Left(SubscriptionCreateInformationMissingError("AgentHaveSecondContact Page not answered"))

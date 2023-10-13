@@ -28,7 +28,7 @@ class FileCheckViewModelSpec extends SpecBase {
 
       val expectedSummary = Seq(
         SummaryListRow(Key(Text("File name")), Value(Text("name1.xml")), "", None),
-        SummaryListRow(Key(Text("Result of automatic checks")), Value(HtmlContent("<strong class='govuk-tag govuk-tag--blue'>Pending</strong>")), "", None)
+        SummaryListRow(Key(Text("Result of automatic checks")), Value(HtmlContent("<strong class='govuk-tag govuk-tag--yellow'>Pending</strong>")), "", None)
       )
 
       FileCheckViewModel.createFileSummary("name1.xml", "Pending")(messages(app)) mustBe expectedSummary
@@ -38,7 +38,7 @@ class FileCheckViewModelSpec extends SpecBase {
 
       val expectedSummary = Seq(
         SummaryListRow(Key(Text("File name")), Value(Text("name1.xml")), "", None),
-        SummaryListRow(Key(Text("Result of automatic checks")), Value(HtmlContent("<strong class='govuk-tag govuk-tag--green'>Sent</strong>")), "", None)
+        SummaryListRow(Key(Text("Result of automatic checks")), Value(HtmlContent("<strong class='govuk-tag govuk-tag--green'>PASSED</strong>")), "", None)
       )
 
       FileCheckViewModel.createFileSummary("name1.xml", "Accepted")(messages(app)) mustBe expectedSummary

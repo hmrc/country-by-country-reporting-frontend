@@ -226,17 +226,18 @@ uploadFile.error.file.empty = Select a file to upload
 
 invalidXMLFile.title = There is a problem with the formatting of your file
 invalidXMLFile.heading = There is a problem with the formatting of your file
-invalidXMLFile.p1 = We cannot accept the file {0} because it has not been formatted correctly.
+invalidXMLFile.p1 = We cannot accept the file {0} because there is a problem with its formatting.
 invalidXMLFile.p2 = Check that all:
-invalidXMLFile.p3 = elements in your file have an opening and a closing tag
-invalidXMLFile.p4 = all tags are correctly nested
-invalidXMLFile.p5 = The CBC_OECD element’s opening tag should be:
-invalidXMLFile.p5Example = <CBC_OECD xmlns="urn:oecd:ties:cbc:v2" xmlns:urn1="urn:oecd:ties:cbcstf:v5">
-invalidXMLFile.p6 = In the second namespace, {0} can be anything if it matches the name prefix used within the DocSpec child elements, for example:
-invalidXMLFile.p6Urn = urn1
-invalidXMLFile.p6Example = <urn1:DocTypeIndic>OECD1</urn1:DocTypeIndic>
-invalidXMLFile.p7 = To ensure your XML has proper formatting, {0}.
-invalidXMLFile.p7.link = refer to the CBC technical guidance for XML files
+invalidXMLFile.p3 = element names are correct
+invalidXMLFile.p4 = elements in your file have an opening and a closing tag
+invalidXMLFile.p5 = tags are correctly nested
+invalidXMLFile.p6 = The CBC_OECD element’s opening tag must be:
+invalidXMLFile.p6Example = <CBC_OECD xmlns="urn:oecd:ties:cbc:v2" xmlns:urn1="urn:oecd:ties:cbcstf:v5">
+invalidXMLFile.p7 = In the second namespace, {0} can be anything if it matches the name prefix used within the DocSpec child elements, for example:
+invalidXMLFile.p7Urn = urn1
+invalidXMLFile.p7Example = <urn1:DocTypeIndic>OECD1</urn1:DocTypeIndic>
+invalidXMLFile.p8 = To make sure your XML is formatted correctly, {0}.
+invalidXMLFile.p8.link = refer to the CBC technical guidance for XML files
 invalidXMLFile.uploadLink = Upload a different file
 invalidXMLFile.print = Print this page
 
@@ -262,16 +263,18 @@ fileStatus.p1 = This information will be available for 28 days from the date you
 fileStatus.file = File
 fileStatus.uploaded = Uploaded
 fileStatus.result = Result
-fileStatus.nextSteps = Next steps
-fileStatus.rejected = View errors
-fileStatus.accepted = View confirmation
+fileStatus.nextSteps = Next step
+fileStatus.rejected = Check errors
+fileStatus.accepted = Go to confirmation
 fileStatus.problem = Contact us
+fileStatus.problemSDES = Upload file again
+fileStatus.problemSDESVirus = Check problem
 cssColour.Rejected = red
 cssColour.Accepted = green
-cssColour.Pending = blue
+cssColour.Pending = yellow
 cssColour.Problem = purple
 status.Rejected = Failed
-status.Accepted = Sent
+status.Accepted = PASSED
 status.Pending = Pending
 status.Problem = Problem
 
@@ -281,19 +284,20 @@ filePassedChecks.heading = Your file has passed our checks
 fileSummary.fileName = File name
 fileSummary.result = Result of automatic checks
 fileSummary.viewConfirmation = View confirmation
+fileSummary.viewConfirmationLargeFile = Go to confirmation
 fileSummary.refresh = Refresh for updates
-fileSummary.viewErrors = View file errors
+fileSummary.viewErrors = Check errors
 
 
-filePendingChecks.title = We need a few more minutes to check your file
-filePendingChecks.heading = We need a few more minutes to check your file
-filePendingChecks.p1 = If you have been refreshing for more than 10 minutes, you can {0}. We will email you to tell you if your file has passed the checks or not.
-filePendingChecks.link = sign out and check later
-filePendingChecks.agent.p2 = if the file passes the checks, we will also email your client.
+filePendingChecks.title = We need a few minutes to check your file
+filePendingChecks.heading = We need a few minutes to check your file
+filePendingChecks.p1 = If you have been refreshing for more than 10 minutes, {0}. We will email you to tell you if your file has passed the checks or not.
+filePendingChecks.link = you can sign out
+filePendingChecks.agent.p2 = If the file passes the checks, we will also email your client.
 fileFailedChecks.title = Your file has failed our checks
 fileFailedChecks.heading = Your file has failed our checks
 fileFailedChecks.orgWarning = You may be fined if you do not send another version.
-fileFailedChecks.agentWarning = Your client may be fined if a revised version of this file is not sent.
+fileFailedChecks.agentWarning = Your client may be fined if either of you do not send another version.
 
 fileDataError.title = There is a problem with your file data
 fileDataError.heading = There is a problem with your file data
@@ -489,9 +493,6 @@ agentContactDetailsSaved.p1 = You can now:
 agentContactDetailsSaved.bullet1 = select a client
 agentContactDetailsSaved.bullet2 = add CBC clients in your agent services account
 
-changeAgentContactDetails.bullet1 = select a client
-changeAgentContactDetails.bullet2 = add CBC clients in your agent services account
-
 agentContactDetailsUpdated.title = Agent contact details updated
 agentContactDetailsUpdated.heading = Agent contact details updated
 agentContactDetailsUpdated.p1 = We will use your new details if we have any questions about your reports.
@@ -507,7 +508,7 @@ changeAgentContactDetails.primary.heading = First contact
 changeAgentContactDetails.secondary.heading = Second contact
 changeAgentContactDetails.nowSendContactDetails = Send your agent contact details
 changeAgentContactDetails.confirmingInformation = By sending these contact details, you are confirming that the information provided is correct and complete to the best of your knowledge.
-changeAgentContactDetails.leading = If you do not want to change your agent contact details, you can:
+changeAgentContactDetails.link = Back to manage your clients
 
 clientContactDetailsNeeded.title = You must provide your client’s contact details
 clientContactDetailsNeeded.heading = You must provide your client’s contact details

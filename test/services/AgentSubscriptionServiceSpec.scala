@@ -19,7 +19,7 @@ package services
 import base.SpecBase
 import connectors.AgentSubscriptionConnector
 import generators.ModelGenerators
-import models.{SubscriptionID, UserAnswers}
+import models.UserAnswers
 import models.agentSubscription.{AgentContactInformation, AgentDetails, AgentResponseDetail}
 import org.mockito.ArgumentMatchers.any
 import org.scalacheck.Arbitrary
@@ -27,7 +27,7 @@ import pages._
 import play.api.Application
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.json.Json
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -47,9 +47,8 @@ class AgentSubscriptionServiceSpec extends SpecBase with ModelGenerators {
   "AgentSubscriptionService" - {
     "CreateAgentContactDetails" - {
       "must return 'true' on successfully creating subscription" in {
-        val subscriptionID                                             = SubscriptionID("id")
-        val arn                                                        = "ARN12345"
-        val responseCreateSubscription: Future[Option[SubscriptionID]] = Future.successful(Some(subscriptionID))
+        val arn                        = "ARN12345"
+        val responseCreateSubscription = Future.successful(Option(Json.obj()))
         when(mockAgentSubscriptionConnector.createSubscription(any())(any(), any())).thenReturn(responseCreateSubscription)
 
         val userAnswers = UserAnswers("")
@@ -73,8 +72,8 @@ class AgentSubscriptionServiceSpec extends SpecBase with ModelGenerators {
       }
 
       "must return false when unable to create subscription because UserAnswers is empty" in {
-        val responseCreateSubscription: Future[Option[SubscriptionID]] = Future.successful(None)
-        val arn                                                        = "ARN12345"
+        val responseCreateSubscription: Future[Option[JsValue]] = Future.successful(None)
+        val arn                                                 = "ARN12345"
 
         when(mockAgentSubscriptionConnector.createSubscription(any())(any(), any())).thenReturn(responseCreateSubscription)
 
@@ -99,7 +98,7 @@ class AgentSubscriptionServiceSpec extends SpecBase with ModelGenerators {
           .success
           .value
 
-        val responseCreateSubscription: Future[Option[SubscriptionID]] = Future.successful(None)
+        val responseCreateSubscription: Future[Option[JsValue]] = Future.successful(None)
 
         when(mockAgentSubscriptionConnector.createSubscription(any())(any(), any())).thenReturn(responseCreateSubscription)
 
