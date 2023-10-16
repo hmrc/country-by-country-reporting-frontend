@@ -414,14 +414,14 @@ agentContactDetailsNeeded.p2 = We need up to 2 contacts. They can be for an indi
 agentContactDetailsNeeded.p3 = We will use these details if we have any questions about your CBC reports. These details can be changed at any time. You only need to go through this process once and it will apply for all your clients.
 agentContactDetailsNeeded.p4 = Do not provide your client’s contact details.
 
-agentFirstContactName.title = What is the name of your first contact?
-agentFirstContactName.heading = What is the name of your first contact?
+agentFirstContactName.title = What is the name of the person or team we should contact?
+agentFirstContactName.heading = What is the name of the person or team we should contact?
 agentFirstContactName.checkYourAnswersLabel = First contact name
-agentFirstContactName.p1 = This can be an individual or the name of a team. Do not use your client’s name.
-agentFirstContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
-agentFirstContactName.error.required = Enter the name of your first contact
-agentFirstContactName.error.length = The name of your first contact must be 35 characters or less
-agentFirstContactName.error.invalid = The name of your first contact must only include letters a to z, hyphens, spaces, and apostrophes
+agentFirstContactName.p1 = Do not use your client’s name.
+agentFirstContactName.hint = For example, ‘Ashley Smith’ or ‘Tax team’.
+agentFirstContactName.error.required = Enter a name for the first agent contact
+agentFirstContactName.error.length = The name must be 35 characters or less
+agentFirstContactName.error.invalid = The name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, backslashes, carets (^), grave accents (`), hyphens and spaces
 agentFirstContactName.change.hidden = Change first contact name
 
 agentFirstContactEmail.title = What is the email address for the first contact?
@@ -433,9 +433,9 @@ agentFirstContactEmail.error.length = The email address must be 132 characters o
 agentFirstContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
 agentFirstContactEmail.change.hidden = Change first contact email address
 
-agentFirstContactHavePhone.title = Can we call your first contact by telephone?
-agentFirstContactHavePhone.heading = Can we call {0} by telephone?
-agentFirstContactHavePhone.error.required = Select yes if we can call your first contact by telephone
+agentFirstContactHavePhone.title = Can we contact your first contact by telephone?
+agentFirstContactHavePhone.heading = Can we contact {0} by telephone?
+agentFirstContactHavePhone.error.required = Select yes if they can be contacted by telephone
 
 agentFirstContactPhone.title = What is the telephone number for the first contact?
 agentFirstContactPhone.heading = What is the telephone number for {0}?
@@ -447,20 +447,20 @@ agentFirstContactPhone.error.invalid = The telephone number must only include nu
 agentFirstContactPhone.error.length = The telephone number must be 24 characters or less
 agentFirstContactPhone.change.hidden = Change first contact telephone number
 
-agentHaveSecondContact.title = Do you have a second contact?
-agentHaveSecondContact.heading = Do you have a second contact if {0} is not available?
+agentHaveSecondContact.title = Is there someone else we can contact if your first contact is not available?
+agentHaveSecondContact.heading = Is there someone else we can contact if {0} is not available?
 agentHaveSecondContact.checkYourAnswersLabel = Do you have a second contact?
-agentHaveSecondContact.error.required = Select yes if you have a second contact if your first contact is not available
+agentHaveSecondContact.error.required = Select yes if there is someone else we can contact
 agentHaveSecondContact.change.hidden = Change if you have a second contact
 
-agentSecondContactName.title = What is the name of your second contact?
-agentSecondContactName.heading = What is the name of your second contact?
+agentSecondContactName.title = What is the name of the person or team we should contact?
+agentSecondContactName.heading = What is the name of the person or team we should contact?
 agentSecondContactName.checkYourAnswersLabel = Second contact name
-agentSecondContactName.p1 = This can be an individual or the name of a team. Do not use your client’s name.
-agentSecondContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
-agentSecondContactName.error.required = Enter your second contact’s name
-agentSecondContactName.error.length = Your second contact’s name must be 35 characters or less
-agentSecondContactName.error.invalid = The name of your second contact must only include letters a to z, hyphens, spaces and apostrophes
+agentSecondContactName.p1 = Do not use your client’s name.
+agentSecondContactName.hint = For example, ‘Ashley Smith’ or ‘Tax team’.
+agentSecondContactName.error.required = Enter a name for the second agent contact
+agentSecondContactName.error.length = The name must be 35 characters or less
+agentSecondContactName.error.invalid = The name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, backslashes, carets (^), grave accents (`), hyphens and spaces
 agentSecondContactName.change.hidden = Change second contact name
 
 agentSecondContactEmail.title = What is the email address for the second contact?
@@ -472,9 +472,9 @@ agentSecondContactEmail.error.invalid = Enter an email address in the right form
 agentSecondContactEmail.error.length = The email address must be 132 characters or less
 agentSecondContactEmail.change.hidden = Change second contact email address
 
-agentSecondContactHavePhone.title = Can we call your second contact by telephone?
-agentSecondContactHavePhone.heading = Can we call {0} by telephone?
-agentSecondContactHavePhone.error.required = Select yes if we can call your second contact by telephone
+agentSecondContactHavePhone.title = Can we contact your second contact by telephone?
+agentSecondContactHavePhone.heading = Can we contact {0} by telephone?
+agentSecondContactHavePhone.error.required = Select yes if they can be contacted by telephone
 
 agentSecondContactPhone.title = What is the telephone number for your second contact?
 agentSecondContactPhone.heading = What is the telephone number for {0}?
