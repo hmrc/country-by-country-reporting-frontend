@@ -29,6 +29,81 @@ class ClientContactDetailsNavigatorSpec extends SpecBase with ScalaCheckProperty
 
   "Navigator" - {
     "In normal mode" - {
+
+      "Must go from review client details page to have second contact page if answer is yes" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            val updatedAnswers =
+              answers
+                .set(ReviewClientContactDetailsPage, value = true)
+                .success
+                .value
+                .set(ContactNamePage, "name")
+                .success
+                .value
+                .set(ContactEmailPage, "test@test.com")
+                .success
+                .value
+            navigator
+              .nextPage(ReviewClientContactDetailsPage, NormalMode, updatedAnswers)
+              .mustBe(routes.ClientHaveSecondContactController.onPageLoad(NormalMode))
+        }
+      }
+      "Must go from review client details page to first contact name page if answer is no" in {
+        forAll(arbitrary[UserAnswers]) {
+          answers =>
+            val updatedAnswers =
+              answers
+                .set(ReviewClientContactDetailsPage, value = false)
+                .success
+                .value
+                .remove(ContactEmailPage)
+                .get
+                .remove(ContactNamePage)
+                .get
+            navigator
+              .nextPage(ReviewClientContactDetailsPage, NormalMode, updatedAnswers)
+              .mustBe(routes.ClientFirstContactNameController.onPageLoad(NormalMode))
+        }
+      }
+      "Must go from review client details page to there is a problem page if answer" +
+        " is yes and userAnswers does not contain client name and email" in {
+          forAll(arbitrary[UserAnswers]) {
+            answers =>
+              val updatedAnswers =
+                answers
+                  .set(ReviewClientContactDetailsPage, value = true)
+                  .success
+                  .value
+                  .remove(ContactEmailPage)
+                  .get
+                  .remove(ContactNamePage)
+                  .get
+              navigator
+                .nextPage(ReviewClientContactDetailsPage, NormalMode, updatedAnswers)
+                .mustBe(controllers.routes.ThereIsAProblemController.onPageLoad())
+          }
+        }
+      "Must go from review client details page to have there is a problem page" +
+        " if answer is no and userAnswers contains contact name and email" in {
+          forAll(arbitrary[UserAnswers]) {
+            answers =>
+              val updatedAnswers =
+                answers
+                  .set(ReviewClientContactDetailsPage, value = false)
+                  .success
+                  .value
+                  .set(ContactNamePage, "name")
+                  .success
+                  .value
+                  .set(ContactEmailPage, "test@test.com")
+                  .success
+                  .value
+              navigator
+                .nextPage(ReviewClientContactDetailsPage, NormalMode, updatedAnswers)
+                .mustBe(controllers.routes.ThereIsAProblemController.onPageLoad())
+          }
+        }
       "Must go from client first contact name page to client first contact email page" in {
         forAll(arbitrary[UserAnswers]) {
           answers =>

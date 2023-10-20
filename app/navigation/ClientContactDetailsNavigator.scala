@@ -28,6 +28,16 @@ import javax.inject.{Inject, Singleton}
 class ClientContactDetailsNavigator @Inject() () {
 
   val normalRoutes: (Page) => UserAnswers => Call = {
+    case ReviewClientContactDetailsPage =>
+      ua =>
+        yesNoPageConditional(
+          ua,
+          ReviewClientContactDetailsPage,
+          ua => ua.get(ContactNamePage).isDefined && ua.get(ContactEmailPage).isDefined,
+          routes.ClientHaveSecondContactController.onPageLoad(NormalMode),
+          ua => ua.get(ContactNamePage).isEmpty && ua.get(ContactEmailPage).isEmpty,
+          routes.ClientFirstContactNameController.onPageLoad(NormalMode)
+        )
     case ContactNamePage  => _ => routes.ClientFirstContactEmailController.onPageLoad(NormalMode)
     case ContactEmailPage => _ => routes.ClientFirstContactHavePhoneController.onPageLoad(NormalMode)
     case HaveTelephonePage =>
@@ -100,6 +110,27 @@ class ClientContactDetailsNavigator @Inject() () {
   def yesNoPage(ua: UserAnswers, fromPage: QuestionPage[Boolean], yesCall: => Call, noCall: => Call): Call =
     ua.get(fromPage)
       .map(if (_) yesCall else noCall)
+      .getOrElse(controllers.routes.ThereIsAProblemController.onPageLoad())
+
+  private def yesNoPageConditional(ua: UserAnswers,
+                                   fromPage: QuestionPage[Boolean],
+                                   yesCondition: UserAnswers => Boolean,
+                                   yesCall: => Call,
+                                   noCondition: UserAnswers => Boolean,
+                                   noCall: => Call
+  ): Call =
+    ua.get(fromPage)
+      .map(if (_) {
+        if (yesCondition(ua)) {
+          yesCall
+        } else {
+          controllers.routes.ThereIsAProblemController.onPageLoad()
+        }
+      } else if (noCondition(ua)) {
+        noCall
+      } else {
+        controllers.routes.ThereIsAProblemController.onPageLoad()
+      })
       .getOrElse(controllers.routes.ThereIsAProblemController.onPageLoad())
 
   def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {

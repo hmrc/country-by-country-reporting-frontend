@@ -21,6 +21,9 @@ import pages._
 
 trait PageGenerators {
 
+  implicit lazy val arbitraryReviewClientContactDetailsPage: Arbitrary[ReviewClientContactDetailsPage.type] =
+    Arbitrary(ReviewClientContactDetailsPage)
+
   implicit lazy val arbitraryWhatToDoNextPage: Arbitrary[WhatToDoNextPage.type] =
     Arbitrary(WhatToDoNextPage)
 
