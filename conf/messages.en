@@ -65,13 +65,13 @@ signedOut.heading = For your security, we signed you out
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
-contactName.title = Who can we contact if we have questions about your reports?
-contactName.heading = Who can we contact if we have questions about your reports?
-contactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
+contactName.title = What is the name of the person or team we should contact?
+contactName.heading = What is the name of the person or team we should contact?
+contactName.hint = For example, ‘Ashley Smith’ or ‘Tax team’.
 contactName.checkYourAnswersLabel = First contact name
-contactName.error.required = Enter the name of the individual or team we should contact if we have any questions about your reports
-contactName.error.invalid = Name must only include letters a to z, apostrophes, grave accents, ampersands, hyphens, backslashes, carets and spaces
-contactName.error.length = Name must be 35 characters or less
+contactName.error.required = Enter a name for the first contact
+contactName.error.invalid = The name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, backslashes, carets (^), grave accents (`), hyphens and spaces
+contactName.error.length = The name must be 35 characters or less
 contactName.change.hidden = Change first contact name
 
 default.firstContact.name = your first contact
@@ -92,7 +92,7 @@ contactEmail.change.hidden = Change first contact email address
 haveTelephone.title = Can we contact them by telephone?
 haveTelephone.heading = Can we contact {0} by telephone?
 haveTelephone.checkYourAnswersLabel = Telephone number
-haveTelephone.hint = We will call if we have any questions about your reports.
+haveTelephone.p2 = We will call if we have any questions about your reports.
 haveTelephone.error.required = Select yes if they can be contacted by telephone
 
 contactPhone.checkYourAnswersLabel = First contact telephone number
@@ -106,18 +106,18 @@ contactPhone.change.hidden = Change first contact telephone number
 
 haveSecondContact.title = Is there someone else we can contact if your first contact is not available?
 haveSecondContact.heading = Is there someone else we can contact if {0} is not available?
-haveSecondContact.hint = This can be a team mailbox or another contact.
+haveSecondContact.p2 = This can be a team mailbox or another contact.
 haveSecondContact.checkYourAnswersLabel = Do you have a second contact?
 haveSecondContact.error.required = Select yes if there is someone else we can contact
 haveSecondContact.change.hidden = Change if you have a second contact
 
-secondContactName.title = What is the name of the individual or team we should contact?
-secondContactName.heading = What is the name of the individual or team we should contact?
-secondContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
+secondContactName.title = What is the name of the person or team we should contact?
+secondContactName.heading = What is the name of the person or team we should contact?
+secondContactName.hint = For example, ‘Ashley Smith’ or ‘Tax team’.
 secondContactName.checkYourAnswersLabel = Second contact name
-secondContactName.error.required = Enter the name of the individual or team we should contact
-secondContactName.error.invalid = Name of the individual or team must only include letters a to z, numbers 0 to 9, apostrophes, grave accents, ampersands, hyphens, backslashes, carets and spaces
-secondContactName.error.length = Individual or team must be 35 characters or less
+secondContactName.error.required = Enter a name for the second contact
+secondContactName.error.invalid = The name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, backslashes, carets (^), grave accents (`), hyphens and spaces
+secondContactName.error.length = The name must be 35 characters or less
 secondContactName.change.hidden = Change second contact name
 
 secondContactEmail.title = What is the email address for the second contact?
@@ -131,7 +131,7 @@ secondContactEmail.change.hidden = Change second contact email address
 
 secondContactHavePhone.title = Can we contact them by telephone?
 secondContactHavePhone.heading = Can we contact {0} by telephone?
-secondContactHavePhone.hint = We will call if we have any questions about your reports.
+secondContactHavePhone.p2 = We will call if we have any questions about your reports.
 secondContactHavePhone.error.required = Select yes if they can be contacted by telephone
 
 secondContactPhone.title = What is the telephone number for the second contact?
