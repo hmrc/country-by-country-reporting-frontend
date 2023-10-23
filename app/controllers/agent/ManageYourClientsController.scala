@@ -27,7 +27,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import services.AgentSubscriptionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.WhatToDoNextView
+import views.html.ManageYourClientsView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -42,7 +42,7 @@ class ManageYourClientsController @Inject() (
   formProvider: ManageYourClientsFormProvider,
   agentSubscriptionService: AgentSubscriptionService,
   val controllerComponents: MessagesControllerComponents,
-  view: WhatToDoNextView
+  view: ManageYourClientsView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
