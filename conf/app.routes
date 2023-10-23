@@ -229,8 +229,7 @@ POST       /agent/client-id                                                     
 GET        /agent/agent-is-this-your-client                                      controllers.agent.AgentIsThisYourClientController.onPageLoad
 POST       /agent/agent-is-this-your-client                                      controllers.agent.AgentIsThisYourClientController.onSubmit
 
-
-GET        /what-do-you-want-to-do-next                                         controllers.agent.WhatToDoNextController.onPageLoad(mode: Mode = NormalMode)
-POST       /what-do-you-want-to-do-next                                         controllers.agent.WhatToDoNextController.onSubmit(mode: Mode = NormalMode)
+GET        /agent/manage-your-clients                                         controllers.agent.ManageYourClientsController.onPageLoad(mode: Mode = NormalMode)
+POST       /agent/manage-your-clients                                         controllers.agent.ManageYourClientsController.onSubmit(mode: Mode = NormalMode)
 
 GET        /page-not-found                                                      controllers.PageNotFoundController.onPageLoad()

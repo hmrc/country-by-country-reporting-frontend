@@ -40,6 +40,7 @@ class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig:
   val signOutUrl: String           = configuration.get[String]("urls.signOut")
   val registerUrl: String          = configuration.get[String]("urls.register")
   val guidanceAgentService: String = configuration.get[String]("urls.guidance.agentService")
+  val agentServiceUrl: String      = configuration.get[String]("urls.agentService")
 
   val upscanInitiateHost: String        = servicesConfig.baseUrl("upscan")
   val upscanBucketHost: String          = servicesConfig.baseUrl("upscan")

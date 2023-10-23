@@ -14,9 +14,12 @@
  * limitations under the License.
  *@
 
+@import config.FrontendAppConfig
+
 @this(
         layout: templates.Layout,
-        link: components.Link
+        link: components.Link,
+        appConfig: FrontendAppConfig
 )
 
 @()(implicit request: Request[_], messages: Messages)
@@ -31,7 +34,7 @@
 
     <ol class="govuk-body govuk-list--number">
         <li>@link(controllers.agent.routes.AgentClientIdController.onPageLoad().url, "problemCBCId.bullet1").</li>
-        <li>@Html(messages("problemCBCId.bullet2", link("#", "problemCBCId.bullet2.link"))).</li> @*TODO: add agent services link URL when known*@
+        <li>@Html(messages("problemCBCId.bullet2", link("appConfig.agentServicesUrl", "problemCBCId.bullet2.link"))).</li>
         <li>@messages("problemCBCId.bullet3")</li>
     </ol>
 }

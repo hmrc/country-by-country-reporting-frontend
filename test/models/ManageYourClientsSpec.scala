@@ -24,37 +24,37 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatest.OptionValues
 import play.api.libs.json.{JsError, JsString, Json}
 
-class WhatToDoNextSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
+class ManageYourClientsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
-  "WhatToDoNext" - {
+  "ManageYourClients" - {
 
     "must deserialise valid values" in {
 
-      val gen = Gen.oneOf(WhatToDoNext.values.toSeq)
+      val gen = Gen.oneOf(ManageYourClients.values.toSeq)
 
       forAll(gen) {
-        whatToDoNext =>
-          JsString(whatToDoNext.toString).validate[WhatToDoNext].asOpt.value mustEqual whatToDoNext
+        manageYourClients =>
+          JsString(manageYourClients.toString).validate[ManageYourClients].asOpt.value mustEqual manageYourClients
       }
     }
 
     "must fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!WhatToDoNext.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!ManageYourClients.values.map(_.toString).contains(_))
 
       forAll(gen) {
         invalidValue =>
-          JsString(invalidValue).validate[WhatToDoNext] mustEqual JsError("error.invalid")
+          JsString(invalidValue).validate[ManageYourClients] mustEqual JsError("error.invalid")
       }
     }
 
     "must serialise" in {
 
-      val gen = Gen.oneOf(WhatToDoNext.values.toSeq)
+      val gen = Gen.oneOf(ManageYourClients.values.toSeq)
 
       forAll(gen) {
-        whatToDoNext =>
-          Json.toJson(whatToDoNext) mustEqual JsString(whatToDoNext.toString)
+        manageYourClients =>
+          Json.toJson(manageYourClients) mustEqual JsString(manageYourClients.toString)
       }
     }
   }

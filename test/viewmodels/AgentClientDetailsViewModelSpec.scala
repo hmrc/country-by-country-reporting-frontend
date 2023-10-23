@@ -38,7 +38,7 @@ class AgentClientDetailsViewModelSpec extends SpecBase {
               "",
               Seq(
                 ActionItem(
-                  "/send-a-country-by-country-report/what-do-you-want-to-do-next",
+                  "/send-a-country-by-country-report/agent/manage-your-clients",
                   HtmlContent("""<span aria-hidden="true">Change</span><span class="govuk-visually-hidden">Change client</span>"""),
                   None,
                   "",

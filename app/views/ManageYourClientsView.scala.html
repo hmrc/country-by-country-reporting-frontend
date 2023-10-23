@@ -14,31 +14,36 @@
  * limitations under the License.
  *@
 
+@import config.FrontendAppConfig
+
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
     govukRadios: GovukRadios,
-    govukButton: GovukButton
+    govukButton: GovukButton,
+    appConfig: FrontendAppConfig,
+    link: components.Link,
 )
 
 @(form: Form[_], mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("whatToDoNext.title"))) {
+@layout(pageTitle = title(form, messages("manageYourClients.title"))) {
 
-    @formHelper(action = controllers.agent.routes.WhatToDoNextController.onSubmit(), 'autoComplete -> "off") {
+    @formHelper(action = controllers.agent.routes.ManageYourClientsController.onSubmit(), 'autoComplete -> "off") {
 
-        @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
-        }
+    <h1 class="govuk-heading-l">@messages("manageYourClients.heading")</h1>
 
-        @govukRadios(
-            RadiosViewModel(
-                field  = form("value"),
-                legend = LegendViewModel(messages("whatToDoNext.heading")).asPageHeading(),
-                items  = WhatToDoNext.options
-            )
-        )
+    <p class ="govuk-body">@messages("manageYourClients.p1")</p>
+
+    <ol class="govuk-body govuk-list--bullet">
+        <li>@link(controllers.agent.routes.AgentClientIdController.onPageLoad().url, "manageYourClients.bullet1").</li>
+        <li>@link(appConfig.agentServiceUrl, "manageYourClients.bullet2").</li>
+    </ol>
+
+    <p class="govuk-body govuk-!-margin-top-6">@Html(messages("manageYourClients.p2", link(routes.ChangeContactDetailsController.onPageLoad().url, "manageYourClients.link")))</p>
+
+
 
         @govukButton(
             ButtonViewModel(messages("site.continue")).withAttribute("id" -> "submit")

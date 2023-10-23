@@ -16,17 +16,12 @@
 
 package pages
 
-import models.WhatToDoNext
-import pages.behaviours.PageBehaviours
+import models.ManageYourClients
+import play.api.libs.json.JsPath
 
-class WhatToDoNextSpec extends PageBehaviours {
+case object ManageYourClientsPage extends QuestionPage[ManageYourClients] {
 
-  "WhatToDoNextPage" - {
+  override def path: JsPath = JsPath \ toString
 
-    beRetrievable[WhatToDoNext](WhatToDoNextPage)
-
-    beSettable[WhatToDoNext](WhatToDoNextPage)
-
-    beRemovable[WhatToDoNext](WhatToDoNextPage)
-  }
+  override def toString: String = "whatToDoNext"
 }

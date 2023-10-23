@@ -617,8 +617,8 @@ problemCBCId.heading = There is a problem with your CBC ID
 problemCBCId.p1 = The CBC ID you entered does not match any clients that have authorised you in your agent services account.
 problemCBCId.subheading = What you can do next
 problemCBCId.bullet1 = Try entering your client’s CBC ID again
-problemCBCId.bullet2 = Use your agent services account to {0}
-problemCBCId.bullet2.link = ask a client to authorise you
+problemCBCId.bullet2 = Ask a client to authorize you through your {0}
+problemCBCId.bullet2.link = agent services account
 problemCBCId.bullet3 = Confirm your client has authorised you to start using CBC for them.
 
 individualSignInProblem.title = Sorry, you’re unable to use this service
@@ -639,14 +639,15 @@ agentIsThisYourClient.checkYourAnswersLabel = Is this your client?
 agentIsThisYourClient.error.required = Select yes if this is your client
 agentIsThisYourClient.change.hidden = Change if this is your client
 
-whatToDoNext.title = What do you want to do next?
-whatToDoNext.heading = What do you want to do next?
-whatToDoNext.selectAClient = Select a client
-whatToDoNext.addAClient = Add a client to your agent services account
-whatToDoNext.changeAgentContactDetails = Change your CBC agent contact details
-whatToDoNext.checkYourAnswersLabel = What do you want to do next?
-whatToDoNext.error.required = Select what you want to do next
-whatToDoNext.change.hidden = Change client
+manageYourClients.title = Manage your clients
+manageYourClients.heading = Manage your clients
+manageYourClients.p1 = As an agent, you can:
+manageYourClients.p2 = You can also {0}.
+manageYourClients.link = change your country-by-country agent contact details
+manageYourClients.bullet1 = select a client to send a country-by-country report for
+manageYourClients.bullet2 = ask a client to authorise you through your agent services account
+manageYourClients.checkYourAnswersLabel = What do you want to do next?
+manageYourClients.change.hidden = Change client
 
 agentClientDetails.name = Client name
 agentClientDetails.id = Client CBC ID

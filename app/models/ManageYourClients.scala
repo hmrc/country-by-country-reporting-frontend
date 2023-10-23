@@ -20,15 +20,15 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
-sealed trait WhatToDoNext
+sealed trait ManageYourClients
 
-object WhatToDoNext extends Enumerable.Implicits {
+object ManageYourClients extends Enumerable.Implicits {
 
-  case object SelectAClient extends WithName("selectAClient") with WhatToDoNext
-  case object AddAClientToYourAgentServicesAccount extends WithName("addAClient") with WhatToDoNext
-  case object ChangeYourCBCAgentContactDetails extends WithName("changeAgentContactDetails") with WhatToDoNext
+  case object SelectAClient extends WithName("selectAClient") with ManageYourClients
+  case object AddAClientToYourAgentServicesAccount extends WithName("addAClient") with ManageYourClients
+  case object ChangeYourCBCAgentContactDetails extends WithName("changeAgentContactDetails") with ManageYourClients
 
-  val values: Seq[WhatToDoNext] = Seq(
+  val values: Seq[ManageYourClients] = Seq(
     SelectAClient,
     AddAClientToYourAgentServicesAccount,
     ChangeYourCBCAgentContactDetails
@@ -37,13 +37,13 @@ object WhatToDoNext extends Enumerable.Implicits {
   def options(implicit messages: Messages): Seq[RadioItem] = values.zipWithIndex.map {
     case (value, index) =>
       RadioItem(
-        content = Text(messages(s"whatToDoNext.${value.toString}")),
+        content = Text(messages(s"manageYourClients.${value.toString}")),
         value = Some(value.toString),
         id = Some(s"value_$index")
       )
   }
 
-  implicit val enumerable: Enumerable[WhatToDoNext] =
+  implicit val enumerable: Enumerable[ManageYourClients] =
     Enumerable(
       values.map(
         v => v.toString -> v

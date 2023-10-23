@@ -48,7 +48,7 @@
     }
 
     @if(!clientSelected && doContactDetailsExist) {
-    <p class="govuk-body">@link(controllers.agent.routes.WhatToDoNextController.onPageLoad().url, "changeAgentContactDetails.link")</p>
+    <p class="govuk-body">@link(controllers.agent.routes.ManageYourClientsController.onPageLoad().url, "changeAgentContactDetails.link")</p>
     }
 
     @if(clientSelected) {

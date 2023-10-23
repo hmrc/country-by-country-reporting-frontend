@@ -129,7 +129,7 @@ class AuthenticatedIdentifierAction @Inject() (
                 logger.info(
                   s"IdentifierAction: Agent with HMRC-AS-AGENT Enrolment. No ClientId in UserAnswers in SessionRepository. Redirecting to /agent/client-id. ${request.headers}"
                 )
-                Future.successful(Left(Redirect(controllers.agent.routes.WhatToDoNextController.onPageLoad())))
+                Future.successful(Left(Redirect(controllers.agent.routes.ManageYourClientsController.onPageLoad())))
               case Some(clientId) => // clientId is cbcid
                 logger.info(s"IdentifierAction: Attempting Agent authorisation checking with ${cbcDelegatedAuthRule(clientId)}")
                 authorised(cbcDelegatedAuthRule(clientId)) {
@@ -164,7 +164,7 @@ class AuthenticatedIdentifierAction @Inject() (
         logger.info(
           s"IdentifierAction: Agent with HMRC-AS-AGENT Enrolment. No UserAnswers in SessionRepository. Redirecting to /agent/client-id. ${request.headers}"
         )
-        Future.successful(Redirect(controllers.agent.routes.WhatToDoNextController.onPageLoad()))
+        Future.successful(Redirect(controllers.agent.routes.ManageYourClientsController.onPageLoad()))
       case _ => Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
     }
 }
