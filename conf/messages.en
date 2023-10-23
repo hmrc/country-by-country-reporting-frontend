@@ -89,7 +89,7 @@ contactEmail.error.length = The email address must be 132 characters or less
 contactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
 contactEmail.change.hidden = Change first contact email address
 
-haveTelephone.title = Can we contact them by telephone?
+haveTelephone.title = Can we contact your first contact by telephone?
 haveTelephone.heading = Can we contact {0} by telephone?
 haveTelephone.checkYourAnswersLabel = Telephone number
 haveTelephone.p2 = We will call if we have any questions about your reports.
@@ -129,7 +129,7 @@ secondContactEmail.error.length = The email address must be 132 characters or le
 secondContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
 secondContactEmail.change.hidden = Change second contact email address
 
-secondContactHavePhone.title = Can we contact them by telephone?
+secondContactHavePhone.title = Can we contact your second contact by telephone?
 secondContactHavePhone.heading = Can we contact {0} by telephone?
 secondContactHavePhone.p2 = We will call if we have any questions about your reports.
 secondContactHavePhone.error.required = Select yes if they can be contacted by telephone
