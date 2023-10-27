@@ -40,6 +40,8 @@
         <p class="govuk-body govuk-!-margin-bottom-0"> @contactInformation.email</p>
         @if(contactInformation.phone.isDefined) {
             <p class="govuk-body"> @contactInformation.phone</p>
+        } else {
+            <p class="govuk-body"> </p> <!--for spacing-->
         }
 
         @govukRadios(
@@ -50,7 +52,7 @@
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue"))
+            ButtonViewModel(messages("site.continue")).withAttribute("id" -> "submit")
         )
     }
 }
