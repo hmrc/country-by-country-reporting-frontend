@@ -16,7 +16,7 @@
 
 package viewmodels
 
-import models.{AgentClientDetails, CheckMode}
+import models.AgentClientDetails
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
