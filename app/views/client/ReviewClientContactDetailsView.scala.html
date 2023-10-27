@@ -37,11 +37,11 @@
         <h1 class="govuk-heading-l">@messages("reviewClientContactDetails.heading")</h1>
 
         <p class="govuk-body govuk-!-margin-bottom-0"> @contactInformation.organisationDetails.organisationName</p>
-        <p class="govuk-body govuk-!-margin-bottom-0"> @contactInformation.email</p>
         @if(contactInformation.phone.isDefined) {
+            <p class="govuk-body govuk-!-margin-bottom-0"> @contactInformation.email</p>
             <p class="govuk-body"> @contactInformation.phone</p>
         } else {
-            <p class="govuk-body"> </p> <!--for spacing-->
+            <p class="govuk-body govuk-!-margin-bottom-5"> @contactInformation.email</p>
         }
 
         @govukRadios(
