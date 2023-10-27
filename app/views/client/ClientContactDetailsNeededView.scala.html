@@ -24,12 +24,15 @@
 @layout(pageTitle = titleNoForm(messages("clientContactDetailsNeeded.title")), showAgentHeader = true) {
 
     <h1 class="govuk-heading-l">@messages("clientContactDetailsNeeded.heading")</h1>
+
     <p class="govuk-body">@messages("clientContactDetailsNeeded.p1")</p>
+
     <p class="govuk-body">@messages("clientContactDetailsNeeded.p2")</p>
+
     <p class="govuk-body">@messages("clientContactDetailsNeeded.p3")</p>
 
     @govukButton(
         ButtonViewModel(messages("site.continue")).withAttribute("id" -> "submit")
-                .asLink(controllers.client.routes.ClientFirstContactNameController.onPageLoad(NormalMode).url)
+                .asLink(controllers.client.routes.ReviewClientContactDetailsController.onPageLoad().url)
     )
 }

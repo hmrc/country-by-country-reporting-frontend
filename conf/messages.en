@@ -65,13 +65,13 @@ signedOut.heading = For your security, we signed you out
 unauthorised.title = You can’t access this service with this account
 unauthorised.heading = You can’t access this service with this account
 
-contactName.title = Who can we contact if we have questions about your reports?
-contactName.heading = Who can we contact if we have questions about your reports?
-contactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
+contactName.title = What is the name of the person or team we should contact?
+contactName.heading = What is the name of the person or team we should contact?
+contactName.hint = For example, ‘Ashley Smith’ or ‘Tax team’.
 contactName.checkYourAnswersLabel = First contact name
-contactName.error.required = Enter the name of the individual or team we should contact if we have any questions about your reports
-contactName.error.invalid = Name must only include letters a to z, apostrophes, grave accents, ampersands, hyphens, backslashes, carets and spaces
-contactName.error.length = Name must be 35 characters or less
+contactName.error.required = Enter a name for the first contact
+contactName.error.invalid = The name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, backslashes, carets (^), grave accents (`), hyphens and spaces
+contactName.error.length = The name must be 35 characters or less
 contactName.change.hidden = Change first contact name
 
 default.firstContact.name = your first contact
@@ -89,10 +89,10 @@ contactEmail.error.length = The email address must be 132 characters or less
 contactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
 contactEmail.change.hidden = Change first contact email address
 
-haveTelephone.title = Can we contact them by telephone?
+haveTelephone.title = Can we contact your first contact by telephone?
 haveTelephone.heading = Can we contact {0} by telephone?
 haveTelephone.checkYourAnswersLabel = Telephone number
-haveTelephone.hint = We will call if we have any questions about your reports.
+haveTelephone.p2 = We will call if we have any questions about your reports.
 haveTelephone.error.required = Select yes if they can be contacted by telephone
 
 contactPhone.checkYourAnswersLabel = First contact telephone number
@@ -106,18 +106,18 @@ contactPhone.change.hidden = Change first contact telephone number
 
 haveSecondContact.title = Is there someone else we can contact if your first contact is not available?
 haveSecondContact.heading = Is there someone else we can contact if {0} is not available?
-haveSecondContact.hint = This can be a team mailbox or another contact.
+haveSecondContact.p2 = This can be a team mailbox or another contact.
 haveSecondContact.checkYourAnswersLabel = Do you have a second contact?
 haveSecondContact.error.required = Select yes if there is someone else we can contact
 haveSecondContact.change.hidden = Change if you have a second contact
 
-secondContactName.title = What is the name of the individual or team we should contact?
-secondContactName.heading = What is the name of the individual or team we should contact?
-secondContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
+secondContactName.title = What is the name of the person or team we should contact?
+secondContactName.heading = What is the name of the person or team we should contact?
+secondContactName.hint = For example, ‘Ashley Smith’ or ‘Tax team’.
 secondContactName.checkYourAnswersLabel = Second contact name
-secondContactName.error.required = Enter the name of the individual or team we should contact
-secondContactName.error.invalid = Name of the individual or team must only include letters a to z, numbers 0 to 9, apostrophes, grave accents, ampersands, hyphens, backslashes, carets and spaces
-secondContactName.error.length = Individual or team must be 35 characters or less
+secondContactName.error.required = Enter a name for the second contact
+secondContactName.error.invalid = The name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, backslashes, carets (^), grave accents (`), hyphens and spaces
+secondContactName.error.length = The name must be 35 characters or less
 secondContactName.change.hidden = Change second contact name
 
 secondContactEmail.title = What is the email address for the second contact?
@@ -129,9 +129,9 @@ secondContactEmail.error.length = The email address must be 132 characters or le
 secondContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
 secondContactEmail.change.hidden = Change second contact email address
 
-secondContactHavePhone.title = Can we contact them by telephone?
+secondContactHavePhone.title = Can we contact your second contact by telephone?
 secondContactHavePhone.heading = Can we contact {0} by telephone?
-secondContactHavePhone.hint = We will call if we have any questions about your reports.
+secondContactHavePhone.p2 = We will call if we have any questions about your reports.
 secondContactHavePhone.error.required = Select yes if they can be contacted by telephone
 
 secondContactPhone.title = What is the telephone number for the second contact?
@@ -414,14 +414,14 @@ agentContactDetailsNeeded.p2 = We need up to 2 contacts. They can be for an indi
 agentContactDetailsNeeded.p3 = We will use these details if we have any questions about your CBC reports. These details can be changed at any time. You only need to go through this process once and it will apply for all your clients.
 agentContactDetailsNeeded.p4 = Do not provide your client’s contact details.
 
-agentFirstContactName.title = What is the name of your first contact?
-agentFirstContactName.heading = What is the name of your first contact?
+agentFirstContactName.title = What is the name of the person or team we should contact?
+agentFirstContactName.heading = What is the name of the person or team we should contact?
 agentFirstContactName.checkYourAnswersLabel = First contact name
-agentFirstContactName.p1 = This can be an individual or the name of a team. Do not use your client’s name.
-agentFirstContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
-agentFirstContactName.error.required = Enter the name of your first contact
-agentFirstContactName.error.length = The name of your first contact must be 35 characters or less
-agentFirstContactName.error.invalid = The name of your first contact must only include letters a to z, hyphens, spaces, and apostrophes
+agentFirstContactName.p1 = Do not use your client’s name.
+agentFirstContactName.hint = For example, ‘Ashley Smith’ or ‘Tax team’.
+agentFirstContactName.error.required = Enter a name for the first agent contact
+agentFirstContactName.error.length = The name must be 35 characters or less
+agentFirstContactName.error.invalid = The name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, backslashes, carets (^), grave accents (`), hyphens and spaces
 agentFirstContactName.change.hidden = Change first contact name
 
 agentFirstContactEmail.title = What is the email address for the first contact?
@@ -433,9 +433,9 @@ agentFirstContactEmail.error.length = The email address must be 132 characters o
 agentFirstContactEmail.error.invalid = Enter an email address in the right format, like yourname@example.com
 agentFirstContactEmail.change.hidden = Change first contact email address
 
-agentFirstContactHavePhone.title = Can we call your first contact by telephone?
-agentFirstContactHavePhone.heading = Can we call {0} by telephone?
-agentFirstContactHavePhone.error.required = Select yes if we can call your first contact by telephone
+agentFirstContactHavePhone.title = Can we contact your first contact by telephone?
+agentFirstContactHavePhone.heading = Can we contact {0} by telephone?
+agentFirstContactHavePhone.error.required = Select yes if they can be contacted by telephone
 
 agentFirstContactPhone.title = What is the telephone number for the first contact?
 agentFirstContactPhone.heading = What is the telephone number for {0}?
@@ -447,20 +447,20 @@ agentFirstContactPhone.error.invalid = The telephone number must only include nu
 agentFirstContactPhone.error.length = The telephone number must be 24 characters or less
 agentFirstContactPhone.change.hidden = Change first contact telephone number
 
-agentHaveSecondContact.title = Do you have a second contact?
-agentHaveSecondContact.heading = Do you have a second contact if {0} is not available?
+agentHaveSecondContact.title = Is there someone else we can contact if your first contact is not available?
+agentHaveSecondContact.heading = Is there someone else we can contact if {0} is not available?
 agentHaveSecondContact.checkYourAnswersLabel = Do you have a second contact?
-agentHaveSecondContact.error.required = Select yes if you have a second contact if your first contact is not available
+agentHaveSecondContact.error.required = Select yes if there is someone else we can contact
 agentHaveSecondContact.change.hidden = Change if you have a second contact
 
-agentSecondContactName.title = What is the name of your second contact?
-agentSecondContactName.heading = What is the name of your second contact?
+agentSecondContactName.title = What is the name of the person or team we should contact?
+agentSecondContactName.heading = What is the name of the person or team we should contact?
 agentSecondContactName.checkYourAnswersLabel = Second contact name
-agentSecondContactName.p1 = This can be an individual or the name of a team. Do not use your client’s name.
-agentSecondContactName.hint = For example, ‘Tax team’ or ‘Ashley Smith’.
-agentSecondContactName.error.required = Enter your second contact’s name
-agentSecondContactName.error.length = Your second contact’s name must be 35 characters or less
-agentSecondContactName.error.invalid = The name of your second contact must only include letters a to z, hyphens, spaces and apostrophes
+agentSecondContactName.p1 = Do not use your client’s name.
+agentSecondContactName.hint = For example, ‘Ashley Smith’ or ‘Tax team’.
+agentSecondContactName.error.required = Enter a name for the second agent contact
+agentSecondContactName.error.length = The name must be 35 characters or less
+agentSecondContactName.error.invalid = The name must only include letters a to z, numbers 0 to 9, ampersands (&), apostrophes, backslashes, carets (^), grave accents (`), hyphens and spaces
 agentSecondContactName.change.hidden = Change second contact name
 
 agentSecondContactEmail.title = What is the email address for the second contact?
@@ -472,9 +472,9 @@ agentSecondContactEmail.error.invalid = Enter an email address in the right form
 agentSecondContactEmail.error.length = The email address must be 132 characters or less
 agentSecondContactEmail.change.hidden = Change second contact email address
 
-agentSecondContactHavePhone.title = Can we call your second contact by telephone?
-agentSecondContactHavePhone.heading = Can we call {0} by telephone?
-agentSecondContactHavePhone.error.required = Select yes if we can call your second contact by telephone
+agentSecondContactHavePhone.title = Can we contact your second contact by telephone?
+agentSecondContactHavePhone.heading = Can we contact {0} by telephone?
+agentSecondContactHavePhone.error.required = Select yes if they can be contacted by telephone
 
 agentSecondContactPhone.title = What is the telephone number for your second contact?
 agentSecondContactPhone.heading = What is the telephone number for {0}?
@@ -510,11 +510,17 @@ changeAgentContactDetails.nowSendContactDetails = Send your agent contact detail
 changeAgentContactDetails.confirmingInformation = By sending these contact details, you are confirming that the information provided is correct and complete to the best of your knowledge.
 changeAgentContactDetails.link = Back to manage your clients
 
-clientContactDetailsNeeded.title = You must provide your client’s contact details
-clientContactDetailsNeeded.heading = You must provide your client’s contact details
-clientContactDetailsNeeded.p1 = Before you can send a country-by-country (CBC) report, we need to collect your client’s contact details.
+clientContactDetailsNeeded.title = We need the latest contact details for your client
+clientContactDetailsNeeded.heading = We need the latest contact details for your client
+clientContactDetailsNeeded.p1 = Your client’s contact details must be up to date before you can send a country-by-country report.
 clientContactDetailsNeeded.p2 = We need up to 2 contacts. They can be for an individual or a team working at your client’s organisation.
-clientContactDetailsNeeded.p3 = We will use these details if we have any questions about your CBC reports. These details can be changed at any time. You only need to go through this process once and you can change these details later if you want to.
+clientContactDetailsNeeded.p3 = We will use these details if we have any questions about your country-by-country reports. You only need to go through this process once and can change these details later if you want to.
+
+reviewClientContactDetails.title = Are these the right contact details for your client?
+reviewClientContactDetails.heading = Are these the right contact details for your client?
+reviewClientContactDetails.checkYourAnswersLabel = reviewClientContactDetails
+reviewClientContactDetails.error.required = Select yes if these are the right contact details for your client
+reviewClientContactDetails.change.hidden = ReviewClientContactDetails
 
 clientFirstContactName.title = What is the name of the first contact at your client’s organisation?
 clientFirstContactName.heading = What is the name of the first contact at your client’s organisation?
@@ -661,3 +667,4 @@ pageNotFound.heading = Page not found
 pageNotFound.p1 = If you typed the web address, check it is correct.
 pageNotFound.p2 = If you pasted the web address, check you copied the entire address.
 pageNotFound.link = You can email {0} if you have any questions about this service.
+
