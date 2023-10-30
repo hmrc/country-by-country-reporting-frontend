@@ -68,6 +68,7 @@ trait SpecBase
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].to[FakeIdentifierAction],
+        bind[SignOutAction].to[FakeSignOutAction],
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(userAnswers)),
         bind[CheckForSubmissionAction].toInstance(new FakeCheckForSubmissionActionProvider),
         bind[AgentCheckForSubmissionAction].to[FakeAgentCheckForSubmissionAction],
