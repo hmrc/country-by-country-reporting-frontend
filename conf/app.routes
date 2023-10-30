@@ -165,6 +165,9 @@ GET        /agent/agent-contact-details/agent-contact-details-updated           
 
 GET        /agent/client-contact-details/client-contact-details-needed          controllers.client.ClientContactDetailsNeededController.onPageLoad()
 
+GET        /agent/client-contact-details/review-client-contact-details          controllers.client.ReviewClientContactDetailsController.onPageLoad()
+POST       /agent/client-contact-details/review-client-contact-details          controllers.client.ReviewClientContactDetailsController.onSubmit()
+
 GET        /agent/client-contact-details/first-contact-name                     controllers.client.ClientFirstContactNameController.onPageLoad(mode: Mode = NormalMode)
 POST       /agent/client-contact-details/first-contact-name                     controllers.client.ClientFirstContactNameController.onSubmit(mode: Mode = NormalMode)
 GET        /agent/client-contact-details/change-first-contact-name              controllers.client.ClientFirstContactNameController.onPageLoad(mode: Mode = CheckMode)
@@ -229,8 +232,8 @@ POST       /agent/client-id                                                     
 GET        /agent/agent-is-this-your-client                                      controllers.agent.AgentIsThisYourClientController.onPageLoad
 POST       /agent/agent-is-this-your-client                                      controllers.agent.AgentIsThisYourClientController.onSubmit
 
-
-GET        /what-do-you-want-to-do-next                                         controllers.agent.WhatToDoNextController.onPageLoad(mode: Mode = NormalMode)
-POST       /what-do-you-want-to-do-next                                         controllers.agent.WhatToDoNextController.onSubmit(mode: Mode = NormalMode)
+GET        /agent/manage-your-clients                                         controllers.agent.ManageYourClientsController.onPageLoad(mode: Mode = NormalMode)
+POST       /agent/manage-your-clients                                         controllers.agent.ManageYourClientsController.onSubmit(mode: Mode = NormalMode)
 
 GET        /page-not-found                                                      controllers.PageNotFoundController.onPageLoad()
+

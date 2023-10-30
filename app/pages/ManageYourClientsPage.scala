@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-package models.subscription
+package pages
 
-import play.api.libs.json.{Json, Reads, Writes}
+import models.ManageYourClients
+import play.api.libs.json.JsPath
 
-case class ResponseDetail(subscriptionID: String,
-                          tradingName: Option[String],
-                          isGBUser: Boolean,
-                          primaryContact: ContactInformation,
-                          secondaryContact: Option[ContactInformation]
-)
+case object ManageYourClientsPage extends QuestionPage[ManageYourClients] {
 
-object ResponseDetail {
+  override def path: JsPath = JsPath \ toString
 
-  implicit lazy val reads: Reads[ResponseDetail] = Json.reads[ResponseDetail]
-
-  implicit lazy val writes: Writes[ResponseDetail] = Json.writes[ResponseDetail]
+  override def toString: String = "whatToDoNext"
 }

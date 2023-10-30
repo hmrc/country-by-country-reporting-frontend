@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package models.subscription
+package forms
 
-import play.api.libs.json.{Json, Reads, Writes}
+import forms.mappings.Mappings
 
-case class ResponseDetail(subscriptionID: String,
-                          tradingName: Option[String],
-                          isGBUser: Boolean,
-                          primaryContact: ContactInformation,
-                          secondaryContact: Option[ContactInformation]
-)
+import javax.inject.Inject
+import play.api.data.Form
 
-object ResponseDetail {
+class ReviewClientContactDetailsFormProvider @Inject() extends Mappings {
 
-  implicit lazy val reads: Reads[ResponseDetail] = Json.reads[ResponseDetail]
-
-  implicit lazy val writes: Writes[ResponseDetail] = Json.writes[ResponseDetail]
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("reviewClientContactDetails.error.required")
+    )
 }

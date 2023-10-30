@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package models.subscription
+package pages
 
-import play.api.libs.json.{Json, Reads, Writes}
+import models.ManageYourClients
+import pages.behaviours.PageBehaviours
 
-case class ResponseDetail(subscriptionID: String,
-                          tradingName: Option[String],
-                          isGBUser: Boolean,
-                          primaryContact: ContactInformation,
-                          secondaryContact: Option[ContactInformation]
-)
+class ManageYourClientsPageSpec extends PageBehaviours {
 
-object ResponseDetail {
+  "WhatToDoNextPage" - {
 
-  implicit lazy val reads: Reads[ResponseDetail] = Json.reads[ResponseDetail]
+    beRetrievable[ManageYourClients](ManageYourClientsPage)
 
-  implicit lazy val writes: Writes[ResponseDetail] = Json.writes[ResponseDetail]
+    beSettable[ManageYourClients](ManageYourClientsPage)
+
+    beRemovable[ManageYourClients](ManageYourClientsPage)
+  }
 }

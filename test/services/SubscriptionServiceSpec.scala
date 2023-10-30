@@ -88,9 +88,10 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
         ua.get(ContactPhonePage) mustBe Some("99999")
       }
 
-      "must call the subscription connector and return a empty user answers for the returning user coming for the first time after migration" in {
-        val responseDetailString: String =
-          """
+      "must call the subscription connector and return a user answers containing primary contactInformation only" +
+        "for the returning user coming for the first time after migration" in {
+          val responseDetailString: String =
+            """
             |{
             |"subscriptionID": "111111111",
             |"tradingName": "",
@@ -115,17 +116,20 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
             |}
             |}""".stripMargin
 
-        val responseDetail = Json.parse(responseDetailString).as[ResponseDetail]
+          val responseDetail = Json.parse(responseDetailString).as[ResponseDetail]
 
-        when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
-          .thenReturn(Future.successful(Some(responseDetail)))
+          when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
+            .thenReturn(Future.successful(Some(responseDetail)))
 
-        val result = service.getContactDetails(emptyUserAnswers, cbcId)
+          val result = service.getContactDetails(emptyUserAnswers, cbcId)
 
-        val ua = result.futureValue.value
+          val ua = result.futureValue.value
 
-        ua.data mustBe Json.obj()
-      }
+          val json = Json.parse("""{"primaryClientContactInformation":{"organisation":{"organisationName":"wer"},
+            |"email":"test@test.com","phone":"99999","mobile":""}}""".stripMargin)
+
+          ua.data mustBe json
+        }
     }
 
     "updateContactDetails" - {

@@ -18,31 +18,31 @@ package controllers.agent
 
 import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
 import controllers.routes
-import forms.WhatToDoNextFormProvider
+import forms.ManageYourClientsFormProvider
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.{JourneyInProgressPage, WhatToDoNextPage}
+import pages.{JourneyInProgressPage, ManageYourClientsPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import services.AgentSubscriptionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.agent.WhatToDoNextView
+import views.html.agent.ManageYourClientsView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class WhatToDoNextController @Inject() (
+class ManageYourClientsController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
   identify: AgentIdentifierAction,
   getData: AgentDataRetrievalAction,
   requireData: AgentDataRequiredAction,
-  formProvider: WhatToDoNextFormProvider,
+  formProvider: ManageYourClientsFormProvider,
   agentSubscriptionService: AgentSubscriptionService,
   val controllerComponents: MessagesControllerComponents,
-  view: WhatToDoNextView
+  view: ManageYourClientsView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -59,7 +59,7 @@ class WhatToDoNextController @Inject() (
                 case Some(agentUserAnswers) =>
                   sessionRepository.set(agentUserAnswers).map {
                     _ =>
-                      val preparedForm = ua.get(WhatToDoNextPage) match {
+                      val preparedForm = ua.get(ManageYourClientsPage) match {
                         case None        => form
                         case Some(value) => form.fill(value)
                       }
@@ -80,9 +80,9 @@ class WhatToDoNextController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(WhatToDoNextPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ManageYourClientsPage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(WhatToDoNextPage, mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(ManageYourClientsPage, mode, updatedAnswers))
         )
   }
 }

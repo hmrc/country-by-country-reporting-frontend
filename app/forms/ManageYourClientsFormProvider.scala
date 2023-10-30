@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms
 
-import models.WhatToDoNext
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
 
-case object WhatToDoNextPage extends QuestionPage[WhatToDoNext] {
+import javax.inject.Inject
+import play.api.data.Form
+import models.ManageYourClients
 
-  override def path: JsPath = JsPath \ toString
+class ManageYourClientsFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "whatToDoNext"
+  def apply(): Form[ManageYourClients] =
+    Form(
+      "value" -> enumerable[ManageYourClients]("manageYourClients.error.required")
+    )
 }

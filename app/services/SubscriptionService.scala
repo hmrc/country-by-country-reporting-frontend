@@ -20,7 +20,7 @@ import config.FrontendAppConfig
 import connectors.SubscriptionConnector
 import models.UserAnswers
 import models.subscription._
-import pages.{HaveSecondContactPage, SecondContactNamePage}
+import pages.{HaveSecondContactPage, PrimaryClientContactInformationPage, SecondContactNamePage}
 import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -44,12 +44,16 @@ class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnecto
         responseOpt.flatMap {
           responseDetail =>
             if (isUserVisitingAfterMigration(responseDetail)) {
-              Some(userAnswers)
+              storePrimaryContactInfo(userAnswers, responseDetail)
             } else {
               populateUserAnswers(responseDetail, userAnswers)
             }
         }
     }
+
+  private def storePrimaryContactInfo(userAnswers: UserAnswers, responseDetail: ResponseDetail): Option[UserAnswers] = (for {
+    updatedAnswers <- userAnswers.set(PrimaryClientContactInformationPage, responseDetail.primaryContact)
+  } yield updatedAnswers).toOption
 
   def updateContactDetails(userAnswers: UserAnswers, subscriptionId: String)(implicit hc: HeaderCarrier): Future[Boolean] =
     subscriptionConnector.readSubscription(subscriptionId: String) flatMap {

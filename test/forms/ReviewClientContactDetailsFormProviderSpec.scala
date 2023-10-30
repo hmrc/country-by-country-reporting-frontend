@@ -16,24 +16,24 @@
 
 package forms
 
-import forms.behaviours.OptionFieldBehaviours
-import models.WhatToDoNext
+import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class WhatToDoNextFormProviderSpec extends OptionFieldBehaviours {
+class ReviewClientContactDetailsFormProviderSpec extends BooleanFieldBehaviours {
 
-  val form = new WhatToDoNextFormProvider()()
+  val requiredKey = "reviewClientContactDetails.error.required"
+  val invalidKey  = "error.boolean"
+
+  val form = new ReviewClientContactDetailsFormProvider()()
 
   ".value" - {
 
-    val fieldName   = "value"
-    val requiredKey = "whatToDoNext.error.required"
+    val fieldName = "value"
 
-    behave like optionsField[WhatToDoNext](
+    behave like booleanField(
       form,
       fieldName,
-      validValues = WhatToDoNext.values,
-      invalidError = FormError(fieldName, "error.invalid")
+      invalidError = FormError(fieldName, invalidKey)
     )
 
     behave like mandatoryField(

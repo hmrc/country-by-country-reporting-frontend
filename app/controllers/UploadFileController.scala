@@ -22,12 +22,11 @@ import connectors.UpscanConnector
 import controllers.actions._
 import forms.UploadFileFormProvider
 import models.requests.DataRequest
-import models.upscan.{Failed, Quarantined, URL, UploadId, UploadRejected, UploadedSuccessfully}
+import models.upscan._
 import pages.UploadIDPage
 import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
 import uk.gov.hmrc.http.HeaderCarrier
@@ -35,8 +34,8 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.UploadFileView
 
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration._
+import scala.concurrent.{ExecutionContext, Future}
 
 class UploadFileController @Inject() (
   override val messagesApi: MessagesApi,

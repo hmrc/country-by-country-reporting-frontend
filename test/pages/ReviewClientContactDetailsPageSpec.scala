@@ -16,17 +16,16 @@
 
 package pages
 
-import models.WhatToDoNext
 import pages.behaviours.PageBehaviours
 
-class WhatToDoNextSpec extends PageBehaviours {
+class ReviewClientContactDetailsPageSpec extends PageBehaviours {
 
-  "WhatToDoNextPage" - {
+  "ReviewClientContactDetailsPage" - {
 
-    beRetrievable[WhatToDoNext](WhatToDoNextPage)
+    beRetrievable[Boolean](ReviewClientContactDetailsPage)
 
-    beSettable[WhatToDoNext](WhatToDoNextPage)
+    beSettable[Boolean](ReviewClientContactDetailsPage)
 
-    beRemovable[WhatToDoNext](WhatToDoNextPage)
+    beRemovable[Boolean](ReviewClientContactDetailsPage)
   }
 }

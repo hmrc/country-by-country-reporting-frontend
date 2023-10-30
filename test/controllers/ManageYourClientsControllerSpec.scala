@@ -17,39 +17,39 @@
 package controllers
 
 import base.SpecBase
-import forms.WhatToDoNextFormProvider
-import models.{NormalMode, UserAnswers, WhatToDoNext}
+import forms.ManageYourClientsFormProvider
+import models.{ManageYourClients, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
-import pages.WhatToDoNextPage
+import pages.ManageYourClientsPage
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.agent.WhatToDoNextView
+import views.html.agent.ManageYourClientsView
 
 import scala.concurrent.Future
 
-class WhatToDoNextControllerSpec extends SpecBase with MockitoSugar {
+class ManageYourClientsControllerSpec extends SpecBase with MockitoSugar {
 
-  lazy val whatToDoNextRoute = controllers.agent.routes.WhatToDoNextController.onPageLoad().url
+  lazy val manageYourClientsRoute = controllers.agent.routes.ManageYourClientsController.onPageLoad().url
 
-  val formProvider = new WhatToDoNextFormProvider()
+  val formProvider = new ManageYourClientsFormProvider()
   val form         = formProvider()
 
-  "WhatToDoNext Controller" - {
+  "ManageYourClients Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, whatToDoNextRoute)
+        val request = FakeRequest(GET, manageYourClientsRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[WhatToDoNextView]
+        val view = application.injector.instanceOf[ManageYourClientsView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, NormalMode)(request, messages(application)).toString
@@ -58,19 +58,19 @@ class WhatToDoNextControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(WhatToDoNextPage, WhatToDoNext.values.head).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ManageYourClientsPage, ManageYourClients.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, whatToDoNextRoute)
+        val request = FakeRequest(GET, manageYourClientsRoute)
 
-        val view = application.injector.instanceOf[WhatToDoNextView]
+        val view = application.injector.instanceOf[ManageYourClientsView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(WhatToDoNext.values.head), NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(ManageYourClients.values.head), NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -88,8 +88,8 @@ class WhatToDoNextControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, whatToDoNextRoute)
-            .withFormUrlEncodedBody(("value", WhatToDoNext.values.head.toString))
+          FakeRequest(POST, manageYourClientsRoute)
+            .withFormUrlEncodedBody(("value", ManageYourClients.values.head.toString))
 
         val result = route(application, request).value
 
@@ -104,12 +104,12 @@ class WhatToDoNextControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, whatToDoNextRoute)
+          FakeRequest(POST, manageYourClientsRoute)
             .withFormUrlEncodedBody(("value", "invalid value"))
 
         val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[WhatToDoNextView]
+        val view = application.injector.instanceOf[ManageYourClientsView]
 
         val result = route(application, request).value
 
