@@ -16,7 +16,7 @@
 
 package generators
 
-import models.WhatToDoNext
+import models.ManageYourClients
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 import pages._
@@ -32,11 +32,11 @@ trait UserAnswersEntryGenerators extends PageGenerators with ModelGenerators {
       } yield (page, value)
     }
 
-  implicit lazy val arbitraryWhatToDoNextUserAnswersEntry: Arbitrary[(WhatToDoNextPage.type, JsValue)] =
+  implicit lazy val arbitraryWhatToDoNextUserAnswersEntry: Arbitrary[(ManageYourClientsPage.type, JsValue)] =
     Arbitrary {
       for {
-        page  <- arbitrary[WhatToDoNextPage.type]
-        value <- arbitrary[WhatToDoNext].map(Json.toJson(_))
+        page  <- arbitrary[ManageYourClientsPage.type]
+        value <- arbitrary[ManageYourClients].map(Json.toJson(_))
       } yield (page, value)
     }
 

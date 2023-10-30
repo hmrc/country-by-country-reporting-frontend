@@ -17,22 +17,22 @@
 package forms
 
 import forms.behaviours.OptionFieldBehaviours
-import models.WhatToDoNext
+import models.ManageYourClients
 import play.api.data.FormError
 
-class WhatToDoNextFormProviderSpec extends OptionFieldBehaviours {
+class ManageYourClientsFormProviderSpec extends OptionFieldBehaviours {
 
-  val form = new WhatToDoNextFormProvider()()
+  val form = new ManageYourClientsFormProvider()()
 
   ".value" - {
 
     val fieldName   = "value"
-    val requiredKey = "whatToDoNext.error.required"
+    val requiredKey = "manageYourClients.error.required"
 
-    behave like optionsField[WhatToDoNext](
+    behave like optionsField[ManageYourClients](
       form,
       fieldName,
-      validValues = WhatToDoNext.values,
+      validValues = ManageYourClients.values,
       invalidError = FormError(fieldName, "error.invalid")
     )
 

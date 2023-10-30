@@ -16,7 +16,7 @@
 
 package generators
 
-import models.{AgentClientDetails, WhatToDoNext}
+import models.{AgentClientDetails, ManageYourClients}
 import models.agentSubscription.{
   AgentContactInformation,
   AgentDetails,
@@ -43,9 +43,9 @@ trait ModelGenerators {
       } yield AgentClientDetails(clientID, Some(tradingName))
     }
 
-  implicit lazy val arbitraryWhatToDoNext: Arbitrary[WhatToDoNext] =
+  implicit lazy val arbitraryWhatToDoNext: Arbitrary[ManageYourClients] =
     Arbitrary {
-      Gen.oneOf(WhatToDoNext.values.toSeq)
+      Gen.oneOf(ManageYourClients.values.toSeq)
     }
 
   implicit val arbitraryOrganisationDetails: Arbitrary[OrganisationDetails] = Arbitrary {
