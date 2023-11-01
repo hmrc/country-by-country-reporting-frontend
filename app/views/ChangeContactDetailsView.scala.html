@@ -25,7 +25,7 @@
 
 @(primary: SummaryList, secondary: SummaryList, frontendAppConfig: FrontendAppConfig, hasChanged: Boolean, isOrganisationsFirstVisitAfterMigration: Boolean)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("ChangeContactDetails.title"))) {
+@layout(pageTitle = if (hasChanged) { titleNoForm(messages("CheckContactDetails.title")) } else { titleNoForm(messages("ChangeContactDetails.title")) } ) {
     @formHelper(action = routes.ChangeContactDetailsController.onSubmit()) {
 
     @if(hasChanged) {

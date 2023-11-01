@@ -147,7 +147,8 @@ detailsUpdated.title = Contact details updated
 detailsUpdated.heading = Contact details updated
 detailsUpdated.p1 = We will use your new details if we need to contact you.
 
-ChangeContactDetails.title = Contact details at your organisation
+ChangeContactDetails.title = Change your contact details for your organisation
+CheckContactDetails.title = Check your contact details for your organisation
 ChangeContactDetails.heading = Change your contact details for your organisation
 CheckContactDetails.heading = Check your contact details for your organisation
 ChangeContactDetails.primary.heading = First contact
