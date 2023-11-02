@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,23 +12,13 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import views.html.components.Link
+package models.requests.agent
 
-@this(
-        layout: templates.Layout,
-        govukPanel : GovukPanel,
-        link: Link
-)
+import play.api.mvc.{Request, WrappedRequest}
 
-@()(implicit request: Request[_], messages: Messages)
-
-@layout(pageTitle = titleNoForm(messages("clientDetailsUpdated.title")), showBackLink = false, showAgentHeader = true) {
-
-    @govukPanel(Panel(
-        title = Text(messages("clientDetailsUpdated.heading"))
-    ))
-
-  <p class="govuk-body">@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</p>
-}
+case class SignOutRequest[A](
+  request: Request[A],
+  userId: String
+) extends WrappedRequest[A](request)

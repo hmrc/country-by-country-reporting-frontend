@@ -37,6 +37,7 @@ class Module extends AbstractModule {
     bind(classOf[AgentIdentifierAction]).to(classOf[AuthenticatedAgentIdentifierAction]).asEagerSingleton()
     bind(classOf[AgentDataRetrievalAction]).to(classOf[AgentDataRetrievalActionImpl]).asEagerSingleton()
     bind(classOf[AgentDataRequiredAction]).to(classOf[AgentDataRequiredActionImpl]).asEagerSingleton()
+    bind(classOf[SignOutAction]).to(classOf[AuthenticatedSignOutAction]).asEagerSingleton()
 
     bind(classOf[Clock]).toInstance(Clock.systemDefaultZone.withZone(ZoneOffset.UTC))
   }
