@@ -37,16 +37,12 @@
     <p class ="govuk-body">@messages("manageYourClients.p1")</p>
 
     <ol class="govuk-body govuk-list--bullet">
-        <li>@link(controllers.agent.routes.AgentClientIdController.onPageLoad().url, "manageYourClients.bullet1").</li>
-        <li>@link(appConfig.agentServiceUrl, "manageYourClients.bullet2").</li>
+        <li>@link(controllers.agent.routes.AgentClientIdController.onPageLoad().url, "manageYourClients.bullet1")</li>
+        <li>@link(appConfig.agentServiceUrl, "manageYourClients.bullet2")</li>
     </ol>
 
     <p class="govuk-body govuk-!-margin-top-6">@Html(messages("manageYourClients.p2", link(controllers.agent.routes.ChangeAgentContactDetailsController.onPageLoad().url, "manageYourClients.link")))</p>
 
 
-
-        @govukButton(
-            ButtonViewModel(messages("site.continue")).withAttribute("id" -> "submit")
-        )
     }
 }
