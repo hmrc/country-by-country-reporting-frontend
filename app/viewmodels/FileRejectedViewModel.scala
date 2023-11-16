@@ -53,7 +53,7 @@ object FileRejectedViewModel {
   //noinspection ScalaStyle
   private def handleCustomErrors(errorDetails: Option[String], docRefIDInError: Option[Seq[String]])(implicit
     messages: Messages
-  ): (String, HtmlContent, String) =
+  ): (String, HtmlContent, Content) =
     errorDetails.getOrElse("") match {
       case error if error.contains(`error_details_901`) =>
         ("901", HtmlContent(docIdContent(docRefIDInError.getOrElse(Nil))), Messages(s"fileRejected.901.value"))
@@ -87,32 +87,46 @@ object FileRejectedViewModel {
       case error => throw new Exception(s"The received RecordError details: $error is not the expected error details")
     }
 
+  private def getDescriptionForRecordErrors(recordErrorCode: RecordErrorCode)(implicit messages: Messages): Content =
+    recordErrorCode match {
+      case RecordErrorCode.MessageTypeIndic =>
+        HtmlContent(
+          Html(
+            s"${Messages(s"fileRejected.80010.value1")}" +
+              s"<p>${Messages(s"fileRejected.80010.value2")}</p>" +
+              s"<p>${Messages(s"fileRejected.80010.value3")}</p>" +
+              s"<p class='remove-end-whitespace'>${Messages(s"fileRejected.80010.value4")}</p>"
+          )
+        )
+      case errorCode =>
+        Text(Messages(s"fileRejected.${errorCode.code}.value"))
+    }
+
   private def createTableRow(validationErrors: ValidationErrors)(implicit messages: Messages): Seq[Seq[TableRow]] = {
-    val fileErrors: Option[Seq[(String, Content, String)]] = validationErrors.fileError.map(
+    val fileErrors: Option[Seq[(String, Content, Content)]] = validationErrors.fileError.map(
       _.map(
         error =>
           error.code match {
             case FileErrorCode.CustomError => handleCustomErrors(error.details, None)
-            case errorCode                 => (Messages(s"fileRejected.${errorCode.code}.key"), Text(Messages("label.file")), Messages(s"fileRejected.${errorCode.code}.value"))
+            case errorCode =>
+              (Messages(s"fileRejected.${errorCode.code}.key"), Text(Messages("label.file")), Text(Messages(s"fileRejected.${errorCode.code}.value")))
           }
       )
     )
 
-    val recordErrors: Option[Seq[(String, Content, String)]] = validationErrors.recordError.map(
+    val recordErrors: Option[Seq[(String, Content, Content)]] = validationErrors.recordError.map(
       _.map(
         recordError =>
           recordError.code match {
             case RecordErrorCode.CustomError => handleCustomErrors(recordError.details, recordError.docRefIDInError)
             case errorCode =>
-              (Messages(s"fileRejected.${errorCode.code}.key"),
-               HtmlContent(docIdContent(recordError.docRefIDInError.getOrElse(Nil))),
-               Messages(s"fileRejected.${errorCode.code}.value")
-              )
+              val description: Content = getDescriptionForRecordErrors(errorCode)
+              (Messages(s"fileRejected.${errorCode.code}.key"), HtmlContent(docIdContent(recordError.docRefIDInError.getOrElse(Nil))), description)
           }
       )
     )
 
-    val errors: Seq[(String, Content, String)] = (fileErrors ++ recordErrors).flatten.toSeq
+    val errors: Seq[(String, Content, Content)] = (fileErrors ++ recordErrors).flatten.toSeq
 
     errors.map {
       case (code, docRefId, details) =>
@@ -124,7 +138,7 @@ object FileRejectedViewModel {
     }
   }
 
-  //TODO: Update these messages when CBC business rules are known
+  //TODO: Update these messages when CBC business rules are known - These are the messages received from EIS for custom errors
   val error_details_901  = "CorrDocRefID element type does not match original DocRefID element type"
   val error_details_902  = "Correction is not for the relevant Disclosing element"
   val error_details_903  = "CorrDocRefID must not be present for OECD0 at Disclosing Element"
@@ -139,7 +153,6 @@ object FileRejectedViewModel {
   val error_details_909  = "DocRefID format does not match the format as set out in the HMRC CBC user guide"
   val error_details_910  = "MessageRefID format does not match the format as set out in the HMRC CBC user guide"
   val error_details_911  = """TIN issuedby must be provided where a TIN has been reported. The only exception is where "NOTIN" has been reported"""
-
   val error_details_912 =
     "The top level of the structure chart must not include the elements: cbc:ownership and cbc:InvestAmount. These should only be provided in the  cbc:ListChilds tag"
 

@@ -9,6 +9,11 @@ $hmrc-assets-path: "/disclose-cross-border-arrangements/upload/assets/lib/hmrc-f
     word-wrap: break-word;
 }
 
+.remove-end-whitespace{
+  padding-bottom: govuk-spacing(0);
+  margin-bottom: govuk-spacing(0);
+}
+
 body:not(.js-enabled) .js-enabled {
         display: none;
         visibility: hidden;
