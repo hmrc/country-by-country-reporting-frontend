@@ -388,7 +388,10 @@ fileRejected.80008.value = Resend option (OECD0) must only be used for the Discl
 fileRejected.80009.key = 809
 fileRejected.80009.value = This Disclosing section can only be deleted if the CbcReport section linked to it is also deleted
 fileRejected.80010.key = 810
-fileRejected.80010.value = The file cannot contain a combination of new information (DocTypeIndic = OECD1) and corrections or deletions (DocTypeIndic = OECD2 or OECD3)
+fileRejected.80010.value1 = The file cannot contain a combination of new information (DocTypeIndic: OECD1) and corrections or deletions (DocTypeIndic: OECD2 or OECD3).
+fileRejected.80010.value2 = The MessageTypeIndic must be compatible with each DocTypeIndic in the file.
+fileRejected.80010.value3 = If the MessageTypeIndic is MDR401 for new information, then every DocTypeIndic must be OECD1.
+fileRejected.80010.value4 = If the MessageTypeIndic is MDR402 for corrections or deletions, then the DocTypeIndic values must be either OECD2, OECD3 or OECD0.
 fileRejected.80011.key = 811
 fileRejected.80011.value = A CorrDocRefId value must not be used more than once in the same file
 fileRejected.80013.key = 813
