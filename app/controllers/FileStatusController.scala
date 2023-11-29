@@ -22,7 +22,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.FileStatusViewModel
-import views.html.{FileStatusView, ThereIsAProblemView}
+import views.html.FileStatusView
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
@@ -34,8 +34,7 @@ class FileStatusController @Inject() (
   requireData: DataRequiredAction,
   fileConnector: FileDetailsConnector,
   val controllerComponents: MessagesControllerComponents,
-  view: FileStatusView,
-  errorView: ThereIsAProblemView
+  view: FileStatusView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -44,7 +43,7 @@ class FileStatusController @Inject() (
     implicit request =>
       fileConnector.getAllFileDetails(request.subscriptionId) map {
         case Some(allFiles) => Ok(view(FileStatusViewModel.createStatusTable(allFiles)))
-        case _              => InternalServerError(errorView())
+        case _              => Redirect(routes.ThereIsAProblemController.onPageLoad())
       }
   }
 }

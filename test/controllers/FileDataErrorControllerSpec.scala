@@ -63,7 +63,7 @@ class FileDataErrorControllerSpec extends SpecBase {
       }
     }
 
-    "must return Internal server error on failing to read error details from userAnswers" in {
+    "must return ThereIsAProblemPage on failing to read error details from userAnswers" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
@@ -72,7 +72,8 @@ class FileDataErrorControllerSpec extends SpecBase {
 
         val result = route(application, request).value
 
-        status(result) mustEqual INTERNAL_SERVER_ERROR
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
       }
     }
   }

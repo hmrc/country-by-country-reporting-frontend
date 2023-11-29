@@ -102,7 +102,8 @@ class ChangeContactDetailsControllerSpec extends SpecBase with BeforeAndAfterEac
 
           val result = route(application, request).value
 
-          status(result) mustEqual INTERNAL_SERVER_ERROR
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
         }
       }
     }
@@ -144,7 +145,8 @@ class ChangeContactDetailsControllerSpec extends SpecBase with BeforeAndAfterEac
 
           val result = route(application, request).value
 
-          status(result) mustEqual INTERNAL_SERVER_ERROR
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
         }
       }
 

@@ -84,7 +84,7 @@ class FileRejectedControllerSpec extends SpecBase with ModelGenerators with Scal
       }
     }
 
-    "must return Internal server error on failing to get FileDetails" in {
+    "must return ThereIsAProblemPage on failing to get FileDetails" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(
@@ -99,11 +99,12 @@ class FileRejectedControllerSpec extends SpecBase with ModelGenerators with Scal
 
         val result = route(application, request).value
 
-        status(result) mustEqual INTERNAL_SERVER_ERROR
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
       }
     }
 
-    "must return Internal server error on getting FileDetails with a status other than Rejected" in {
+    "must return ThereIsAProblemPage on getting FileDetails with a status other than Rejected" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(
@@ -133,7 +134,8 @@ class FileRejectedControllerSpec extends SpecBase with ModelGenerators with Scal
 
         val result = route(application, request).value
 
-        status(result) mustEqual INTERNAL_SERVER_ERROR
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
       }
     }
   }

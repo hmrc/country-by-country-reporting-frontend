@@ -153,6 +153,7 @@ object FileRejectedViewModel {
   val error_details_909  = "DocRefID format does not match the format as set out in the HMRC CBC user guide"
   val error_details_910  = "MessageRefID format does not match the format as set out in the HMRC CBC user guide"
   val error_details_911  = """TIN issuedby must be provided where a TIN has been reported. The only exception is where "NOTIN" has been reported"""
+
   val error_details_912 =
     "The top level of the structure chart must not include the elements: cbc:ownership and cbc:InvestAmount. These should only be provided in the  cbc:ListChilds tag"
 

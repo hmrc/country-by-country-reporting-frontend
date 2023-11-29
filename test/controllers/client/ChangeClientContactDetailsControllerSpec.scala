@@ -17,6 +17,7 @@
 package controllers.client
 
 import base.SpecBase
+import controllers.routes
 import models.UserAnswers
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers.any
@@ -54,7 +55,7 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
           .build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.ChangeClientContactDetailsController.onPageLoad().url)
+          val request = FakeRequest(GET, controllers.client.routes.ChangeClientContactDetailsController.onPageLoad().url)
 
           val result = route(application, request).value
 
@@ -76,7 +77,7 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
           .build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.ChangeClientContactDetailsController.onPageLoad().url)
+          val request = FakeRequest(GET, controllers.client.routes.ChangeClientContactDetailsController.onPageLoad().url)
 
           val result = route(application, request).value
 
@@ -86,7 +87,7 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
         }
       }
 
-      "must load 'Internal server error' page on failing to read subscription details" in {
+      "must load ThereIsAProblemPage on failing to read subscription details" in {
 
         when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers], any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(None))
@@ -98,11 +99,12 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
           .build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.ChangeClientContactDetailsController.onPageLoad().url)
+          val request = FakeRequest(GET, controllers.client.routes.ChangeClientContactDetailsController.onPageLoad().url)
 
           val result = route(application, request).value
 
-          status(result) mustEqual INTERNAL_SERVER_ERROR
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
         }
       }
     }
@@ -123,12 +125,12 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
           .build()
 
         running(application) {
-          val request = FakeRequest(POST, routes.ChangeClientContactDetailsController.onSubmit().url)
+          val request = FakeRequest(POST, controllers.client.routes.ChangeClientContactDetailsController.onSubmit().url)
 
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.ClientDetailsUpdatedController.onPageLoad().url
+          redirectLocation(result).value mustEqual controllers.client.routes.ClientDetailsUpdatedController.onPageLoad().url
         }
       }
 
@@ -146,16 +148,16 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
           .build()
 
         running(application) {
-          val request = FakeRequest(POST, routes.ChangeClientContactDetailsController.onSubmit().url)
+          val request = FakeRequest(POST, controllers.client.routes.ChangeClientContactDetailsController.onSubmit().url)
 
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.ClientContactDetailsSavedController.onPageLoad().url
+          redirectLocation(result).value mustEqual controllers.client.routes.ClientContactDetailsSavedController.onPageLoad().url
         }
       }
 
-      "load 'technical difficulties' page on failing to update ContactDetails" in {
+      "load ThereIsAProblemPage on failing to update ContactDetails" in {
         when(mockSubscriptionService.updateContactDetails(any[UserAnswers], any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(false))
 
@@ -169,11 +171,12 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
           .build()
 
         running(application) {
-          val request = FakeRequest(POST, routes.ChangeClientContactDetailsController.onSubmit().url)
+          val request = FakeRequest(POST, controllers.client.routes.ChangeClientContactDetailsController.onSubmit().url)
 
           val result = route(application, request).value
 
-          status(result) mustEqual INTERNAL_SERVER_ERROR
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
         }
       }
 

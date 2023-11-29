@@ -22,7 +22,7 @@ import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.{FileErrorView, ThereIsAProblemView}
+import views.html.FileErrorView
 
 import javax.inject.Inject
 import scala.concurrent.Future
@@ -33,8 +33,7 @@ class FileErrorController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: FileErrorView,
-  errorView: ThereIsAProblemView
+  view: FileErrorView
 ) extends FrontendBaseController
     with I18nSupport
     with Logging {
@@ -46,7 +45,7 @@ class FileErrorController @Inject() (
           Future.successful(Ok(view(fileName)))
         case None =>
           logger.error("File name missing for file error page")
-          Future.successful(InternalServerError(errorView()))
+          Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
       }
   }
 }

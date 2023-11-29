@@ -57,7 +57,7 @@ class FileStatusControllerSpec extends SpecBase {
       }
     }
 
-    "must return INTERNAL_SERVER_ERROR on failing to get allFileDetails" in {
+    "must return ThereIsAProblemPage on failing to get allFileDetails" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(
@@ -72,7 +72,8 @@ class FileStatusControllerSpec extends SpecBase {
 
         val result = route(application, request).value
 
-        status(result) mustEqual INTERNAL_SERVER_ERROR
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
       }
     }
   }

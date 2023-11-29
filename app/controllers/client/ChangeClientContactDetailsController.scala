@@ -17,13 +17,13 @@
 package controllers.client
 
 import controllers.actions._
+import controllers.routes
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.SubscriptionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.ClientCheckYourAnswersHelper
 import viewmodels.govuk.summarylist._
-import views.html.ThereIsAProblemView
 import views.html.client.ChangeClientContactDetailsView
 
 import javax.inject.Inject
@@ -37,8 +37,7 @@ class ChangeClientContactDetailsController @Inject() (
   checkForSubmission: CheckForSubmissionAction,
   subscriptionService: SubscriptionService,
   val controllerComponents: MessagesControllerComponents,
-  view: ChangeClientContactDetailsView,
-  errorView: ThereIsAProblemView
+  view: ChangeClientContactDetailsView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -60,7 +59,7 @@ class ChangeClientContactDetailsController @Inject() (
           Ok(
             view(primaryContactList, secondaryContactList, hasChanged, isFirstVisitAfterMigration)
           )
-        case _ => InternalServerError(errorView())
+        case _ => Redirect(routes.ThereIsAProblemController.onPageLoad())
       }
   }
 
@@ -71,11 +70,11 @@ class ChangeClientContactDetailsController @Inject() (
           subscriptionService.updateContactDetails(request.userAnswers, request.subscriptionId) map {
             case true =>
               contactDetailsExist match {
-                case Some(true)  => Redirect(routes.ClientDetailsUpdatedController.onPageLoad())
-                case Some(false) => Redirect(routes.ClientContactDetailsSavedController.onPageLoad())
-                case _           => InternalServerError(errorView())
+                case Some(true)  => Redirect(controllers.client.routes.ClientDetailsUpdatedController.onPageLoad())
+                case Some(false) => Redirect(controllers.client.routes.ClientContactDetailsSavedController.onPageLoad())
+                case _           => Redirect(routes.ThereIsAProblemController.onPageLoad())
               }
-            case false => InternalServerError(errorView())
+            case false => Redirect(routes.ThereIsAProblemController.onPageLoad())
           }
       }
   }

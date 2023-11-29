@@ -125,7 +125,7 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
       userAnswersCaptor.getValue.data mustEqual expectedData
     }
 
-    "must return an INTERNAL_SERVER_ERROR when a valid UploadId cannot be found" in {
+    "must return ThereIsAProblemPage when a valid UploadId cannot be found" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(
@@ -138,17 +138,19 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
       val controller             = application.injector.instanceOf[FileValidationController]
       val result: Future[Result] = controller.onPageLoad()(FakeRequest("", ""))
 
-      status(result) mustBe INTERNAL_SERVER_ERROR
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
     }
 
-    "must return an INTERNAL_SERVER_ERROR when meta data cannot be found" in {
+    "must return ThereIsAProblemPage when meta data cannot be found" in {
 
       fakeUpscanConnector.resetDetails()
 
       val controller             = application.injector.instanceOf[FileValidationController]
       val result: Future[Result] = controller.onPageLoad()(FakeRequest("", ""))
 
-      status(result) mustBe INTERNAL_SERVER_ERROR
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
     }
   }
 }

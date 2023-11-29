@@ -17,6 +17,7 @@
 package controllers.agent
 
 import base.SpecBase
+import controllers.routes
 import models.UserAnswers
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers.any
@@ -26,7 +27,6 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.AgentSubscriptionService
 import uk.gov.hmrc.http.HeaderCarrier
-import views.html.agent.ChangeAgentContactDetailsView
 
 import scala.concurrent.Future
 
@@ -58,7 +58,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
           .build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.ChangeAgentContactDetailsController.onPageLoad().url)
+          val request = FakeRequest(GET, controllers.agent.routes.ChangeAgentContactDetailsController.onPageLoad().url)
 
           val result = route(application, request).value
 
@@ -83,7 +83,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
           .build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.ChangeAgentContactDetailsController.onPageLoad().url)
+          val request = FakeRequest(GET, controllers.agent.routes.ChangeAgentContactDetailsController.onPageLoad().url)
 
           val result = route(application, request).value
 
@@ -108,7 +108,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
           .build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.ChangeAgentContactDetailsController.onPageLoad().url)
+          val request = FakeRequest(GET, controllers.agent.routes.ChangeAgentContactDetailsController.onPageLoad().url)
 
           val result = route(application, request).value
 
@@ -133,7 +133,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
           .build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.ChangeAgentContactDetailsController.onPageLoad().url)
+          val request = FakeRequest(GET, controllers.agent.routes.ChangeAgentContactDetailsController.onPageLoad().url)
 
           val result = route(application, request).value
 
@@ -143,7 +143,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         }
       }
 
-      "must load 'Internal server error' page on failing to read subscription details" in {
+      "must load ThereIsAProblemPage on failing to read subscription details" in {
 
         when(mockAgentSubscriptionService.isAgentContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(None))
@@ -155,11 +155,12 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
           .build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.ChangeAgentContactDetailsController.onPageLoad().url)
+          val request = FakeRequest(GET, controllers.agent.routes.ChangeAgentContactDetailsController.onPageLoad().url)
 
           val result = route(application, request).value
 
-          status(result) mustEqual INTERNAL_SERVER_ERROR
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
         }
       }
     }
@@ -180,12 +181,12 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
           .build()
 
         running(application) {
-          val request = FakeRequest(POST, routes.ChangeAgentContactDetailsController.onSubmit().url)
+          val request = FakeRequest(POST, controllers.agent.routes.ChangeAgentContactDetailsController.onSubmit().url)
 
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.AgentContactDetailsSavedController.onPageLoad().url
+          redirectLocation(result).value mustEqual controllers.agent.routes.AgentContactDetailsSavedController.onPageLoad().url
         }
       }
 
@@ -203,16 +204,16 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
           .build()
 
         running(application) {
-          val request = FakeRequest(POST, routes.ChangeAgentContactDetailsController.onSubmit().url)
+          val request = FakeRequest(POST, controllers.agent.routes.ChangeAgentContactDetailsController.onSubmit().url)
 
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.AgentContactDetailsUpdatedController.onPageLoad().url
+          redirectLocation(result).value mustEqual controllers.agent.routes.AgentContactDetailsUpdatedController.onPageLoad().url
         }
       }
 
-      "load 'technical difficulties' page on failing to update agent ContactDetails" in {
+      "load ThereIsAProblemPage on failing to update agent ContactDetails" in {
         when(mockAgentSubscriptionService.updateAgentContactDetails(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(false))
         when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
@@ -225,11 +226,12 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
           .build()
 
         running(application) {
-          val request = FakeRequest(POST, routes.ChangeAgentContactDetailsController.onSubmit().url)
+          val request = FakeRequest(POST, controllers.agent.routes.ChangeAgentContactDetailsController.onSubmit().url)
 
           val result = route(application, request).value
 
-          status(result) mustEqual INTERNAL_SERVER_ERROR
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
         }
       }
 

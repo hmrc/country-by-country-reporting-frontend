@@ -27,7 +27,6 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.ThereIsAProblemView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -41,8 +40,7 @@ class FileValidationController @Inject() (
   upscanConnector: UpscanConnector,
   requireData: DataRequiredAction,
   validationConnector: ValidationConnector,
-  navigator: Navigator,
-  errorView: ThereIsAProblemView
+  navigator: Navigator
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
@@ -54,7 +52,7 @@ class FileValidationController @Inject() (
         .get(UploadIDPage)
         .fold {
           logger.error("Cannot find uploadId")
-          Future.successful(InternalServerError(errorView()))
+          Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
         } {
           uploadId =>
             {
@@ -62,7 +60,7 @@ class FileValidationController @Inject() (
                 uploadSessions =>
                   getDownloadUrl(uploadSessions).fold {
                     logger.error("File not uploaded successfully")
-                    Future.successful(InternalServerError(errorView()))
+                    Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
                   } {
                     downloadDetails =>
                       val (fileName, url) = downloadDetails
@@ -88,7 +86,7 @@ class FileValidationController @Inject() (
                           } yield Redirect(routes.FileErrorController.onPageLoad())
 
                         case _ =>
-                          Future.successful(InternalServerError(errorView()))
+                          Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
                       }
                   }
               }

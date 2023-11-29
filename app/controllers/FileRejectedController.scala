@@ -24,7 +24,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.FileRejectedViewModel
-import views.html.{FileRejectedView, ThereIsAProblemView}
+import views.html.FileRejectedView
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
@@ -36,7 +36,6 @@ class FileRejectedController @Inject() (
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: FileRejectedView,
-  errorView: ThereIsAProblemView,
   fileDetailsConnector: FileDetailsConnector
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
@@ -49,9 +48,9 @@ class FileRejectedController @Inject() (
           details.status match {
             case Rejected(validationErrors) =>
               Ok(view(details.name, FileRejectedViewModel.createTable(validationErrors)))
-            case _ => InternalServerError(errorView())
+            case _ => Redirect(routes.ThereIsAProblemController.onPageLoad())
           }
-        case _ => InternalServerError(errorView())
+        case _ => Redirect(routes.ThereIsAProblemController.onPageLoad())
       }
   }
 }

@@ -43,8 +43,7 @@ class FileReceivedController @Inject() (
   sessionRepository: SessionRepository,
   val controllerComponents: MessagesControllerComponents,
   view: FileReceivedView,
-  agentView: FileReceivedAgentView,
-  errorView: ThereIsAProblemView
+  agentView: FileReceivedAgentView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
@@ -76,7 +75,7 @@ class FileReceivedController @Inject() (
                   )
                 case None =>
                   logger.warn("FileReceivedController: Agent detected but cannot retrieve agent email")
-                  Future.successful(InternalServerError(errorView()))
+                  Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
               }
             case Organisation =>
               for {
@@ -87,8 +86,8 @@ class FileReceivedController @Inject() (
               )
             case _ =>
               logger.warn("FileReceivedController: The User is neither an Organisation or an Agent")
-              Future.successful(InternalServerError(errorView()))
-          }).getOrElse(Future.successful(InternalServerError(errorView())))
+              Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+          }).getOrElse(Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad())))
       }
   }
 }
