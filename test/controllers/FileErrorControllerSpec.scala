@@ -56,9 +56,9 @@ class FileErrorControllerSpec extends SpecBase {
 
         val view = application.injector.instanceOf[ThereIsAProblemView]
 
-        status(result) mustEqual SEE_OTHER
+        status(result) mustEqual INTERNAL_SERVER_ERROR
 
-        redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
+        contentAsString(result) mustEqual view()(request, messages(application)).toString
       }
     }
   }

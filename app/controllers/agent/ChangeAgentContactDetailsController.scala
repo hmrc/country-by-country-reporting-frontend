@@ -17,7 +17,6 @@
 package controllers.agent
 
 import controllers.actions.agent.{AgentCheckForSubmissionAction, AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
-import controllers.routes
 import pages.AgentClientIdPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -25,6 +24,7 @@ import services.AgentSubscriptionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.AgentCheckYourAnswersHelper
 import viewmodels.govuk.summarylist._
+import views.html.ThereIsAProblemView
 import views.html.agent.ChangeAgentContactDetailsView
 
 import javax.inject.Inject
@@ -38,7 +38,8 @@ class ChangeAgentContactDetailsController @Inject() (
   checkForSubmission: AgentCheckForSubmissionAction,
   agentSubscriptionService: AgentSubscriptionService,
   val controllerComponents: MessagesControllerComponents,
-  view: ChangeAgentContactDetailsView
+  view: ChangeAgentContactDetailsView,
+  errorView: ThereIsAProblemView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -61,9 +62,9 @@ class ChangeAgentContactDetailsController @Inject() (
           agentSubscriptionService.doAgentContactDetailsExist map {
             case Some(doContactDetailsExist) =>
               Ok(view(agentPrimaryContactList, agentSecondaryContactList, hasContactDetailsChanged, doContactDetailsExist, clientSelected))
-            case _ => Redirect(routes.ThereIsAProblemController.onPageLoad())
+            case _ => InternalServerError(errorView())
           }
-        case _ => Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+        case _ => Future.successful(InternalServerError(errorView()))
       }
   }
 
@@ -72,15 +73,15 @@ class ChangeAgentContactDetailsController @Inject() (
       agentSubscriptionService.doAgentContactDetailsExist flatMap {
         case Some(true) =>
           agentSubscriptionService.updateAgentContactDetails(request.userAnswers) map {
-            case true => Redirect(controllers.agent.routes.AgentContactDetailsUpdatedController.onPageLoad())
-            case _    => Redirect(routes.ThereIsAProblemController.onPageLoad())
+            case true => Redirect(routes.AgentContactDetailsUpdatedController.onPageLoad())
+            case _    => InternalServerError(errorView())
           }
         case Some(false) =>
           agentSubscriptionService.createAgentContactDetails(request.arn, request.userAnswers) map {
-            case true => Redirect(controllers.agent.routes.AgentContactDetailsSavedController.onPageLoad())
-            case _    => Redirect(routes.ThereIsAProblemController.onPageLoad())
+            case true => Redirect(routes.AgentContactDetailsSavedController.onPageLoad())
+            case _    => InternalServerError(errorView())
           }
-        case _ => Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+        case _ => Future.successful(InternalServerError(errorView()))
       }
   }
 }

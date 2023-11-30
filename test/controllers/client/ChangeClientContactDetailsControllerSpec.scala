@@ -17,7 +17,6 @@
 package controllers.client
 
 import base.SpecBase
-import controllers.routes
 import models.UserAnswers
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers.any
@@ -27,6 +26,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.SubscriptionService
 import uk.gov.hmrc.http.HeaderCarrier
+import views.html.ThereIsAProblemView
 
 import scala.concurrent.Future
 
@@ -103,8 +103,10 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
 
           val result = route(application, request).value
 
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
+          val view = application.injector.instanceOf[ThereIsAProblemView]
+
+          status(result) mustEqual INTERNAL_SERVER_ERROR
+          contentAsString(result) mustEqual view()(request, messages(application)).toString
         }
       }
     }
@@ -175,8 +177,10 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
 
           val result = route(application, request).value
 
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
+          val view = application.injector.instanceOf[ThereIsAProblemView]
+
+          status(result) mustEqual INTERNAL_SERVER_ERROR
+          contentAsString(result) mustEqual view()(request, messages(application)).toString
         }
       }
 

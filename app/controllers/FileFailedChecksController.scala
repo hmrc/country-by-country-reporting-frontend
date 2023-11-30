@@ -23,7 +23,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.FileCheckViewModel
-import views.html.FileFailedChecksView
+import views.html.{FileFailedChecksView, ThereIsAProblemView}
 
 import javax.inject.Inject
 
@@ -33,7 +33,8 @@ class FileFailedChecksController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
-  view: FileFailedChecksView
+  view: FileFailedChecksView,
+  errorView: ThereIsAProblemView
 ) extends FrontendBaseController
     with I18nSupport
     with Logging {
@@ -47,7 +48,7 @@ class FileFailedChecksController @Inject() (
           Ok(view(summary, action, request.isAgent))
         case _ =>
           logger.warn("FileFailedChecksController: Unable to retrieve either XML information or ConversationId from UserAnswers")
-          Redirect(routes.ThereIsAProblemController.onPageLoad())
+          InternalServerError(errorView())
       }
   }
 }

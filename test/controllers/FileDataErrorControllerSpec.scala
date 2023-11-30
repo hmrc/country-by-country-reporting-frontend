@@ -23,7 +23,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.table.TableRow
-import views.html.FileDataErrorView
+import views.html.{FileDataErrorView, ThereIsAProblemView}
 
 class FileDataErrorControllerSpec extends SpecBase {
 
@@ -72,8 +72,10 @@ class FileDataErrorControllerSpec extends SpecBase {
 
         val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
+        val view = application.injector.instanceOf[ThereIsAProblemView]
+
+        status(result) mustEqual INTERNAL_SERVER_ERROR
+        contentAsString(result) mustEqual view()(request, messages(application)).toString
       }
     }
   }

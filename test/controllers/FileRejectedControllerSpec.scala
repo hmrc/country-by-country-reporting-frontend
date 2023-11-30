@@ -28,7 +28,7 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.FileRejectedViewModel
-import views.html.FileRejectedView
+import views.html.{FileRejectedView, ThereIsAProblemView}
 
 import java.time.LocalDateTime
 import scala.concurrent.Future
@@ -99,8 +99,10 @@ class FileRejectedControllerSpec extends SpecBase with ModelGenerators with Scal
 
         val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
+        val view = application.injector.instanceOf[ThereIsAProblemView]
+
+        status(result) mustEqual INTERNAL_SERVER_ERROR
+        contentAsString(result) mustEqual view()(request, messages(application)).toString
       }
     }
 
@@ -134,8 +136,10 @@ class FileRejectedControllerSpec extends SpecBase with ModelGenerators with Scal
 
         val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
+        val view = application.injector.instanceOf[ThereIsAProblemView]
+
+        status(result) mustEqual INTERNAL_SERVER_ERROR
+        contentAsString(result) mustEqual view()(request, messages(application)).toString
       }
     }
   }

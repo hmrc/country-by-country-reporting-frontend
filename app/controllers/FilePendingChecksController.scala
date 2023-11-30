@@ -27,7 +27,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.FileProblemHelper.isProblemStatus
 import viewmodels.FileCheckViewModel
-import views.html.FilePendingChecksView
+import views.html.{FilePendingChecksView, ThereIsAProblemView}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -40,7 +40,8 @@ class FilePendingChecksController @Inject() (
   fileConnector: FileDetailsConnector,
   sessionRepository: SessionRepository,
   val controllerComponents: MessagesControllerComponents,
-  view: FilePendingChecksView
+  view: FilePendingChecksView,
+  errorView: ThereIsAProblemView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -65,15 +66,15 @@ class FilePendingChecksController @Inject() (
                     updatedAnswers <- Future.fromTry(request.userAnswers.remove(UploadIDPage))
                     _              <- sessionRepository.set(updatedAnswers)
                   } yield Ok(view(summary, routes.FilePendingChecksController.onPageLoad().url, conversationId.value, request.isAgent))
-                case _ => Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+                case _ => Future.successful(InternalServerError(errorView()))
               }
             case _ =>
               logger.warn("Unable to get Status")
-              Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+              Future.successful(InternalServerError(errorView()))
           }
         case _ =>
           logger.warn("Unable to retrieve fileName & conversationId")
-          Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+          Future.successful(InternalServerError(errorView()))
       }
   }
 

@@ -24,6 +24,7 @@ import org.mockito.ArgumentMatchers.any
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import views.html.ThereIsAProblemView
 
 import java.time.LocalDateTime
 import scala.concurrent.Future
@@ -72,8 +73,10 @@ class FileStatusControllerSpec extends SpecBase {
 
         val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
+        val view = application.injector.instanceOf[ThereIsAProblemView]
+
+        status(result) mustEqual INTERNAL_SERVER_ERROR
+        contentAsString(result) mustEqual view()(request, messages(application)).toString
       }
     }
   }

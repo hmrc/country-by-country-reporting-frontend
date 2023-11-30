@@ -23,7 +23,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.ErrorViewHelper
-import views.html.FileDataErrorView
+import views.html.{FileDataErrorView, ThereIsAProblemView}
 
 import javax.inject.Inject
 
@@ -34,7 +34,8 @@ class FileDataErrorController @Inject() (
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: FileDataErrorView,
-  errorViewHelper: ErrorViewHelper
+  errorViewHelper: ErrorViewHelper,
+  errorView: ThereIsAProblemView
 ) extends FrontendBaseController
     with I18nSupport
     with Logging {
@@ -49,7 +50,7 @@ class FileDataErrorController @Inject() (
           Ok(view(fileName, errorViewHelper.generateTable(xmlErrors)))
         case _ =>
           logger.warn("FileDataErrorController: Unable to retrieve either Invalid XML information or GenericErrors from UserAnswers")
-          Redirect(routes.ThereIsAProblemController.onPageLoad())
+          InternalServerError(errorView())
       }
   }
 }

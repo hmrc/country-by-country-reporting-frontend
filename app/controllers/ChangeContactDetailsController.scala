@@ -40,7 +40,8 @@ class ChangeContactDetailsController @Inject() (
   checkForSubmission: CheckForSubmissionAction,
   subscriptionService: SubscriptionService,
   val controllerComponents: MessagesControllerComponents,
-  view: ChangeContactDetailsView
+  view: ChangeContactDetailsView,
+  errorView: ThereIsAProblemView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -65,7 +66,7 @@ class ChangeContactDetailsController @Inject() (
           Ok(
             view(primaryContactList, secondaryContactList, frontendAppConfig, hasChanged, isOrganisationAndFirstVisitAfterMigration(isFirstVisitAfterMigration))
           )
-        case _ => Redirect(routes.ThereIsAProblemController.onPageLoad())
+        case _ => InternalServerError(errorView())
       }
   }
 
@@ -73,7 +74,7 @@ class ChangeContactDetailsController @Inject() (
     implicit request =>
       subscriptionService.updateContactDetails(request.userAnswers, request.subscriptionId) map {
         case true  => Redirect(routes.DetailsUpdatedController.onPageLoad())
-        case false => Redirect(routes.ThereIsAProblemController.onPageLoad())
+        case false => InternalServerError(errorView())
       }
   }
 }
