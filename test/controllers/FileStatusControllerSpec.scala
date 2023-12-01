@@ -24,6 +24,7 @@ import org.mockito.ArgumentMatchers.any
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import views.html.ThereIsAProblemView
 
 import java.time.LocalDateTime
 import scala.concurrent.Future
@@ -57,7 +58,7 @@ class FileStatusControllerSpec extends SpecBase {
       }
     }
 
-    "must return INTERNAL_SERVER_ERROR on failing to get allFileDetails" in {
+    "must return ThereIsAProblemPage on failing to get allFileDetails" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(
@@ -72,7 +73,10 @@ class FileStatusControllerSpec extends SpecBase {
 
         val result = route(application, request).value
 
+        val view = application.injector.instanceOf[ThereIsAProblemView]
+
         status(result) mustEqual INTERNAL_SERVER_ERROR
+        contentAsString(result) mustEqual view()(request, messages(application)).toString
       }
     }
   }

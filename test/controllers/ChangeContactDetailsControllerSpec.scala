@@ -26,6 +26,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.SubscriptionService
 import uk.gov.hmrc.http.HeaderCarrier
+import views.html.ThereIsAProblemView
 
 import scala.concurrent.Future
 
@@ -102,7 +103,10 @@ class ChangeContactDetailsControllerSpec extends SpecBase with BeforeAndAfterEac
 
           val result = route(application, request).value
 
+          val view = application.injector.instanceOf[ThereIsAProblemView]
+
           status(result) mustEqual INTERNAL_SERVER_ERROR
+          contentAsString(result) mustEqual view()(request, messages(application)).toString
         }
       }
     }
@@ -144,7 +148,10 @@ class ChangeContactDetailsControllerSpec extends SpecBase with BeforeAndAfterEac
 
           val result = route(application, request).value
 
+          val view = application.injector.instanceOf[ThereIsAProblemView]
+
           status(result) mustEqual INTERNAL_SERVER_ERROR
+          contentAsString(result) mustEqual view()(request, messages(application)).toString
         }
       }
 

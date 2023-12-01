@@ -20,6 +20,7 @@ import connectors.FileDetailsConnector
 import controllers.actions._
 import models.ConversationId
 import models.fileDetails.Rejected
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -28,6 +29,7 @@ import views.html.{FileRejectedView, ThereIsAProblemView}
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
+import scala.util.{Failure, Success, Try}
 
 class FileRejectedController @Inject() (
   override val messagesApi: MessagesApi,
@@ -40,7 +42,8 @@ class FileRejectedController @Inject() (
   fileDetailsConnector: FileDetailsConnector
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
-    with I18nSupport {
+    with I18nSupport
+    with Logging {
 
   def onPageLoad(conversationId: ConversationId): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
@@ -48,7 +51,12 @@ class FileRejectedController @Inject() (
         case Some(details) =>
           details.status match {
             case Rejected(validationErrors) =>
-              Ok(view(details.name, FileRejectedViewModel.createTable(validationErrors)))
+              Try(FileRejectedViewModel.createTable(validationErrors)) match {
+                case Success(viewModel) => Ok(view(details.name, viewModel))
+                case Failure(error) =>
+                  logger.error("Failed to create file validation table", error)
+                  InternalServerError(errorView())
+              }
             case _ => InternalServerError(errorView())
           }
         case _ => InternalServerError(errorView())

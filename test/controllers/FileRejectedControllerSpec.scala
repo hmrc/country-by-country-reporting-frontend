@@ -28,7 +28,7 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.FileRejectedViewModel
-import views.html.FileRejectedView
+import views.html.{FileRejectedView, ThereIsAProblemView}
 
 import java.time.LocalDateTime
 import scala.concurrent.Future
@@ -84,7 +84,7 @@ class FileRejectedControllerSpec extends SpecBase with ModelGenerators with Scal
       }
     }
 
-    "must return Internal server error on failing to get FileDetails" in {
+    "must return ThereIsAProblemPage on failing to get FileDetails" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(
@@ -99,11 +99,14 @@ class FileRejectedControllerSpec extends SpecBase with ModelGenerators with Scal
 
         val result = route(application, request).value
 
+        val view = application.injector.instanceOf[ThereIsAProblemView]
+
         status(result) mustEqual INTERNAL_SERVER_ERROR
+        contentAsString(result) mustEqual view()(request, messages(application)).toString
       }
     }
 
-    "must return Internal server error on getting FileDetails with a status other than Rejected" in {
+    "must return ThereIsAProblemPage on getting FileDetails with a status other than Rejected" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(
@@ -133,7 +136,10 @@ class FileRejectedControllerSpec extends SpecBase with ModelGenerators with Scal
 
         val result = route(application, request).value
 
+        val view = application.injector.instanceOf[ThereIsAProblemView]
+
         status(result) mustEqual INTERNAL_SERVER_ERROR
+        contentAsString(result) mustEqual view()(request, messages(application)).toString
       }
     }
   }

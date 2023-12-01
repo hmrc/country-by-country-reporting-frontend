@@ -32,6 +32,7 @@ import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import views.html.ThereIsAProblemView
 
 import scala.concurrent.{ExecutionContextExecutor, Future}
 
@@ -125,7 +126,7 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
       userAnswersCaptor.getValue.data mustEqual expectedData
     }
 
-    "must return an INTERNAL_SERVER_ERROR when a valid UploadId cannot be found" in {
+    "must return ThereIsAProblemPage when a valid UploadId cannot be found" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(
@@ -135,20 +136,32 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
         )
         .build()
 
-      val controller             = application.injector.instanceOf[FileValidationController]
-      val result: Future[Result] = controller.onPageLoad()(FakeRequest("", ""))
+      running(application) {
+        val request = FakeRequest(GET, routes.FileValidationController.onPageLoad().url)
 
-      status(result) mustBe INTERNAL_SERVER_ERROR
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[ThereIsAProblemView]
+
+        status(result) mustEqual INTERNAL_SERVER_ERROR
+        contentAsString(result) mustEqual view()(request, messages(application)).toString
+      }
     }
 
-    "must return an INTERNAL_SERVER_ERROR when meta data cannot be found" in {
+    "must return ThereIsAProblemPage when meta data cannot be found" in {
 
       fakeUpscanConnector.resetDetails()
 
-      val controller             = application.injector.instanceOf[FileValidationController]
-      val result: Future[Result] = controller.onPageLoad()(FakeRequest("", ""))
+      running(application) {
+        val request = FakeRequest(GET, routes.FileValidationController.onPageLoad().url)
 
-      status(result) mustBe INTERNAL_SERVER_ERROR
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[ThereIsAProblemView]
+
+        status(result) mustEqual INTERNAL_SERVER_ERROR
+        contentAsString(result) mustEqual view()(request, messages(application)).toString
+      }
     }
   }
 }
