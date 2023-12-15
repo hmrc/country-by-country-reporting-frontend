@@ -21,6 +21,7 @@ import play.api.libs.json.{__, JsString, Reads, Writes}
 sealed abstract class RecordErrorCode(val code: String)
 
 object RecordErrorCode {
+  case object FileContainsTestDataForProductionEnvironment extends RecordErrorCode("50010")
   case object DocRefIDAlreadyUsed extends RecordErrorCode("80000")
   case object DocRefIDFormat extends RecordErrorCode("80001")
   case object CorrDocRefIdUnknown extends RecordErrorCode("80002")
@@ -37,6 +38,7 @@ object RecordErrorCode {
   case class UnknownRecordErrorCode(override val code: String) extends RecordErrorCode(code)
 
   val values: Seq[RecordErrorCode] = Seq(
+    FileContainsTestDataForProductionEnvironment,
     DocRefIDAlreadyUsed,
     DocRefIDFormat,
     CorrDocRefIdUnknown,
@@ -58,6 +60,7 @@ object RecordErrorCode {
   }
 
   implicit val reads: Reads[RecordErrorCode] = __.read[String].map {
+    case "50010"   => FileContainsTestDataForProductionEnvironment
     case "80000"   => DocRefIDAlreadyUsed
     case "80001"   => DocRefIDFormat
     case "80002"   => CorrDocRefIdUnknown

@@ -369,14 +369,25 @@ fileRejected.docRefId = DocRefId
 fileRejected.error = Error
 
 #TODO: Update these messages when CBC business rules are known
+# Work in progress. These are the error messages we have updated....
+fileRejected.50008.value.intro = MessageRefId must be 100 characters or less and follow this structure in the order referenced:
+fileRejected.50008.value.bullet1 = ‘GB’
+fileRejected.50008.value.bullet2 = the same value as the year in the MessageSpec ReportingPeriod in the format ‘YYYY’
+fileRejected.50008.value.bullet3 = ‘GB’
+fileRejected.50008.value.bullet4 = your 15-character CBC ID
+fileRejected.50008.value.bullet5 = the same value as the MessageTypeIndic, either ‘CBC401’ or ‘CBC402’
+fileRejected.50008.value.bullet6 = the same value as the Timestamp in the format ‘YYYYMMDDThhmmss’ or ‘YYYYMMDDThhmmssnnn’
+fileRejected.50008.value.bullet7 = up to 53 characters of your choice if the Timestamp includes milliseconds, or up to 56 characters of your choice if it does not include milliseconds, to make the ID unique
+fileRejected.50008.value.example = For example, ‘GB2022GBXACBC0000999999CBC40120230523T140000123456789’.
+fileRejected.50009.value = MessageRefId must not be the same as one used for a previously sent file. We only keep a record of the MessageRefId for successfully sent files.
+fileRejected.50010.value = DocTypeIndic contains a value that indicates the file contains test data, like OECD10, OECD11, OECD12 or OECD13. Replace the test data value with a value for real data, such as OECD0, OECD1, OECD2 or OECD3.
+fileRejected.80000.value = DocRefId has already been used in this file or a file that was previously sent. We only keep a record of these IDs for successfully sent files.
+# ... /END
+
 fileRejected.50007.key = 507
 fileRejected.50007.value = boom
-fileRejected.50009.key = 509
-fileRejected.50009.value = The MessageRefId has already been used in a file previously received, it must be unique
-fileRejected.50010.key = 510
-fileRejected.50010.value = We cannot accept test data so each DocTypeIndic must have a value of either OECD0, OECD1, OECD2 or OECD3
-fileRejected.80000.key = 800
-fileRejected.80000.value = The DocRefId has already been used in this file or a file previously received, it must be unique
+fileRejected.80001.key = 801
+fileRejected.80001.value = shake the room
 fileRejected.80002.key = 802
 fileRejected.80002.value = The CorrDocRefId does not match any DocRefId previously received
 fileRejected.80003.key = 803

@@ -15,18 +15,39 @@
  *@
 
 @import models.fileDetails.FileValidationErrors
+@import models.fileDetails.FileErrorCode.InvalidMessageRefIDFormat
 
 @this()
 
 @(validationErrors: FileValidationErrors)(implicit messages: Messages)
 
-
 @validationErrors.fileError.map(
-  errors => errors.map(error => {
-     <p>This is the error: @{error.code.code}</p>
-     <p>This is the message: @{messages("fileRejected.50007.value")}</p>
-   }
-  )
+    errors => errors.map(error => {
+        getError(error.code.code)
+    })
 )
 
-<p>Hello</p>
+@validationErrors.recordError.map(
+    errors => errors.map(error => {
+        getError(error.code.code)
+    })
+)
+
+@getError(code: String) = @{
+    code match {
+        case InvalidMessageRefIDFormat.code =>
+            <p>{messages("fileRejected.50008.value.intro")}</p>
+            <ol>
+                <li>{messages("fileRejected.50008.value.bullet1")}</li>
+                <li>{messages("fileRejected.50008.value.bullet2")}</li>
+                <li>{messages("fileRejected.50008.value.bullet3")}</li>
+                <li>{messages("fileRejected.50008.value.bullet4")}</li>
+                <li>{messages("fileRejected.50008.value.bullet5")}</li>
+                <li>{messages("fileRejected.50008.value.bullet6")}</li>
+                <li>{messages("fileRejected.50008.value.bullet7")}</li>
+            </ol>
+            <p>{messages("fileRejected.50008.value.example")}</p>
+        case _ =>
+            <p>{messages(s"fileRejected.${code}.value")}</p>
+    }
+}
