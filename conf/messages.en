@@ -369,6 +369,8 @@ fileRejected.docRefId = DocRefId
 fileRejected.error = Error
 
 #TODO: Update these messages when CBC business rules are known
+fileRejected.50007.key = 507
+fileRejected.50007.value = boom
 fileRejected.50009.key = 509
 fileRejected.50009.value = The MessageRefId has already been used in a file previously received, it must be unique
 fileRejected.50010.key = 510
