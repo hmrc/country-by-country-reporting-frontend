@@ -23,12 +23,12 @@
 @(validationErrors: FileValidationErrors)(implicit messages: Messages)
 
 @govukTable(Table(
-    caption = Some("Errors"),
+    caption = Some(messages("fileRejected.tableCaption")),
     captionClasses = "govuk-table__caption--m",
     head = Some(Seq(
-        HeadCell(Text("Code")),
-        HeadCell(Text("DocRefId")),
-        HeadCell(Text("Error"))
+        HeadCell(Text(messages("fileRejected.code"))),
+        HeadCell(Text(messages("fileRejected.docRefId"))),
+        HeadCell(Text(messages("fileRejected.error")))
     )),
     firstCellIsHeader = true,
     rows = {
@@ -44,7 +44,7 @@
           code =>
             Seq(
                 TableRow(Text(code)),
-                TableRow(Text("N/A")),
+                TableRow(Text("")),
                 TableRow(HtmlContent(getError(code)))
             )
         ).toSeq
