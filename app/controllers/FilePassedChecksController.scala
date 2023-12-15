@@ -44,7 +44,7 @@ class FilePassedChecksController @Inject() (
       (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(ConversationIdPage)) match {
         case (Some(xmlDetails), Some(conversationId)) =>
           val action  = routes.FileReceivedController.onPageLoad(conversationId).url
-          val summary = FileCheckViewModel.createFileSummary(xmlDetails.fileName, "Accepted")
+          val summary = FileCheckViewModel.createFileSummary(xmlDetails.messageSpecData.messageRefId, "Accepted")
           Ok(view(summary, action))
 
         case _ =>

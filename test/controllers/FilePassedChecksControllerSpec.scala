@@ -46,7 +46,7 @@ class FilePassedChecksControllerSpec extends SpecBase {
 
       running(application) {
 
-        val fileSummaryList = FileCheckViewModel.createFileSummary(validXmlDetails.fileName, "Accepted")(messages(application))
+        val fileSummaryList = FileCheckViewModel.createFileSummary(validXmlDetails.messageSpecData.messageRefId, "Accepted")(messages(application))
         val action          = routes.FileReceivedController.onPageLoad(conversationId).url
         val request         = FakeRequest(GET, routes.FilePassedChecksController.onPageLoad().url)
         val result          = route(application, request).value

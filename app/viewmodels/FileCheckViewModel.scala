@@ -27,7 +27,7 @@ object FileCheckViewModel {
     val displayTags = HtmlContent(s"<strong class='govuk-tag govuk-tag--${Messages(s"cssColour.$fileStatus")}'>${Messages(s"status.$fileStatus")}</strong>")
     Seq(
       SummaryListRow(
-        key = Key(Text(Messages("fileSummary.fileName"))),
+        key = Key(Text(Messages("fileSummary.messageRefId"))),
         value = Value(fileName)
       ),
       SummaryListRow(

@@ -282,7 +282,7 @@ status.Problem = Problem
 filePassedChecks.title = Your file has passed our checks
 filePassedChecks.heading = Your file has passed our checks
 
-fileSummary.fileName = File name
+fileSummary.messageRefId = File ID (MessageRefId)
 fileSummary.result = Result of automatic checks
 fileSummary.viewConfirmation = View confirmation
 fileSummary.viewConfirmationLargeFile = Go to confirmation
