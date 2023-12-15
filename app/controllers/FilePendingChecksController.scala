@@ -18,7 +18,7 @@ package controllers
 
 import connectors.FileDetailsConnector
 import controllers.actions._
-import models.fileDetails.{Pending, Rejected, ValidationErrors, Accepted => FileStatusAccepted}
+import models.fileDetails.{Pending, Rejected, FileValidationErrors, Accepted => FileStatusAccepted}
 import pages.{ConversationIdPage, UploadIDPage, ValidXMLPage}
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -78,7 +78,7 @@ class FilePendingChecksController @Inject() (
       }
   }
 
-  private def slowJourneyErrorRoute(errors: ValidationErrors, result: Future[Result]): Future[Result] =
+  private def slowJourneyErrorRoute(errors: FileValidationErrors, result: Future[Result]): Future[Result] =
     if (isProblemStatus(errors)) {
       Future.successful(Redirect(routes.FileProblemController.onPageLoad()))
     } else {

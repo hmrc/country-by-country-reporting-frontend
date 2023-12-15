@@ -18,9 +18,9 @@ package models.fileDetails
 
 import play.api.libs.json.{Json, OFormat}
 
-case class ValidationErrors(fileError: Option[Seq[FileErrors]], recordError: Option[Seq[RecordError]])
+case class FileValidationErrors(fileError: Option[Seq[FileErrors]], recordError: Option[Seq[RecordError]])
 
-object ValidationErrors {
+object FileValidationErrors {
 
-  implicit val format: OFormat[ValidationErrors] = Json.format[ValidationErrors]
+  implicit val format: OFormat[FileValidationErrors] = Json.format[FileValidationErrors]
 }

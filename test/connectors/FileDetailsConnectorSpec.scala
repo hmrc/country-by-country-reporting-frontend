@@ -106,7 +106,7 @@ class FileDetailsConnectorSpec extends Connector {
               LocalDateTime.parse("2022-02-10T15:35:37.636"),
               LocalDateTime.parse("2022-02-10T15:45:37.636"),
               Rejected(
-                ValidationErrors(
+                FileValidationErrors(
                   Some(List(FileErrors(MessageRefIDHasAlreadyBeenUsed, Some("Duplicate message ref ID")))),
                   Some(
                     List(

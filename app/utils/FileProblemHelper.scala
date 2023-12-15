@@ -26,7 +26,7 @@ object FileProblemHelper {
   private val expectedErrorCodes: Seq[String]       = FileErrorCode.values.map(_.code) ++ RecordErrorCode.values.map(_.code)
   private val problemsStatusErrorCodes: Seq[String] = fileErrorCodesForProblemStatus.map(_.code) :+ DocRefIDFormat.code
 
-  def isProblemStatus(errors: ValidationErrors): Boolean = {
+  def isProblemStatus(errors: FileValidationErrors): Boolean = {
     val errorCodes: Seq[String] =
       Seq(errors.fileError.map(_.map(_.code.code)).getOrElse(Nil), errors.recordError.map(_.map(_.code.code)).getOrElse(Nil)).flatten
 

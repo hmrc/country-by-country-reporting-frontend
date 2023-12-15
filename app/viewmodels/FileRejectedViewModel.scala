@@ -24,7 +24,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.table.{HeadCell, Table, TableR
 
 object FileRejectedViewModel {
 
-  def createTable(validationErrors: ValidationErrors)(implicit messages: Messages): Table = {
+  def createTable(validationErrors: FileValidationErrors)(implicit messages: Messages): Table = {
 
     val header = Some(
       Seq(
@@ -102,7 +102,7 @@ object FileRejectedViewModel {
         Text(Messages(s"fileRejected.${errorCode.code}.value"))
     }
 
-  private def createTableRow(validationErrors: ValidationErrors)(implicit messages: Messages): Seq[Seq[TableRow]] = {
+  private def createTableRow(validationErrors: FileValidationErrors)(implicit messages: Messages): Seq[Seq[TableRow]] = {
     val fileErrors: Option[Seq[(String, Content, Content)]] = validationErrors.fileError.map(
       _.map(
         error =>

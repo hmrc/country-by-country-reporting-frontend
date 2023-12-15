@@ -20,7 +20,7 @@ import config.FrontendAppConfig
 import connectors.{FileDetailsConnector, SubmissionConnector}
 import controllers.actions._
 import handlers.XmlHandler
-import models.fileDetails.{Pending, Rejected, ValidationErrors, Accepted => FileStatusAccepted}
+import models.fileDetails.{Pending, Rejected, FileValidationErrors, Accepted => FileStatusAccepted}
 import models.upscan.URL
 import models.{CBC402, ValidatedFileData}
 import pages.{ConversationIdPage, URLPage, ValidXMLPage}
@@ -105,7 +105,7 @@ class SendYourFileController @Inject() (
       }
   }
 
-  private def fastJourneyErrorRoute(errors: ValidationErrors, result: Future[Result]): Future[Result] =
+  private def fastJourneyErrorRoute(errors: FileValidationErrors, result: Future[Result]): Future[Result] =
     if (isProblemStatus(errors)) {
       Future.successful(Ok(Json.toJson(URL(routes.FileProblemController.onPageLoad().url))))
     } else {

@@ -28,7 +28,7 @@ import models.agentSubscription.{
   CreateAgentSubscriptionRequest
 }
 import models.fileDetails.RecordErrorCode.CustomError
-import models.fileDetails.{FileErrorCode, FileErrors, RecordError, RecordErrorCode, ValidationErrors}
+import models.fileDetails.{FileErrorCode, FileErrors, FileValidationErrors, RecordError, RecordErrorCode}
 import models.subscription._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
@@ -143,12 +143,12 @@ trait ModelGenerators {
     } yield AgentResponseDetail(subscriptionID, tradingName, isGBUser, primaryContact, secondaryContact)
   }
 
-  implicit val arbitraryUpdateValidationErrors: Arbitrary[ValidationErrors] =
+  implicit val arbitraryUpdateValidationErrors: Arbitrary[FileValidationErrors] =
     Arbitrary {
       for {
         fileErrors   <- Gen.option(listWithMaxLength(5, arbitrary[FileErrors]))
         recordErrors <- Gen.option(listWithMaxLength(5, arbitrary[RecordError]))
-      } yield ValidationErrors(fileErrors, recordErrors)
+      } yield FileValidationErrors(fileErrors, recordErrors)
     }
 
   implicit val arbitraryAgentRequestDetail: Arbitrary[AgentRequestDetail] = Arbitrary {
