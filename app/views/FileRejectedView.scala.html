@@ -14,17 +14,19 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.table.Table
+@import models.fileDetails.FileValidationErrors
+@import views.html.components.FileRejectedTable
 
 @this(
         layout: templates.Layout,
         govukTable: GovukTable,
         link: components.Link,
         printLink: components.PrintLink,
-        govukButton: GovukButton
+        govukButton: GovukButton,
+        fileRejectedTable: FileRejectedTable
 )
 
-@(fileName: String, table: Table)(implicit request: Request[_], messages: Messages)
+@(fileName: String, validationErrors: FileValidationErrors)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("fileRejected.title")), showAgentHeader = true) {
 
@@ -42,7 +44,7 @@
     </ol>
 
     <div class="govuk-!-padding-top-3">
-        @govukTable(table)
+        @fileRejectedTable(validationErrors)
     </div>
 
     <p class="govuk-body govuk-!-padding-top-5">@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</p>

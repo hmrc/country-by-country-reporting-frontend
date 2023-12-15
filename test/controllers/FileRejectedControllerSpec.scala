@@ -78,9 +78,7 @@ class FileRejectedControllerSpec extends SpecBase with ModelGenerators with Scal
         val view = application.injector.instanceOf[FileRejectedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(fileName, FileRejectedViewModel.createTable(validationErrors)(messages(application)))(request,
-                                                                                                                                     messages(application)
-        ).toString
+        contentAsString(result) mustEqual view(fileName, validationErrors)(request, messages(application)).toString
       }
     }
 

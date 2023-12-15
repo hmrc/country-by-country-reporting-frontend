@@ -50,14 +50,8 @@ class FileRejectedController @Inject() (
       fileDetailsConnector.getFileDetails(conversationId) map {
         case Some(details) =>
           details.status match {
-            case Rejected(validationErrors) =>
-              Try(FileRejectedViewModel.createTable(validationErrors)) match {
-                case Success(viewModel) => Ok(view(details.name, viewModel))
-                case Failure(error) =>
-                  logger.error("Failed to create file validation table", error)
-                  InternalServerError(errorView())
-              }
-            case _ => InternalServerError(errorView())
+            case Rejected(validationErrors) => Ok(view(details.name, validationErrors))
+            case _                          => InternalServerError(errorView())
           }
         case _ => InternalServerError(errorView())
       }
