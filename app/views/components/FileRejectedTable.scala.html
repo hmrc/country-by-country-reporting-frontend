@@ -16,27 +16,45 @@
 
 @import models.fileDetails.FileValidationErrors
 @import models.fileDetails.FileErrorCode.InvalidMessageRefIDFormat
+@import uk.gov.hmrc.govukfrontend.views.html.components._
 
-@this()
+@this(govukTable: GovukTable)
 
 @(validationErrors: FileValidationErrors)(implicit messages: Messages)
 
-@validationErrors.fileError.map(
-    errors => errors.map(error => {
-        getError(error.code.code)
-    })
-)
+@govukTable(Table(
+    caption = Some("Errors"),
+    captionClasses = "govuk-table__caption--m",
+    head = Some(Seq(
+        HeadCell(Text("Code")),
+        HeadCell(Text("DocRefId")),
+        HeadCell(Text("Error"))
+    )),
+    firstCellIsHeader = true,
+    rows = {
+        val fileErrors = validationErrors.fileError.map(
+            _.map(error => error.code.code)
+        )
 
-@validationErrors.recordError.map(
-    errors => errors.map(error => {
-        getError(error.code.code)
-    })
-)
+        val recordErrors = validationErrors.recordError.map(
+            _.map(error => error.code.code)
+        )
 
-@getError(code: String) = @{
+        (fileErrors ++ recordErrors).flatten.map(
+          code =>
+            Seq(
+                TableRow(Text(code)),
+                TableRow(Text("N/A")),
+                TableRow(HtmlContent(getError(code)))
+            )
+        ).toSeq
+    }
+))
+
+@getError(code: String) = {@{
     code match {
         case InvalidMessageRefIDFormat.code =>
-            <p>{messages("fileRejected.50008.value.intro")}</p>
+            <span>{messages("fileRejected.50008.value.intro")}</span>
             <ol>
                 <li>{messages("fileRejected.50008.value.bullet1")}</li>
                 <li>{messages("fileRejected.50008.value.bullet2")}</li>
@@ -48,6 +66,6 @@
             </ol>
             <p>{messages("fileRejected.50008.value.example")}</p>
         case _ =>
-            <p>{messages(s"fileRejected.$code.value")}</p>
+            <span>{messages(s"fileRejected.$code.value")}</span>
     }
-}
+}}

@@ -38,7 +38,6 @@ object FileErrorCode {
 
   val fileErrorCodesForProblemStatus: Seq[FileErrorCode] = Seq(
     FailedSchemaValidation,
-    InvalidMessageRefIDFormat,
     NotMeantToBeReceivedByTheIndicatedJurisdiction
   )
 
