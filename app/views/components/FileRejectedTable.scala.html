@@ -31,7 +31,6 @@
         HeadCell(Text(messages("fileRejected.docRefId"))),
         HeadCell(Text(messages("fileRejected.error")))
     )),
-    firstCellIsHeader = true,
     rows = {
         validationErrors.map { error =>
             Seq(
