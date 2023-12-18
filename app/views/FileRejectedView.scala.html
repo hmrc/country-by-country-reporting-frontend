@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import models.fileDetails.FileValidationErrors
+@import viewmodels.FileRejectedViewModel
 @import views.html.components.FileRejectedTable
 
 @this(
@@ -26,7 +26,7 @@
         fileRejectedTable: FileRejectedTable
 )
 
-@(fileName: String, validationErrors: FileValidationErrors)(implicit request: Request[_], messages: Messages)
+@(fileName: String, viewModel: FileRejectedViewModel)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("fileRejected.title")), showAgentHeader = true) {
 
@@ -44,7 +44,7 @@
     </ol>
 
     <div class="govuk-!-padding-top-3">
-        @fileRejectedTable(validationErrors)
+        @fileRejectedTable(viewModel.getErrors)
     </div>
 
     <p class="govuk-body govuk-!-padding-top-5">@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</p>

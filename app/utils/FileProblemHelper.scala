@@ -19,7 +19,6 @@ package utils
 import models.fileDetails.FileErrorCode.{fileErrorCodesForProblemStatus, CustomError => FileCustomError}
 import models.fileDetails.RecordErrorCode.{CustomError, DocRefIDFormat}
 import models.fileDetails._
-import viewmodels.FileRejectedViewModel.{errorList, error_details_910}
 
 object FileProblemHelper {
 
@@ -42,14 +41,14 @@ object FileProblemHelper {
   private def recordErrorDetailNotAllowed(errors: Option[Seq[RecordError]]): Boolean =
     errors.exists(
       _.exists(
-        error => error.code == CustomError && !errorList.exists(error.details.getOrElse("").contains(_))
+        error => error.code == CustomError
       )
     )
 
   private def fileErrorDetailNotAllowed(errors: Option[Seq[FileErrors]]): Boolean =
     errors.exists(
       _.exists(
-        error => error.code == FileCustomError && !error.details.getOrElse("").contains(error_details_910)
+        error => error.code == FileCustomError
       )
     )
 }

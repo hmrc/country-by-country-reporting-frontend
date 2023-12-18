@@ -14,13 +14,14 @@
  * limitations under the License.
  *@
 
-@import models.fileDetails.FileValidationErrors
-@import models.fileDetails.FileErrorCode.InvalidMessageRefIDFormat
 @import uk.gov.hmrc.govukfrontend.views.html.components._
+
+@import models.fileDetails.FileErrorCode.InvalidMessageRefIDFormat
+@import viewmodels.FileRejectedError
 
 @this(govukTable: GovukTable)
 
-@(validationErrors: FileValidationErrors)(implicit messages: Messages)
+@(validationErrors: Seq[FileRejectedError])(implicit messages: Messages)
 
 @govukTable(Table(
     caption = Some(messages("fileRejected.tableCaption")),
@@ -32,22 +33,13 @@
     )),
     firstCellIsHeader = true,
     rows = {
-        val fileErrors: Option[Seq[(String, Seq[String])]] = validationErrors.fileError.map(
-            _.map(error => (error.code.code, Nil))
-        )
-
-        val recordErrors: Option[Seq[(String, Seq[String])]] = validationErrors.recordError.map(
-            _.map(error => (error.code.code, error.docRefIDInError.getOrElse(Nil)))
-        )
-
-        (fileErrors ++ recordErrors).flatten.map {
-            case (code: String, docRefIds: Seq[String]) =>
-                Seq(
-                    TableRow(Text(code)),
-                    TableRow(HtmlContent(getDocRefId(docRefIds))),
-                    TableRow(HtmlContent(getErrorDescription(code)))
-                )
-        }.toSeq
+        validationErrors.map { error =>
+            Seq(
+                TableRow(Text(error.errorCode)),
+                TableRow(HtmlContent(getDocRefId(error.docRefIds))),
+                TableRow(HtmlContent(getErrorDescription(error.errorCode)))
+            )
+        }
     }
 ))
 

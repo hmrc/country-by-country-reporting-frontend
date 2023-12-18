@@ -23,4 +23,5 @@ case class FileValidationErrors(fileError: Option[Seq[FileErrors]], recordError:
 object FileValidationErrors {
 
   implicit val format: OFormat[FileValidationErrors] = Json.format[FileValidationErrors]
+
 }

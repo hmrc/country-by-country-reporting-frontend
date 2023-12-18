@@ -19,8 +19,8 @@ package views.components
 import base.SpecBase
 import models.fileDetails.FileErrorCode._
 import models.fileDetails.RecordErrorCode._
-import models.fileDetails.{FileErrors, FileValidationErrors, RecordError, RecordErrorCode}
 import play.api.i18n.{Messages, MessagesApi}
+import viewmodels.FileRejectedError
 import views.html.components.FileRejectedTable
 
 class FileRejectedTableSpec extends SpecBase {
@@ -29,42 +29,30 @@ class FileRejectedTableSpec extends SpecBase {
   val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   val messages: Messages       = messagesApi.preferred(Nil)
 
-  "render a file error with a html error message" in {
-    val fileError        = FileErrors(InvalidMessageRefIDFormat, None)
-    val validationErrors = FileValidationErrors(Some(List(fileError)), None)
+  "render a error without a doc ref id" in {
+    val errors = List(FileRejectedError(MessageRefIDHasAlreadyBeenUsed.code, Nil))
 
-    view.render(validationErrors, messages).toString() must {
-      include("<span>MessageRefId must be 100 characters or less and follow this structure in the order referenced:</span>") and
-        include("<li>the same value as the Timestamp in the format ‘YYYYMMDDThhmmss’ or ‘YYYYMMDDThhmmssnnn’</li>")
-    }
-  }
-
-  "render a file error with a standard error message" in {
-    val fileError        = FileErrors(MessageRefIDHasAlreadyBeenUsed, None)
-    val validationErrors = FileValidationErrors(Some(List(fileError)), None)
-
-    view.render(validationErrors, messages).toString() must {
+    view.render(errors, messages).toString() must {
       include(messages("fileRejected.50009.value"))
     }
   }
 
-  "render a record error with a doc ref id" in {
-    val docRefId         = "doc reference 12345"
-    val recordError      = RecordError(FileContainsTestDataForProductionEnvironment, None, Some(Seq(docRefId)))
-    val validationErrors = FileValidationErrors(None, Some(Seq(recordError)))
+  "render a error with a doc ref id" in {
+    val docRefId = "doc reference 12345"
+    val errors   = List(FileRejectedError(FileContainsTestDataForProductionEnvironment.code, Seq(docRefId)))
 
-    view.render(validationErrors, messages).toString() must {
+    view.render(errors, messages).toString() must {
       include(messages("fileRejected.50010.value")) and
         include(docRefId)
     }
   }
 
-  "render a record error without a doc ref id" in {
-    val recordError      = RecordError(DocRefIDAlreadyUsed, None, None)
-    val validationErrors = FileValidationErrors(None, Some(List(recordError)))
+  "render a error with a html error message" in {
+    val errors = List(FileRejectedError(InvalidMessageRefIDFormat.code, Nil))
 
-    view.render(validationErrors, messages).toString() must {
-      include(messages("fileRejected.80000.value"))
+    view.render(errors, messages).toString() must {
+      include("<span>MessageRefId must be 100 characters or less and follow this structure in the order referenced:</span>") and
+        include("<li>the same value as the Timestamp in the format ‘YYYYMMDDThhmmss’ or ‘YYYYMMDDThhmmssnnn’</li>")
     }
   }
 
