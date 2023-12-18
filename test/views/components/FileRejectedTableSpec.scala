@@ -49,11 +49,13 @@ class FileRejectedTableSpec extends SpecBase {
   }
 
   "render a record error with a doc ref id" in {
-    val recordError      = RecordError(FileContainsTestDataForProductionEnvironment, None, Some(Seq("ExampleDocRefError")))
+    val docRefId         = "doc reference 12345"
+    val recordError      = RecordError(FileContainsTestDataForProductionEnvironment, None, Some(Seq(docRefId)))
     val validationErrors = FileValidationErrors(None, Some(Seq(recordError)))
 
     view.render(validationErrors, messages).toString() must {
-      include(messages("fileRejected.50010.value"))
+      include(messages("fileRejected.50010.value")) and
+        include(docRefId)
     }
   }
 

@@ -32,26 +32,37 @@
     )),
     firstCellIsHeader = true,
     rows = {
-        val fileErrors = validationErrors.fileError.map(
-            _.map(error => error.code.code)
+        val fileErrors: Option[Seq[(String, Seq[String])]] = validationErrors.fileError.map(
+            _.map(error => (error.code.code, Nil))
         )
 
-        val recordErrors = validationErrors.recordError.map(
-            _.map(error => error.code.code)
+        val recordErrors: Option[Seq[(String, Seq[String])]] = validationErrors.recordError.map(
+            _.map(error => (error.code.code, error.docRefIDInError.getOrElse(Nil)))
         )
 
-        (fileErrors ++ recordErrors).flatten.map(
-          code =>
-            Seq(
-                TableRow(Text(code)),
-                TableRow(Text("")),
-                TableRow(HtmlContent(getError(code)))
-            )
-        ).toSeq
+        (fileErrors ++ recordErrors).flatten.map {
+            case (code: String, docRefIds: Seq[String]) =>
+                Seq(
+                    TableRow(Text(code)),
+                    TableRow(HtmlContent(getDocRefId(docRefIds))),
+                    TableRow(HtmlContent(getErrorDescription(code)))
+                )
+        }.toSeq
     }
 ))
 
-@getError(code: String) = {@{
+@getDocRefId(docRefIds: Seq[String]) = {@{
+    if (docRefIds.isEmpty) {
+        <div>N/A</div>
+    }
+    else {
+        {docRefIds.map(id => {
+            <div>{id}</div>
+        })}
+    }
+}}
+
+@getErrorDescription(code: String) = {@{
     code match {
         case InvalidMessageRefIDFormat.code =>
             <span>{messages("fileRejected.50008.value.intro")}</span>
