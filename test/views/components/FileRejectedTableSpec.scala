@@ -51,8 +51,8 @@ class FileRejectedTableSpec extends SpecBase {
     val errors = List(FileRejectedError(InvalidMessageRefIDFormat.code, Nil))
 
     view.render(errors, messages).toString() must {
-      include("<span>MessageRefId must be 100 characters or less and follow this structure in the order referenced:</span>") and
-        include("<li>the same value as the Timestamp in the format ‘YYYYMMDDThhmmss’ or ‘YYYYMMDDThhmmssnnn’</li>")
+      include(messages("fileRejected.50008.intro")) and
+        include(messages("fileRejected.50008.bullet1"))
     }
   }
 
