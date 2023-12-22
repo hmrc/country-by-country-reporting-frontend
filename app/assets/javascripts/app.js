@@ -14,4 +14,18 @@ document.addEventListener('DOMContentLoaded', function(event) {
       window.history.back();
     });
   }
+
+  // handle print click
+  var printLink = document.querySelector('.cbc-print-link');
+  if (printLink !== null) {
+    var html = printLink.innerHTML;
+    printLink.innerHTML = '<a class="govuk-link" href="#">' + html + '</a>';
+
+    printLink.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      window.print();
+    });
+  }
+
 });
