@@ -34,10 +34,11 @@
     )),
     rows = {
         validationErrors.map { error =>
+            val errCode = error.errorCode
             Seq(
-                TableRow(Text(error.errorCode)),
-                TableRow(HtmlContent(getDocRefId(error.docRefIds))),
-                TableRow(HtmlContent(getErrorDescription(error.errorCode)))
+                TableRow(Text(errCode), attributes = Map("id" -> s"code_$errCode")),
+                TableRow(HtmlContent(getDocRefId(error.docRefIds)), attributes = Map("id" -> s"docRefId_$errCode")),
+                TableRow(HtmlContent(getErrorDescription(error.errorCode)), attributes = Map("id" -> s"errorMessage_$errCode"))
             )
         }
     }
@@ -48,8 +49,8 @@
         <p class="govuk-body">N/A</p>
     }
     else {
-        {docRefIds.map(id => {
-            <p class="govuk-body">{id}</p>
+        {docRefIds.map(refId => {
+            <p class="govuk-body">{refId}</p>
         })}
     }
 }}
