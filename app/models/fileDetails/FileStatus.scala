@@ -27,7 +27,7 @@ case object Accepted extends FileStatus
 case object RejectedSDES extends FileStatus
 case object RejectedSDESVirus extends FileStatus
 
-case class Rejected(error: ValidationErrors) extends FileStatus {
+case class Rejected(error: FileValidationErrors) extends FileStatus {
   override def toString: String = "Rejected"
 }
 

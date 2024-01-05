@@ -63,3 +63,12 @@ body:not(.js-enabled) .js-enabled {
  .cbc-width-next {
    width: 22%;
  }
+
+.cbc-file-rejected-table p {
+  overflow-wrap: anywhere;
+  word-wrap: anywhere;
+}
+
+.cbc-file-rejected-table td > p:last-child {
+  margin-bottom: 0;
+}

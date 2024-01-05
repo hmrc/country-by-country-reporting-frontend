@@ -21,7 +21,7 @@ import connectors.FileDetailsConnector
 import controllers.actions._
 import models.fileDetails.FileErrorCode.{FailedSchemaValidation, MessageRefIDHasAlreadyBeenUsed}
 import models.fileDetails.RecordErrorCode.{DocRefIDFormat, MissingCorrDocRefId}
-import models.fileDetails.{Pending, Rejected, ValidationErrors, Accepted => FileStatusAccepted, _}
+import models.fileDetails.{Accepted => FileStatusAccepted, _}
 import models.{CBC401, ConversationId, MessageSpecData, UserAnswers, ValidatedFileData}
 import org.mockito.ArgumentMatchers.any
 import pages.{ConversationIdPage, ValidXMLPage}
@@ -113,7 +113,7 @@ class FilePendingChecksControllerSpec extends SpecBase {
     "must redirect to File Problem Page when REJECTED status returned with 'problem' errors" in {
 
       val validXmlDetails  = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
-      val validationErrors = ValidationErrors(Some(Seq(FileErrors(FailedSchemaValidation, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
+      val validationErrors = FileValidationErrors(Some(Seq(FileErrors(FailedSchemaValidation, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
 
       val userAnswers: UserAnswers = emptyUserAnswers
         .set(ConversationIdPage, conversationId)
@@ -145,7 +145,7 @@ class FilePendingChecksControllerSpec extends SpecBase {
 
       val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
       val validationErrors =
-        ValidationErrors(Some(Seq(FileErrors(MessageRefIDHasAlreadyBeenUsed, None))), Some(Seq(RecordError(MissingCorrDocRefId, None, None))))
+        FileValidationErrors(Some(Seq(FileErrors(MessageRefIDHasAlreadyBeenUsed, None))), Some(Seq(RecordError(MissingCorrDocRefId, None, None))))
 
       val userAnswers: UserAnswers = emptyUserAnswers
         .set(ConversationIdPage, conversationId)

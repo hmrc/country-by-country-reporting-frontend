@@ -20,7 +20,7 @@ import base.SpecBase
 import connectors.FileDetailsConnector
 import generators.ModelGenerators
 import models.ConversationId
-import models.fileDetails.{Accepted, FileDetails, Rejected, ValidationErrors}
+import models.fileDetails.{Accepted, FileDetails, FileValidationErrors, Rejected}
 import org.mockito.ArgumentMatchers.any
 import org.scalacheck.Arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
@@ -51,7 +51,7 @@ class FileRejectedControllerSpec extends SpecBase with ModelGenerators with Scal
         )
         .build()
 
-      val validationErrors = Arbitrary.arbitrary[ValidationErrors].sample.value
+      val validationErrors = Arbitrary.arbitrary[FileValidationErrors].sample.value
 
       when(mockFileDetailsConnector.getFileDetails(any())(any(), any()))
         .thenReturn(
@@ -78,9 +78,7 @@ class FileRejectedControllerSpec extends SpecBase with ModelGenerators with Scal
         val view = application.injector.instanceOf[FileRejectedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(fileName, FileRejectedViewModel.createTable(validationErrors)(messages(application)))(request,
-                                                                                                                                     messages(application)
-        ).toString
+        contentAsString(result) mustEqual view(fileName, FileRejectedViewModel(validationErrors))(request, messages(application)).toString
       }
     }
 

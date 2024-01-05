@@ -246,7 +246,7 @@ class SendYourFileControllerSpec extends SpecBase {
           .value
 
         when(mockFileDetailsConnector.getStatus(any[ConversationId]())(any[HeaderCarrier](), any[ExecutionContext]()))
-          .thenReturn(Future.successful(Some(Rejected(ValidationErrors(None, None)))))
+          .thenReturn(Future.successful(Some(Rejected(FileValidationErrors(None, None)))))
 
         val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
@@ -266,7 +266,7 @@ class SendYourFileControllerSpec extends SpecBase {
       "must return OK and load the page 'FileProblem' when the file status is 'Rejected' with 'problem' errors" in {
 
         val mockFileDetailsConnector = mock[FileDetailsConnector]
-        val validationErrors         = ValidationErrors(Some(Seq(FileErrors(FailedSchemaValidation, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
+        val validationErrors         = FileValidationErrors(Some(Seq(FileErrors(FailedSchemaValidation, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
 
         val userAnswers = UserAnswers("Id")
           .set(ConversationIdPage, conversationId)
