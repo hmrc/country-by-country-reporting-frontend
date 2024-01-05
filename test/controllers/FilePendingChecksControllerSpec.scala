@@ -60,7 +60,7 @@ class FilePendingChecksControllerSpec extends SpecBase {
         )
         .build()
 
-      val fileSummaryList = FileCheckViewModel.createFileSummary(validXmlDetails.fileName, "Pending")(messages(application))
+      val fileSummaryList = FileCheckViewModel.createFileSummary(validXmlDetails.messageSpecData.messageRefId, "Pending")(messages(application))
       val action          = routes.FilePendingChecksController.onPageLoad().url
 
       running(application) {
@@ -96,7 +96,7 @@ class FilePendingChecksControllerSpec extends SpecBase {
         )
         .build()
 
-      val fileSummaryList = FileCheckViewModel.createFileSummary(validXmlDetails.fileName, "Pending")(messages(application))
+      val fileSummaryList = FileCheckViewModel.createFileSummary(validXmlDetails.messageSpecData.messageRefId, "Pending")(messages(application))
       val action          = routes.FilePendingChecksController.onPageLoad().url
 
       running(application) {

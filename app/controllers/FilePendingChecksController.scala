@@ -59,7 +59,7 @@ class FilePendingChecksController @Inject() (
                 Future.successful(Redirect(routes.FileFailedChecksController.onPageLoad()))
               )
             case Some(Pending) =>
-              val summary = FileCheckViewModel.createFileSummary(xmlDetails.fileName, Pending.toString)
+              val summary = FileCheckViewModel.createFileSummary(xmlDetails.messageSpecData.messageRefId, Pending.toString)
               request.userAnswers.get(ConversationIdPage) match {
                 case Some(conversationId) =>
                   for {

@@ -27,31 +27,31 @@ class FileCheckViewModelSpec extends SpecBase {
     "must return the viewModel when fileStatus is pending" in {
 
       val expectedSummary = Seq(
-        SummaryListRow(Key(Text("File name")), Value(Text("name1.xml")), "", None),
+        SummaryListRow(Key(Text("File ID (MessageRefId)")), Value(Text("MessageRefId123")), "", None),
         SummaryListRow(Key(Text("Result of automatic checks")), Value(HtmlContent("<strong class='govuk-tag govuk-tag--yellow'>Pending</strong>")), "", None)
       )
 
-      FileCheckViewModel.createFileSummary("name1.xml", "Pending")(messages(app)) mustBe expectedSummary
+      FileCheckViewModel.createFileSummary("MessageRefId123", "Pending")(messages(app)) mustBe expectedSummary
     }
 
     "must return the viewModel when fileStatus is passed" in {
 
       val expectedSummary = Seq(
-        SummaryListRow(Key(Text("File name")), Value(Text("name1.xml")), "", None),
+        SummaryListRow(Key(Text("File ID (MessageRefId)")), Value(Text("MessageRefId123")), "", None),
         SummaryListRow(Key(Text("Result of automatic checks")), Value(HtmlContent("<strong class='govuk-tag govuk-tag--green'>PASSED</strong>")), "", None)
       )
 
-      FileCheckViewModel.createFileSummary("name1.xml", "Accepted")(messages(app)) mustBe expectedSummary
+      FileCheckViewModel.createFileSummary("MessageRefId123", "Accepted")(messages(app)) mustBe expectedSummary
     }
 
     "must return the viewModel when fileStatus is rejected" in {
 
       val expectedSummary = Seq(
-        SummaryListRow(Key(Text("File name")), Value(Text("name1.xml")), "", None),
+        SummaryListRow(Key(Text("File ID (MessageRefId)")), Value(Text("MessageRefId123")), "", None),
         SummaryListRow(Key(Text("Result of automatic checks")), Value(HtmlContent("<strong class='govuk-tag govuk-tag--red'>Failed</strong>")), "", None)
       )
 
-      FileCheckViewModel.createFileSummary("name1.xml", "Rejected")(messages(app)) mustBe expectedSummary
+      FileCheckViewModel.createFileSummary("MessageRefId123", "Rejected")(messages(app)) mustBe expectedSummary
     }
   }
 }

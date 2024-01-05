@@ -48,7 +48,7 @@ class FileFailedChecksControllerSpec extends SpecBase {
 
       running(application) {
 
-        val fileSummaryList = FileCheckViewModel.createFileSummary(validXmlDetails.fileName, "Rejected")(messages(application))
+        val fileSummaryList = FileCheckViewModel.createFileSummary(validXmlDetails.messageSpecData.messageRefId, "Rejected")(messages(application))
         val action          = routes.FileRejectedController.onPageLoad(conversationId).url
         val request         = FakeRequest(GET, routes.FileFailedChecksController.onPageLoad().url)
         val result          = route(application, request).value
@@ -82,7 +82,7 @@ class FileFailedChecksControllerSpec extends SpecBase {
 
       running(application) {
 
-        val fileSummaryList = FileCheckViewModel.createFileSummary(validXmlDetails.fileName, "Rejected")(messages(application))
+        val fileSummaryList = FileCheckViewModel.createFileSummary(validXmlDetails.messageSpecData.messageRefId, "Rejected")(messages(application))
         val action          = routes.FileRejectedController.onPageLoad(conversationId).url
         val request         = FakeRequest(GET, routes.FileFailedChecksController.onPageLoad().url)
         val result          = route(application, request).value
