@@ -28,6 +28,8 @@ object RecordErrorCode {
   case object CorrDocRefIdNoLongerValid extends RecordErrorCode("80003")
   case object CorrDocRefIdForNewData extends RecordErrorCode("80004")
   case object MissingCorrDocRefId extends RecordErrorCode("80005")
+  case object DocSpecCorrelationMessageRefIdForbidden extends RecordErrorCode("80006")
+  case object MessageSpecCorrelationMessageRefIdForbidden extends RecordErrorCode("80007")
   case object ResendOption extends RecordErrorCode("80008")
   case object DeleteParentRecord extends RecordErrorCode("80009")
   case object MessageTypeIndic extends RecordErrorCode("80010")
@@ -51,7 +53,26 @@ object RecordErrorCode {
     CorrDocRefIDTwiceInSameMessage,
     UnknownDocRefID,
     DocRefIDIsNoLongerValid,
+    DocSpecCorrelationMessageRefIdForbidden,
+    MessageSpecCorrelationMessageRefIdForbidden,
     CustomError
+  )
+
+  val expectedRecordErrorCodes: Seq[RecordErrorCode] = Seq(
+    DocRefIDAlreadyUsed,
+    DocRefIDFormat,
+    CorrDocRefIdUnknown,
+    CorrDocRefIdNoLongerValid,
+    CorrDocRefIdForNewData,
+    MissingCorrDocRefId,
+    DocSpecCorrelationMessageRefIdForbidden,
+    MessageSpecCorrelationMessageRefIdForbidden,
+    ResendOption,
+    DeleteParentRecord,
+    MessageTypeIndic,
+    CorrDocRefIDTwiceInSameMessage,
+    UnknownDocRefID,
+    DocRefIDIsNoLongerValid
   )
 
   implicit val writes: Writes[RecordErrorCode] = Writes[RecordErrorCode] {
@@ -67,6 +88,8 @@ object RecordErrorCode {
     case "80003"   => CorrDocRefIdNoLongerValid
     case "80004"   => CorrDocRefIdForNewData
     case "80005"   => MissingCorrDocRefId
+    case "80006"   => DocSpecCorrelationMessageRefIdForbidden
+    case "80007"   => MessageSpecCorrelationMessageRefIdForbidden
     case "80008"   => ResendOption
     case "80009"   => DeleteParentRecord
     case "80010"   => MessageTypeIndic

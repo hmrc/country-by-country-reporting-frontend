@@ -33,12 +33,19 @@ object FileErrorCode {
     FailedSchemaValidation,
     InvalidMessageRefIDFormat,
     MessageRefIDHasAlreadyBeenUsed,
-    NotMeantToBeReceivedByTheIndicatedJurisdiction
+    NotMeantToBeReceivedByTheIndicatedJurisdiction,
+    CustomError
+  )
+
+  val expectedValues: Seq[FileErrorCode] = Seq(
+    InvalidMessageRefIDFormat,
+    MessageRefIDHasAlreadyBeenUsed
   )
 
   val fileErrorCodesForProblemStatus: Seq[FileErrorCode] = Seq(
     FailedSchemaValidation,
-    NotMeantToBeReceivedByTheIndicatedJurisdiction
+    NotMeantToBeReceivedByTheIndicatedJurisdiction,
+    CustomError
   )
 
   implicit val writes: Writes[FileErrorCode] = Writes[FileErrorCode] {

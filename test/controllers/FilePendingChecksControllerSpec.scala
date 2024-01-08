@@ -24,6 +24,7 @@ import models.fileDetails.RecordErrorCode.{DocRefIDFormat, MissingCorrDocRefId}
 import models.fileDetails.{Accepted => FileStatusAccepted, _}
 import models.{CBC401, ConversationId, MessageSpecData, UserAnswers, ValidatedFileData}
 import org.mockito.ArgumentMatchers.any
+import org.scalatest.prop.TableDrivenPropertyChecks
 import pages.{ConversationIdPage, ValidXMLPage}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -34,7 +35,7 @@ import views.html.FilePendingChecksView
 
 import scala.concurrent.Future
 
-class FilePendingChecksControllerSpec extends SpecBase {
+class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyChecks {
 
   "FilePendingChecks Controller" - {
 
@@ -110,35 +111,40 @@ class FilePendingChecksControllerSpec extends SpecBase {
       }
     }
 
-    "must redirect to File Problem Page when REJECTED status returned with 'problem' errors" in {
+    val problemFileErrorCodes = Table("fileErrorCode", Seq(FailedSchemaValidation, FileErrorCode.CustomError): _*)
 
-      val validXmlDetails  = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
-      val validationErrors = FileValidationErrors(Some(Seq(FileErrors(FailedSchemaValidation, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
+    forAll(problemFileErrorCodes) {
+      fileErrorCode =>
+        s"must redirect to File Problem Page when REJECTED status returned with $fileErrorCode errors" in {
 
-      val userAnswers: UserAnswers = emptyUserAnswers
-        .set(ConversationIdPage, conversationId)
-        .success
-        .value
-        .set(ValidXMLPage, validXmlDetails)
-        .success
-        .value
+          val validXmlDetails  = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
+          val validationErrors = FileValidationErrors(Some(Seq(FileErrors(fileErrorCode, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
 
-      when(mockFileDetailsConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(Some(Rejected(validationErrors))))
+          val userAnswers: UserAnswers = emptyUserAnswers
+            .set(ConversationIdPage, conversationId)
+            .success
+            .value
+            .set(ValidXMLPage, validXmlDetails)
+            .success
+            .value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers))
-        .overrides(
-          bind[FileDetailsConnector].toInstance(mockFileDetailsConnector)
-        )
-        .build()
+          when(mockFileDetailsConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(Some(Rejected(validationErrors))))
 
-      running(application) {
+          val application = applicationBuilder(userAnswers = Some(userAnswers))
+            .overrides(
+              bind[FileDetailsConnector].toInstance(mockFileDetailsConnector)
+            )
+            .build()
 
-        val request = FakeRequest(GET, routes.FilePendingChecksController.onPageLoad().url)
-        val result  = route(application, request).value
+          running(application) {
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.FileProblemController.onPageLoad().url
-      }
+            val request = FakeRequest(GET, routes.FilePendingChecksController.onPageLoad().url)
+            val result  = route(application, request).value
+
+            status(result) mustEqual SEE_OTHER
+            redirectLocation(result).value mustEqual routes.FileProblemController.onPageLoad().url
+          }
+        }
     }
 
     "must redirect to File Problem Page when REJECTED status returned with regular errors" in {
