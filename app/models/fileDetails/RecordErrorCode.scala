@@ -58,7 +58,7 @@ object RecordErrorCode {
     CustomError
   )
 
-  val expectedRecordErrorCodes: Seq[RecordErrorCode] = Seq(
+  val expectedValues: Seq[RecordErrorCode] = Seq(
     DocRefIDAlreadyUsed,
     DocRefIDFormat,
     CorrDocRefIdUnknown,

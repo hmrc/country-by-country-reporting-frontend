@@ -22,7 +22,7 @@ import models.fileDetails._
 
 object FileProblemHelper {
 
-  private val expectedErrorCodes: Seq[String]       = FileErrorCode.expectedValues.map(_.code) ++ RecordErrorCode.expectedRecordErrorCodes.map(_.code)
+  private val expectedErrorCodes: Seq[String]       = FileErrorCode.expectedValues.map(_.code) ++ RecordErrorCode.expectedValues.map(_.code)
   private val problemsStatusErrorCodes: Seq[String] = fileErrorCodesForProblemStatus.map(_.code) :+ DocRefIDFormat.code
 
   def isProblemStatus(errors: FileValidationErrors): Boolean = {
