@@ -333,6 +333,7 @@ xml.not.allowed.value = {0} is not one of the allowed values
 xml.not.allowed.length = Too long. {0} must be {1} characters or less
 xml.not.allowed.length.repeatable = Each {0} element must be {1} characters or less
 xml.SendingEntityIN.length = SendingEntityIN must be the CBC ID of the reporting entity
+xml.TIN.length = Too long. TIN of the reporting entity must be 30 characters or less. Other entity TIN values must be 200 characters or less.
 xml.must.be.whole.number = {0} must be a whole number
 xml.dateTime.empty = No value between tags. Add a value for {0} in the format YYYY-MM-DDThh:mm:ss or YYYY-MM-DDThh:mm:ss.nnn
 xml.dateTime.format = {0} must be in the format YYYY-MM-DDThh:mm:ss or YYYY-MM-DDThh:mm:ss.nnn
