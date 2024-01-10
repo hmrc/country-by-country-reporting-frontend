@@ -56,4 +56,13 @@ class FileRejectedTableSpec extends SpecBase {
     }
   }
 
+  "render a error with a html error message 2" in {
+    val errors = List(FileRejectedError(MessageTypeIndic.code, Nil))
+
+    view.render(errors, messages).toString() must {
+      include(messages("fileRejected.80001.intro")) and
+        include(messages("fileRejected.80001.bullet1"))
+    }
+  }
+
 }

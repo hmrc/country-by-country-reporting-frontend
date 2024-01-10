@@ -17,6 +17,7 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 
 @import models.fileDetails.FileErrorCode.InvalidMessageRefIDFormat
+@import models.fileDetails.RecordErrorCode.{DocRefIDFormat, MessageTypeIndic}
 @import viewmodels.FileRejectedError
 
 @this(govukTable: GovukTable)
@@ -69,6 +70,24 @@
                 <li>{messages("fileRejected.50008.bullet7")}</li>
             </ol>
             <p class="govuk-body">{messages("fileRejected.50008.example")}</p>
+        case MessageTypeIndic.code =>
+            <p class="govuk-body">{messages("fileRejected.80001.intro")}</p>
+            <ol class="govuk-list govuk-list--bullet">
+                <li>{messages("fileRejected.80001.bullet1")}</li>
+                <li>{messages("fileRejected.80001.bullet2")}</li>
+                <li>{messages("fileRejected.80001.bullet3")}</li>
+                <li>{messages("fileRejected.80001.bullet4")}</li>
+                <li>{messages("fileRejected.80001.bullet5")}</li>
+            </ol>
+        case InvalidMessageRefIDFormat.code =>
+            <p class="govuk-body">{messages("fileRejected.80010.intro")}</p>
+            <p class="govuk-body">{messages("fileRejected.80010.bulletIntro")}</p>
+            <ol class="govuk-list govuk-list--bullet">
+                <li>{messages("fileRejected.80010.bullet1")}</li>
+                <li>{messages("fileRejected.80010.bullet2")}</li>
+                <li>{messages("fileRejected.80010.bullet3")}</li>
+            </ol>
+            <p class="govuk-body">{messages("fileRejected.50008.explanation")}</p>
         case _ =>
             <p class="govuk-body">{messages(s"fileRejected.$code.value")}</p>
     }

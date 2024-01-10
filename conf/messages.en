@@ -384,12 +384,32 @@ fileRejected.50008.example = For example, ‘GB2022GBXACBC0000999999CBC401202305
 fileRejected.50009.value = MessageRefId must not be the same as one used for a previously sent file. We only keep a record of the MessageRefId for successfully sent files.
 fileRejected.50010.value = DocTypeIndic contains a value that indicates the file contains test data, like OECD10, OECD11, OECD12 or OECD13. Replace the test data value with a value for real data, such as OECD0, OECD1, OECD2 or OECD3.
 fileRejected.80000.value = DocRefId has already been used in this file or a file that was previously sent. We only keep a record of these IDs for successfully sent files.
-# ... /END
+fileRejected.80001.intro = DocRefId must be 164 characters or less and follow this structure in the order referenced:
+fileRejected.80001.bullet1 = the same value as the MessageRefId, up to 100 characters
+fileRejected.80001.bullet2 = an underscore (_)
+fileRejected.80001.bullet3 = the same value as the ReportingEntity TIN, up to 30 characters
+fileRejected.80001.bullet4 = the same value as this section's DocTypeIndic
+fileRejected.80001.bullet5 = 3 letters indicating this section type, which should be ENT for ReportingEntity, REP for CbcReports or ADD for AdditionalInfo
+fileRejected.80001.bullet5 = up to 25 characters of your choice to make the ID unique
+fileRejected.80002.value = The CorrDocRefId provided does not match any DocRefId in our records.
+fileRejected.80003.value = The CorrDocRefId provided is for information that has already been corrected or deleted.
+fileRejected.80004.value = CorrDocRefId must not be included in a DocSpec where the DocTypeIndic is OECD1 for new information.
+fileRejected.80005.value = DocTypeIndic is OECD2 or OECD3 for a correction or deletion so you must provide a CorrDocRefId.
+fileRejected.80006.value = DocSpec must not contain a CorrMessageRefId.
+fileRejected.80007.value = MessageSpec must not contain a CorrMessageRefId.
+fileRejected.80008.value = DocTypeIndic of OECD0 for resent information has been used in the CbcReports or AdditionalInfo section. OECD0 can only be used in the ReportingEntity section.
+fileRejected.80009.value = ReportingEntity has a DocTypeIndic of OECD3 for deletion. You can only delete the ReportingEntity if you also delete all of the CbcReports and AdditionalInfo sections for this reporting period.
+fileRejected.80010.intro = If the MessageTypeIndic is CBC401, every DocTypeIndic must be OECD1.
+fileRejected.80010.bulletIntro = If the MessageTypeIndic is CBC402, the DocTypeIndic values must be either:
+fileRejected.80010.bullet1 = OECD0 for the ReportingEntity and OECD1 for all of the other sections
+fileRejected.80010.bullet2 = OECD0 or OECD2 for the ReportingEntity and then OECD2, OECD3 or a mixture of both for the other sections
+fileRejected.80010.bullet3 = OECD3 for the ReportingEntity and OECD3 for all of the other sections
+fileRejected.80010.explanation = OECD0 is for resending, OECD1 is for new information, OECD2 is for corrections and OECD3 is for deletions.
+fileRejected.80011.value = The same CorrDocRefId cannot be used more than once in each file.
+fileRejected.80013.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but we do not have a record of the DocRefId provided.
+fileRejected.80014.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
 
-fileRejected.50007.key = 507
-fileRejected.50007.value = boom
-fileRejected.80001.key = 801
-fileRejected.80001.value = shake the room
+# ... /END
 fileRejected.80002.key = 802
 fileRejected.80002.value = The CorrDocRefId does not match any DocRefId previously received
 fileRejected.80003.key = 803
