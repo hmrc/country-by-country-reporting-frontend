@@ -21,13 +21,14 @@ import play.api.libs.json.{__, JsString, Reads, Writes}
 sealed abstract class RecordErrorCode(val code: String)
 
 object RecordErrorCode {
-  case object FileContainsTestDataForProductionEnvironment extends RecordErrorCode("50010")
   case object DocRefIDAlreadyUsed extends RecordErrorCode("80000")
   case object DocRefIDFormat extends RecordErrorCode("80001")
   case object CorrDocRefIdUnknown extends RecordErrorCode("80002")
   case object CorrDocRefIdNoLongerValid extends RecordErrorCode("80003")
   case object CorrDocRefIdForNewData extends RecordErrorCode("80004")
   case object MissingCorrDocRefId extends RecordErrorCode("80005")
+  case object DocSpecCorrelationMessageRefIdForbidden extends RecordErrorCode("80006")
+  case object MessageSpecCorrelationMessageRefIdForbidden extends RecordErrorCode("80007")
   case object ResendOption extends RecordErrorCode("80008")
   case object DeleteParentRecord extends RecordErrorCode("80009")
   case object MessageTypeIndic extends RecordErrorCode("80010")
@@ -38,7 +39,6 @@ object RecordErrorCode {
   case class UnknownRecordErrorCode(override val code: String) extends RecordErrorCode(code)
 
   val values: Seq[RecordErrorCode] = Seq(
-    FileContainsTestDataForProductionEnvironment,
     DocRefIDAlreadyUsed,
     DocRefIDFormat,
     CorrDocRefIdUnknown,
@@ -51,7 +51,26 @@ object RecordErrorCode {
     CorrDocRefIDTwiceInSameMessage,
     UnknownDocRefID,
     DocRefIDIsNoLongerValid,
+    DocSpecCorrelationMessageRefIdForbidden,
+    MessageSpecCorrelationMessageRefIdForbidden,
     CustomError
+  )
+
+  val expectedValues: Seq[RecordErrorCode] = Seq(
+    DocRefIDAlreadyUsed,
+    DocRefIDFormat,
+    CorrDocRefIdUnknown,
+    CorrDocRefIdNoLongerValid,
+    CorrDocRefIdForNewData,
+    MissingCorrDocRefId,
+    DocSpecCorrelationMessageRefIdForbidden,
+    MessageSpecCorrelationMessageRefIdForbidden,
+    ResendOption,
+    DeleteParentRecord,
+    MessageTypeIndic,
+    CorrDocRefIDTwiceInSameMessage,
+    UnknownDocRefID,
+    DocRefIDIsNoLongerValid
   )
 
   implicit val writes: Writes[RecordErrorCode] = Writes[RecordErrorCode] {
@@ -60,13 +79,14 @@ object RecordErrorCode {
   }
 
   implicit val reads: Reads[RecordErrorCode] = __.read[String].map {
-    case "50010"   => FileContainsTestDataForProductionEnvironment
     case "80000"   => DocRefIDAlreadyUsed
     case "80001"   => DocRefIDFormat
     case "80002"   => CorrDocRefIdUnknown
     case "80003"   => CorrDocRefIdNoLongerValid
     case "80004"   => CorrDocRefIdForNewData
     case "80005"   => MissingCorrDocRefId
+    case "80006"   => DocSpecCorrelationMessageRefIdForbidden
+    case "80007"   => MessageSpecCorrelationMessageRefIdForbidden
     case "80008"   => ResendOption
     case "80009"   => DeleteParentRecord
     case "80010"   => MessageTypeIndic
