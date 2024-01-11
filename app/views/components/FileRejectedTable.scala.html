@@ -17,7 +17,7 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 
 @import models.fileDetails.FileErrorCode.InvalidMessageRefIDFormat
-@import models.fileDetails.RecordErrorCode.{DocRefIDFormat, MessageTypeIndic}
+@import models.fileDetails.RecordErrorCode.{DocRefIDFormat, MessageTypeIndic, ChangeReportingPeriod, CurrencyCodeInitial, CurrencyCodeCorrection}
 @import viewmodels.FileRejectedError
 
 @this(govukTable: GovukTable)
@@ -57,7 +57,8 @@
 }}
 
 @getErrorDescription(code: String) = {@{
-    code match {
+val code2 = code.replaceAll("CBC Error Code ", "")
+    code2 match {
         case InvalidMessageRefIDFormat.code =>
             <p class="govuk-body">{messages("fileRejected.50008.intro")}</p>
             <ol class="govuk-list govuk-list--bullet">
@@ -88,7 +89,28 @@
                 <li>{messages("fileRejected.80010.bullet3")}</li>
             </ol>
             <p class="govuk-body">{messages("fileRejected.50008.explanation")}</p>
+        case ChangeReportingPeriod.code =>
+            <p class="govuk-body">{messages("fileRejected.12.p1")}</p>
+            <p class="govuk-body">{messages("fileRejected.12.p2")}</p>
+            <p class="govuk-body">{messages("fileRejected.12.p3")}</p>
+        case CurrencyCodeInitial.code =>
+            <p class="govuk-body">{messages("fileRejected.24.intro")}</p>
+            <ol class="govuk-list govuk-list--bullet">
+                <li>{messages("fileRejected.24.bullet1")}</li>
+                <li>{messages("fileRejected.24.bullet2")}</li>
+                <li>{messages("fileRejected.24.bullet3")}</li>
+                <li>{messages("fileRejected.24.bullet4")}</li>
+            </ol>
+        case CurrencyCodeCorrection.code =>
+            <p class="govuk-body">{messages("fileRejected.24.intro")}</p>
+            <ol class="govuk-list govuk-list--bullet">
+                <li>{messages("fileRejected.24.bullet1")}</li>
+                <li>{messages("fileRejected.24.bullet2")}</li>
+                <li>{messages("fileRejected.24.bullet3")}</li>
+                <li>{messages("fileRejected.24.bullet4")}</li>
+            </ol>
+            <p class="govuk-body">{messages("fileRejected.24b.value")}</p>
         case _ =>
-            <p class="govuk-body">{messages(s"fileRejected.$code.value")}</p>
+            <p class="govuk-body">{messages(s"fileRejected.$code2.value")}</p>
     }
 }}

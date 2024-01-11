@@ -34,6 +34,12 @@ object RecordErrorCode {
   case object CorrDocRefIDTwiceInSameMessage extends RecordErrorCode("80011")
   case object UnknownDocRefID extends RecordErrorCode("80013")
   case object DocRefIDIsNoLongerValid extends RecordErrorCode("80014")
+
+  case object ChangeReportingPeriod extends RecordErrorCode("12")
+
+  case object CurrencyCodeInitial extends RecordErrorCode("24")
+
+  case object CurrencyCodeCorrection extends RecordErrorCode("24b")
   case object CustomError extends RecordErrorCode("99999")
   case class UnknownRecordErrorCode(override val code: String) extends RecordErrorCode(code)
 
@@ -51,6 +57,9 @@ object RecordErrorCode {
     CorrDocRefIDTwiceInSameMessage,
     UnknownDocRefID,
     DocRefIDIsNoLongerValid,
+    ChangeReportingPeriod,
+    CurrencyCodeInitial,
+    CurrencyCodeCorrection,
     CustomError
   )
 
@@ -73,6 +82,9 @@ object RecordErrorCode {
     case "80011"   => CorrDocRefIDTwiceInSameMessage
     case "80013"   => UnknownDocRefID
     case "80014"   => DocRefIDIsNoLongerValid
+    case "12"      => ChangeReportingPeriod
+    case "24"      => CurrencyCodeInitial
+    case "24b"     => CurrencyCodeCorrection
     case "99999"   => CustomError
     case otherCode => UnknownRecordErrorCode(otherCode)
   }

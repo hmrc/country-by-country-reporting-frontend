@@ -56,12 +56,47 @@ class FileRejectedTableSpec extends SpecBase {
     }
   }
 
-  "render a error with a html error message 2" in {
+  "render a bulleted list error for error code 80001" in {
     val errors = List(FileRejectedError(MessageTypeIndic.code, Nil))
 
     view.render(errors, messages).toString() must {
       include(messages("fileRejected.80001.intro")) and
         include(messages("fileRejected.80001.bullet1"))
+    }
+  }
+
+  "render a list of paragraphs error for error code 12" in {
+    val errors = List(FileRejectedError(ChangeReportingPeriod.code, Nil))
+
+    view.render(errors, messages).toString() must {
+      include(messages("fileRejected.12.p1")) and
+        include(messages("fileRejected.12.p2"))
+    }
+  }
+
+  "render a bulleted list error for error code 24" in {
+    val errors = List(FileRejectedError(CurrencyCodeInitial.code, Nil))
+
+    view.render(errors, messages).toString() must {
+      include(messages("fileRejected.24.intro")) and
+        include(messages("fileRejected.24.bullet1"))
+    }
+  }
+
+  "render a bulleted list error for 24b error code" in {
+    val errors = List(FileRejectedError(CurrencyCodeCorrection.code, Nil))
+
+    view.render(errors, messages).toString() must {
+      include(messages("fileRejected.24.intro")) and
+        include(messages("fileRejected.24b.value"))
+    }
+  }
+
+  "Strip 'CBC Error Code ' from error and find specific error code for CBC Error Code 33" in {
+    val errors = List(FileRejectedError("CBC Error Code 33", Nil))
+
+    view.render(errors, messages).toString() must {
+      include(messages("fileRejected.33.value"))
     }
   }
 
