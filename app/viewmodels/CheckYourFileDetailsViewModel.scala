@@ -29,11 +29,6 @@ object CheckYourFileDetailsViewModel {
   def getSummaryRows(vfd: ValidatedFileData)(implicit messages: Messages): Seq[SummaryListRow] =
     Seq(
       SummaryListRowViewModel(
-        key = "checkYourFileDetails.uploadedFile",
-        value = ValueViewModel(HtmlFormat.escape(s"${vfd.fileName}").toString),
-        actions = Seq()
-      ),
-      SummaryListRowViewModel(
         key = "checkYourFileDetails.messageRefId",
         value = ValueViewModel(HtmlFormat.escape(s"${vfd.messageSpecData.messageRefId}").toString),
         actions = Seq()
