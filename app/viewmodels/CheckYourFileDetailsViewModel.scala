@@ -17,7 +17,7 @@
 package viewmodels
 
 import controllers.routes
-import models.{CBC401, CBC402, MessageTypeIndic, ValidatedFileData}
+import models.{ReportType, TestData, ValidatedFileData}
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
@@ -34,8 +34,8 @@ object CheckYourFileDetailsViewModel {
         actions = Seq()
       ),
       SummaryListRowViewModel(
-        key = "checkYourFileDetails.messageTypeIndic",
-        value = ValueViewModel(HtmlFormat.escape(s"${displayTypeIndictator(vfd.messageSpecData.messageTypeIndic)}").toString),
+        key = "checkYourFileDetails.reportType",
+        value = ValueViewModel(HtmlFormat.escape(s"${displayTypeIndictator(vfd.messageSpecData.reportType.getOrElse(TestData))}").toString),//TODO: make reportype mandatory - will be in messageSpecData anyway
         actions = Seq(
           ActionItemViewModel(
             content = Text(messages("checkYourFileDetails.uploadedFile.change")),
@@ -59,10 +59,9 @@ object CheckYourFileDetailsViewModel {
     )
   )
 
-  private def displayTypeIndictator(typeIndic: MessageTypeIndic)(implicit messages: Messages) =
-    typeIndic match {
-      case CBC401 => messages("checkYourFileDetails.messageTypeIndic.CBC401")
-      case CBC402 => messages("checkYourFileDetails.messageTypeIndic.CBC402")
+  private def displayTypeIndictator(reportType: ReportType)(implicit messages: Messages) =
+    reportType match {
+      case _ => reportType.toString//todo: add the messages for each reportType
     }
 
 }
