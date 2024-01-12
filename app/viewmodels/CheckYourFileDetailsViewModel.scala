@@ -38,7 +38,7 @@ object CheckYourFileDetailsViewModel {
         key = "checkYourFileDetails.reportType",
         value = ValueViewModel(
           HtmlFormat.escape(s"${getReportTypeContent(specData.reportType)}").toString
-        ), //TODO: make reportype mandatory - will be in messageSpecData anyway
+        ),
         actions = Seq(
           ActionItemViewModel(
             content = Text(messages("checkYourFileDetails.uploadedFile.change")),
