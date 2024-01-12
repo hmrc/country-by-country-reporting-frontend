@@ -36,7 +36,7 @@ object MessageTypeIndic {
   }
 }
 
-case class MessageSpecData(messageRefId: String, messageTypeIndic: MessageTypeIndic, reportingEntityName: String, reportType: Option[ReportType] = None)
+case class MessageSpecData(messageRefId: String, messageTypeIndic: MessageTypeIndic, reportingEntityName: String, reportType: ReportType)
 
 object MessageSpecData {
   implicit val format: OFormat[MessageSpecData] = Json.format[MessageSpecData]

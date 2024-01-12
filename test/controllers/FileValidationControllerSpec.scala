@@ -20,7 +20,7 @@ import base.SpecBase
 import connectors.{UpscanConnector, ValidationConnector}
 import helpers.FakeUpscanConnector
 import models.upscan.{Reference, UploadId, UploadSessionDetails, UploadedSuccessfully}
-import models.{CBC401, GenericError, InvalidXmlError, Message, MessageSpecData, UserAnswers, ValidatedFileData, ValidationErrors}
+import models.{CBC401, GenericError, InvalidXmlError, Message, MessageSpecData, TestData, UserAnswers, ValidatedFileData, ValidationErrors}
 import org.bson.types.ObjectId
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
@@ -69,7 +69,7 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
     "must redirect to Check your answers and present the correct view for a GET" in {
 
       val userAnswersCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
-      val messageSpecData                                = MessageSpecData("XBG1999999", CBC401, "Reporting Entity")
+      val messageSpecData                                = MessageSpecData("XBG1999999", CBC401, "Reporting Entity", TestData)
       val expectedData: JsObject                         = Json.obj("uploadID" -> UploadId("123"), "validXML" -> ValidatedFileData("afile", messageSpecData), "url" -> downloadURL)
 
       when(mockValidationConnector.sendForValidation(any())(any(), any())).thenReturn(Future.successful(Right(messageSpecData)))

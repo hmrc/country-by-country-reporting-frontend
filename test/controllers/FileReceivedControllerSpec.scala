@@ -26,7 +26,7 @@ import controllers.actions.{
   FakeIdentifierActionAgent,
   IdentifierAction
 }
-import models.{CBC401, ConversationId, MessageSpecData, ValidatedFileData}
+import models.{CBC401, ConversationId, MessageSpecData, TestData, ValidatedFileData}
 import models.fileDetails.{Accepted, FileDetails}
 import org.mockito.ArgumentMatchers.any
 import pages.{AgentFirstContactEmailPage, AgentSecondContactEmailPage, ContactEmailPage, SecondContactEmailPage, ValidXMLPage}
@@ -53,7 +53,7 @@ class FileReceivedControllerSpec extends SpecBase {
       val conversationId         = ConversationId("conversationId")
       val firstContactEmail      = "first@email.com"
       val secondContactEmail     = "second@email.com"
-      val vfd: ValidatedFileData = ValidatedFileData("filename.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
+      val vfd: ValidatedFileData = ValidatedFileData("filename.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData))
 
       val userAnswers = emptyUserAnswers
         .set(ContactEmailPage, firstContactEmail)
