@@ -64,6 +64,6 @@ object CheckYourFileDetailsViewModel {
   )
 
   private def getReportTypeContent(reportType: ReportType)(implicit messages: Messages) =
-    messages(s"fileDetails.reportType.${reportType.toString}") //todo TEST cases
+    messages(s"reportType.${reportType.toString}")
 
 }

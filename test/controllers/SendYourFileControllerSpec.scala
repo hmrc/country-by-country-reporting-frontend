@@ -38,7 +38,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class SendYourFileControllerSpec extends SpecBase {
 
   private val conversationId: ConversationId = ConversationId("conversationId")
-  val messages = mock[MessagesApi]
+  val messages                               = mock[MessagesApi]
 
   def validatedFileData(reportType: ReportType) = ValidatedFileData("fileName", MessageSpecData("messageRef", CBC401, "Reporting Entity", reportType))
 
@@ -56,7 +56,7 @@ class SendYourFileControllerSpec extends SpecBase {
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.SendYourFileController.onPageLoad().url)
+          val request   = FakeRequest(GET, routes.SendYourFileController.onPageLoad().url)
           val appConfig = application.injector.instanceOf[FrontendAppConfig]
 
           val result = route(application, request).value
@@ -73,7 +73,7 @@ class SendYourFileControllerSpec extends SpecBase {
       "redirect to file received page" in {
 
         val mockSubmissionConnector = mock[SubmissionConnector]
-        val mockXmlHandler = mock[XmlHandler]
+        val mockXmlHandler          = mock[XmlHandler]
 
         val userAnswers = UserAnswers("Id")
           .set(ValidXMLPage, validatedFileData(TestData))
@@ -128,7 +128,7 @@ class SendYourFileControllerSpec extends SpecBase {
 
       "redirect to there is a problem page on failing to submitDocument" in {
         val mockSubmissionConnector = mock[SubmissionConnector]
-        val mockXmlHandler = mock[XmlHandler]
+        val mockXmlHandler          = mock[XmlHandler]
 
         val userAnswers = UserAnswers("Id")
           .set(ValidXMLPage, validatedFileData(TestData))
@@ -248,7 +248,7 @@ class SendYourFileControllerSpec extends SpecBase {
       "must return OK and load the page 'FileProblem' when the file status is 'Rejected' with 'problem' errors" in {
 
         val mockFileDetailsConnector = mock[FileDetailsConnector]
-        val validationErrors = FileValidationErrors(Some(Seq(FileErrors(FailedSchemaValidation, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
+        val validationErrors         = FileValidationErrors(Some(Seq(FileErrors(FailedSchemaValidation, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
 
         val userAnswers = UserAnswers("Id")
           .set(ConversationIdPage, conversationId)
@@ -318,4 +318,3 @@ class SendYourFileControllerSpec extends SpecBase {
     }
   }
 }
-

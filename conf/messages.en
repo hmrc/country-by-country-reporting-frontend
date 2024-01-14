@@ -191,14 +191,14 @@ checkYourFileDetails.messageTypeIndic.CBC401 = New information
 checkYourFileDetails.messageTypeIndic.CBC402 = Correction or deletion
 checkYourFileDetails.reportingEntityName = Client (ReportingEntity Name)
 
-fileDetails.reportType.TestData = Test data
-fileDetails.reportType.NewInformation = New information for the reporting period
-fileDetails.reportType.DeletionOfAllInformation = Deletion of all previously reported information for this reporting period
-fileDetails.reportType.NewInformationForExistingReport = New information for an existing report
-fileDetails.reportType.CorrectionForExistingReport = Corrections for an existing report
-fileDetails.reportType.DeletionForExistingReport = Deletions for an existing report
-fileDetails.reportType.CorrectionAndDeletionForExistingReport = Corrections and deletions for an existing report
-fileDetails.reportType.CorrectionForReportingEntity = Correction for the ReportingEntity
+reportType.TestData = Test data
+reportType.NewInformation = New information for the reporting period
+reportType.DeletionOfAllInformation = Deletion of all previously reported information for this reporting period
+reportType.NewInformationForExistingReport = New information for an existing report
+reportType.CorrectionForExistingReport = Corrections for an existing report
+reportType.DeletionForExistingReport = Deletions for an existing report
+reportType.CorrectionAndDeletionForExistingReport = Corrections and deletions for an existing report
+reportType.CorrectionForReportingEntity = Correction for the ReportingEntity
 
 fileReceived.title = File successfully sent
 fileReceived.heading = File successfully sent
@@ -212,6 +212,7 @@ fileReceived.subheading = What happens next
 fileReceived.p2 = We will contact you if we have any questions about your report.
 fileReceived.print = Print this page
 fileReceived.thoughts = What did you think of this service? (opens in new tab)
+fileReceived.reportType.key = File information
 
 fileReceivedAgent.title = File successfully sent
 fileReceivedAgent.heading = File successfully sent

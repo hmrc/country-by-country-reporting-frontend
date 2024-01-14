@@ -19,7 +19,7 @@ package controllers
 import connectors.FileDetailsConnector
 import controllers.actions._
 import models.ConversationId
-import pages.UploadIDPage
+import pages.{UploadIDPage, ValidXMLPage}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -53,6 +53,7 @@ class FileReceivedController @Inject() (
 
   def onPageLoad(conversationId: ConversationId): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
+      val reportType = request.userAnswers.get(ValidXMLPage).get.messageSpecData.reportType
       fileDetailsConnector.getFileDetails(conversationId) flatMap {
         fileDetails =>
           (for {
@@ -67,7 +68,7 @@ class FileReceivedController @Inject() (
                     _              <- sessionRepository.set(updatedAnswers)
                   } yield Ok(
                     agentView(
-                      FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getAgentSummaryRows(details)),
+                      FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getAgentSummaryRows(details, reportType)),
                       emails.firstContact,
                       emails.secondContact,
                       agentContactEmails.firstContact,
@@ -83,7 +84,10 @@ class FileReceivedController @Inject() (
                 updatedAnswers <- Future.fromTry(request.userAnswers.remove(UploadIDPage))
                 _              <- sessionRepository.set(updatedAnswers)
               } yield Ok(
-                view(FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getSummaryRows(details)), emails.firstContact, emails.secondContact)
+                view(FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getSummaryRows(details, reportType)),
+                     emails.firstContact,
+                     emails.secondContact
+                )
               )
             case _ =>
               logger.warn("FileReceivedController: The User is neither an Organisation or an Agent")
