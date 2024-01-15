@@ -370,8 +370,6 @@ fileRejected.code = Code
 fileRejected.docRefId = DocRefId
 fileRejected.error = Error
 
-#TODO: Update these messages when CBC business rules are known
-# Work in progress. These are the error messages we have updated....
 fileRejected.50008.intro = MessageRefId must be 100 characters or less and follow this structure in the order referenced:
 fileRejected.50008.bullet1 = ‘GB’
 fileRejected.50008.bullet2 = the same value as the year in the MessageSpec ReportingPeriod in the format ‘YYYY’
@@ -488,43 +486,6 @@ fileRejected.17.value = ReportingEntity contains a DocTypeIndic of OECD0 to rese
 fileRejected.18.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
 fileRejected.19.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
 fileRejected.20.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-
-# ... /END
-fileRejected.80002.key = 802
-fileRejected.80002.value = The CorrDocRefId does not match any DocRefId previously received
-fileRejected.80003.key = 803
-fileRejected.80003.value = The CorrDocRefId is for a section that has already been corrected or deleted
-fileRejected.80004.key = 804
-fileRejected.80004.value = Sections that contain new or resent information must not have a CorrDocRefId
-fileRejected.80005.key = 805
-fileRejected.80005.value = This section contains a correction or deletion so it must contain a CorrDocRefId
-fileRejected.80008.key = 808
-fileRejected.80008.value = Resend option (OECD0) must only be used for the Disclosing element, not for the CbcReport element. Ensure the CbcReport DocTypeIndic contains one of the allowed values
-fileRejected.80009.key = 809
-fileRejected.80009.value = This Disclosing section can only be deleted if the CbcReport section linked to it is also deleted
-fileRejected.80010.key = 810
-fileRejected.80010.value1 = The file cannot contain a combination of new information (DocTypeIndic: OECD1) and corrections or deletions (DocTypeIndic: OECD2 or OECD3).
-fileRejected.80010.value2 = The MessageTypeIndic must be compatible with each DocTypeIndic in the file.
-fileRejected.80010.value3 = If the MessageTypeIndic is MDR401 for new information, then every DocTypeIndic must be OECD1.
-fileRejected.80010.value4 = If the MessageTypeIndic is MDR402 for corrections or deletions, then the DocTypeIndic values must be either OECD2, OECD3 or OECD0.
-fileRejected.80011.key = 811
-fileRejected.80011.value = A CorrDocRefId value must not be used more than once in the same file
-fileRejected.80013.key = 813
-fileRejected.80013.value = The Disclosing DocTypeIndic of OECD0 indicates this section contains resent information, but the DocRefId does not match any we have received
-fileRejected.80014.key = 814
-fileRejected.80014.value = The Disclosing DocTypeIndic of OECD0 shows this section contains resent information, but the DocRefId is for information that has since been corrected or deleted. Provide the DocRefId of the section you want to correct
-fileRejected.901.value = The CorrDocRefId does not match a DocRefId from the same type of section (either Disclosing or CbcReport). It must refer to the same element
-fileRejected.902.value = The CbcReport CorrDocRefId does not refer to the same previously sent CbcBody as the Disclosing element
-fileRejected.903.value = The Disclosing section contains resent data (DocTypeIndic = OECD0) so it must not have a CorrDocRefId
-fileRejected.904.value = CbcReport CrsAvoidance or OOS Reason is not one of the allowed values for the Disclosing Capacity provided
-fileRejected.905.value = Since the DocTypeIndic of Disclosing is OECD0, the DocTypeIndic of CbcReport must be OECD2
-fileRejected.906.value = Since the CbcReport has a DocTypeIndic of OECD3, indicating this section must be deleted, this Disclosing section must be deleted too
-fileRejected.907.value = Since the MessageTypeIndic contains the value of CBC401 for new information, the Disclosing DocTypeIndic must contain the value of OECD1 for new information
-fileRejected.908.value = Since the MessageTypeIndic contains the value of CBC401 for new information, an CbcReport section must be provided with a DocTypeIndic of OECD1 for new information
-fileRejected.909.value = DocRefId must be 100 characters or less, start with your 15-character CBC ID and include up to 85 other characters of your choice
-fileRejected.910.value = MessageRefId must be 85 characters or less, start with your 15-character CBC ID and include up to 70 other characters of your choice
-fileRejected.911.value = Provide an issuedBy for every TIN that has a value other than NOTIN
-fileRejected.912.value = The top level of the StructureChart must not have an Ownership or InvestAmount
 
 agentContactDetailsNeeded.title = We need your agent contact details
 agentContactDetailsNeeded.heading = We need your agent contact details
