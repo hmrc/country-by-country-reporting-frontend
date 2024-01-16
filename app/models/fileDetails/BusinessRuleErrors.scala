@@ -18,8 +18,8 @@ package models.fileDetails
 
 import play.api.libs.json.{Json, OFormat}
 
-case class RecordError(code: BusinessRuleErrorCode, details: Option[String], docRefIDInError: Option[Seq[String]])
+case class BusinessRuleErrors(code: BusinessRuleErrorCode, details: Option[String], docRefIDInError: Option[Seq[String]])
 
-object RecordError {
-  implicit val format: OFormat[RecordError] = Json.format[RecordError]
+object BusinessRuleErrors {
+  implicit val format: OFormat[BusinessRuleErrors] = Json.format[BusinessRuleErrors]
 }

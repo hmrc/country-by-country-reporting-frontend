@@ -48,6 +48,9 @@ class FileRejectedController @Inject() (
     implicit request =>
       fileDetailsConnector.getFileDetails(conversationId) map {
         case Some(details) =>
+          println("*******************")
+          println(details)
+          println("*******************")
           details.status match {
             case Rejected(validationErrors) => Ok(view(details.name, FileRejectedViewModel(validationErrors)))
             case _                          => InternalServerError(errorView())

@@ -16,13 +16,12 @@
 
 package utils
 
-import models.fileDetails.FileErrorCode.{fileErrorCodesForProblemStatus, CustomError => FileCustomError}
-import models.fileDetails.RecordErrorCode.{CustomError, DocRefIDFormat}
+import models.fileDetails.BusinessRuleErrorCode._
 import models.fileDetails._
 
 object FileProblemHelper {
 
-  private val expectedErrorCodes: Seq[String]       = FileErrorCode.values.map(_.code) ++ RecordErrorCode.values.map(_.code)
+  private val expectedErrorCodes: Seq[String]       = BusinessRuleErrorCode.values.map(_.code)
   private val problemsStatusErrorCodes: Seq[String] = fileErrorCodesForProblemStatus.map(_.code) :+ DocRefIDFormat.code
 
   def isProblemStatus(errors: FileValidationErrors): Boolean = {
@@ -48,7 +47,7 @@ object FileProblemHelper {
   private def fileErrorDetailNotAllowed(errors: Option[Seq[FileErrors]]): Boolean =
     errors.exists(
       _.exists(
-        error => error.code == FileCustomError
+        error => error.code == CustomError
       )
     )
 }
