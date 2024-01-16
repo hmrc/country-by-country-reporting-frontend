@@ -19,8 +19,7 @@ package controllers
 import base.SpecBase
 import connectors.FileDetailsConnector
 import controllers.actions._
-import models.fileDetails.FileErrorCode.{FailedSchemaValidation, MessageRefIDHasAlreadyBeenUsed}
-import models.fileDetails.RecordErrorCode.{DocRefIDFormat, MissingCorrDocRefId}
+import models.fileDetails.BusinessRuleErrorCode.{DocRefIDFormat, FailedSchemaValidation, MessageRefIDHasAlreadyBeenUsed, MissingCorrDocRefId}
 import models.fileDetails.{Accepted => FileStatusAccepted, _}
 import models.{CBC401, ConversationId, MessageSpecData, UserAnswers, ValidatedFileData}
 import org.mockito.ArgumentMatchers.any

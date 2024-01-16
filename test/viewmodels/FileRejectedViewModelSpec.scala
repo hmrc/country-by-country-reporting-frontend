@@ -16,7 +16,7 @@
 
 package viewmodels
 
-import models.fileDetails.{FileErrorCode, FileErrors, FileValidationErrors, RecordError, RecordErrorCode}
+import models.fileDetails.{BusinessRuleErrorCode, FileErrors, FileValidationErrors, RecordError}
 import org.scalatestplus.play.PlaySpec
 
 class FileRejectedViewModelSpec extends PlaySpec {
@@ -34,7 +34,7 @@ class FileRejectedViewModelSpec extends PlaySpec {
     }
 
     "return a file error" in {
-      val fileError        = FileErrors(FileErrorCode.FailedSchemaValidation, None)
+      val fileError        = FileErrors(BusinessRuleErrorCode.FailedSchemaValidation, None)
       val validationErrors = FileValidationErrors(Some(List(fileError)), None)
       val viewModel        = FileRejectedViewModel(validationErrors)
 
@@ -44,7 +44,7 @@ class FileRejectedViewModelSpec extends PlaySpec {
     }
 
     "return a record error without a doc ref id" in {
-      val recordError      = RecordError(RecordErrorCode.DocRefIDFormat, None, None)
+      val recordError      = RecordError(BusinessRuleErrorCode.DocRefIDFormat, None, None)
       val validationErrors = FileValidationErrors(None, Some(List(recordError)))
       val viewModel        = FileRejectedViewModel(validationErrors)
 
@@ -54,7 +54,7 @@ class FileRejectedViewModelSpec extends PlaySpec {
     }
 
     "return a record error with a doc ref id" in {
-      val recordError      = RecordError(RecordErrorCode.DocRefIDFormat, None, Some(List("doc ref id 1")))
+      val recordError      = RecordError(BusinessRuleErrorCode.DocRefIDFormat, None, Some(List("doc ref id 1")))
       val validationErrors = FileValidationErrors(None, Some(List(recordError)))
       val viewModel        = FileRejectedViewModel(validationErrors)
 

@@ -16,8 +16,7 @@
 
 package connectors
 
-import models.fileDetails.FileErrorCode.MessageRefIDHasAlreadyBeenUsed
-import models.fileDetails.RecordErrorCode.MessageTypeIndic
+import models.fileDetails.BusinessRuleErrorCode.{MessageRefIDHasAlreadyBeenUsed, MessageTypeIndic}
 import models.fileDetails._
 import models.{fileDetails, ConversationId}
 import play.api.Application

@@ -20,8 +20,7 @@ import base.SpecBase
 import config.FrontendAppConfig
 import connectors.{FileDetailsConnector, SubmissionConnector}
 import handlers.XmlHandler
-import models.fileDetails.FileErrorCode.FailedSchemaValidation
-import models.fileDetails.RecordErrorCode.DocRefIDFormat
+import models.fileDetails.BusinessRuleErrorCode.{DocRefIDFormat, FailedSchemaValidation}
 import models.fileDetails._
 import models.{CBC401, CBC402, ConversationId, MessageSpecData, UserAnswers, ValidatedFileData}
 import org.mockito.ArgumentMatchers.any

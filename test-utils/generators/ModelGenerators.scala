@@ -27,8 +27,7 @@ import models.agentSubscription.{
   AgentSubscriptionRequest,
   CreateAgentSubscriptionRequest
 }
-import models.fileDetails.RecordErrorCode.CustomError
-import models.fileDetails.{FileErrorCode, FileErrors, FileValidationErrors, RecordError, RecordErrorCode}
+import models.fileDetails.{BusinessRuleErrorCode, FileErrors, FileValidationErrors, RecordError}
 import models.subscription._
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
@@ -100,24 +99,20 @@ trait ModelGenerators {
     } yield AgentRequestDetailForUpdate(idType, idNumber, tradingName, isGBUser, primaryContact, secondaryContact)
   }
 
-  implicit val arbitraryFileErrorCode: Arbitrary[FileErrorCode] = Arbitrary {
-    Gen.oneOf[FileErrorCode](FileErrorCode.values)
-  }
-
-  implicit val arbitraryRecordErrorCode: Arbitrary[RecordErrorCode] = Arbitrary {
-    Gen.oneOf[RecordErrorCode](RecordErrorCode.values.filterNot(_ == CustomError))
+  implicit val arbitraryBusinessRulesErrorCode: Arbitrary[BusinessRuleErrorCode] = Arbitrary {
+    Gen.oneOf[BusinessRuleErrorCode](BusinessRuleErrorCode.values)
   }
 
   implicit val arbitraryUpdateFileErrors: Arbitrary[FileErrors] = Arbitrary {
     for {
-      fileErrorCode <- arbitrary[FileErrorCode]
-      details       <- Gen.option(arbitrary[String])
-    } yield FileErrors(fileErrorCode, details)
+      recordErrorCode <- arbitrary[BusinessRuleErrorCode]
+      details         <- Gen.option(arbitrary[String])
+    } yield FileErrors(recordErrorCode, details)
   }
 
   implicit val arbitraryUpdateRecordErrors: Arbitrary[RecordError] = Arbitrary {
     for {
-      recordErrorCode <- arbitrary[RecordErrorCode]
+      recordErrorCode <- arbitrary[BusinessRuleErrorCode]
       details         <- Gen.option(arbitrary[String])
       docRefIdRef     <- Gen.option(listWithMaxLength(5, arbitrary[String]))
     } yield RecordError(recordErrorCode, details, docRefIdRef)
@@ -146,9 +141,9 @@ trait ModelGenerators {
   implicit val arbitraryUpdateValidationErrors: Arbitrary[FileValidationErrors] =
     Arbitrary {
       for {
-        fileErrors   <- Gen.option(listWithMaxLength(5, arbitrary[FileErrors]))
+        fileError    <- Gen.option(listWithMaxLength(5, arbitrary[FileErrors]))
         recordErrors <- Gen.option(listWithMaxLength(5, arbitrary[RecordError]))
-      } yield FileValidationErrors(fileErrors, recordErrors)
+      } yield FileValidationErrors(fileError, recordErrors)
     }
 
   implicit val arbitraryAgentRequestDetail: Arbitrary[AgentRequestDetail] = Arbitrary {

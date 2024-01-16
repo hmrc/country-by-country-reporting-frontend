@@ -17,8 +17,7 @@
 package views.components
 
 import base.SpecBase
-import models.fileDetails.FileErrorCode._
-import models.fileDetails.RecordErrorCode._
+import models.fileDetails.BusinessRuleErrorCode._
 import play.api.i18n.{Messages, MessagesApi}
 import viewmodels.FileRejectedError
 import views.html.components.FileRejectedTable
