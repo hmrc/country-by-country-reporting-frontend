@@ -65,7 +65,7 @@ class FileRejectedTableSpec extends SpecBase {
   }
 
   "render a list of paragraphs error for error code 12" in {
-    val errors = List(FileRejectedError(ChangeReportingPeriod.code, Nil))
+    val errors = List(FileRejectedError(ReportingPeriodCantChange.code, Nil))
 
     view.render(errors, messages).toString() must {
       include(messages("fileRejected.12.p1")) and
@@ -74,7 +74,7 @@ class FileRejectedTableSpec extends SpecBase {
   }
 
   "render a bulleted list error for error code 24" in {
-    val errors = List(FileRejectedError(CurrencyCodeInitial.code, Nil))
+    val errors = List(FileRejectedError(ConstEntitiesRoleInitial.code, Nil))
 
     view.render(errors, messages).toString() must {
       include(messages("fileRejected.24.intro")) and
@@ -83,7 +83,7 @@ class FileRejectedTableSpec extends SpecBase {
   }
 
   "render a bulleted list error for 24b error code" in {
-    val errors = List(FileRejectedError(CurrencyCodeCorrection.code, Nil))
+    val errors = List(FileRejectedError(ConstEntitiesRoleCorrection.code, Nil))
 
     view.render(errors, messages).toString() must {
       include(messages("fileRejected.24.intro")) and
@@ -92,7 +92,7 @@ class FileRejectedTableSpec extends SpecBase {
   }
 
   "Strip 'CBC Error Code ' from error and find specific error code for CBC Error Code 33" in {
-    val errors = List(FileRejectedError("CBC Error Code 33", Nil))
+    val errors = List(FileRejectedError("CBCErrorCode33", Nil))
 
     view.render(errors, messages).toString() must {
       include(messages("fileRejected.33.value"))

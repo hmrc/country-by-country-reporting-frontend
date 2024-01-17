@@ -16,7 +16,7 @@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 
-@import models.fileDetails.BusinessRuleErrorCode.{DocRefIDFormat, MessageTypeIndic, ChangeReportingPeriod, CurrencyCodeInitial, CurrencyCodeCorrection, InvalidMessageRefIDFormat}
+@import models.fileDetails.BusinessRuleErrorCode.{DocRefIDFormat, MessageTypeIndic, ReportingPeriodCantChange, ConstEntitiesRoleInitial, ConstEntitiesRoleCorrection, InvalidMessageRefIDFormat}
 @import viewmodels.FileRejectedError
 
 @this(govukTable: GovukTable)
@@ -56,7 +56,7 @@
 }}
 
 @getErrorDescription(code: String) = {@{
-val code2 = code.replaceAll("CBC Error Code ", "")
+val code2 = code.replaceAll("CBCErrorCode", "")
     code2 match {
         case InvalidMessageRefIDFormat.code =>
             <p class="govuk-body">{messages("fileRejected.50008.intro")}</p>
@@ -88,11 +88,11 @@ val code2 = code.replaceAll("CBC Error Code ", "")
                 <li>{messages("fileRejected.80010.bullet3")}</li>
             </ol>
             <p class="govuk-body">{messages("fileRejected.50008.explanation")}</p>
-        case ChangeReportingPeriod.code =>
+        case ReportingPeriodCantChange.code =>
             <p class="govuk-body">{messages("fileRejected.12.p1")}</p>
             <p class="govuk-body">{messages("fileRejected.12.p2")}</p>
             <p class="govuk-body">{messages("fileRejected.12.p3")}</p>
-        case CurrencyCodeInitial.code =>
+        case ConstEntitiesRoleInitial.code =>
             <p class="govuk-body">{messages("fileRejected.24.intro")}</p>
             <ol class="govuk-list govuk-list--bullet">
                 <li>{messages("fileRejected.24.bullet1")}</li>
@@ -100,7 +100,7 @@ val code2 = code.replaceAll("CBC Error Code ", "")
                 <li>{messages("fileRejected.24.bullet3")}</li>
                 <li>{messages("fileRejected.24.bullet4")}</li>
             </ol>
-        case CurrencyCodeCorrection.code =>
+        case ConstEntitiesRoleCorrection.code =>
             <p class="govuk-body">{messages("fileRejected.24.intro")}</p>
             <ol class="govuk-list govuk-list--bullet">
                 <li>{messages("fileRejected.24.bullet1")}</li>
