@@ -33,6 +33,8 @@ case class FileRejectedViewModel(validationErrors: FileValidationErrors) {
       )
     )
 
+    println("************************")
+    println((fileErrors ++ recordErrors).flatten.toSeq).toString
     (fileErrors ++ recordErrors).flatten.toSeq
   }
 

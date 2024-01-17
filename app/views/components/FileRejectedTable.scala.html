@@ -56,7 +56,7 @@
 }}
 
 @getErrorDescription(code: String) = {@{
-val code2 = code.replaceAll("CBCErrorCode", "")
+val code2 = code.replaceAll("CBC Error Code ", "")
     code2 match {
         case InvalidMessageRefIDFormat.code =>
             <p class="govuk-body">{messages("fileRejected.50008.intro")}</p>
