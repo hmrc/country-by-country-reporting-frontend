@@ -32,9 +32,6 @@ case class FileRejectedViewModel(validationErrors: FileValidationErrors) {
         error => FileRejectedError(error.code.code, error.docRefIDInError.getOrElse(Nil))
       )
     )
-
-    println("************************")
-    println((fileErrors ++ recordErrors).flatten.toSeq).toString
     (fileErrors ++ recordErrors).flatten.toSeq
   }
 
