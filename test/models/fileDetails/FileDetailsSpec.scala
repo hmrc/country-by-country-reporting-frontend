@@ -21,7 +21,7 @@ import generators.Generators
 import models.{fileDetails, ConversationId}
 import org.scalacheck.Arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 import java.time.LocalDateTime
 
@@ -45,15 +45,17 @@ class FileDetailsSpec extends SpecBase with Generators with ScalaCheckPropertyCh
         )
       )
 
-      json mustEqual Json.parse(s"""{
-          |"name":"test1.xml",
-          |"messageRefId":"messageRefId1",
-          |"reportingEntityName":"Reporting Entity",
-          |"submitted":"$submittedDate",
-          |"lastUpdated":"$modifiedDate",
-          |"status":{"Pending":{}},
-          |"conversationId":"XGD11111"
-          |}""".stripMargin)
+      json mustEqual Json.obj(
+        "name"                -> "test1.xml",
+        "messageRefId"        -> "messageRefId1",
+        "reportingEntityName" -> "Reporting Entity",
+        "submitted"           -> submittedDate,
+        "lastUpdated"         -> modifiedDate,
+        "status" -> Json.obj(
+          "Pending" -> Json.obj()
+        ),
+        "conversationId" -> "XGD11111"
+      )
     }
 
     "must serialise to json with a rejected status" in {
@@ -71,15 +73,19 @@ class FileDetailsSpec extends SpecBase with Generators with ScalaCheckPropertyCh
         )
       )
 
-      json mustEqual Json.parse(s"""{
-                                   |"name":"test2.xml",
-                                   |"messageRefId":"messageRefId2",
-                                   |"reportingEntityName":"Reporting Entity",
-                                   |"submitted":"$submittedDate",
-                                   |"lastUpdated":"$modifiedDate",
-                                   |"status":{"Rejected":{"error":${Json.toJson(validationErrors).toString()}}},
-                                   |"conversationId":"XGD11111"
-                                   |}""".stripMargin)
+      json mustEqual Json.obj(
+        "name"                -> "test2.xml",
+        "messageRefId"        -> "messageRefId2",
+        "reportingEntityName" -> "Reporting Entity",
+        "submitted"           -> submittedDate,
+        "lastUpdated"         -> modifiedDate,
+        "status" -> Json.obj(
+          "Rejected" -> Json.obj(
+            "error" -> Json.toJson(validationErrors)
+          )
+        ),
+        "conversationId" -> "XGD11111"
+      )
     }
 
     "must serialise to json with a accepted status" in {
@@ -95,15 +101,17 @@ class FileDetailsSpec extends SpecBase with Generators with ScalaCheckPropertyCh
         )
       )
 
-      json mustEqual Json.parse(s"""{
-                                  |"name":"test3.xml",
-                                  |"messageRefId":"messageRefId3",
-                                  |"reportingEntityName":"Reporting Entity",
-                                  |"submitted":"$submittedDate",
-                                  |"lastUpdated":"$modifiedDate",
-                                  |"status":{"Accepted":{}},
-                                  |"conversationId":"XGD11111"
-                                  |}""".stripMargin)
+      json mustEqual Json.obj(
+        "name"                -> "test3.xml",
+        "messageRefId"        -> "messageRefId3",
+        "reportingEntityName" -> "Reporting Entity",
+        "submitted"           -> submittedDate,
+        "lastUpdated"         -> modifiedDate,
+        "status" -> Json.obj(
+          "Accepted" -> Json.obj()
+        ),
+        "conversationId" -> "XGD11111"
+      )
     }
   }
 }
