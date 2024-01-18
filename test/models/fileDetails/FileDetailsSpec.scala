@@ -18,10 +18,10 @@ package models.fileDetails
 
 import base.SpecBase
 import generators.Generators
-import models.{fileDetails, ConversationId}
+import models.ConversationId
 import org.scalacheck.Arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.Json
 
 import java.time.LocalDateTime
 
