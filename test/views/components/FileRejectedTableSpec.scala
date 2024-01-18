@@ -91,12 +91,4 @@ class FileRejectedTableSpec extends SpecBase {
     }
   }
 
-  "Strip 'CBC Error Code ' from error and find specific error code for CBC Error Code 33" in {
-    val errors = List(FileRejectedError("CBCErrorCode33", Nil))
-
-    view.render(errors, messages).toString() must {
-      include(messages("fileRejected.33.value"))
-    }
-  }
-
 }

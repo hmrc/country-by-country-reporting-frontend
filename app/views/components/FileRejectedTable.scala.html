@@ -36,7 +36,7 @@
         validationErrors.map { error =>
             val errCode = error.errorCode
             Seq(
-                TableRow(Text(errCode), attributes = Map("id" -> s"code_$errCode")),
+                TableRow(Text(errCode.replaceAll("CBC Error Code ", "")), attributes = Map("id" -> s"code_$errCode")),
                 TableRow(HtmlContent(getDocRefId(error.docRefIds)), attributes = Map("id" -> s"docRefId_$errCode")),
                 TableRow(HtmlContent(getErrorDescription(error.errorCode)), attributes = Map("id" -> s"errorMessage_$errCode"))
             )

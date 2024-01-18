@@ -464,29 +464,6 @@ fileRejected.40b.value = If the ReportingEntity ReportingRole is CBC703 or CBC70
 fileRejected.42.value = ReportingRole within the ReportingEntity does not match the previously sent value for this reporting period. To change the ReportingRole, use a ReportingEntity DocTypeIndic of OECD2 instead of OECD0.
 fileRejected.43.value = ReportingPeriod within the ReportingEntity does not match the previously sent value for this reporting period. To change the ReportingPeriod, use a ReportingEntity DocTypeIndic of OECD2 instead of OECD0.
 
-
-
-fileRejected.1.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.2.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.3.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.4.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.5.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.6.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.7.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.8.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.9.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.10.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.11.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.12.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.13.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.14.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.15.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.16.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.17.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.18.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.19.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-fileRejected.20.value = ReportingEntity contains a DocTypeIndic of OECD0 to resend information sent in a previous file but the DocRefId provided has already been corrected or deleted.
-
 agentContactDetailsNeeded.title = We need your agent contact details
 agentContactDetailsNeeded.heading = We need your agent contact details
 agentContactDetailsNeeded.p1 = Before you can send a country-by-country (CBC) report, we need to collect your agent contact details.
