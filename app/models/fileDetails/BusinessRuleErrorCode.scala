@@ -40,7 +40,7 @@ object BusinessRuleErrorCode {
   case object UnknownDocRefID extends BusinessRuleErrorCode("80013")
   case object DocRefIDIsNoLongerValid extends BusinessRuleErrorCode("80014")
 
-  case object MoreThanOneCBCBody extends BusinessRuleErrorCode("CBC Error Code 1")
+  case object MoreThanOneCBCBody extends BusinessRuleErrorCode("1")
   case object MessageSpecLargerThanSendEntity extends BusinessRuleErrorCode("2")
   case object DocRefIDMustMatchMessageRefID extends BusinessRuleErrorCode("3")
   case object MessageRefIDFileNameMatch extends BusinessRuleErrorCode("4")
@@ -59,7 +59,7 @@ object BusinessRuleErrorCode {
   case object ReportingPeriodStartBeforeEnd extends BusinessRuleErrorCode("16")
   case object OldestAllowableReportingPeriod extends BusinessRuleErrorCode("17")
   case object FutureReportingPeriod extends BusinessRuleErrorCode("18")
-  case object ReportingEntityTINFormat extends BusinessRuleErrorCode("CBC Error Code 20")
+  case object ReportingEntityTINFormat extends BusinessRuleErrorCode("20")
   case object ConstEntityMatchInitial extends BusinessRuleErrorCode("21a")
   case object ConstEntityMatchCorrection extends BusinessRuleErrorCode("21b")
   case object DuplicationOfConstEntity extends BusinessRuleErrorCode("22a")
