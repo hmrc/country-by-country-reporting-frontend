@@ -255,8 +255,9 @@ sendYourFile.status.p1 = We are checking your file
 fileProblem.title = Sorry, there is a problem with the service
 fileProblem.heading = Sorry, there is a problem with the service
 fileProblem.p1 = We have not accepted your file.
-fileProblem.p2 = You must email {0} so we can investigate the problem.
+fileProblem.p2 = You must email {0} so we can resolve the problem.
 fileProblem.link = aeoi.enquiries@hmrc.gov.uk
+fileProblem.p3 = Include the subject line '‘CBC file not accepted'’.
 
 fileStatus.title = Result of automatic checks
 fileStatus.heading = Result of automatic checks

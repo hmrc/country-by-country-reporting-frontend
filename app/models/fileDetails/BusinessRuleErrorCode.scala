@@ -97,7 +97,8 @@ object BusinessRuleErrorCode {
 
   val fileErrorCodesForProblemStatus: Seq[BusinessRuleErrorCode] = Seq(
     FailedSchemaValidation,
-    NotMeantToBeReceivedByTheIndicatedJurisdiction
+    NotMeantToBeReceivedByTheIndicatedJurisdiction,
+    CustomError
   )
 
   val values: Seq[BusinessRuleErrorCode] = Seq(
