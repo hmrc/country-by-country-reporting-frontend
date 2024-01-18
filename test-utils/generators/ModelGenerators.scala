@@ -105,9 +105,9 @@ trait ModelGenerators {
 
   implicit val arbitraryUpdateFileErrors: Arbitrary[FileErrors] = Arbitrary {
     for {
-      recordErrorCode <- arbitrary[BusinessRuleErrorCode]
-      details         <- Gen.option(arbitrary[String])
-    } yield FileErrors(recordErrorCode, details)
+      fileErrorCode <- arbitrary[BusinessRuleErrorCode]
+      details       <- Gen.option(arbitrary[String])
+    } yield FileErrors(fileErrorCode, details)
   }
 
   implicit val arbitraryUpdateRecordErrors: Arbitrary[RecordError] = Arbitrary {

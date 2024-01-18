@@ -30,7 +30,7 @@ class FileDetailsSpec extends SpecBase with Generators with ScalaCheckPropertyCh
   "FileDetails" - {
     "Serialise to Json" in {
 
-      val date            = LocalDateTime.now
+      val date            = LocalDateTime.of(2024, 1, 18, 11, 31, 32, 796040)
       val validationError = Arbitrary.arbitrary[FileValidationErrors].sample.value
 
       val fileDetail1 = FileDetails("test1.xml", "messageRefId1", "Reporting Entity", date, date, Pending, ConversationId("XGD11111"))
@@ -46,9 +46,18 @@ class FileDetailsSpec extends SpecBase with Generators with ScalaCheckPropertyCh
         fileDetails.FileDetails("test3.xml", "messageRefId3", "Reporting Entity", date, date.plusSeconds(25), Accepted, ConversationId("XGD11111"))
       val expectedResult = Seq(fileDetail1, fileDetail2, fileDetail3)
 
+      val expectedJson = Json.toJson(Seq(fileDetail1, fileDetail2, fileDetail3))
+      val actualJson   = Json.toJson(Seq(fileDetail1, fileDetail2, fileDetail3))
+
+      println("Expected JSON:")
+      println(Json.prettyPrint(expectedJson))
+
+      println("Actual JSON:")
+      println(Json.prettyPrint(actualJson))
+
       val json = Json.toJson(Seq(fileDetail1, fileDetail2, fileDetail3))
 
-      json.as[Seq[FileDetails]] mustBe expectedResult
+      json.as[Seq[FileDetails]] mustEqual expectedResult
     }
   }
 }
