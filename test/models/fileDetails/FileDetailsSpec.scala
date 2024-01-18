@@ -27,37 +27,83 @@ import java.time.LocalDateTime
 
 class FileDetailsSpec extends SpecBase with Generators with ScalaCheckPropertyChecks {
 
+  private val submittedDate = "2024-01-01T00:00:00"
+  private val modifiedDate  = "2024-01-01T00:00:10"
+
   "FileDetails" - {
-    "Serialise to Json" in {
 
-      val date            = LocalDateTime.of(2024, 1, 18, 11, 31, 32, 796040)
-      val validationError = Arbitrary.arbitrary[FileValidationErrors].sample.value
-
-      val fileDetail1 = FileDetails("test1.xml", "messageRefId1", "Reporting Entity", date, date, Pending, ConversationId("XGD11111"))
-      val fileDetail2 = fileDetails.FileDetails("test2.xml",
-                                                "messageRefId2",
-                                                "Reporting Entity",
-                                                date,
-                                                date.plusSeconds(11),
-                                                Rejected(validationError),
-                                                ConversationId("XGD11111")
+    "must serialise to json with a pending status" in {
+      val json = Json.toJson(
+        FileDetails(
+          "test1.xml",
+          "messageRefId1",
+          "Reporting Entity",
+          LocalDateTime.parse(submittedDate),
+          LocalDateTime.parse(modifiedDate),
+          Pending,
+          ConversationId("XGD11111")
+        )
       )
-      val fileDetail3 =
-        fileDetails.FileDetails("test3.xml", "messageRefId3", "Reporting Entity", date, date.plusSeconds(25), Accepted, ConversationId("XGD11111"))
-      val expectedResult = Seq(fileDetail1, fileDetail2, fileDetail3)
 
-      val expectedJson = Json.toJson(Seq(fileDetail1, fileDetail2, fileDetail3))
-      val actualJson   = Json.toJson(Seq(fileDetail1, fileDetail2, fileDetail3))
+      json mustEqual Json.parse(s"""{
+          |"name":"test1.xml",
+          |"messageRefId":"messageRefId1",
+          |"reportingEntityName":"Reporting Entity",
+          |"submitted":"$submittedDate",
+          |"lastUpdated":"$modifiedDate",
+          |"status":{"Pending":{}},
+          |"conversationId":"XGD11111"
+          |}""".stripMargin)
+    }
 
-      println("Expected JSON:")
-      println(Json.prettyPrint(expectedJson))
+    "must serialise to json with a rejected status" in {
+      val validationErrors = Arbitrary.arbitrary[FileValidationErrors].sample.value
 
-      println("Actual JSON:")
-      println(Json.prettyPrint(actualJson))
+      val json = Json.toJson(
+        FileDetails(
+          "test2.xml",
+          "messageRefId2",
+          "Reporting Entity",
+          LocalDateTime.parse(submittedDate),
+          LocalDateTime.parse(modifiedDate),
+          Rejected(validationErrors),
+          ConversationId("XGD11111")
+        )
+      )
 
-      val json = Json.toJson(Seq(fileDetail1, fileDetail2, fileDetail3))
+      json mustEqual Json.parse(s"""{
+                                   |"name":"test2.xml",
+                                   |"messageRefId":"messageRefId2",
+                                   |"reportingEntityName":"Reporting Entity",
+                                   |"submitted":"$submittedDate",
+                                   |"lastUpdated":"$modifiedDate",
+                                   |"status":{"Rejected":{"error":${Json.toJson(validationErrors).toString()}}},
+                                   |"conversationId":"XGD11111"
+                                   |}""".stripMargin)
+    }
 
-      json.as[Seq[FileDetails]] mustEqual expectedResult
+    "must serialise to json with a accepted status" in {
+      val json = Json.toJson(
+        FileDetails(
+          "test3.xml",
+          "messageRefId3",
+          "Reporting Entity",
+          LocalDateTime.parse(submittedDate),
+          LocalDateTime.parse(modifiedDate),
+          Accepted,
+          ConversationId("XGD11111")
+        )
+      )
+
+      json mustEqual Json.parse(s"""{
+                                  |"name":"test3.xml",
+                                  |"messageRefId":"messageRefId3",
+                                  |"reportingEntityName":"Reporting Entity",
+                                  |"submitted":"$submittedDate",
+                                  |"lastUpdated":"$modifiedDate",
+                                  |"status":{"Accepted":{}},
+                                  |"conversationId":"XGD11111"
+                                  |}""".stripMargin)
     }
   }
 }
