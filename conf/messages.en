@@ -264,7 +264,7 @@ sendYourFile.warning.TestData = We cannot complete all checks on test data or ac
 sendYourFile.warning.DeletionOfAllInformation = This will permanently delete all information for the reporting period.
 sendYourFile.warning.CorrectionForExistingReport = This will permanently change your reported information.
 sendYourFile.warning.DeletionForExistingReport = This will permanently delete any previously reported information you have marked for deletion.
-sendYourFile.warning.CorrectionAndDeletionForExistingReport = This will permanently change reported information marked as a correction. It will also delete any previously reported information you have marked for deletion.
+sendYourFile.warning.CorrectionAndDeletionForExistingReport = This will permanently change reported information marked as a correction. It will also permanently delete any previously reported information you have marked for deletion.
 sendYourFile.warning.CorrectionForReportingEntity = This will permanently change the ReportingEntity information.
 
 fileProblem.title = Sorry, there is a problem with the service
