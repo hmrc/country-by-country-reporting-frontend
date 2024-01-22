@@ -216,7 +216,7 @@ fileReceived.reportType.key = File information
 
 fileReceivedAgent.title = File successfully sent
 fileReceivedAgent.heading = File successfully sent
-fileReceivedAgent.reportingEntityName.key = Client (Reporting EntityName)
+fileReceivedAgent.reportingEntityName.key = Client (ReportingEntity Name)
 fileReceivedAgent.ChecksCompleted.time = {0} at {1}
 fileReceivedAgent.client.p1 = We also sent a confirmation email to your client at {0}{1}
 fileReceivedAgent.client.p1.0 = We also sent a confirmation email to your client at {0}.
