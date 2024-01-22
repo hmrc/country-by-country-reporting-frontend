@@ -26,7 +26,7 @@ import controllers.actions.{
   FakeIdentifierActionAgent,
   IdentifierAction
 }
-import models.{CBC401, ConversationId, MessageSpecData, ValidatedFileData}
+import models.{CBC401, ConversationId, MessageSpecData, MessageTypeIndic, TestData, ValidatedFileData}
 import models.fileDetails.{Accepted, FileDetails}
 import org.mockito.ArgumentMatchers.any
 import pages.{AgentFirstContactEmailPage, AgentSecondContactEmailPage, ContactEmailPage, SecondContactEmailPage, ValidXMLPage}
@@ -47,24 +47,34 @@ class FileReceivedControllerSpec extends SpecBase {
 
   "FileReceived Controller" - {
 
+    val messageRefId            = "messageRefId"
+    val conversationId          = ConversationId("conversationId")
+    val firstContactEmail       = "first@email.com"
+    val secondContactEmail      = "second@email.com"
+    val agentFirstContactEmail  = "agentfirst@email.com"
+    val agentSecondContactEmail = "agentsecond@email.com"
+    val vfd: ValidatedFileData  = ValidatedFileData("filename.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData))
+
+    val userAnswers = emptyUserAnswers
+      .set(ContactEmailPage, firstContactEmail)
+      .success
+      .value
+      .set(SecondContactEmailPage, secondContactEmail)
+      .success
+      .value
+      .set(ValidXMLPage, vfd)
+      .success
+      .value
+
+    val agentUserAnswers = userAnswers
+      .set(AgentFirstContactEmailPage, agentFirstContactEmail)
+      .success
+      .value
+      .set(AgentSecondContactEmailPage, agentSecondContactEmail)
+      .success
+      .value
+
     "must return OK and the correct view for a GET" in {
-
-      val messageRefId           = "messageRefId"
-      val conversationId         = ConversationId("conversationId")
-      val firstContactEmail      = "first@email.com"
-      val secondContactEmail     = "second@email.com"
-      val vfd: ValidatedFileData = ValidatedFileData("filename.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
-
-      val userAnswers = emptyUserAnswers
-        .set(ContactEmailPage, firstContactEmail)
-        .success
-        .value
-        .set(SecondContactEmailPage, secondContactEmail)
-        .success
-        .value
-        .set(ValidXMLPage, vfd)
-        .success
-        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
         .overrides(
@@ -98,7 +108,7 @@ class FileReceivedControllerSpec extends SpecBase {
 
         val view = application.injector.instanceOf[FileReceivedView]
 
-        val list = SummaryListViewModel(FileReceivedViewModel.getSummaryRows(fileDetails)(messages(application)))
+        val list = SummaryListViewModel(FileReceivedViewModel.getSummaryRows(fileDetails, TestData)(messages(application)))
           .withMargin()
 
         status(result) mustEqual OK
@@ -107,33 +117,12 @@ class FileReceivedControllerSpec extends SpecBase {
     }
     "must return OK and the correct view for a GET for Agent" in {
 
-      val messageRefId            = "messageRefId"
-      val conversationId          = ConversationId("conversationId")
-      val firstContactEmail       = "first@email.com"
-      val secondContactEmail      = "second@email.com"
-      val agentFirstContactEmail  = "agentfirst@email.com"
-      val agentSecondContactEmail = "agentsecond@email.com"
-
-      val userAnswers = emptyUserAnswers
-        .set(ContactEmailPage, firstContactEmail)
-        .success
-        .value
-        .set(SecondContactEmailPage, secondContactEmail)
-        .success
-        .value
-        .set(AgentFirstContactEmailPage, agentFirstContactEmail)
-        .success
-        .value
-        .set(AgentSecondContactEmailPage, agentSecondContactEmail)
-        .success
-        .value
-
       val application = new GuiceApplicationBuilder()
         .overrides(
           bind[DataRequiredAction].to[DataRequiredActionImpl],
           bind[IdentifierAction].to[FakeIdentifierActionAgent],
           bind[FileDetailsConnector].toInstance(mockFileDetailsConnector),
-          bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(Some(userAnswers)))
+          bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(Some(agentUserAnswers)))
         )
         .build()
 
@@ -163,7 +152,7 @@ class FileReceivedControllerSpec extends SpecBase {
 
         val view = application.injector.instanceOf[FileReceivedAgentView]
 
-        val list = SummaryListViewModel(FileReceivedViewModel.getAgentSummaryRows(fileDetails)(messages(application)))
+        val list = SummaryListViewModel(FileReceivedViewModel.getAgentSummaryRows(fileDetails, TestData)(messages(application)))
           .withMargin()
 
         status(result) mustEqual OK

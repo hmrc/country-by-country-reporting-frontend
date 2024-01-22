@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import controllers.actions._
-import models.{CBC401, ConversationId, MessageSpecData, ValidatedFileData}
+import models.{CBC401, ConversationId, MessageSpecData, TestData, ValidatedFileData}
 import pages.{ConversationIdPage, ValidXMLPage}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -30,11 +30,11 @@ import views.html.FileFailedChecksView
 class FileFailedChecksControllerSpec extends SpecBase {
 
   "FileFailedChecks Controller" - {
+    val validXmlDetails = ValidatedFileData("test.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData))
 
     "must return OK and the correct view for a GET when user type is an ORG" in {
 
-      val conversationId  = ConversationId("conversationId")
-      val validXmlDetails = ValidatedFileData("test.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
+      val conversationId = ConversationId("conversationId")
 
       val userAnswers = emptyUserAnswers
         .set(ValidXMLPage, validXmlDetails)
@@ -61,8 +61,7 @@ class FileFailedChecksControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET when user type is an AGENT" in {
 
-      val conversationId  = ConversationId("conversationId")
-      val validXmlDetails = ValidatedFileData("test.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
+      val conversationId = ConversationId("conversationId")
 
       val userAnswers = emptyUserAnswers
         .set(ValidXMLPage, validXmlDetails)

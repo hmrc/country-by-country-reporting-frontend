@@ -17,7 +17,7 @@
 package viewmodels
 
 import controllers.routes
-import models.{CBC401, CBC402, MessageTypeIndic, ValidatedFileData}
+import models._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
@@ -26,21 +26,19 @@ import viewmodels.govuk.summarylist._
 
 object CheckYourFileDetailsViewModel {
 
-  def getSummaryRows(vfd: ValidatedFileData)(implicit messages: Messages): Seq[SummaryListRow] =
+  def getSummaryRows(vfd: ValidatedFileData)(implicit messages: Messages): Seq[SummaryListRow] = {
+    val specData = vfd.messageSpecData
     Seq(
       SummaryListRowViewModel(
-        key = "checkYourFileDetails.uploadedFile",
-        value = ValueViewModel(HtmlFormat.escape(s"${vfd.fileName}").toString),
-        actions = Seq()
-      ),
-      SummaryListRowViewModel(
         key = "checkYourFileDetails.messageRefId",
-        value = ValueViewModel(HtmlFormat.escape(s"${vfd.messageSpecData.messageRefId}").toString),
+        value = ValueViewModel(HtmlFormat.escape(s"${specData.messageRefId}").toString),
         actions = Seq()
       ),
       SummaryListRowViewModel(
-        key = "checkYourFileDetails.messageTypeIndic",
-        value = ValueViewModel(HtmlFormat.escape(s"${displayTypeIndictator(vfd.messageSpecData.messageTypeIndic)}").toString),
+        key = "checkYourFileDetails.reportType",
+        value = ValueViewModel(
+          HtmlFormat.escape(s"${getReportTypeContent(specData.reportType)}").toString
+        ),
         actions = Seq(
           ActionItemViewModel(
             content = Text(messages("checkYourFileDetails.uploadedFile.change")),
@@ -50,6 +48,7 @@ object CheckYourFileDetailsViewModel {
         )
       )
     )
+  }
 
   def getAgentSummaryRows(validatedFileData: ValidatedFileData)(implicit messages: Messages): Seq[SummaryListRow] = {
     val fileDetails = getSummaryRows(validatedFileData)
@@ -64,10 +63,7 @@ object CheckYourFileDetailsViewModel {
     )
   )
 
-  private def displayTypeIndictator(typeIndic: MessageTypeIndic)(implicit messages: Messages) =
-    typeIndic match {
-      case CBC401 => messages("checkYourFileDetails.messageTypeIndic.CBC401")
-      case CBC402 => messages("checkYourFileDetails.messageTypeIndic.CBC402")
-    }
+  private def getReportTypeContent(reportType: ReportType)(implicit messages: Messages) =
+    messages(s"reportType.${reportType.toString}")
 
 }
