@@ -16,7 +16,7 @@
 
 package models.fileDetails
 
-import models.ConversationId
+import models.{ConversationId, ReportType}
 import play.api.libs.json._
 
 import java.time.LocalDateTime
@@ -24,6 +24,7 @@ import java.time.LocalDateTime
 case class FileDetails(name: String,
                        messageRefId: String,
                        reportingEntityName: String,
+                       reportType: ReportType,
                        submitted: LocalDateTime,
                        lastUpdated: LocalDateTime,
                        status: FileStatus,

@@ -26,7 +26,7 @@ import viewmodels.govuk.summarylist._
 
 object FileReceivedViewModel {
 
-  def getSummaryRows(receivedFileDetails: FileDetails, reportType: ReportType)(implicit messages: Messages): Seq[SummaryListRow] = {
+  def getSummaryRows(receivedFileDetails: FileDetails)(implicit messages: Messages): Seq[SummaryListRow] = {
     val time = receivedFileDetails.submitted.format(timeFormatter).toLowerCase
     val date = receivedFileDetails.submitted.format(dateFormatter)
     Seq(
@@ -42,26 +42,23 @@ object FileReceivedViewModel {
       SummaryListRowViewModel(
         key = "fileReceived.reportType.key",
         value = ValueViewModel(
-          HtmlFormat.escape(s"${getReportTypeContent(reportType)}").toString
+          HtmlFormat.escape(messages(s"reportType.${receivedFileDetails.reportType.toString}")).toString
         )
       )
     )
 
   }
 
-  def getAgentSummaryRows(receivedFileDetails: FileDetails, reportType: ReportType)(implicit messages: Messages): Seq[SummaryListRow] =
+  def getAgentSummaryRows(receivedFileDetails: FileDetails)(implicit messages: Messages): Seq[SummaryListRow] =
     Seq(
       SummaryListRowViewModel(
         key = "fileReceivedAgent.reportingEntityName.key",
         value = ValueViewModel(HtmlFormat.escape(s"${receivedFileDetails.reportingEntityName}").toString),
         actions = Seq()
       )
-    ) ++ getSummaryRows(receivedFileDetails, reportType)
+    ) ++ getSummaryRows(receivedFileDetails)
 
   def formattedSummaryListView(rows: Seq[SummaryListRow]) = SummaryListViewModel(rows)
     .withMargin()
-
-  private def getReportTypeContent(reportType: ReportType)(implicit messages: Messages) =
-    messages(s"reportType.${reportType.toString}")
 
 }
