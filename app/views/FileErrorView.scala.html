@@ -33,13 +33,24 @@
         <li>@messages("invalidXMLFile.p3")</li>
         <li>@messages("invalidXMLFile.p4")</li>
         <li>@messages("invalidXMLFile.p5")</li>
+        <li>@messages("invalidXMLFile.p6")</li>
     </ul>
 
-    <p class="govuk-!-margin-top-5 govuk-body">@messages("invalidXMLFile.p6") <code class="code--block">@messages("invalidXMLFile.p6Example")</code></p>
+    <div>
+        <p class="govuk-body govuk-!-margin-top-5 govuk-!-margin-bottom-1">@messages("invalidXMLFile.p7")</p>
+        <div class="code--block">
+            <code>@messages("invalidXMLFile.p7Example")</code>
+        </div>
+    </div>
 
-    <p class="govuk-body govuk-!-padding-bottom-4">@Html(messages("invalidXMLFile.p7", s"""<span class=code--slim>${messages("invalidXMLFile.p7Urn")}</span>""")) <code class="code--block">@messages("invalidXMLFile.p7Example")</code></p>
+    <div class="govuk-!-padding-top-4 govuk-!-padding-bottom-7">
+        <p class="govuk-body govuk-!-margin-bottom-1">@Html(messages("invalidXMLFile.p8", s"""<span class=code--slim>${messages("invalidXMLFile.p8Stf")}</span>"""))</p>
+        <div class="code--block">
+            <code>@messages("invalidXMLFile.p8Example")</code>
+        </div>
+    </div>
 
-    <p class="govuk-body">@Html(messages("invalidXMLFile.p8", link("#", "invalidXMLFile.p8.link")))</p> @*Todo: update link href*@
+    <p class="govuk-body">@Html(messages("invalidXMLFile.p9", link("#", "invalidXMLFile.p9.link")))</p>
 
     <ul class="govuk-list">
         <li>@printLink("invalidXMLFile.print")</li>
