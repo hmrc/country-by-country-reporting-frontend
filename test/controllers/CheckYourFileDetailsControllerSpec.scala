@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import controllers.actions._
-import models.{CBC401, MessageSpecData, UserAnswers, ValidatedFileData}
+import models.{CBC401, MessageSpecData, TestData, UserAnswers, ValidatedFileData}
 import pages.ValidXMLPage
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -31,12 +31,12 @@ import views.html.CheckYourFileDetailsView
 class CheckYourFileDetailsControllerSpec extends SpecBase {
 
   "CheckYourFileDetails Controller" - {
+    val vfd: ValidatedFileData = ValidatedFileData("filename.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData))
 
     "must return OK and the correct view for a GET" in {
 
-      val vfd: ValidatedFileData = ValidatedFileData("filename.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
-      val ua: UserAnswers        = emptyUserAnswers.set(ValidXMLPage, vfd).success.value
-      val application            = applicationBuilder(userAnswers = Some(ua)).build()
+      val ua: UserAnswers = emptyUserAnswers.set(ValidXMLPage, vfd).success.value
+      val application     = applicationBuilder(userAnswers = Some(ua)).build()
 
       running(application) {
         val request = FakeRequest(GET, routes.CheckYourFileDetailsController.onPageLoad().url)
@@ -56,8 +56,7 @@ class CheckYourFileDetailsControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET for Agent" in {
 
-      val vfd: ValidatedFileData = ValidatedFileData("filename.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
-      val ua: UserAnswers        = emptyUserAnswers.set(ValidXMLPage, vfd).success.value
+      val ua: UserAnswers = emptyUserAnswers.set(ValidXMLPage, vfd).success.value
       val application = new GuiceApplicationBuilder()
         .overrides(
           bind[DataRequiredAction].to[DataRequiredActionImpl],

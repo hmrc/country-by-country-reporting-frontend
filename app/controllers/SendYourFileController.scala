@@ -20,9 +20,9 @@ import config.FrontendAppConfig
 import connectors.{FileDetailsConnector, SubmissionConnector}
 import controllers.actions._
 import handlers.XmlHandler
-import models.fileDetails.{Pending, Rejected, FileValidationErrors, Accepted => FileStatusAccepted}
+import models.ValidatedFileData
+import models.fileDetails.{FileValidationErrors, Pending, Rejected, Accepted => FileStatusAccepted}
 import models.upscan.URL
-import models.{CBC402, ValidatedFileData}
 import pages.{ConversationIdPage, URLPage, ValidXMLPage}
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -31,6 +31,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.FileProblemHelper.isProblemStatus
+import viewmodels.SendYourFileViewModel
 import views.html.SendYourFileView
 
 import javax.inject.Inject
@@ -55,12 +56,8 @@ class SendYourFileController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData andThen checkForSubmission(true)).async {
     implicit request =>
-      val displayWarning = request.userAnswers
-        .get(ValidXMLPage)
-        .fold(false)(
-          validatedFileData => validatedFileData.messageSpecData.messageTypeIndic.equals(CBC402)
-        )
-      Future.successful(Ok(view(displayWarning, appConfig)))
+      val reportType = request.userAnswers.get(ValidXMLPage).get.messageSpecData.reportType
+      Future.successful(Ok(view(appConfig, SendYourFileViewModel.getWarningText(reportType))))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {

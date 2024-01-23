@@ -28,9 +28,9 @@
     caption = Some(messages("fileRejected.tableCaption")),
     captionClasses = "govuk-table__caption--m",
     head = Some(Seq(
-        HeadCell(Text(messages("fileRejected.code"))),
-        HeadCell(Text(messages("fileRejected.docRefId"))),
-        HeadCell(Text(messages("fileRejected.error")))
+        HeadCell(Text(messages("fileRejected.code")), attributes = Map("width" -> "8%")),
+        HeadCell(Text(messages("fileRejected.docRefId")), attributes = Map("width" -> "46%")),
+        HeadCell(Text(messages("fileRejected.error")), attributes = Map("width" -> "46%"))
     )),
     rows = {
         validationErrors.map { error =>

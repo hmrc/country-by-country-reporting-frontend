@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import models.{CBC401, ConversationId, MessageSpecData, ValidatedFileData}
+import models.{CBC401, ConversationId, MessageSpecData, TestData, ValidatedFileData}
 import pages.{ConversationIdPage, ValidXMLPage}
 import play.api.http.Status.OK
 import play.api.test.FakeRequest
@@ -32,7 +32,7 @@ class FilePassedChecksControllerSpec extends SpecBase {
     "must return OK and the correct view for a GET" in {
 
       val conversationId  = ConversationId("conversationId")
-      val validXmlDetails = ValidatedFileData("test.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
+      val validXmlDetails = ValidatedFileData("test.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData))
 
       val userAnswers = emptyUserAnswers
         .set(ValidXMLPage, validXmlDetails)
