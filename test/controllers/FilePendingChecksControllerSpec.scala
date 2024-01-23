@@ -109,7 +109,7 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
       }
     }
 
-    val problemFileErrorCodes = Table("fileErrorCode", Seq(FailedSchemaValidation, FileErrorCode.CustomError): _*)
+    val problemFileErrorCodes = Table("fileErrorCode", Seq(FailedSchemaValidation, BusinessRuleErrorCode.CustomError): _*)
 
     forAll(problemFileErrorCodes) {
       fileErrorCode =>
