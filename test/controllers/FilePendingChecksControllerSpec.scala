@@ -115,7 +115,8 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
       fileErrorCode =>
         s"must redirect to File Problem Page when REJECTED status returned with $fileErrorCode errors" in {
 
-          val validationErrors = FileValidationErrors(Some(Seq(FileErrors(fileErrorCode, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
+          val validationErrors =
+            FileValidationErrors(Some(Seq(FileErrors(fileErrorCode, None))), Some(Seq(RecordError(UnknownErrorCode("somethingUnknown"), None, None))))
 
           val userAnswers: UserAnswers = emptyUserAnswers
             .set(ConversationIdPage, conversationId)
