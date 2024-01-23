@@ -32,8 +32,9 @@ class FileDetailsSpec extends SpecBase with Generators with ScalaCheckPropertyCh
 
       val date = LocalDateTime.now
       val validationError: FileValidationErrors =
-        FileValidationErrors(Some(Seq(FileErrors(BusinessRuleErrorCode.CustomError, None))),
-                             Some(Seq(RecordError(BusinessRuleErrorCode.CustomError, None, None)))
+        FileValidationErrors(
+          Some(Seq(FileErrors(BusinessRuleErrorCode.InvalidMessageRefIDFormat, None))),
+          Some(Seq(RecordError(BusinessRuleErrorCode.InvalidMessageRefIDFormat, None, None)))
         )
 
       val fileDetail1 = FileDetails("test1.xml", "messageRefId1", "Reporting Entity", date, date, Pending, ConversationId("XGD11111"))

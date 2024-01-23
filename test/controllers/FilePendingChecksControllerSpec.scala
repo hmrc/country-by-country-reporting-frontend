@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import connectors.FileDetailsConnector
 import controllers.actions._
-import models.fileDetails.BusinessRuleErrorCode.{DocRefIDFormat, FailedSchemaValidation, MessageRefIDHasAlreadyBeenUsed, MissingCorrDocRefId}
+import models.fileDetails.BusinessRuleErrorCode._
 import models.fileDetails.{Accepted => FileStatusAccepted, _}
 import models.{CBC401, ConversationId, MessageSpecData, TestData, UserAnswers, ValidatedFileData}
 import org.mockito.ArgumentMatchers.any
@@ -109,7 +109,7 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
       }
     }
 
-    val problemFileErrorCodes = Table("fileErrorCode", Seq(FailedSchemaValidation, BusinessRuleErrorCode.CustomError): _*)
+    val problemFileErrorCodes = Table("fileErrorCode", Seq(InvalidMessageRefIDFormat, MessageRefIDHasAlreadyBeenUsed): _*)
 
     forAll(problemFileErrorCodes) {
       fileErrorCode =>

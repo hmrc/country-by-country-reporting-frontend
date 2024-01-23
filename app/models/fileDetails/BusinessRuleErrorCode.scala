@@ -22,7 +22,6 @@ sealed abstract class BusinessRuleErrorCode(val code: String)
 
 object BusinessRuleErrorCode {
 
-  case object FailedSchemaValidation extends BusinessRuleErrorCode("50007")
   case object InvalidMessageRefIDFormat extends BusinessRuleErrorCode("50008")
   case object MessageRefIDHasAlreadyBeenUsed extends BusinessRuleErrorCode("50009")
   case object FileContainsTestDataForProductionEnvironment extends BusinessRuleErrorCode("50010")
@@ -92,16 +91,13 @@ object BusinessRuleErrorCode {
   case object ReportingRoleOECD0IsNotTheSame extends BusinessRuleErrorCode("42")
   case object ReportingRoleOECD0IsNotTheSame2 extends BusinessRuleErrorCode("43")
 
-  case object CustomError extends BusinessRuleErrorCode("99999")
   case class UnknownErrorCode(override val code: String) extends BusinessRuleErrorCode(code)
 
   val fileErrorCodesForProblemStatus: Seq[BusinessRuleErrorCode] = Seq(
-    FailedSchemaValidation,
     NotMeantToBeReceivedByTheIndicatedJurisdiction
   )
 
   val values: Seq[BusinessRuleErrorCode] = Seq(
-    FailedSchemaValidation,
     InvalidMessageRefIDFormat,
     MessageRefIDHasAlreadyBeenUsed,
     NotMeantToBeReceivedByTheIndicatedJurisdiction,
@@ -168,8 +164,7 @@ object BusinessRuleErrorCode {
     SpecificReportingRoleCantMatchSpecificConstEntityRole3,
     SpecificReportingRoleCantMatchSpecificConstEntityRole4,
     ReportingRoleOECD0IsNotTheSame,
-    ReportingRoleOECD0IsNotTheSame2,
-    CustomError
+    ReportingRoleOECD0IsNotTheSame2
   )
 
   implicit val writes: Writes[BusinessRuleErrorCode] = Writes[BusinessRuleErrorCode] {
@@ -178,7 +173,6 @@ object BusinessRuleErrorCode {
   }
 
   implicit val reads: Reads[BusinessRuleErrorCode] = __.read[String].map {
-    case "50007"           => FailedSchemaValidation
     case "50008"           => InvalidMessageRefIDFormat
     case "50009"           => MessageRefIDHasAlreadyBeenUsed
     case "50010"           => FileContainsTestDataForProductionEnvironment
@@ -246,7 +240,6 @@ object BusinessRuleErrorCode {
     case "CBCErrorCode40b" => SpecificReportingRoleCantMatchSpecificConstEntityRole4
     case "CBCErrorCode42"  => ReportingRoleOECD0IsNotTheSame
     case "CBCErrorCode43"  => ReportingRoleOECD0IsNotTheSame2
-    case "99999"           => CustomError
     case otherCode         => UnknownErrorCode(otherCode)
   }
 }
