@@ -19,9 +19,9 @@ package controllers
 import base.SpecBase
 import connectors.FileDetailsConnector
 import controllers.actions._
-import models.fileDetails.BusinessRuleErrorCode.{DocRefIDFormat, FailedSchemaValidation, MessageRefIDHasAlreadyBeenUsed, MissingCorrDocRefId}
+import models.fileDetails.BusinessRuleErrorCode._
 import models.fileDetails.{Accepted => FileStatusAccepted, _}
-import models.{CBC401, ConversationId, MessageSpecData, UserAnswers, ValidatedFileData}
+import models.{CBC401, ConversationId, MessageSpecData, TestData, UserAnswers, ValidatedFileData}
 import org.mockito.ArgumentMatchers.any
 import org.scalatest.prop.TableDrivenPropertyChecks
 import pages.{ConversationIdPage, ValidXMLPage}
@@ -40,10 +40,10 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
 
     val mockFileDetailsConnector: FileDetailsConnector = mock[FileDetailsConnector]
     val conversationId                                 = ConversationId("conversationId")
+    val validXmlDetails                                = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData))
 
     "must return OK and the correct view for a GET when fileStatus is Pending" in {
 
-      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
       val userAnswers: UserAnswers = emptyUserAnswers
         .set(ConversationIdPage, conversationId)
         .success
@@ -76,7 +76,6 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
 
     "must return OK for Agent and the correct view for a GET when fileStatus is Pending" in {
 
-      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
       val userAnswers: UserAnswers = emptyUserAnswers
         .set(ConversationIdPage, conversationId)
         .success
@@ -110,13 +109,12 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
       }
     }
 
-    val problemFileErrorCodes = Table("fileErrorCode", Seq(FailedSchemaValidation, BusinessRuleErrorCode.CustomError): _*)
+    val problemFileErrorCodes = Table("fileErrorCode", Seq(BusinessRuleErrorCode.UnknownErrorCode("something wrong")): _*)
 
     forAll(problemFileErrorCodes) {
       fileErrorCode =>
         s"must redirect to File Problem Page when REJECTED status returned with $fileErrorCode errors" in {
 
-          val validXmlDetails  = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
           val validationErrors = FileValidationErrors(Some(Seq(FileErrors(fileErrorCode, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
 
           val userAnswers: UserAnswers = emptyUserAnswers
@@ -148,7 +146,6 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
 
     "must redirect to File Problem Page when REJECTED status returned with regular errors" in {
 
-      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
       val validationErrors =
         FileValidationErrors(Some(Seq(FileErrors(MessageRefIDHasAlreadyBeenUsed, None))), Some(Seq(RecordError(MissingCorrDocRefId, None, None))))
 
@@ -179,8 +176,6 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
     }
 
     "must redirect to File Passed Checks Page when ACCEPTED status returned" in {
-
-      val validXmlDetails = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity"))
 
       val userAnswers: UserAnswers = emptyUserAnswers
         .set(ConversationIdPage, conversationId)
