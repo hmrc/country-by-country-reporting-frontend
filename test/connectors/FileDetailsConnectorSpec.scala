@@ -19,7 +19,7 @@ package connectors
 import models.fileDetails.FileErrorCode.MessageRefIDHasAlreadyBeenUsed
 import models.fileDetails.RecordErrorCode.MessageTypeIndic
 import models.fileDetails._
-import models.{fileDetails, ConversationId}
+import models.{fileDetails, ConversationId, NewInformation}
 import play.api.Application
 import play.api.http.Status.OK
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -50,6 +50,7 @@ class FileDetailsConnectorSpec extends Connector {
       |    "name": "test1.xml",
       |    "messageRefId": "messageRefId1",
       |    "reportingEntityName": "Reporting Entity",
+      |    "reportType": "NEW_INFORMATION",
       |    "submitted": "2022-02-10T15:35:37.636",
       |    "lastUpdated": "2022-02-10T15:35:37.636",
       |    "status":{"Pending":{}},
@@ -59,6 +60,7 @@ class FileDetailsConnectorSpec extends Connector {
       |    "name": "test2.xml",
       |    "messageRefId": "messageRefId2",
       |    "reportingEntityName": "Reporting Entity",
+      |    "reportType": "NEW_INFORMATION",
       |    "submitted": "2022-02-10T15:35:37.636",
       |    "lastUpdated": "2022-02-10T15:45:37.636",
       |    "status": {
@@ -75,6 +77,7 @@ class FileDetailsConnectorSpec extends Connector {
      |    "name": "test3.xml",
      |    "messageRefId": "messageRefId3",
      |    "reportingEntityName": "Reporting Entity",
+     |    "reportType": "NEW_INFORMATION",
      |    "submitted": "2022-02-10T15:35:37.636",
      |    "lastUpdated": "2022-02-10T15:45:37.636",
      |    "status": {"Accepted":{}},
@@ -94,6 +97,7 @@ class FileDetailsConnectorSpec extends Connector {
               "test1.xml",
               "messageRefId1",
               "Reporting Entity",
+              NewInformation,
               LocalDateTime.parse("2022-02-10T15:35:37.636"),
               LocalDateTime.parse("2022-02-10T15:35:37.636"),
               Pending,
@@ -103,6 +107,7 @@ class FileDetailsConnectorSpec extends Connector {
               "test2.xml",
               "messageRefId2",
               "Reporting Entity",
+              NewInformation,
               LocalDateTime.parse("2022-02-10T15:35:37.636"),
               LocalDateTime.parse("2022-02-10T15:45:37.636"),
               Rejected(
@@ -162,6 +167,7 @@ class FileDetailsConnectorSpec extends Connector {
             "test3.xml",
             "messageRefId3",
             "Reporting Entity",
+            NewInformation,
             LocalDateTime.parse("2022-02-10T15:35:37.636"),
             LocalDateTime.parse("2022-02-10T15:45:37.636"),
             Accepted,

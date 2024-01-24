@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import connectors.FileDetailsConnector
 import generators.ModelGenerators
-import models.ConversationId
+import models.{ConversationId, NewInformation}
 import models.fileDetails.{Accepted, FileDetails, FileValidationErrors, Rejected}
 import org.mockito.ArgumentMatchers.any
 import org.scalacheck.Arbitrary
@@ -61,6 +61,7 @@ class FileRejectedControllerSpec extends SpecBase with ModelGenerators with Scal
                 fileName,
                 messageRefId,
                 "Reporting Entity",
+                NewInformation,
                 LocalDateTime.parse("2022-01-01T10:30:00.000"),
                 LocalDateTime.parse("2022-01-01T10:30:00.000"),
                 Rejected(validationErrors),
@@ -120,6 +121,7 @@ class FileRejectedControllerSpec extends SpecBase with ModelGenerators with Scal
                 fileName,
                 messageRefId,
                 "Reporting Entity",
+                NewInformation,
                 LocalDateTime.parse("2022-01-01T10:30:00.000"),
                 LocalDateTime.parse("2022-01-01T10:30:00.000"),
                 Accepted,
