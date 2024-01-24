@@ -16,6 +16,7 @@
 
 package viewmodels
 
+import models.ReportType
 import models.fileDetails.FileDetails
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
@@ -37,8 +38,15 @@ object FileReceivedViewModel {
       SummaryListRowViewModel(
         key = "fileReceived.ChecksCompleted.key",
         value = ValueViewModel(messages("fileReceived.ChecksCompleted.time", date, time))
+      ),
+      SummaryListRowViewModel(
+        key = "fileReceived.reportType.key",
+        value = ValueViewModel(
+          HtmlFormat.escape(messages(s"reportType.${receivedFileDetails.reportType.toString}")).toString
+        )
       )
     )
+
   }
 
   def getAgentSummaryRows(receivedFileDetails: FileDetails)(implicit messages: Messages): Seq[SummaryListRow] =
@@ -52,4 +60,5 @@ object FileReceivedViewModel {
 
   def formattedSummaryListView(rows: Seq[SummaryListRow]) = SummaryListViewModel(rows)
     .withMargin()
+
 }

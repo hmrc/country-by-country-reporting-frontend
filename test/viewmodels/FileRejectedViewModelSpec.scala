@@ -34,7 +34,7 @@ class FileRejectedViewModelSpec extends PlaySpec {
     }
 
     "return a file error" in {
-      val fileError        = FileErrors(BusinessRuleErrorCode.FailedSchemaValidation, None)
+      val fileError        = FileErrors(BusinessRuleErrorCode.InvalidMessageRefIDFormat, None)
       val validationErrors = FileValidationErrors(Some(List(fileError)), None)
       val viewModel        = FileRejectedViewModel(validationErrors)
 

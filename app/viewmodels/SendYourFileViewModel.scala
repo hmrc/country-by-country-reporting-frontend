@@ -14,21 +14,25 @@
  * limitations under the License.
  */
 
-package utils
+package viewmodels
 
-import models.fileDetails._
+import models._
+import play.api.i18n.Messages
 
-object FileProblemHelper {
+object SendYourFileViewModel {
 
-  private val expectedErrorCodes: Seq[String] = BusinessRuleErrorCode.values.map(_.code)
+  def getWarningText(reportType: ReportType)(implicit messages: Messages): Option[String] = {
+    val typesWithWarnings = Seq(
+      TestData,
+      DeletionOfAllInformation,
+      CorrectionForExistingReport,
+      DeletionForExistingReport,
+      CorrectionAndDeletionForExistingReport,
+      CorrectionForReportingEntity
+    )
 
-  def isProblemStatus(errors: FileValidationErrors): Boolean = {
-    val errorCodes: Seq[String] =
-      Seq(errors.fileError.map(_.map(_.code.code)).getOrElse(Nil), errors.recordError.map(_.map(_.code.code)).getOrElse(Nil)).flatten
+    if (typesWithWarnings.contains(reportType)) Some(messages(s"sendYourFile.warning.${reportType.toString}")) else None
 
-    (errorCodes.exists(
-      !expectedErrorCodes.contains(_)
-    ))
   }
 
 }

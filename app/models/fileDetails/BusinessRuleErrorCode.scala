@@ -22,7 +22,6 @@ sealed abstract class BusinessRuleErrorCode(val code: String)
 
 object BusinessRuleErrorCode {
 
-  case object FailedSchemaValidation extends BusinessRuleErrorCode("50007")
   case object InvalidMessageRefIDFormat extends BusinessRuleErrorCode("50008")
   case object MessageRefIDHasAlreadyBeenUsed extends BusinessRuleErrorCode("50009")
   case object FileContainsTestDataForProductionEnvironment extends BusinessRuleErrorCode("50010")
@@ -33,6 +32,8 @@ object BusinessRuleErrorCode {
   case object CorrDocRefIdNoLongerValid extends BusinessRuleErrorCode("80003")
   case object CorrDocRefIdForNewData extends BusinessRuleErrorCode("80004")
   case object MissingCorrDocRefId extends BusinessRuleErrorCode("80005")
+  case object CorrMessageRefIDForbiddenInDocSpec extends BusinessRuleErrorCode("80006")
+  case object CorrMessageRefIDForbiddenInMessageHeader extends BusinessRuleErrorCode("80007")
   case object ResendOption extends BusinessRuleErrorCode("80008")
   case object DeleteParentRecord extends BusinessRuleErrorCode("80009")
   case object MessageTypeIndic extends BusinessRuleErrorCode("80010")
@@ -92,17 +93,9 @@ object BusinessRuleErrorCode {
   case object ReportingRoleOECD0IsNotTheSame extends BusinessRuleErrorCode("42")
   case object ReportingRoleOECD0IsNotTheSame2 extends BusinessRuleErrorCode("43")
 
-  case object CustomError extends BusinessRuleErrorCode("99999")
   case class UnknownErrorCode(override val code: String) extends BusinessRuleErrorCode(code)
 
-  val fileErrorCodesForProblemStatus: Seq[BusinessRuleErrorCode] = Seq(
-    FailedSchemaValidation,
-    NotMeantToBeReceivedByTheIndicatedJurisdiction,
-    CustomError
-  )
-
   val values: Seq[BusinessRuleErrorCode] = Seq(
-    FailedSchemaValidation,
     InvalidMessageRefIDFormat,
     MessageRefIDHasAlreadyBeenUsed,
     NotMeantToBeReceivedByTheIndicatedJurisdiction,
@@ -113,6 +106,8 @@ object BusinessRuleErrorCode {
     CorrDocRefIdNoLongerValid,
     CorrDocRefIdForNewData,
     MissingCorrDocRefId,
+    CorrMessageRefIDForbiddenInDocSpec,
+    CorrMessageRefIDForbiddenInMessageHeader,
     ResendOption,
     DeleteParentRecord,
     MessageTypeIndic,
@@ -169,8 +164,7 @@ object BusinessRuleErrorCode {
     SpecificReportingRoleCantMatchSpecificConstEntityRole3,
     SpecificReportingRoleCantMatchSpecificConstEntityRole4,
     ReportingRoleOECD0IsNotTheSame,
-    ReportingRoleOECD0IsNotTheSame2,
-    CustomError
+    ReportingRoleOECD0IsNotTheSame2
   )
 
   implicit val writes: Writes[BusinessRuleErrorCode] = Writes[BusinessRuleErrorCode] {
@@ -179,7 +173,6 @@ object BusinessRuleErrorCode {
   }
 
   implicit val reads: Reads[BusinessRuleErrorCode] = __.read[String].map {
-    case "50007"              => FailedSchemaValidation
     case "50008"              => InvalidMessageRefIDFormat
     case "50009"              => MessageRefIDHasAlreadyBeenUsed
     case "50010"              => FileContainsTestDataForProductionEnvironment
@@ -190,6 +183,8 @@ object BusinessRuleErrorCode {
     case "80003"              => CorrDocRefIdNoLongerValid
     case "80004"              => CorrDocRefIdForNewData
     case "80005"              => MissingCorrDocRefId
+    case "80006"              => CorrMessageRefIDForbiddenInDocSpec
+    case "80007"              => CorrMessageRefIDForbiddenInMessageHeader
     case "80008"              => ResendOption
     case "80009"              => DeleteParentRecord
     case "80010"              => MessageTypeIndic
@@ -247,7 +242,6 @@ object BusinessRuleErrorCode {
     case "CBC Error Code 40b" => SpecificReportingRoleCantMatchSpecificConstEntityRole4
     case "CBC Error Code 42"  => ReportingRoleOECD0IsNotTheSame
     case "CBC Error Code 43"  => ReportingRoleOECD0IsNotTheSame2
-    case "99999"              => CustomError
     case otherCode            => UnknownErrorCode(otherCode)
   }
 }
