@@ -18,15 +18,8 @@ package controllers
 
 import base.SpecBase
 import connectors.FileDetailsConnector
-import controllers.actions.{
-  DataRequiredAction,
-  DataRequiredActionImpl,
-  DataRetrievalAction,
-  FakeDataRetrievalActionProvider,
-  FakeIdentifierActionAgent,
-  IdentifierAction
-}
-import models.{CBC401, ConversationId, MessageSpecData, MessageTypeIndic, TestData, ValidatedFileData}
+import controllers.actions._
+import models.{CBC401, ConversationId, MessageSpecData, TestData, ValidatedFileData}
 import models.fileDetails.{Accepted, FileDetails}
 import org.mockito.ArgumentMatchers.any
 import pages.{AgentFirstContactEmailPage, AgentSecondContactEmailPage, ContactEmailPage, SecondContactEmailPage, ValidXMLPage}
@@ -86,6 +79,7 @@ class FileReceivedControllerSpec extends SpecBase {
         "name",
         messageRefId,
         "Reporting Entity",
+        TestData,
         LocalDateTime.parse("2022-01-01T10:30:00.000"),
         LocalDateTime.parse("2022-01-01T10:30:00.000"),
         Accepted,
@@ -108,7 +102,7 @@ class FileReceivedControllerSpec extends SpecBase {
 
         val view = application.injector.instanceOf[FileReceivedView]
 
-        val list = SummaryListViewModel(FileReceivedViewModel.getSummaryRows(fileDetails, TestData)(messages(application)))
+        val list = SummaryListViewModel(FileReceivedViewModel.getSummaryRows(fileDetails)(messages(application)))
           .withMargin()
 
         status(result) mustEqual OK
@@ -130,6 +124,7 @@ class FileReceivedControllerSpec extends SpecBase {
         "name",
         messageRefId,
         "Reporting Entity",
+        TestData,
         LocalDateTime.parse("2022-01-01T10:30:00.000"),
         LocalDateTime.parse("2022-01-01T10:30:00.000"),
         Accepted,
@@ -152,7 +147,7 @@ class FileReceivedControllerSpec extends SpecBase {
 
         val view = application.injector.instanceOf[FileReceivedAgentView]
 
-        val list = SummaryListViewModel(FileReceivedViewModel.getAgentSummaryRows(fileDetails, TestData)(messages(application)))
+        val list = SummaryListViewModel(FileReceivedViewModel.getAgentSummaryRows(fileDetails)(messages(application)))
           .withMargin()
 
         status(result) mustEqual OK
