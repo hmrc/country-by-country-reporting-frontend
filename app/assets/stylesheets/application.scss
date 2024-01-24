@@ -21,10 +21,11 @@ body:not(.js-enabled) .js-enabled {
 }
 
 .code--block{
+    min-width: 100% !important;
     border: none;
     margin: 0;
-    line-height: 2em;
-    padding: 4px;
+    line-height: 1.5em;
+    padding: 10px;
     word-wrap: break-word;
     font-family: Consolas,Monaco,"Andale Mono","Ubuntu Mono",monospace;
     color: #0b0c0c;
