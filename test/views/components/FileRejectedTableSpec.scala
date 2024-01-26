@@ -56,7 +56,7 @@ class FileRejectedTableSpec extends SpecBase {
   }
 
   "render a bulleted list error for error code 80001" in {
-    val errors = List(FileRejectedError(MessageTypeIndic.code, Nil))
+    val errors = List(FileRejectedError(DocRefIDFormat.code, Nil))
 
     view.render(errors, messages).toString() must {
       include(messages("fileRejected.80001.intro")) and
