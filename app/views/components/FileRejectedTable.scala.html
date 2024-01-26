@@ -16,7 +16,7 @@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 
-@import models.fileDetails.FileErrorCode.InvalidMessageRefIDFormat
+@import models.fileDetails.BusinessRuleErrorCode.{DocRefIDFormat, MessageTypeIndic, ReportingPeriodCantChange, ConstEntitiesRoleInitial, ConstEntitiesRoleCorrection, InvalidMessageRefIDFormat}
 @import viewmodels.FileRejectedError
 
 @this(govukTable: GovukTable)
@@ -36,7 +36,7 @@
         validationErrors.map { error =>
             val errCode = error.errorCode
             Seq(
-                TableRow(Text(errCode), attributes = Map("id" -> s"code_$errCode")),
+                TableRow(Text(errCode.replaceAll("CBC Error Code ", "")), attributes = Map("id" -> s"code_$errCode")),
                 TableRow(HtmlContent(getDocRefId(error.docRefIds)), attributes = Map("id" -> s"docRefId_$errCode")),
                 TableRow(HtmlContent(getErrorDescription(error.errorCode)), attributes = Map("id" -> s"errorMessage_$errCode"))
             )
@@ -56,7 +56,8 @@
 }}
 
 @getErrorDescription(code: String) = {@{
-    code match {
+val code2 = code.replaceAll("CBC Error Code ", "")
+    code2 match {
         case InvalidMessageRefIDFormat.code =>
             <p class="govuk-body">{messages("fileRejected.50008.intro")}</p>
             <ol class="govuk-list govuk-list--bullet">
@@ -69,7 +70,47 @@
                 <li>{messages("fileRejected.50008.bullet7")}</li>
             </ol>
             <p class="govuk-body">{messages("fileRejected.50008.example")}</p>
+        case DocRefIDFormat.code =>
+            <p class="govuk-body">{messages("fileRejected.80001.intro")}</p>
+            <ol class="govuk-list govuk-list--bullet">
+                <li>{messages("fileRejected.80001.bullet1")}</li>
+                <li>{messages("fileRejected.80001.bullet2")}</li>
+                <li>{messages("fileRejected.80001.bullet3")}</li>
+                <li>{messages("fileRejected.80001.bullet4")}</li>
+                <li>{messages("fileRejected.80001.bullet5")}</li>
+                <li>{messages("fileRejected.80001.bullet6")}</li>
+            </ol>
+        case MessageTypeIndic.code =>
+            <p class="govuk-body">{messages("fileRejected.80010.intro")}</p>
+            <p class="govuk-body">{messages("fileRejected.80010.bulletIntro")}</p>
+            <ol class="govuk-list govuk-list--bullet">
+                <li>{messages("fileRejected.80010.bullet1")}</li>
+                <li>{messages("fileRejected.80010.bullet2")}</li>
+                <li>{messages("fileRejected.80010.bullet3")}</li>
+            </ol>
+            <p class="govuk-body">{messages("fileRejected.80010.explanation")}</p>
+        case ReportingPeriodCantChange.code =>
+            <p class="govuk-body">{messages("fileRejected.12.p1")}</p>
+            <p class="govuk-body">{messages("fileRejected.12.p2")}</p>
+            <p class="govuk-body">{messages("fileRejected.12.p3")}</p>
+        case ConstEntitiesRoleInitial.code =>
+            <p class="govuk-body">{messages("fileRejected.24.intro")}</p>
+            <ol class="govuk-list govuk-list--bullet">
+                <li>{messages("fileRejected.24.bullet1")}</li>
+                <li>{messages("fileRejected.24.bullet2")}</li>
+                <li>{messages("fileRejected.24.bullet3")}</li>
+                <li>{messages("fileRejected.24.bullet4")}</li>
+            </ol>
+        case ConstEntitiesRoleCorrection.code =>
+            <p class="govuk-body">{messages("fileRejected.24.intro")}</p>
+            <ol class="govuk-list govuk-list--bullet">
+                <li>{messages("fileRejected.24.bullet1")}</li>
+                <li>{messages("fileRejected.24.bullet2")}</li>
+                <li>{messages("fileRejected.24.bullet3")}</li>
+                <li>{messages("fileRejected.24.bullet4")}</li>
+            </ol>
+            <p class="govuk-body">{messages("fileRejected.24b.value")}</p>
         case _ =>
-            <p class="govuk-body">{messages(s"fileRejected.$code.value")}</p>
-    }
+            <p class="govuk-body">{messages(s"fileRejected.$code2.value")}</p>
+        }
 }}

@@ -20,8 +20,7 @@ import base.SpecBase
 import config.FrontendAppConfig
 import connectors.{FileDetailsConnector, SubmissionConnector}
 import handlers.XmlHandler
-import models.fileDetails.FileErrorCode.FailedSchemaValidation
-import models.fileDetails.RecordErrorCode.DocRefIDFormat
+import models.fileDetails.BusinessRuleErrorCode.{DocRefIDFormat, InvalidMessageRefIDFormat}
 import models.fileDetails._
 import models.{CBC401, ConversationId, MessageSpecData, NewInformation, ReportType, TestData, UserAnswers, ValidatedFileData}
 import org.mockito.ArgumentMatchers.any
@@ -248,7 +247,7 @@ class SendYourFileControllerSpec extends SpecBase {
       "must return OK and load the page 'FileProblem' when the file status is 'Rejected' with 'problem' errors" in {
 
         val mockFileDetailsConnector = mock[FileDetailsConnector]
-        val validationErrors         = FileValidationErrors(Some(Seq(FileErrors(FailedSchemaValidation, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
+        val validationErrors         = FileValidationErrors(Some(Seq(FileErrors(InvalidMessageRefIDFormat, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
 
         val userAnswers = UserAnswers("Id")
           .set(ConversationIdPage, conversationId)

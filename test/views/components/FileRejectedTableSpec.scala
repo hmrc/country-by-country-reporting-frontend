@@ -17,8 +17,7 @@
 package views.components
 
 import base.SpecBase
-import models.fileDetails.FileErrorCode._
-import models.fileDetails.RecordErrorCode._
+import models.fileDetails.BusinessRuleErrorCode._
 import play.api.i18n.{Messages, MessagesApi}
 import viewmodels.FileRejectedError
 import views.html.components.FileRejectedTable
@@ -53,6 +52,42 @@ class FileRejectedTableSpec extends SpecBase {
     view.render(errors, messages).toString() must {
       include(messages("fileRejected.50008.intro")) and
         include(messages("fileRejected.50008.bullet1"))
+    }
+  }
+
+  "render a bulleted list error for error code 80001" in {
+    val errors = List(FileRejectedError(DocRefIDFormat.code, Nil))
+
+    view.render(errors, messages).toString() must {
+      include(messages("fileRejected.80001.intro")) and
+        include(messages("fileRejected.80001.bullet1"))
+    }
+  }
+
+  "render a list of paragraphs error for error code 12" in {
+    val errors = List(FileRejectedError(ReportingPeriodCantChange.code, Nil))
+
+    view.render(errors, messages).toString() must {
+      include(messages("fileRejected.12.p1")) and
+        include(messages("fileRejected.12.p2"))
+    }
+  }
+
+  "render a bulleted list error for error code 24" in {
+    val errors = List(FileRejectedError(ConstEntitiesRoleInitial.code, Nil))
+
+    view.render(errors, messages).toString() must {
+      include(messages("fileRejected.24.intro")) and
+        include(messages("fileRejected.24.bullet1"))
+    }
+  }
+
+  "render a bulleted list error for 24b error code" in {
+    val errors = List(FileRejectedError(ConstEntitiesRoleCorrection.code, Nil))
+
+    view.render(errors, messages).toString() must {
+      include(messages("fileRejected.24.intro")) and
+        include(messages("fileRejected.24b.value"))
     }
   }
 

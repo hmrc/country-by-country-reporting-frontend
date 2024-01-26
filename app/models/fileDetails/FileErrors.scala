@@ -18,7 +18,7 @@ package models.fileDetails
 
 import play.api.libs.json.{Json, OFormat}
 
-case class FileErrors(code: FileErrorCode, details: Option[String])
+case class FileErrors(code: BusinessRuleErrorCode, details: Option[String])
 
 object FileErrors {
 
