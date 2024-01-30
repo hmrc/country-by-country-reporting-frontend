@@ -19,6 +19,8 @@
 @this(
         layout: templates.Layout,
         link: components.Link,
+        heading: components.Heading,
+        paragraph: components.Paragraph,
         appConfig: FrontendAppConfig
 )
 
@@ -26,11 +28,9 @@
 
 @layout(pageTitle = titleNoForm(messages("individualSignInProblem.title")), showBackLink = false) {
 
-    <h1 class="govuk-heading-l">@messages("individualSignInProblem.heading")</h1>
+    @heading(messages("individualSignInProblem.heading"))
 
-    <p class="govuk-body">@messages("individualSignInProblem.p1")</p>
+    @paragraph(Html(messages("individualSignInProblem.p1")))
 
-    <p class="govuk-body">
-    @Html(messages("individualSignInProblem.p2", link(appConfig.loginUrl, "individualSignInProblem.p2.link")))
-    </p>
+    @paragraph(Html(messages("individualSignInProblem.p2", link(appConfig.loginUrl, "individualSignInProblem.p2.link"))))
 }

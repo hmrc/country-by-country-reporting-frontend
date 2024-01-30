@@ -14,21 +14,8 @@
  * limitations under the License.
  *@
 
-@this(
-        layout: templates.Layout,
-        link: components.Link,
-        heading: components.Heading,
-        paragraph: components.Paragraph
-)
+@this()
 
-@()(implicit request: Request[_], messages: Messages)
+@(content: Html, classes: String = "govuk-body", id: Option[String] = None)
 
-@layout(pageTitle = titleNoForm(messages("informationSent.title")), showBackLink = false) {
-
-    @heading(messages("informationSent.heading"))
-
-    @paragraph(Html(messages("informationSent.p1")))
-
-    @paragraph(link(routes.IndexController.onPageLoad.url, "site.backToReportPage"))
-
-}
+<p class="@classes wrappable" @id.map{id => id="@id"}>@content</p>
