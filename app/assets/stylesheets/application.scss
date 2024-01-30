@@ -70,6 +70,16 @@ body:not(.js-enabled) .js-enabled {
   word-wrap: anywhere;
 }
 
-.cbc-file-rejected-table td > p:last-child {
+.cbc-file-rejected-table .govuk-body,
+.cbc-file-rejected-table .govuk-list {
+  margin-bottom: 0.4em;
+}
+
+.cbc-file-rejected-table .doc-ref-ids .govuk-body {
+  margin-bottom: 1em;
+}
+
+.cbc-file-rejected-table td > .govuk-body:last-child,
+.cbc-file-rejected-table td > .govuk-list:last-child {
   margin-bottom: 0;
 }
