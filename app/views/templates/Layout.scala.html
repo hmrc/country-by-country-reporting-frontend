@@ -64,7 +64,6 @@
     serviceUrl  = Some(routes.IndexController.onPageLoad.url),
     signOutUrl  = if(showSignOut) Some(controllers.auth.routes.AuthController.signOut.url) else None,
     phaseBanner = Some(alphaBanner(appConfig.feedbackUrl)),
-    nonce = CSPNonce.get,
     additionalScriptsBlock = Some(additionalScripts),
     backLink = if(showBackLink) Some(BackLinkViewModel(href = "#").withCssClass("js-enabled govuk-!-display-none-print")) else None,
     beforeContentBlock = if(showAgentHeader) Some(clientHeader(showBackLink)) else None,
