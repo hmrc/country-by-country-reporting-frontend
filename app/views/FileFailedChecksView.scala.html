@@ -33,12 +33,12 @@
 
     @if(isAgent) {
         @govukWarningText(WarningText(
-            iconFallbackText = "site.warning",
+            iconFallbackText = Some("site.warning"),
             content = Text(messages("fileFailedChecks.agentWarning"))
         ))
     } else {
         @govukWarningText(WarningText(
-            iconFallbackText = "site.warning",
+            iconFallbackText = Some("site.warning"),
             content = Text(messages("fileFailedChecks.orgWarning"))
         ))
     }
