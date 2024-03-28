@@ -83,3 +83,7 @@ body:not(.js-enabled) .js-enabled {
 .cbc-file-rejected-table td > .govuk-list:last-child {
   margin-bottom: 0;
 }
+
+.govuk-summary-list__value {
+      width: 50%;
+  }
