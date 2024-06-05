@@ -16,11 +16,10 @@
 
 package viewmodels
 
-import models.ReportType
 import models.fileDetails.FileDetails
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
 import utils.DateTimeFormatUtil._
 import viewmodels.govuk.summarylist._
 
@@ -58,7 +57,7 @@ object FileReceivedViewModel {
       )
     ) ++ getSummaryRows(receivedFileDetails)
 
-  def formattedSummaryListView(rows: Seq[SummaryListRow]) = SummaryListViewModel(rows)
+  def formattedSummaryListView(rows: Seq[SummaryListRow]): SummaryList = SummaryListViewModel(rows)
     .withMargin()
 
 }

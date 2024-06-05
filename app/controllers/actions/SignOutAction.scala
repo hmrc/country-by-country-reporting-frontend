@@ -16,21 +16,18 @@
 
 package controllers.actions
 
-import javax.inject.Inject
 import config.FrontendAppConfig
 import controllers.routes
-import models.requests.agent.{AgentIdentifierRequest, SignOutRequest}
-import play.api.Logging
+import models.requests.agent.SignOutRequest
 import play.api.mvc.Results.Redirect
 import play.api.mvc._
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.auth.core.AuthProvider.GovernmentGateway
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
-import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 trait SignOutAction extends ActionBuilder[SignOutRequest, AnyContent]
