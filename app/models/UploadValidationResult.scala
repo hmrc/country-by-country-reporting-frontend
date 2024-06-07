@@ -27,7 +27,7 @@ object GenericError {
       ge => (ge.lineNumber, ge.message.messageKey)
     )
 
-  implicit val format = Json.format[GenericError]
+  implicit val format: OFormat[GenericError] = Json.format[GenericError]
 }
 
 case class Message(messageKey: String, args: Seq[String] = Seq.empty)
@@ -43,14 +43,14 @@ case class NonFatalErrors(e: String) extends Errors
 case class ValidationErrors(errors: Seq[GenericError], boolean: Option[Boolean]) extends Errors
 
 object ValidationErrors {
-  implicit val format = Json.format[ValidationErrors]
+  implicit val format: OFormat[ValidationErrors] = Json.format[ValidationErrors]
 }
 
 sealed trait SubmissionValidationResult
 
 object SubmissionValidationResult {
 
-  implicit val validationWrites = new Format[SubmissionValidationResult] {
+  implicit val validationWrites: Format[SubmissionValidationResult] = new Format[SubmissionValidationResult] {
 
     override def reads(json: JsValue): JsResult[SubmissionValidationResult] =
       json
