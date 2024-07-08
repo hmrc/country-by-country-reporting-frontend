@@ -19,7 +19,7 @@ package config
 import com.google.inject.AbstractModule
 import controllers.actions._
 import controllers.actions.agent._
-
+import uk.gov.hmrc.crypto.{Decrypter, Encrypter}
 import java.time.{Clock, ZoneOffset}
 
 class Module extends AbstractModule {
@@ -40,5 +40,8 @@ class Module extends AbstractModule {
     bind(classOf[SignOutAction]).to(classOf[AuthenticatedSignOutAction]).asEagerSingleton()
 
     bind(classOf[Clock]).toInstance(Clock.systemDefaultZone.withZone(ZoneOffset.UTC))
+    bind(classOf[Encrypter]).toProvider(classOf[CryptoProvider])
+    bind(classOf[Decrypter]).toProvider(classOf[CryptoProvider])
   }
+
 }
