@@ -1,6 +1,6 @@
 package repositories
 
-import config.FrontendAppConfig
+import config.{CryptoProvider, FrontendAppConfig}
 import models.UserAnswers
 import org.mockito.Mockito.when
 import org.mongodb.scala.model.Filters
@@ -9,11 +9,15 @@ import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar
+import play.api.Configuration
 import play.api.libs.json.Json
+import uk.gov.hmrc.crypto.{Crypted, Decrypter, Encrypter}
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
+import java.security.SecureRandom
 import java.time.temporal.ChronoUnit
 import java.time.{Clock, Instant, ZoneId}
+import java.util.Base64
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class SessionRepositorySpec
@@ -33,6 +37,15 @@ class SessionRepositorySpec
   private val mockAppConfig = mock[FrontendAppConfig]
   when(mockAppConfig.cacheTtl) thenReturn 1
 
+  when(mockAppConfig.encryptionEnabled) thenReturn true
+
+  private val randomAesKey: String = {
+    val aesKey = new Array[Byte](32)
+    new SecureRandom().nextBytes(aesKey)
+    Base64.getEncoder.encodeToString(aesKey)
+  }
+
+  implicit val crypto: Encrypter with Decrypter = new CryptoProvider(Configuration("crypto.key" -> randomAesKey)).get()
   protected override val repository = new SessionRepository(
     mongoComponent = mongoComponent,
     appConfig      = mockAppConfig,
@@ -50,6 +63,26 @@ class SessionRepositorySpec
 
       setResult mustEqual true
       updatedRecord mustEqual expectedResult
+    }
+
+    "must encrypt the data" in {
+      repository.set(userAnswers).futureValue
+
+      val raw = mongoComponent.database.getCollection("user-answers")
+        .find(Filters.equal("_id", userAnswers.id))
+        .headOption()
+        .futureValue
+
+      raw match {
+        case None => fail("db record not found")
+        case Some(ua) =>
+          val id = ua.get("_id").head.asString.getValue
+          val rawData = ua.get("data").get.asString.getValue
+          val decryptedData = crypto.decrypt(Crypted(rawData)).value
+
+          id mustBe userAnswers.id
+          Json.parse(decryptedData) mustBe userAnswers.data
+      }
     }
   }
 

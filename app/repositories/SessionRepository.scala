@@ -21,6 +21,7 @@ import models.UserAnswers
 import org.mongodb.scala.bson.conversions.Bson
 import org.mongodb.scala.model._
 import play.api.libs.json.Format
+import uk.gov.hmrc.crypto.{Decrypter, Encrypter}
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
@@ -35,11 +36,11 @@ class SessionRepository @Inject() (
   mongoComponent: MongoComponent,
   appConfig: FrontendAppConfig,
   clock: Clock
-)(implicit ec: ExecutionContext)
+)(implicit ec: ExecutionContext, crypto: Encrypter with Decrypter)
     extends PlayMongoRepository[UserAnswers](
       collectionName = "user-answers",
       mongoComponent = mongoComponent,
-      domainFormat = UserAnswers.format,
+      domainFormat = UserAnswers.mongoFormat(appConfig.encryptionEnabled),
       indexes = Seq(
         IndexModel(
           Indexes.ascending("lastUpdated"),
