@@ -28,7 +28,7 @@ case class UpscanInitiateResponse(
 )
 
 object UpscanInitiateResponse {
-  implicit val format = Json.format[UpscanInitiateResponse]
+  implicit val format: OFormat[UpscanInitiateResponse] = Json.format[UpscanInitiateResponse]
 }
 
 case class Reference(value: String) extends AnyVal
@@ -64,28 +64,26 @@ sealed trait CallbackBody {
 
 object CallbackBody {
 
-  implicit val uploadDetailsReads = Json.reads[UploadDetails]
+  implicit val uploadDetailsReads: Reads[UploadDetails] = Json.reads[UploadDetails]
 
-  implicit val errorDetailsFormat = Json.format[ErrorDetails]
+  implicit val errorDetailsFormat: OFormat[ErrorDetails] = Json.format[ErrorDetails]
 
-  implicit val failedCallbackBodyReads = Json.reads[FailedCallbackBody]
+  implicit val failedCallbackBodyReads: Reads[FailedCallbackBody] = Json.reads[FailedCallbackBody]
 
-  implicit val reads = new Reads[CallbackBody] {
-
-    override def reads(json: JsValue): JsResult[CallbackBody] = json \ "fileStatus" match {
+  implicit val reads: Reads[CallbackBody] = (json: JsValue) =>
+    json \ "fileStatus" match {
       case JsDefined(JsString("READY"))  => implicitly[Reads[ReadyCallbackBody]].reads(json)
       case JsDefined(JsString("FAILED")) => implicitly[Reads[FailedCallbackBody]].reads(json)
       case JsDefined(value)              => JsError(s"Invalid type distriminator: $value")
       case JsUndefined()                 => JsError(s"Missing type distriminator")
       case _                             => JsError(s"Unknown generic error")
     }
-  }
 }
 
 case class UploadDetails(uploadTimestamp: Instant, checksum: String, fileMimeType: String, fileName: String)
 
 object UploadDetails {
-  implicit val format = Json.format[UploadDetails]
+  implicit val format: OFormat[UploadDetails] = Json.format[UploadDetails]
 }
 
 case class ErrorDetails(failureReason: String, message: String)
