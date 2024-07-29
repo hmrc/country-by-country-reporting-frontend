@@ -30,8 +30,15 @@ import views.html.CheckYourFileDetailsView
 
 class CheckYourFileDetailsControllerSpec extends SpecBase {
 
+  private val FileSize = 20L
+
   "CheckYourFileDetails Controller" - {
-    val vfd: ValidatedFileData = ValidatedFileData("filename.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData))
+    val vfd: ValidatedFileData = ValidatedFileData(
+      "filename.xml",
+      MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData),
+      FileSize,
+      "MD5:123"
+    )
 
     "must return OK and the correct view for a GET" in {
 

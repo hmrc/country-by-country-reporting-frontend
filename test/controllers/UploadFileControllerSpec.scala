@@ -28,7 +28,6 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages.UploadIDPage
 import play.api.Application
 import play.api.inject.bind
-import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{status, _}
 import views.html.UploadFileView
@@ -37,6 +36,7 @@ import scala.concurrent.Future
 
 class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks with Generators {
 
+  private val FileSize   = 20L
   val uploadId: UploadId = UploadId("12345")
 
   val fakeUpscanConnector: FakeUpscanConnector = app.injector.instanceOf[FakeUpscanConnector]
@@ -91,7 +91,7 @@ class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks wi
       verifyResult(Quarantined, Some(routes.FileProblemVirusController.onPageLoad().url))
       verifyResult(UploadRejected(ErrorDetails("REJECTED", "message")), Some(routes.FileProblemNotXmlController.onPageLoad().url))
       verifyResult(Failed, Some(routes.ThereIsAProblemController.onPageLoad().url))
-      verifyResult(UploadedSuccessfully("name", "downloadUrl"), Some(routes.FileValidationController.onPageLoad().url))
+      verifyResult(UploadedSuccessfully("name", "downloadUrl", FileSize, "MD5:123"), Some(routes.FileValidationController.onPageLoad().url))
 
     }
 

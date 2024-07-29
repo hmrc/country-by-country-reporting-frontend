@@ -29,8 +29,15 @@ import views.html.FileFailedChecksView
 
 class FileFailedChecksControllerSpec extends SpecBase {
 
+  private val FileSize = 20L
+
   "FileFailedChecks Controller" - {
-    val validXmlDetails = ValidatedFileData("test.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData))
+    val validXmlDetails = ValidatedFileData(
+      "test.xml",
+      MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData),
+      FileSize,
+      "MD5:123"
+    )
 
     "must return OK and the correct view for a GET when user type is an ORG" in {
 

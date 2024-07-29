@@ -59,18 +59,24 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
       .build()
 
     val downloadURL = "http://dummy-url.com"
+    val FileSize    = 20L
+
     val uploadDetails = UploadSessionDetails(
       new ObjectId(),
       UploadId("123"),
       Reference("123"),
-      UploadedSuccessfully("afile", downloadURL)
+      UploadedSuccessfully("afile", downloadURL, FileSize, "MD5:123")
     )
 
     "must redirect to Check your answers and present the correct view for a GET" in {
 
       val userAnswersCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
       val messageSpecData                                = MessageSpecData("XBG1999999", CBC401, "Reporting Entity", TestData)
-      val expectedData: JsObject                         = Json.obj("uploadID" -> UploadId("123"), "validXML" -> ValidatedFileData("afile", messageSpecData), "url" -> downloadURL)
+      val expectedData: JsObject = Json.obj(
+        "uploadID" -> UploadId("123"),
+        "validXML" -> ValidatedFileData("afile", messageSpecData, FileSize, "MD5:123"),
+        "url"      -> downloadURL
+      )
 
       when(mockValidationConnector.sendForValidation(any())(any(), any())).thenReturn(Future.successful(Right(messageSpecData)))
       when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))

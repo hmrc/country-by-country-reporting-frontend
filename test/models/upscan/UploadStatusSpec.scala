@@ -40,8 +40,17 @@ class UploadStatusSpec extends AnyWordSpec with Matchers {
       "_type is UploadedSuccessfully" in {
         val expectedName     = "fileName"
         val expectedUrl      = "downloadUrl"
-        val json             = s"""{"_type": "UploadedSuccessfully", "name": "$expectedName", "downloadUrl": "$expectedUrl"}"""
-        val expectedResponse = UploadedSuccessfully(expectedName, expectedUrl)
+        val expectedFileSize = 20L
+        val expectedChecksum = "MD5:123"
+        val json =
+          s"""{
+             |"_type": "UploadedSuccessfully",
+             |"name": "$expectedName",
+             |"downloadUrl": "$expectedUrl",
+             |"size": $expectedFileSize,
+             |"checksum": "$expectedChecksum"
+             |}""".stripMargin
+        val expectedResponse = UploadedSuccessfully(expectedName, expectedUrl, expectedFileSize, expectedChecksum)
         Json.parse(json).as[UploadStatus] mustBe expectedResponse
       }
     }
@@ -71,14 +80,22 @@ class UploadStatusSpec extends AnyWordSpec with Matchers {
           }
       }
 
-      "set _type as UploadedSuccessfully with name, downloadUrl and noOfRows in json" when {
+      "set _type as UploadedSuccessfully with name, downloadUrl, size, and checksum in json" when {
         "status is UploadedSuccessfully" in {
-          val expectedName = "fileName"
-          val expectedUrl  = "downloadUrl"
+          val expectedName     = "fileName"
+          val expectedUrl      = "downloadUrl"
+          val expectedFileSize = 20L
+          val expectedChecksum = "MD5:123"
           val expectedJson =
-            s"""{"name":"$expectedName","downloadUrl":"$expectedUrl","_type":"UploadedSuccessfully"}"""
-          val uploadStatus: UploadStatus = UploadedSuccessfully(expectedName, expectedUrl)
-          Json.toJson(uploadStatus).toString() mustBe expectedJson
+            s"""{
+               |  "name" : "$expectedName",
+               |  "downloadUrl" : "$expectedUrl",
+               |  "size" : $expectedFileSize,
+               |  "checksum" : "$expectedChecksum",
+               |  "_type" : "UploadedSuccessfully"
+               |}""".stripMargin
+          val uploadStatus: UploadStatus = UploadedSuccessfully(expectedName, expectedUrl, expectedFileSize, expectedChecksum)
+          Json.prettyPrint(Json.toJson(uploadStatus)) mustBe expectedJson
         }
       }
 

@@ -36,11 +36,18 @@ import scala.concurrent.Future
 
 class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyChecks {
 
+  private val FileSize = 20L
+
   "FilePendingChecks Controller" - {
 
     val mockFileDetailsConnector: FileDetailsConnector = mock[FileDetailsConnector]
     val conversationId                                 = ConversationId("conversationId")
-    val validXmlDetails                                = ValidatedFileData("name", MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData))
+    val validXmlDetails = ValidatedFileData(
+      "name",
+      MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData),
+      FileSize,
+      "MD5:123"
+    )
 
     "must return OK and the correct view for a GET when fileStatus is Pending" in {
 

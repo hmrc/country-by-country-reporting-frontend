@@ -22,6 +22,8 @@ import play.api.libs.json.Json
 
 class UploadSessionDetailsSpec extends SpecBase {
 
+  private val FileSize = 20L
+
   def str2Hex(str: String): Array[Byte] = {
     val bytes = new Array[Byte](str.length / 2)
     var i     = 0
@@ -161,7 +163,7 @@ class UploadSessionDetailsSpec extends SpecBase {
       Json.toJson(uploadSessionDetails) mustBe Json.parse(expectedUploadSessionDetails)
     }
 
-    "must written correctly for status: UploadedSuccessfully" in {
+    "must correctly write to JSON when the status is: UploadedSuccessfully" in {
       val expectedUploadSessionDetails =
         """{
           |"_id": { "$oid": "111111111111111111111111"},
@@ -170,7 +172,9 @@ class UploadSessionDetailsSpec extends SpecBase {
           |"status": {
           |     "_type": "UploadedSuccessfully",
           |     "name": "name",
-          |     "downloadUrl": "downloadUrl"
+          |     "downloadUrl": "downloadUrl",
+          |     "size": 20,
+          |     "checksum": "MD5:123"
           |   }
           |}""".stripMargin
 
@@ -178,13 +182,13 @@ class UploadSessionDetailsSpec extends SpecBase {
         objectId,
         UploadId("121"),
         Reference("ref"),
-        UploadedSuccessfully("name", "downloadUrl")
+        UploadedSuccessfully("name", "downloadUrl", FileSize, "MD5:123")
       )
 
       Json.toJson(uploadSessionDetails) mustBe Json.parse(expectedUploadSessionDetails)
     }
 
-    "must be able to be marshalled correctly for status: UploadedSuccessfully" in {
+    "must correctly marshall JSON to object when status is: UploadedSuccessfully" in {
       val json =
         """{
           |"_id": { "$oid": "111111111111111111111111"},
@@ -193,7 +197,9 @@ class UploadSessionDetailsSpec extends SpecBase {
           |"status": {
           |     "_type": "UploadedSuccessfully",
           |     "name": "name",
-          |     "downloadUrl": "downloadUrl"
+          |     "downloadUrl": "downloadUrl",
+          |     "size": 20,
+          |     "checksum": "MD5:123"
           |   }
           |}""".stripMargin
 
@@ -201,7 +207,7 @@ class UploadSessionDetailsSpec extends SpecBase {
         objectId,
         UploadId("121"),
         Reference("ref"),
-        UploadedSuccessfully("name", "downloadUrl")
+        UploadedSuccessfully("name", "downloadUrl", FileSize, "MD5:123")
       )
 
       Json.parse(json).as[UploadSessionDetails] mustBe expectedUploadSessionDetails

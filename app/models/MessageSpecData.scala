@@ -24,6 +24,8 @@ case object CBC402 extends MessageTypeIndic
 
 object MessageTypeIndic {
 
+  val values: Seq[MessageTypeIndic] = Seq(CBC401, CBC402)
+
   implicit val writes: Writes[MessageTypeIndic] = Writes[MessageTypeIndic] {
     case CBC401 => JsString("CBC401")
     case CBC402 => JsString("CBC402")
@@ -42,7 +44,7 @@ object MessageSpecData {
   implicit val format: OFormat[MessageSpecData] = Json.format[MessageSpecData]
 }
 
-case class ValidatedFileData(fileName: String, messageSpecData: MessageSpecData)
+case class ValidatedFileData(fileName: String, messageSpecData: MessageSpecData, fileSize: Long, checksum: String)
 
 object ValidatedFileData {
   implicit val format: OFormat[ValidatedFileData] = Json.format[ValidatedFileData]
@@ -59,6 +61,17 @@ case object CorrectionAndDeletionForExistingReport extends ReportType
 case object CorrectionForReportingEntity extends ReportType
 
 object ReportType {
+
+  val values: Seq[ReportType] = Seq(
+    TestData,
+    NewInformation,
+    DeletionOfAllInformation,
+    NewInformationForExistingReport,
+    CorrectionForExistingReport,
+    DeletionForExistingReport,
+    CorrectionAndDeletionForExistingReport,
+    CorrectionForReportingEntity
+  )
 
   implicit val writes: Writes[ReportType] = Writes[ReportType] {
     case TestData                               => JsString("TEST_DATA")
