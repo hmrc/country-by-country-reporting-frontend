@@ -234,6 +234,3 @@ POST       /agent/agent-is-this-your-client                                     
 
 GET        /agent/manage-your-clients                                         controllers.agent.ManageYourClientsController.onPageLoad(mode: Mode = NormalMode)
 POST       /agent/manage-your-clients                                         controllers.agent.ManageYourClientsController.onSubmit(mode: Mode = NormalMode)
-
-GET        /page-not-found                                                      controllers.PageNotFoundController.onPageLoad()
-
