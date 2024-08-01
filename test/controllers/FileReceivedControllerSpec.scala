@@ -36,6 +36,8 @@ import scala.concurrent.Future
 
 class FileReceivedControllerSpec extends SpecBase {
 
+  private val FileSize = 20L
+
   val mockFileDetailsConnector: FileDetailsConnector = mock[FileDetailsConnector]
 
   "FileReceived Controller" - {
@@ -46,7 +48,12 @@ class FileReceivedControllerSpec extends SpecBase {
     val secondContactEmail      = "second@email.com"
     val agentFirstContactEmail  = "agentfirst@email.com"
     val agentSecondContactEmail = "agentsecond@email.com"
-    val vfd: ValidatedFileData  = ValidatedFileData("filename.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData))
+    val vfd: ValidatedFileData = ValidatedFileData(
+      "filename.xml",
+      MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData),
+      FileSize,
+      "MD5:123"
+    )
 
     val userAnswers = emptyUserAnswers
       .set(ContactEmailPage, firstContactEmail)

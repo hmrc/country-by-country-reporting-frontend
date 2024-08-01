@@ -19,13 +19,15 @@ package controllers
 import base.SpecBase
 import config.FrontendAppConfig
 import connectors.{FileDetailsConnector, SubmissionConnector}
-import handlers.XmlHandler
+import generators.Generators
 import models.fileDetails.BusinessRuleErrorCode.{DocRefIDFormat, InvalidMessageRefIDFormat}
 import models.fileDetails._
-import models.{CBC401, ConversationId, MessageSpecData, NewInformation, ReportType, TestData, UserAnswers, ValidatedFileData}
+import models.submission.SubmissionDetails
+import models.{ConversationId, NewInformation, UserAnswers, ValidatedFileData}
+import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
-import pages.{ConversationIdPage, URLPage, ValidXMLPage}
-import play.api.i18n.MessagesApi
+import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
+import pages.{ConversationIdPage, URLPage, UploadIDPage, ValidXMLPage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -34,78 +36,81 @@ import views.html.SendYourFileView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class SendYourFileControllerSpec extends SpecBase {
+class SendYourFileControllerSpec extends SpecBase with Generators with ScalaCheckDrivenPropertyChecks {
 
   private val conversationId: ConversationId = ConversationId("conversationId")
-  val messages                               = mock[MessagesApi]
 
-  def validatedFileData(reportType: ReportType) = ValidatedFileData("fileName", MessageSpecData("messageRef", CBC401, "Reporting Entity", reportType))
+  private val submissionDetailsArgCaptor: ArgumentCaptor[SubmissionDetails] = ArgumentCaptor.forClass(classOf[SubmissionDetails])
 
   "SendYourFile Controller" - {
 
     "onPageLoad" - {
 
-      "must return OK and the correct view for a GET" in {
+      "must return OK and the correct view for a GET with a new report submission" in {
+        forAll {
+          submissionDetails: SubmissionDetails =>
+            val fileData = ValidatedFileData(
+              submissionDetails.fileName,
+              submissionDetails.messageSpecData.copy(reportType = NewInformation),
+              submissionDetails.fileSize,
+              submissionDetails.checksum
+            )
 
-        val userAnswers = UserAnswers("Id")
-          .set(ValidXMLPage, validatedFileData(NewInformation))
-          .success
-          .value
+            val userAnswers = UserAnswers("Id").withPage(ValidXMLPage, fileData)
 
-        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+            val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-        running(application) {
-          val request   = FakeRequest(GET, routes.SendYourFileController.onPageLoad().url)
-          val appConfig = application.injector.instanceOf[FrontendAppConfig]
+            running(application) {
+              val request   = FakeRequest(GET, routes.SendYourFileController.onPageLoad().url)
+              val appConfig = application.injector.instanceOf[FrontendAppConfig]
 
-          val result = route(application, request).value
+              val result = route(application, request).value
 
-          val view = application.injector.instanceOf[SendYourFileView]
+              val view = application.injector.instanceOf[SendYourFileView]
 
-          status(result) mustEqual OK
-          contentAsString(result) mustEqual view(appConfig, None)(request, messages(application)).toString
+              status(result) mustEqual OK
+              contentAsString(result) mustEqual view(appConfig, None)(request, messages(application)).toString
+            }
         }
       }
     }
+
     "onSubmit" - {
 
-      "redirect to file received page" in {
+      "redirect to still-checking-your-file page on successful submission" in {
+        forAll {
+          submissionDetails: SubmissionDetails =>
+            val mockSubmissionConnector = mock[SubmissionConnector]
 
-        val mockSubmissionConnector = mock[SubmissionConnector]
-        val mockXmlHandler          = mock[XmlHandler]
+            val fileData = ValidatedFileData(
+              submissionDetails.fileName,
+              submissionDetails.messageSpecData,
+              submissionDetails.fileSize,
+              submissionDetails.checksum
+            )
 
-        val userAnswers = UserAnswers("Id")
-          .set(ValidXMLPage, validatedFileData(TestData))
-          .success
-          .value
-          .set(URLPage, "url")
-          .success
-          .value
+            val userAnswers = UserAnswers("Id")
+              .withPage(ValidXMLPage, fileData)
+              .withPage(URLPage, submissionDetails.documentUrl)
+              .withPage(UploadIDPage, submissionDetails.uploadId)
 
-        val application = applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(
-            bind[SubmissionConnector].toInstance(mockSubmissionConnector),
-            bind[XmlHandler].toInstance(mockXmlHandler)
-          )
-          .build()
+            val application = applicationBuilder(userAnswers = Some(userAnswers))
+              .overrides(bind[SubmissionConnector].toInstance(mockSubmissionConnector))
+              .build()
 
-        when(mockSubmissionConnector.submitDocument(any[String], any[String], any())(any[HeaderCarrier], any[ExecutionContext]))
-          .thenReturn(Future.successful(Some(ConversationId("conversationId"))))
+            when(mockSubmissionConnector.submitDocument(submissionDetailsArgCaptor.capture())(any[HeaderCarrier], any[ExecutionContext]))
+              .thenReturn(Future.successful(Some(ConversationId("conversationId"))))
 
-        when(mockXmlHandler.load(any[String]())).thenReturn(<test>
-          <value>Success</value>
-        </test>)
+            running(application) {
+              val request = FakeRequest(POST, routes.SendYourFileController.onSubmit().url)
 
-        running(application) {
-          val request = FakeRequest(POST, routes.SendYourFileController.onSubmit().url)
+              val result = route(application, request).value
 
-          val result = route(application, request).value
+              status(result) mustEqual SEE_OTHER
+              redirectLocation(result) mustBe Some(controllers.routes.FilePendingChecksController.onPageLoad().url)
 
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result) mustBe Some(controllers.routes.FilePendingChecksController.onPageLoad().url)
-
-          verify(mockSubmissionConnector, times(1))
-            .submitDocument(any(), any(), any())(any(), any())
+              verifySubmissionDetails(submissionDetails)
+            }
         }
       }
 
@@ -125,38 +130,38 @@ class SendYourFileControllerSpec extends SpecBase {
         }
       }
 
-      "redirect to there is a problem page on failing to submitDocument" in {
-        val mockSubmissionConnector = mock[SubmissionConnector]
-        val mockXmlHandler          = mock[XmlHandler]
+      "return INTERNAL_SERVER_ERROR on failing to submit document" in {
+        forAll {
+          submissionDetails: SubmissionDetails =>
+            val mockSubmissionConnector = mock[SubmissionConnector]
 
-        val userAnswers = UserAnswers("Id")
-          .set(ValidXMLPage, validatedFileData(TestData))
-          .success
-          .value
-          .set(URLPage, "url")
-          .success
-          .value
+            val fileData = ValidatedFileData(
+              submissionDetails.fileName,
+              submissionDetails.messageSpecData,
+              submissionDetails.fileSize,
+              submissionDetails.checksum
+            )
+            val userAnswers = UserAnswers("Id")
+              .withPage(ValidXMLPage, fileData)
+              .withPage(URLPage, submissionDetails.documentUrl)
+              .withPage(UploadIDPage, submissionDetails.uploadId)
 
-        val application = applicationBuilder(userAnswers = Some(userAnswers))
-          .overrides(
-            bind[SubmissionConnector].toInstance(mockSubmissionConnector),
-            bind[XmlHandler].toInstance(mockXmlHandler)
-          )
-          .build()
+            val application = applicationBuilder(userAnswers = Some(userAnswers))
+              .overrides(bind[SubmissionConnector].toInstance(mockSubmissionConnector))
+              .build()
 
-        when(mockXmlHandler.load(any[String]())).thenReturn(<test>
-          <value>Success</value>
-        </test>)
+            when(mockSubmissionConnector.submitDocument(submissionDetailsArgCaptor.capture())(any[HeaderCarrier], any[ExecutionContext]))
+              .thenReturn(Future.successful(None))
 
-        when(mockSubmissionConnector.submitDocument(any[String], any[String], any())(any[HeaderCarrier], any[ExecutionContext]))
-          .thenReturn(Future.successful(None))
+            running(application) {
+              val request = FakeRequest(POST, routes.SendYourFileController.onSubmit().url)
 
-        running(application) {
-          val request = FakeRequest(POST, routes.SendYourFileController.onSubmit().url)
+              val result = route(application, request).value
 
-          val result = route(application, request).value
+              status(result) mustEqual INTERNAL_SERVER_ERROR
 
-          status(result) mustEqual INTERNAL_SERVER_ERROR
+              verifySubmissionDetails(submissionDetails)
+            }
         }
       }
     }
@@ -315,5 +320,15 @@ class SendYourFileControllerSpec extends SpecBase {
         }
       }
     }
+  }
+
+  private def verifySubmissionDetails(submissionDetails: SubmissionDetails) = {
+    val capturedSubmissionDetails = submissionDetailsArgCaptor.getValue
+    capturedSubmissionDetails.uploadId mustBe submissionDetails.uploadId
+    capturedSubmissionDetails.documentUrl mustBe submissionDetails.documentUrl
+    capturedSubmissionDetails.fileName mustBe submissionDetails.fileName
+    capturedSubmissionDetails.messageSpecData mustBe submissionDetails.messageSpecData
+    capturedSubmissionDetails.fileSize mustBe submissionDetails.fileSize
+    capturedSubmissionDetails.checksum mustBe submissionDetails.checksum
   }
 }

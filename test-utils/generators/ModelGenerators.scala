@@ -16,19 +16,12 @@
 
 package generators
 
-import models.{AgentClientDetails, ManageYourClients}
-import models.agentSubscription.{
-  AgentContactInformation,
-  AgentDetails,
-  AgentRequestCommonForSubscription,
-  AgentRequestDetail,
-  AgentRequestDetailForUpdate,
-  AgentResponseDetail,
-  AgentSubscriptionRequest,
-  CreateAgentSubscriptionRequest
-}
+import models._
+import models.agentSubscription._
 import models.fileDetails.{BusinessRuleErrorCode, FileErrors, FileValidationErrors, RecordError}
+import models.submission.SubmissionDetails
 import models.subscription._
+import models.upscan.UploadId
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 
@@ -44,7 +37,7 @@ trait ModelGenerators {
 
   implicit lazy val arbitraryWhatToDoNext: Arbitrary[ManageYourClients] =
     Arbitrary {
-      Gen.oneOf(ManageYourClients.values.toSeq)
+      Gen.oneOf(ManageYourClients.values)
     }
 
   implicit val arbitraryOrganisationDetails: Arbitrary[OrganisationDetails] = Arbitrary {
@@ -188,6 +181,27 @@ trait ModelGenerators {
         AgentSubscriptionRequest(requestCommon, requestDetail)
       )
     }
+
+  implicit val arbitraryMessageSpecData: Arbitrary[MessageSpecData] = Arbitrary {
+    for {
+      messageRefId        <- arbitrary[String]
+      messageTypeIndic    <- Gen.oneOf(MessageTypeIndic.values)
+      reportingEntityName <- arbitrary[String]
+      reporterType        <- Gen.oneOf(ReportType.values.filterNot(_.equals(TestData)))
+    } yield MessageSpecData(messageRefId, messageTypeIndic, reportingEntityName, reporterType)
+  }
+
+  implicit val arbitrarySubmissionDetails: Arbitrary[SubmissionDetails] = Arbitrary {
+    for {
+      fileName        <- arbitrary[String]
+      fileSize        <- arbitrary[Long]
+      fileChecksum    <- arbitrary[String]
+      enrolmentId     <- arbitrary[String]
+      uploadId        <- arbitrary[String]
+      documentUrl     <- arbitrary[String]
+      messageSpecData <- arbitrary[MessageSpecData]
+    } yield SubmissionDetails(fileName, UploadId(uploadId), enrolmentId, fileSize, documentUrl, fileChecksum, messageSpecData)
+  }
 
   def listWithMaxLength[T](maxSize: Int, gen: Gen[T]): Gen[Seq[T]] =
     for {

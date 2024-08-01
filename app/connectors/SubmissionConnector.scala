@@ -18,50 +18,27 @@ package connectors
 
 import config.FrontendAppConfig
 import models.ConversationId
+import models.submission.SubmissionDetails
 import play.api.Logging
-import play.api.http.HeaderNames
 import uk.gov.hmrc.http.HttpReads.Implicits._
 import uk.gov.hmrc.http.HttpReads.is2xx
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
-import scala.xml.transform.{RewriteRule, RuleTransformer}
-import scala.xml.{Elem, Node, NodeSeq}
 
 class SubmissionConnector @Inject() (httpClient: HttpClient, config: FrontendAppConfig) extends Logging {
 
   val submitUrl = s"${config.cbcUrl}/country-by-country-reporting/submit"
 
-  def submitDocument(fileName: String, enrolmentID: String, xmlDocument: NodeSeq)(implicit
+  def submitDocument(submissionDetails: SubmissionDetails)(implicit
     hc: HeaderCarrier,
     ec: ExecutionContext
   ): Future[Option[ConversationId]] =
-    httpClient.POSTString[HttpResponse](submitUrl, constructSubmission(fileName, enrolmentID, xmlDocument).toString(), headers) map {
-      case response if is2xx(response.status) => Some(response.json.as[ConversationId])
+    httpClient.POST[SubmissionDetails, HttpResponse](submitUrl, submissionDetails) map {
+      case response if is2xx(response.status) => Option(response.json.as[ConversationId])
       case errorResponse =>
-        logger.warn(s"Failed to submitDocument: received the status: ${errorResponse.status} and message: ${errorResponse.body}")
+        logger.warn(s"Failed to submit document with upload Id [${submissionDetails.uploadId.value}]: received status: ${errorResponse.status}")
         None
     }
-
-  private def constructSubmission(fileName: String, enrolmentID: String, document: NodeSeq): NodeSeq = {
-    val submission =
-      <submission>
-        <fileName>{fileName}</fileName>
-        <enrolmentID>{enrolmentID}</enrolmentID>
-        <file></file>
-      </submission>
-
-    new RuleTransformer(new RewriteRule {
-      override def transform(n: Node): Seq[Node] = n match {
-        case elem: Elem if elem.label == "file" =>
-          elem.copy(child = document)
-        case other => other
-      }
-    }).transform(submission).head
-  }
-
-  private val headers = Seq(
-    HeaderNames.CONTENT_TYPE -> "application/xml"
-  )
 }

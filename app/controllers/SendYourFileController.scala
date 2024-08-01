@@ -19,11 +19,11 @@ package controllers
 import config.FrontendAppConfig
 import connectors.{FileDetailsConnector, SubmissionConnector}
 import controllers.actions._
-import handlers.XmlHandler
 import models.ValidatedFileData
 import models.fileDetails.{FileValidationErrors, Pending, Rejected, Accepted => FileStatusAccepted}
+import models.submission.SubmissionDetails
 import models.upscan.URL
-import pages.{ConversationIdPage, URLPage, ValidXMLPage}
+import pages.{ConversationIdPage, URLPage, UploadIDPage, ValidXMLPage}
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
@@ -47,7 +47,6 @@ class SendYourFileController @Inject() (
   submissionConnector: SubmissionConnector,
   fileDetailsConnector: FileDetailsConnector,
   sessionRepository: SessionRepository,
-  xmlHandler: XmlHandler,
   val controllerComponents: MessagesControllerComponents,
   view: SendYourFileView
 )(implicit ec: ExecutionContext)
@@ -62,10 +61,10 @@ class SendYourFileController @Inject() (
 
   def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
-      (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(URLPage)) match {
-        case (Some(ValidatedFileData(filename, _)), Some(fileUrl)) =>
-          val xml = xmlHandler.load(fileUrl)
-          submissionConnector.submitDocument(filename, request.subscriptionId, xml) flatMap {
+      (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(URLPage), request.userAnswers.get(UploadIDPage)) match {
+        case (Some(ValidatedFileData(fileName, messageSpecData, fileSize, checksum)), Some(fileUrl), Some(uploadId)) =>
+          val submissionDetails = SubmissionDetails(fileName, uploadId, request.subscriptionId, fileSize, fileUrl, checksum, messageSpecData)
+          submissionConnector.submitDocument(submissionDetails) flatMap {
             case Some(conversationId) =>
               for {
                 userAnswers <- Future.fromTry(request.userAnswers.set(ConversationIdPage, conversationId))

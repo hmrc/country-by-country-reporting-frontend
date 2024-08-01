@@ -28,6 +28,8 @@ class UpscanConnectorSpec extends Connector {
 
   val uploadId: UploadId = UploadId("12345")
 
+  private val FileSize = 20L
+
   override def fakeApplication(): Application = new GuiceApplicationBuilder()
     .configure(
       "microservice.services.upscan.port"                       -> server.port(),
@@ -87,7 +89,7 @@ class UpscanConnectorSpec extends Connector {
         val body = UploadSessionDetails(_id = ObjectId.get(),
                                         uploadId = UploadId("12345"),
                                         reference = Reference("Reference"),
-                                        status = UploadedSuccessfully("name", "downloadUrl")
+                                        status = UploadedSuccessfully("name", "downloadUrl", FileSize, "MD5:123")
         )
 
         stubGetResponse("/country-by-country-reporting/upscan/details/12345", OK, Json.toJson(body).toString())
@@ -120,7 +122,9 @@ class UpscanConnectorSpec extends Connector {
           """{
             | "_type": "UploadedSuccessfully",
             | "name": "name",
-            | "downloadUrl": "downloadUrl"
+            | "downloadUrl": "downloadUrl",
+            | "size": 20,
+            | "checksum": "MD5:123"
             | }
             |""".stripMargin
 
@@ -128,7 +132,7 @@ class UpscanConnectorSpec extends Connector {
 
         whenReady(connector.getUploadStatus(uploadId)) {
           result =>
-            result mustBe Some(UploadedSuccessfully("name", "downloadUrl"))
+            result mustBe Some(UploadedSuccessfully("name", "downloadUrl", FileSize, "MD5:123"))
         }
       }
 

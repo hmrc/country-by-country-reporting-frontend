@@ -17,7 +17,6 @@
 package controllers.testOnlyDoNotUseInAppConf
 
 import javax.inject.Inject
-import connectors.SubmissionConnector
 import controllers.actions.IdentifierAction
 import play.api.Logging
 import play.api.libs.json.Json
@@ -30,7 +29,7 @@ import scala.xml.NodeSeq
 class TestSubmissionController @Inject() (
   identifierAction: IdentifierAction,
   agentDelegatedAuthAction: TestAgentAddDelegatedAuthAction,
-  connector: SubmissionConnector,
+  connector: TestSubmissionConnector,
   override val controllerComponents: MessagesControllerComponents
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
@@ -40,7 +39,7 @@ class TestSubmissionController @Inject() (
     implicit request =>
       logger.debug(s"inserting test submission: ${request.body}")
       connector
-        .submitDocument(fileName, request.subscriptionId, request.body)
+        .submitXmlDocument(fileName, request.subscriptionId, request.body)
         .map {
           case Some(conversationId) => Ok(Json.toJson(conversationId))
           case _                    => InternalServerError

@@ -18,7 +18,7 @@ package controllers
 
 import connectors.{UpscanConnector, ValidationConnector}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.upscan.{UploadSessionDetails, UploadedSuccessfully, UpscanURL}
+import models.upscan.{ExtractedFileStatus, UploadSessionDetails, UploadedSuccessfully, UpscanURL}
 import models.{InvalidXmlError, NormalMode, ValidatedFileData, ValidationErrors}
 import navigation.Navigator
 import pages._
@@ -53,7 +53,7 @@ class FileValidationController @Inject() (
       request.userAnswers
         .get(UploadIDPage)
         .fold {
-          logger.error("Cannot find uploadId")
+          logger.error("Cannot find upload Id from user answers")
           Future.successful(InternalServerError(errorView()))
         } {
           uploadId =>
@@ -61,16 +61,18 @@ class FileValidationController @Inject() (
               upscanConnector.getUploadDetails(uploadId) map {
                 uploadSessions =>
                   getDownloadUrl(uploadSessions).fold {
-                    logger.error("File not uploaded successfully")
+                    logger.error(s"Failed to upload file with upload Id: [${uploadId.value}]")
                     Future.successful(InternalServerError(errorView()))
                   } {
                     downloadDetails =>
-                      val (fileName, url) = downloadDetails
-                      validationConnector.sendForValidation(UpscanURL(url)) flatMap {
+                      val downloadUrl = downloadDetails.downloadUrl
+                      val fileName    = downloadDetails.name
+                      validationConnector.sendForValidation(UpscanURL(downloadUrl)) flatMap {
                         case Right(messageSpecData) =>
+                          val validatedFileData = ValidatedFileData(fileName, messageSpecData, downloadDetails.size, downloadDetails.checksum)
                           for {
-                            updatedAnswers        <- Future.fromTry(request.userAnswers.set(ValidXMLPage, ValidatedFileData(fileName, messageSpecData)))
-                            updatedAnswersWithURL <- Future.fromTry(updatedAnswers.set(URLPage, url))
+                            updatedAnswers        <- Future.fromTry(request.userAnswers.set(ValidXMLPage, validatedFileData))
+                            updatedAnswersWithURL <- Future.fromTry(updatedAnswers.set(URLPage, downloadUrl))
                             _                     <- sessionRepository.set(updatedAnswersWithURL)
                           } yield Redirect(navigator.nextPage(ValidXMLPage, NormalMode, updatedAnswers))
 
@@ -96,12 +98,13 @@ class FileValidationController @Inject() (
         }
   }
 
-  private def getDownloadUrl(uploadSessions: Option[UploadSessionDetails]): Option[(String, String)] =
+  private def getDownloadUrl(uploadSessions: Option[UploadSessionDetails]): Option[ExtractedFileStatus] =
     uploadSessions match {
       case Some(uploadDetails) =>
         uploadDetails.status match {
-          case UploadedSuccessfully(name, downloadUrl) => Some((name, downloadUrl))
-          case _                                       => None
+          case UploadedSuccessfully(name, downloadUrl, size, checksum) =>
+            Option(ExtractedFileStatus(name, downloadUrl, size, checksum))
+          case _ => None
         }
       case _ => None
     }

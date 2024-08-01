@@ -110,10 +110,12 @@ class UploadFileController @Inject() (
           case Some(Quarantined) =>
             Redirect(routes.FileProblemVirusController.onPageLoad().url)
           case Some(Failed) =>
+            logger.warn("File upload returned failed status")
             Redirect(routes.ThereIsAProblemController.onPageLoad().url)
           case Some(_) =>
             Redirect(routes.UploadFileController.getStatus(uploadId).url)
           case None =>
+            logger.warn("Unable to retrieve file upload status from Upscan")
             Redirect(routes.ThereIsAProblemController.onPageLoad().url)
         }
       }

@@ -27,12 +27,19 @@ import views.html.FilePassedChecksView
 
 class FilePassedChecksControllerSpec extends SpecBase {
 
+  private val FileSize = 20L
+
   "FilePassedChecks Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val conversationId  = ConversationId("conversationId")
-      val validXmlDetails = ValidatedFileData("test.xml", MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData))
+      val conversationId = ConversationId("conversationId")
+      val validXmlDetails = ValidatedFileData(
+        "test.xml",
+        MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData),
+        FileSize,
+        "MD5:123"
+      )
 
       val userAnswers = emptyUserAnswers
         .set(ValidXMLPage, validXmlDetails)

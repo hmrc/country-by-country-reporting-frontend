@@ -14,15 +14,6 @@
  * limitations under the License.
  */
 
-package handlers
+package models.upscan
 
-import java.net.URL
-import scala.xml.Elem
-
-class XmlHandler {
-
-  def load(url: String): Elem =
-    new scala.xml.factory.XMLLoader[scala.xml.Elem] {
-      override def adapter = new scala.xml.parsing.NoBindingFactoryAdapter
-    }.load(new URL(url))
-}
+final case class ExtractedFileStatus(name: String, downloadUrl: String, size: Long, checksum: String)

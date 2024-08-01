@@ -24,7 +24,7 @@ case object InProgress extends UploadStatus
 case object Failed extends UploadStatus
 case object Quarantined extends UploadStatus
 
-case class UploadedSuccessfully(name: String, downloadUrl: String) extends UploadStatus
+case class UploadedSuccessfully(name: String, downloadUrl: String, size: Long, checksum: String) extends UploadStatus
 
 case class UploadRejected(details: ErrorDetails) extends UploadStatus
 

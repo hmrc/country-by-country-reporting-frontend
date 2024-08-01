@@ -17,6 +17,7 @@
 package connectors
 
 import models.ConversationId
+import models.submission.SubmissionDetails
 import play.api.Application
 import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, OK}
 import play.api.inject.guice.GuiceApplicationBuilder
@@ -27,9 +28,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class SubmissionConnectorSpec extends Connector {
 
   override lazy val app: Application = new GuiceApplicationBuilder()
-    .configure(
-      conf = "microservice.services.country-by-country-reporting.port" -> server.port()
-    )
+    .configure(conf = "microservice.services.country-by-country-reporting.port" -> server.port())
     .build()
 
   lazy val connector: SubmissionConnector = app.injector.instanceOf[SubmissionConnector]
@@ -38,37 +37,32 @@ class SubmissionConnectorSpec extends Connector {
 
   "SubmissionConnector" - {
 
-    "must return a 200 on successful submission of xml" in {
+    "must return a 200 on successful submission" in {
+      forAll {
+        submissionDetails: SubmissionDetails =>
+          stubPostResponse(submitUrl, OK, Json.toJson(conversationId).toString())
 
-      stubPostResponse(submitUrl, OK, Json.toJson(conversationId).toString())
-
-      val xml = <test></test>
-      whenReady(connector.submitDocument("test-file.xml", "enrolmentID", xml)) {
-        result =>
-          result.value mustBe conversationId
+          connector.submitDocument(submissionDetails).futureValue.value mustBe conversationId
       }
     }
 
-    "must return a 400 when submission of xml fails with BadRequest" in {
-      stubPostResponse(submitUrl, BAD_REQUEST)
+    "must return a 400 when submission fails with BadRequest" in {
+      forAll {
+        submissionDetails: SubmissionDetails =>
+          stubPostResponse(submitUrl, BAD_REQUEST)
 
-      val xml = <test-bad></test-bad>
-      whenReady(connector.submitDocument("test-bad-file.xml", "enrolmentID", xml)) {
-        result =>
-          result mustBe None
+          connector.submitDocument(submissionDetails).futureValue mustBe None
       }
     }
 
-    "must return a 500 when submission of xml fails with InternalServer Error" in {
-      stubPostResponse(submitUrl, INTERNAL_SERVER_ERROR)
+    "must return a 500 when submission fails with InternalServer Error" in {
+      forAll {
+        submissionDetails: SubmissionDetails =>
+          stubPostResponse(submitUrl, INTERNAL_SERVER_ERROR)
 
-      val xml = <test-error></test-error>
-      whenReady(connector.submitDocument("test-file.xml", "enrolmentID", xml)) {
-        result =>
-          result mustBe None
+          connector.submitDocument(submissionDetails).futureValue mustBe None
       }
     }
-
   }
 
 }
