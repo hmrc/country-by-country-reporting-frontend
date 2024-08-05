@@ -18,14 +18,12 @@ package controllers
 
 import connectors.FileDetailsConnector
 import controllers.actions._
-import models.{UserAnswers, ValidatedFileData}
 import models.fileDetails.{FileValidationErrors, Pending, Rejected, RejectedSDES, RejectedSDESVirus, Accepted => FileStatusAccepted}
-import models.upscan.URL
+import models.{UserAnswers, ValidatedFileData}
 import pages.{ConversationIdPage, UploadIDPage, ValidXMLPage}
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request, Result}
+import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.FileProblemHelper.isProblemStatus
