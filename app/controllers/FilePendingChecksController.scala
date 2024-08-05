@@ -18,11 +18,14 @@ package controllers
 
 import connectors.FileDetailsConnector
 import controllers.actions._
-import models.fileDetails.{Pending, Rejected, FileValidationErrors, Accepted => FileStatusAccepted}
+import models.{UserAnswers, ValidatedFileData}
+import models.fileDetails.{FileValidationErrors, Pending, Rejected, RejectedSDES, RejectedSDESVirus, Accepted => FileStatusAccepted}
+import models.upscan.URL
 import pages.{ConversationIdPage, UploadIDPage, ValidXMLPage}
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import play.api.libs.json.Json
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request, Result}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.FileProblemHelper.isProblemStatus
@@ -58,16 +61,11 @@ class FilePendingChecksController @Inject() (
                 errors,
                 Future.successful(Redirect(routes.FileFailedChecksController.onPageLoad()))
               )
-            case Some(Pending) =>
-              val summary = FileCheckViewModel.createFileSummary(xmlDetails.messageSpecData.messageRefId, Pending.toString)
-              request.userAnswers.get(ConversationIdPage) match {
-                case Some(conversationId) =>
-                  for {
-                    updatedAnswers <- Future.fromTry(request.userAnswers.remove(UploadIDPage))
-                    _              <- sessionRepository.set(updatedAnswers)
-                  } yield Ok(view(summary, routes.FilePendingChecksController.onPageLoad().url, conversationId.value, request.isAgent))
-                case _ => Future.successful(InternalServerError(errorView()))
-              }
+            case Some(Pending) => handlePendingFile(xmlDetails, request.userAnswers, request.isAgent)
+            case Some(RejectedSDES) =>
+              Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+            case Some(RejectedSDESVirus) =>
+              Future.successful(Redirect(routes.FileProblemVirusController.onPageLoad()))
             case _ =>
               logger.warn("Unable to get Status")
               Future.successful(InternalServerError(errorView()))
@@ -76,6 +74,18 @@ class FilePendingChecksController @Inject() (
           logger.warn("Unable to retrieve fileName & conversationId")
           Future.successful(InternalServerError(errorView()))
       }
+  }
+
+  private def handlePendingFile(xmlDetails: ValidatedFileData, userAnswers: UserAnswers, isAgent: Boolean)(implicit request: Request[_]) = {
+    val summary = FileCheckViewModel.createFileSummary(xmlDetails.messageSpecData.messageRefId, Pending.toString)
+    userAnswers.get(ConversationIdPage) match {
+      case Some(conversationId) =>
+        for {
+          updatedAnswers <- Future.fromTry(userAnswers.remove(UploadIDPage))
+          _              <- sessionRepository.set(updatedAnswers)
+        } yield Ok(view(summary, routes.FilePendingChecksController.onPageLoad().url, conversationId.value, isAgent))
+      case _ => Future.successful(InternalServerError(errorView()))
+    }
   }
 
   private def slowJourneyErrorRoute(errors: FileValidationErrors, result: Future[Result]): Future[Result] =

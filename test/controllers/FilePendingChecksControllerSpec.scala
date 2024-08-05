@@ -182,6 +182,62 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
       }
     }
 
+    "must redirect to ThereIsAProblem Page when RejectedSDES status returned" in {
+
+      val userAnswers: UserAnswers = emptyUserAnswers
+        .set(ConversationIdPage, conversationId)
+        .success
+        .value
+        .set(ValidXMLPage, validXmlDetails)
+        .success
+        .value
+
+      when(mockFileDetailsConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(Some(RejectedSDES)))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[FileDetailsConnector].toInstance(mockFileDetailsConnector)
+        )
+        .build()
+
+      running(application) {
+
+        val request = FakeRequest(GET, routes.FilePendingChecksController.onPageLoad().url)
+        val result  = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.ThereIsAProblemController.onPageLoad().url
+      }
+    }
+
+    "must redirect to FileProblemVirus Page when RejectedSDESVirus status returned" in {
+
+      val userAnswers: UserAnswers = emptyUserAnswers
+        .set(ConversationIdPage, conversationId)
+        .success
+        .value
+        .set(ValidXMLPage, validXmlDetails)
+        .success
+        .value
+
+      when(mockFileDetailsConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(Some(RejectedSDESVirus)))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[FileDetailsConnector].toInstance(mockFileDetailsConnector)
+        )
+        .build()
+
+      running(application) {
+
+        val request = FakeRequest(GET, routes.FilePendingChecksController.onPageLoad().url)
+        val result  = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.FileProblemVirusController.onPageLoad().url
+      }
+    }
+
     "must redirect to File Passed Checks Page when ACCEPTED status returned" in {
 
       val userAnswers: UserAnswers = emptyUserAnswers

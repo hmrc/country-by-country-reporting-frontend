@@ -249,6 +249,62 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
         }
       }
 
+      "must redirect user to the page 'ThereIsAProblem' when the file status is 'RejectedSDES'" in {
+
+        val mockFileDetailsConnector = mock[FileDetailsConnector]
+
+        val userAnswers = UserAnswers("Id")
+          .set(ConversationIdPage, conversationId)
+          .success
+          .value
+
+        when(mockFileDetailsConnector.getStatus(any[ConversationId]())(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(Some(RejectedSDES)))
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
+          .overrides(
+            bind[FileDetailsConnector].toInstance(mockFileDetailsConnector)
+          )
+          .build()
+
+        running(application) {
+          val request = FakeRequest(GET, routes.SendYourFileController.getStatus().url)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result) mustBe Some(routes.ThereIsAProblemController.onPageLoad().url)
+        }
+      }
+
+      "must redirect user to the page 'FileProblemVirus' when the file status is 'RejectedSDESVirus'" in {
+
+        val mockFileDetailsConnector = mock[FileDetailsConnector]
+
+        val userAnswers = UserAnswers("Id")
+          .set(ConversationIdPage, conversationId)
+          .success
+          .value
+
+        when(mockFileDetailsConnector.getStatus(any[ConversationId]())(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(Some(RejectedSDESVirus)))
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
+          .overrides(
+            bind[FileDetailsConnector].toInstance(mockFileDetailsConnector)
+          )
+          .build()
+
+        running(application) {
+          val request = FakeRequest(GET, routes.SendYourFileController.getStatus().url)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result) mustBe Some(routes.FileProblemVirusController.onPageLoad().url)
+        }
+      }
+
       "must return OK and load the page 'FileProblem' when the file status is 'Rejected' with 'problem' errors" in {
 
         val mockFileDetailsConnector = mock[FileDetailsConnector]
