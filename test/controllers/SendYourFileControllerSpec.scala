@@ -277,7 +277,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
         }
       }
 
-      "must redirect user to the page 'FileProblemVirus' when the file status is 'RejectedSDESVirus'" in {
+      "must return OK and load the page 'FileProblemVirus' when the file status is 'RejectedSDESVirus'" in {
 
         val mockFileDetailsConnector = mock[FileDetailsConnector]
 

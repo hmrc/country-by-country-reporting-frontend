@@ -52,12 +52,8 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
     "must return OK and the correct view for a GET when fileStatus is Pending" in {
 
       val userAnswers: UserAnswers = emptyUserAnswers
-        .set(ConversationIdPage, conversationId)
-        .success
-        .value
-        .set(ValidXMLPage, validXmlDetails)
-        .success
-        .value
+        .withPage(ConversationIdPage, conversationId)
+        .withPage(ValidXMLPage, validXmlDetails)
 
       when(mockFileDetailsConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(Some(Pending)))
 
@@ -84,12 +80,8 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
     "must return OK for Agent and the correct view for a GET when fileStatus is Pending" in {
 
       val userAnswers: UserAnswers = emptyUserAnswers
-        .set(ConversationIdPage, conversationId)
-        .success
-        .value
-        .set(ValidXMLPage, validXmlDetails)
-        .success
-        .value
+        .withPage(ConversationIdPage, conversationId)
+        .withPage(ValidXMLPage, validXmlDetails)
 
       when(mockFileDetailsConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(Some(Pending)))
 
@@ -125,12 +117,8 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
           val validationErrors = FileValidationErrors(Some(Seq(FileErrors(fileErrorCode, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
 
           val userAnswers: UserAnswers = emptyUserAnswers
-            .set(ConversationIdPage, conversationId)
-            .success
-            .value
-            .set(ValidXMLPage, validXmlDetails)
-            .success
-            .value
+            .withPage(ConversationIdPage, conversationId)
+            .withPage(ValidXMLPage, validXmlDetails)
 
           when(mockFileDetailsConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(Some(Rejected(validationErrors))))
 
@@ -157,12 +145,8 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
         FileValidationErrors(Some(Seq(FileErrors(MessageRefIDHasAlreadyBeenUsed, None))), Some(Seq(RecordError(MissingCorrDocRefId, None, None))))
 
       val userAnswers: UserAnswers = emptyUserAnswers
-        .set(ConversationIdPage, conversationId)
-        .success
-        .value
-        .set(ValidXMLPage, validXmlDetails)
-        .success
-        .value
+        .withPage(ConversationIdPage, conversationId)
+        .withPage(ValidXMLPage, validXmlDetails)
 
       when(mockFileDetailsConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(Some(Rejected(validationErrors))))
 
@@ -185,12 +169,8 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
     "must redirect to ThereIsAProblem Page when RejectedSDES status returned" in {
 
       val userAnswers: UserAnswers = emptyUserAnswers
-        .set(ConversationIdPage, conversationId)
-        .success
-        .value
-        .set(ValidXMLPage, validXmlDetails)
-        .success
-        .value
+        .withPage(ConversationIdPage, conversationId)
+        .withPage(ValidXMLPage, validXmlDetails)
 
       when(mockFileDetailsConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(Some(RejectedSDES)))
 
@@ -213,12 +193,8 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
     "must redirect to FileProblemVirus Page when RejectedSDESVirus status returned" in {
 
       val userAnswers: UserAnswers = emptyUserAnswers
-        .set(ConversationIdPage, conversationId)
-        .success
-        .value
-        .set(ValidXMLPage, validXmlDetails)
-        .success
-        .value
+        .withPage(ConversationIdPage, conversationId)
+        .withPage(ValidXMLPage, validXmlDetails)
 
       when(mockFileDetailsConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(Some(RejectedSDESVirus)))
 
@@ -241,12 +217,8 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
     "must redirect to File Passed Checks Page when ACCEPTED status returned" in {
 
       val userAnswers: UserAnswers = emptyUserAnswers
-        .set(ConversationIdPage, conversationId)
-        .success
-        .value
-        .set(ValidXMLPage, validXmlDetails)
-        .success
-        .value
+        .withPage(ConversationIdPage, conversationId)
+        .withPage(ValidXMLPage, validXmlDetails)
 
       when(mockFileDetailsConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(Some(FileStatusAccepted)))
 
