@@ -249,7 +249,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
         }
       }
 
-      "must redirect user to the page 'ThereIsAProblem' when the file status is 'RejectedSDES'" in {
+      "must return OK and load the page 'ThereIsAProblem' when the file status is 'RejectedSDES'" in {
 
         val mockFileDetailsConnector = mock[FileDetailsConnector]
 
@@ -272,8 +272,8 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
 
           val result = route(application, request).value
 
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result) mustBe Some(routes.ThereIsAProblemController.onPageLoad().url)
+          status(result) mustEqual OK
+          contentAsString(result) must include(routes.ThereIsAProblemController.onPageLoad().url)
         }
       }
 
@@ -300,8 +300,8 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
 
           val result = route(application, request).value
 
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result) mustBe Some(routes.FileProblemVirusController.onPageLoad().url)
+          status(result) mustEqual OK
+          contentAsString(result) must include(routes.FileProblemVirusController.onPageLoad().url)
         }
       }
 

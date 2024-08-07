@@ -92,9 +92,9 @@ class SendYourFileController @Inject() (
             case Some(Pending) =>
               Future.successful(NoContent)
             case Some(RejectedSDES) =>
-              Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+              Future.successful(Ok(Json.toJson(URL(routes.ThereIsAProblemController.onPageLoad().url))))
             case Some(RejectedSDESVirus) =>
-              Future.successful(Redirect(routes.FileProblemVirusController.onPageLoad()))
+              Future.successful(Ok(Json.toJson(URL(routes.FileProblemVirusController.onPageLoad().url))))
             case None =>
               logger.warn("getStatus: no status returned")
               Future.successful(InternalServerError)
