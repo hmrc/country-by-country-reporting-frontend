@@ -173,9 +173,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
         val mockFileDetailsConnector = mock[FileDetailsConnector]
 
         val userAnswers = UserAnswers("Id")
-          .set(ConversationIdPage, conversationId)
-          .success
-          .value
+          .withPage(ConversationIdPage, conversationId)
 
         when(mockFileDetailsConnector.getStatus(any[ConversationId]())(any[HeaderCarrier](), any[ExecutionContext]()))
           .thenReturn(Future.successful(Some(Accepted)))
@@ -200,9 +198,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
         val mockFileDetailsConnector = mock[FileDetailsConnector]
 
         val userAnswers = UserAnswers("Id")
-          .set(ConversationIdPage, conversationId)
-          .success
-          .value
+          .withPage(ConversationIdPage, conversationId)
 
         when(mockFileDetailsConnector.getStatus(any[ConversationId]())(any[HeaderCarrier](), any[ExecutionContext]()))
           .thenReturn(Future.successful(Some(Pending)))
@@ -227,9 +223,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
         val mockFileDetailsConnector = mock[FileDetailsConnector]
 
         val userAnswers = UserAnswers("Id")
-          .set(ConversationIdPage, conversationId)
-          .success
-          .value
+          .withPage(ConversationIdPage, conversationId)
 
         when(mockFileDetailsConnector.getStatus(any[ConversationId]())(any[HeaderCarrier](), any[ExecutionContext]()))
           .thenReturn(Future.successful(Some(Rejected(FileValidationErrors(None, None)))))
@@ -254,9 +248,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
         val mockFileDetailsConnector = mock[FileDetailsConnector]
 
         val userAnswers = UserAnswers("Id")
-          .set(ConversationIdPage, conversationId)
-          .success
-          .value
+          .withPage(ConversationIdPage, conversationId)
 
         when(mockFileDetailsConnector.getStatus(any[ConversationId]())(any[HeaderCarrier](), any[ExecutionContext]()))
           .thenReturn(Future.successful(Some(RejectedSDES)))
@@ -282,9 +274,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
         val mockFileDetailsConnector = mock[FileDetailsConnector]
 
         val userAnswers = UserAnswers("Id")
-          .set(ConversationIdPage, conversationId)
-          .success
-          .value
+          .withPage(ConversationIdPage, conversationId)
 
         when(mockFileDetailsConnector.getStatus(any[ConversationId]())(any[HeaderCarrier](), any[ExecutionContext]()))
           .thenReturn(Future.successful(Some(RejectedSDESVirus)))
@@ -311,9 +301,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
         val validationErrors         = FileValidationErrors(Some(Seq(FileErrors(InvalidMessageRefIDFormat, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
 
         val userAnswers = UserAnswers("Id")
-          .set(ConversationIdPage, conversationId)
-          .success
-          .value
+          .withPage(ConversationIdPage, conversationId)
 
         when(mockFileDetailsConnector.getStatus(any[ConversationId]())(any[HeaderCarrier](), any[ExecutionContext]()))
           .thenReturn(Future.successful(Some(Rejected(validationErrors))))
@@ -338,9 +326,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
         val mockFileDetailsConnector = mock[FileDetailsConnector]
 
         val userAnswers = UserAnswers("Id")
-          .set(ConversationIdPage, conversationId)
-          .success
-          .value
+          .withPage(ConversationIdPage, conversationId)
 
         when(mockFileDetailsConnector.getStatus(any[ConversationId]())(any[HeaderCarrier](), any[ExecutionContext]()))
           .thenReturn(Future.successful(None))
