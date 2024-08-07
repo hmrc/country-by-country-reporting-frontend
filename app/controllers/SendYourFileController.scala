@@ -20,7 +20,7 @@ import config.FrontendAppConfig
 import connectors.{FileDetailsConnector, SubmissionConnector}
 import controllers.actions._
 import models.ValidatedFileData
-import models.fileDetails.{FileValidationErrors, Pending, Rejected, Accepted => FileStatusAccepted}
+import models.fileDetails.{FileValidationErrors, Pending, Rejected, RejectedSDES, RejectedSDESVirus, Accepted => FileStatusAccepted}
 import models.submission.SubmissionDetails
 import models.upscan.URL
 import pages.{ConversationIdPage, URLPage, UploadIDPage, ValidXMLPage}
@@ -91,6 +91,10 @@ class SendYourFileController @Inject() (
               )
             case Some(Pending) =>
               Future.successful(NoContent)
+            case Some(RejectedSDES) =>
+              Future.successful(Ok(Json.toJson(URL(routes.ThereIsAProblemController.onPageLoad().url))))
+            case Some(RejectedSDESVirus) =>
+              Future.successful(Ok(Json.toJson(URL(routes.FileProblemVirusController.onPageLoad().url))))
             case None =>
               logger.warn("getStatus: no status returned")
               Future.successful(InternalServerError)
