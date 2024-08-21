@@ -347,6 +347,7 @@ xml.not.ISO.code.elem = {0} element must contain an ISO country code
 xml.not.ISO.code = {0} must contain an ISO country code
 xml.not.ISO.code.receivingCountry = ReceivingCountry value must be GB
 xml.not.ISO.language.code = If provided, {0} must contain an ISO language code
+xml.not.ISO.language.code.elem = If provided, Language element must contain an ISO language code
 xml.not.ISO.currency.code = {0} must contain an ISO country code
 xml.not.allowed.value = {0} is not one of the allowed values
 xml.not.allowed.length = {0} must be {1} characters or less
