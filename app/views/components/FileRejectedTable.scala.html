@@ -16,7 +16,7 @@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 
-@import models.fileDetails.BusinessRuleErrorCode.{DocRefIDFormat, MessageTypeIndic, ReportingPeriodCantChange, ConstEntitiesRoleInitial, ConstEntitiesRoleCorrection, InvalidMessageRefIDFormat}
+@import models.fileDetails.BusinessRuleErrorCode.{DocRefIDFormat, MessageTypeIndic, ReportingPeriodCantChange, ConstEntitiesRoleInitial, ConstEntitiesRoleCorrection, InvalidMessageRefIDFormat, MessageTypeIndicCBC402andOECD0}
 @import viewmodels.FileRejectedError
 
 @this(govukTable: GovukTable)
@@ -86,7 +86,6 @@ val code2 = code.replaceAll("CBC Error Code ", "")
             <ol class="govuk-list govuk-list--bullet">
                 <li>{messages("fileRejected.80010.bullet1")}</li>
                 <li>{messages("fileRejected.80010.bullet2")}</li>
-                <li>{messages("fileRejected.80010.bullet3")}</li>
             </ol>
             <p class="govuk-body">{messages("fileRejected.80010.explanation")}</p>
         case ReportingPeriodCantChange.code =>
@@ -110,6 +109,13 @@ val code2 = code.replaceAll("CBC Error Code ", "")
                 <li>{messages("fileRejected.24.bullet4")}</li>
             </ol>
             <p class="govuk-body">{messages("fileRejected.24b.value")}</p>
+        case MessageTypeIndicCBC402andOECD0.code =>
+            <p class="govuk-body">{messages("fileRejected.34.intro")}</p>
+            <ol class="govuk-list govuk-list--bullet">
+                <li>{messages("fileRejected.34.bullet1")}</li>
+                <li>{messages("fileRejected.34.bullet2")}</li>
+                <li>{messages("fileRejected.34.bullet3")}</li>
+            </ol>
         case _ =>
             <p class="govuk-body">{messages(s"fileRejected.$code2.value")}</p>
         }
