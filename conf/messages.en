@@ -292,7 +292,7 @@ cssColour.Accepted = green
 cssColour.Pending = yellow
 cssColour.Problem = purple
 status.Rejected = Failed
-status.Accepted = PASSED
+status.Accepted = Passed
 status.Pending = Pending
 status.Problem = Problem
 
