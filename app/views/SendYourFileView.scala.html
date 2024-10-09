@@ -24,7 +24,7 @@
         govukButton: GovukButton
 )
 
-@(appConfig: FrontendAppConfig, warningContent: Option[String] = None)(implicit request: Request[_], messages: Messages)
+@(appConfig: FrontendAppConfig, warningContent: Option[String] = None)(implicit request: RequestHeader, messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("sendYourFile.title")), showAgentHeader = true) {
 

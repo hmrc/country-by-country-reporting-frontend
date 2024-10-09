@@ -1,3 +1,19 @@
+/*
+ * Copyright 2024 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package repositories
 
 import config.{CryptoProvider, FrontendAppConfig}
@@ -21,7 +37,7 @@ import java.util.Base64
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class SessionRepositorySpec
-  extends AnyFreeSpec
+    extends AnyFreeSpec
     with Matchers
     with DefaultPlayMongoRepositorySupport[UserAnswers]
     with ScalaFutures
@@ -29,7 +45,7 @@ class SessionRepositorySpec
     with OptionValues
     with MockitoSugar {
 
-  private val instant = Instant.now.truncatedTo(ChronoUnit.MILLIS)
+  private val instant          = Instant.now.truncatedTo(ChronoUnit.MILLIS)
   private val stubClock: Clock = Clock.fixed(instant, ZoneId.systemDefault)
 
   private val userAnswers = UserAnswers("id", Json.obj("foo" -> "bar"), Instant.ofEpochSecond(1))
@@ -46,10 +62,11 @@ class SessionRepositorySpec
   }
 
   implicit val crypto: Encrypter with Decrypter = new CryptoProvider(Configuration("crypto.key" -> randomAesKey)).get()
-  protected override val repository = new SessionRepository(
+
+  override protected val repository = new SessionRepository(
     mongoComponent = mongoComponent,
-    appConfig      = mockAppConfig,
-    clock          = stubClock
+    appConfig = mockAppConfig,
+    clock = stubClock
   )
 
   ".set" - {
@@ -68,7 +85,8 @@ class SessionRepositorySpec
     "must encrypt the data" in {
       repository.set(userAnswers).futureValue
 
-      val raw = mongoComponent.database.getCollection("user-answers")
+      val raw = mongoComponent.database
+        .getCollection("user-answers")
         .find(Filters.equal("_id", userAnswers.id))
         .headOption()
         .futureValue
@@ -76,8 +94,8 @@ class SessionRepositorySpec
       raw match {
         case None => fail("db record not found")
         case Some(ua) =>
-          val id = ua.get("_id").head.asString.getValue
-          val rawData = ua.get("data").get.asString.getValue
+          val id            = ua.get("_id").head.asString.getValue
+          val rawData       = ua.get("data").get.asString.getValue
           val decryptedData = crypto.decrypt(Crypted(rawData)).value
 
           id mustBe userAnswers.id

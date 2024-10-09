@@ -21,7 +21,7 @@
     govukBackLink: GovukBackLink
 )
 
-@(showBackLink: Boolean = true)(implicit request: Request[_], messages: Messages)
+@(showBackLink: Boolean = true)(implicit request: RequestHeader, messages: Messages)
 
 @if(showBackLink) {
     @govukBackLink(BackLinkViewModel(href = "#").withCssClass("js-enabled govuk-!-display-none-print"))

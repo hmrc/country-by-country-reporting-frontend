@@ -19,7 +19,7 @@
         link: components.Link
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@()(implicit request: RequestHeader, messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("fileProblemVirus.title")), showBackLink = false, showAgentHeader = true) {
 

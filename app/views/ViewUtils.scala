@@ -21,7 +21,7 @@ import models.requests.{AgentDataRequest, DataRequest, OptionalDataRequest}
 import pages.AgentClientDetailsPage
 import play.api.data.Form
 import play.api.i18n.Messages
-import play.api.mvc.Request
+import play.api.mvc.RequestHeader
 
 object ViewUtils {
 
@@ -37,7 +37,7 @@ object ViewUtils {
   def errorPrefix(form: Form[_])(implicit messages: Messages): String =
     if (form.hasErrors || form.hasGlobalErrors) messages("error.browser.title.prefix") else ""
 
-  def getAgentClientDetails()(implicit request: Request[_]): Option[AgentClientDetails] =
+  def getAgentClientDetails()(implicit request: RequestHeader): Option[AgentClientDetails] =
     request match {
       case odr: OptionalDataRequest[_] =>
         odr.userAnswers flatMap {

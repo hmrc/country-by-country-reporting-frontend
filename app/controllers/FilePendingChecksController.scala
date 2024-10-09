@@ -74,7 +74,7 @@ class FilePendingChecksController @Inject() (
       }
   }
 
-  private def handlePendingFile(xmlDetails: ValidatedFileData, userAnswers: UserAnswers, isAgent: Boolean)(implicit request: Request[_]) = {
+  private def handlePendingFile(xmlDetails: ValidatedFileData, userAnswers: UserAnswers, isAgent: Boolean)(implicit request: RequestHeader) = {
     val summary = FileCheckViewModel.createFileSummary(xmlDetails.messageSpecData.messageRefId, Pending.toString)
     userAnswers.get(ConversationIdPage) match {
       case Some(conversationId) =>

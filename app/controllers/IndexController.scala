@@ -58,7 +58,7 @@ class IndexController @Inject() (
       }
   }
 
-  private def checkForAgentContactDetails(subscriptionId: String, ua: UserAnswers)(implicit hc: HeaderCarrier, request: Request[_]): Future[Result] =
+  private def checkForAgentContactDetails(subscriptionId: String, ua: UserAnswers)(implicit hc: HeaderCarrier, request: RequestHeader): Future[Result] =
     agentSubscriptionService.getAgentContactDetails(ua) flatMap {
       agentContactDetails =>
         subscriptionService.getContactDetails(agentContactDetails.getOrElse(ua), subscriptionId) flatMap {
@@ -87,7 +87,7 @@ class IndexController @Inject() (
         }
     }
 
-  private def checkForOrgContactDetails(subscriptionId: String, ua: UserAnswers)(implicit hc: HeaderCarrier, request: Request[_]): Future[Result] =
+  private def checkForOrgContactDetails(subscriptionId: String, ua: UserAnswers)(implicit hc: HeaderCarrier, request: RequestHeader): Future[Result] =
     subscriptionService.getContactDetails(ua, subscriptionId) flatMap {
       case Some(userAnswers) =>
         sessionRepository.set(userAnswers) flatMap {
