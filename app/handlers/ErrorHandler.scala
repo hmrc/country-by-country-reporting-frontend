@@ -16,26 +16,31 @@
 
 package handlers
 
-import config.FrontendAppConfig
-
-import javax.inject.{Inject, Singleton}
+import controllers.routes
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.Request
+import play.api.mvc.Results.Redirect
+import play.api.mvc.{RequestHeader, Result}
 import play.twirl.api.Html
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
-import views.html.{ErrorTemplate, PageNotFoundView}
+import views.html.ErrorTemplate
+
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ErrorHandler @Inject() (
   val messagesApi: MessagesApi,
-  view: ErrorTemplate,
-  frontendAppConfig: FrontendAppConfig,
-  notFoundView: PageNotFoundView
-) extends FrontendErrorHandler
+  view: ErrorTemplate
+)(implicit override val ec: ExecutionContext)
+    extends FrontendErrorHandler
     with I18nSupport {
 
-  override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit rh: Request[_]): Html =
-    view(pageTitle, heading, message)
+  override def onClientError(request: RequestHeader, statusCode: Int, message: String): Future[Result] =
+    statusCode match {
+      case play.mvc.Http.Status.NOT_FOUND => Future.successful(Redirect(routes.PageNotFoundController.onPageLoad()))
+      case _                              => Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+    }
 
-  override def notFoundTemplate(implicit request: Request[_]): Html = notFoundView(frontendAppConfig.emailEnquiries)
+  override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit request: RequestHeader): Future[Html] =
+    Future.successful(view(pageTitle, heading, message))
 }

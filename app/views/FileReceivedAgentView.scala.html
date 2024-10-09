@@ -28,7 +28,7 @@
         appConfig: FrontendAppConfig
 )
 
-@(fileDetails: SummaryList, firstContactEmail: String, secondContactEmail:Option[String], agentFirstContactEmail: String, agentSecondContactEmail:Option[String] = None)(implicit request: Request[_], messages: Messages)
+@(fileDetails: SummaryList, firstContactEmail: String, secondContactEmail:Option[String], agentFirstContactEmail: String, agentSecondContactEmail:Option[String] = None)(implicit request: RequestHeader, messages: Messages)
 
      @secondContactAgentMessage = {
         @if(agentSecondContactEmail.isDefined){@messages("fileReceivedAgent.agent.p1.5", agentSecondContactEmail.get)}

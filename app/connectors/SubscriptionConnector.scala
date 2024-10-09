@@ -20,7 +20,7 @@ import config.FrontendAppConfig
 import models.subscription.{RequestDetailForUpdate, ResponseDetail}
 import play.api.Logging
 import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
-import uk.gov.hmrc.http.HttpReads.is2xx
+import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
 
 import javax.inject.Inject

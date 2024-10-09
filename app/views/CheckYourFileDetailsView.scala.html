@@ -20,7 +20,7 @@
         govukButton: GovukButton
 )
 
-@(fileDetails: SummaryList)(implicit request: Request[_], messages: Messages)
+@(fileDetails: SummaryList)(implicit request: RequestHeader, messages: Messages)
 
     @layout(pageTitle = titleNoForm(messages("checkYourFileDetails.title")), showAgentHeader = true) {
 

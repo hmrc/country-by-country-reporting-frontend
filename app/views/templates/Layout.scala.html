@@ -25,10 +25,12 @@
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         alphaBanner: StandardAlphaBanner,
         clientHeader: components.AgentClientHeader,
-        defaultMainContentLayout: TwoThirdsMainContent
+        defaultMainContentLayout: TwoThirdsMainContent,
+        autocompleteCss: HmrcAccessibleAutocompleteCss,
+        autocompleteJavascript: HmrcAccessibleAutocompleteJavascript
 )
 
-@(pageTitle: String, showBackLink: Boolean = true, timeout: Boolean = true, showSignOut: Boolean = true, showAgentHeader: Boolean = false, fullWidthLayout: Boolean = false)(contentBlock: Html)(implicit request: Request[_], messages: Messages)
+@(pageTitle: String, showBackLink: Boolean = true, timeout: Boolean = true, showSignOut: Boolean = true, showAgentHeader: Boolean = false, fullWidthLayout: Boolean = false)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
 
 @timeOutDialog = {
     @hmrcTimeoutDialogHelper(
@@ -45,6 +47,8 @@
 }
 
 @additionalScripts = {
+    @autocompleteJavascript()
+    @autocompleteCss()
     <script @CSPNonce.attr src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
     <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css">
 }
