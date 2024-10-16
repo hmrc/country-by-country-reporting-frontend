@@ -56,6 +56,7 @@ lazy val root = (project in file("."))
           "javascripts/second-spinner.js"
         ))
     ),
+    uglifyOps := UglifyOps.singleFile,
     // prevent removal of unused code which generates warning errors due to use of third-party libs
     uglifyCompressOptions := Seq("unused=false", "dead_code=false", "warnings=false"),
     pipelineStages := Seq(digest),
