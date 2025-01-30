@@ -110,12 +110,7 @@ val code2 = code.replaceAll("CBC Error Code ", "")
             </ol>
             <p class="govuk-body">{messages("fileRejected.24b.value")}</p>
         case MessageTypeIndicCBC402andOECD0.code =>
-            <p class="govuk-body">{messages("fileRejected.34.intro")}</p>
-            <ol class="govuk-list govuk-list--bullet">
-                <li>{messages("fileRejected.34.bullet1")}</li>
-                <li>{messages("fileRejected.34.bullet2")}</li>
-                <li>{messages("fileRejected.34.bullet3")}</li>
-            </ol>
+            <p class="govuk-body">{messages("fileRejected.34.value")}</p>
         case _ =>
             <p class="govuk-body">{messages(s"fileRejected.$code2.value")}</p>
         }
