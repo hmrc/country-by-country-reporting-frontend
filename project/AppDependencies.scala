@@ -12,7 +12,7 @@ object AppDependencies {
     "uk.gov.hmrc" %% "bootstrap-frontend-play-30" % bootstrapVersion,
     "uk.gov.hmrc.mongo" %% "hmrc-mongo-play-30" % hmrcMongoVersion,
     "org.julienrf" %% "play-json-derived-codecs" % "11.0.0",
-    "uk.gov.hmrc" %% "crypto-json-play-28" % "8.1.0"
+    "uk.gov.hmrc" %% "crypto-json-play-30" % "8.2.0"
 
   )
 
