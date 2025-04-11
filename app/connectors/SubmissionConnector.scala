@@ -20,22 +20,24 @@ import config.FrontendAppConfig
 import models.ConversationId
 import models.submission.SubmissionDetails
 import play.api.Logging
+import play.api.libs.json.Json
 import uk.gov.hmrc.http.HttpReads.Implicits._
 import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class SubmissionConnector @Inject() (httpClient: HttpClient, config: FrontendAppConfig) extends Logging {
+class SubmissionConnector @Inject() (httpClient: HttpClientV2, config: FrontendAppConfig) extends Logging {
 
-  val submitUrl = s"${config.cbcUrl}/country-by-country-reporting/submit"
+  val submitUrl = url"${config.cbcUrl}/country-by-country-reporting/submit"
 
   def submitDocument(submissionDetails: SubmissionDetails)(implicit
     hc: HeaderCarrier,
     ec: ExecutionContext
   ): Future[Option[ConversationId]] =
-    httpClient.POST[SubmissionDetails, HttpResponse](submitUrl, submissionDetails) map {
+    httpClient.post(submitUrl).withBody(Json.toJson(submissionDetails)).execute[HttpResponse] map {
       case response if is2xx(response.status) => Option(response.json.as[ConversationId])
       case errorResponse =>
         logger.warn(s"Failed to submit document with upload Id [${submissionDetails.uploadId.value}]: received status: ${errorResponse.status}")

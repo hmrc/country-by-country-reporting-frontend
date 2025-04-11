@@ -20,26 +20,26 @@ import config.FrontendAppConfig
 import models.agentSubscription.{AgentRequestDetailForUpdate, AgentResponseDetail, CreateAgentSubscriptionRequest}
 import play.api.Logging
 import play.api.http.Status.NOT_FOUND
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
 import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AgentSubscriptionConnector @Inject() (val config: FrontendAppConfig, val http: HttpClient) extends Logging {
+class AgentSubscriptionConnector @Inject() (val config: FrontendAppConfig, val http: HttpClientV2) extends Logging {
 
   def createSubscription(
     createAgentSubscriptionRequest: CreateAgentSubscriptionRequest
   )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[JsValue]] = {
 
-    val submissionUrl = s"${config.cbcUrl}/country-by-country-reporting/agent/subscription/create-subscription"
+    val submissionUrl = url"${config.cbcUrl}/country-by-country-reporting/agent/subscription/create-subscription"
     http
-      .POST[CreateAgentSubscriptionRequest, HttpResponse](
-        submissionUrl,
-        createAgentSubscriptionRequest
-      )
+      .post(submissionUrl)
+      .withBody(Json.toJson(createAgentSubscriptionRequest))
+      .execute[HttpResponse]
       .map {
         case response if is2xx(response.status) =>
           Option(response.json)
@@ -56,9 +56,10 @@ class AgentSubscriptionConnector @Inject() (val config: FrontendAppConfig, val h
 
   def checkSubscriptionExists()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[Boolean]] = {
 
-    val url = s"${config.cbcUrl}/country-by-country-reporting/agent/subscription/read-subscription"
+    val url = url"${config.cbcUrl}/country-by-country-reporting/agent/subscription/read-subscription"
     http
-      .POSTEmpty(url)
+      .post(url)
+      .execute[HttpResponse]
       .map {
         case responseMessage if is2xx(responseMessage.status) =>
           Some(true)
@@ -77,9 +78,10 @@ class AgentSubscriptionConnector @Inject() (val config: FrontendAppConfig, val h
 
   def readSubscription()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[AgentResponseDetail]] = {
 
-    val url = s"${config.cbcUrl}/country-by-country-reporting/agent/subscription/read-subscription"
+    val url = url"${config.cbcUrl}/country-by-country-reporting/agent/subscription/read-subscription"
     http
-      .POSTEmpty(url)
+      .post(url)
+      .execute[HttpResponse]
       .map {
         case responseMessage if is2xx(responseMessage.status) =>
           responseMessage.json
@@ -97,9 +99,11 @@ class AgentSubscriptionConnector @Inject() (val config: FrontendAppConfig, val h
 
   def updateSubscription(requestDetail: AgentRequestDetailForUpdate)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Boolean] = {
 
-    val url = s"${config.cbcUrl}/country-by-country-reporting/agent/subscription/update-subscription"
+    val url = url"${config.cbcUrl}/country-by-country-reporting/agent/subscription/update-subscription"
     http
-      .POST[AgentRequestDetailForUpdate, HttpResponse](url, requestDetail)
+      .post(url)
+      .withBody(Json.toJson(requestDetail))
+      .execute[HttpResponse]
       .map {
         responseMessage =>
           logger.warn(s"updateSubscription: Status ${responseMessage.status} has been received when update agent subscription was called")
