@@ -21,23 +21,24 @@ import models.ConversationId
 import play.api.Logging
 import play.api.http.HeaderNames
 import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.xml.transform.{RewriteRule, RuleTransformer}
 import scala.xml.{Elem, Node, NodeSeq}
 
-class TestSubmissionConnector @Inject() (httpClient: HttpClient, config: FrontendAppConfig) extends Logging {
+class TestSubmissionConnector @Inject() (httpClient: HttpClientV2, config: FrontendAppConfig) extends Logging {
 
-  val submitXmlUrl = s"${config.cbcUrl}/country-by-country-reporting/submit-xml"
+  val submitXmlUrl = url"${config.cbcUrl}/country-by-country-reporting/submit-xml"
 
   def submitXmlDocument(fileName: String, enrolmentID: String, xmlDocument: NodeSeq)(implicit
     hc: HeaderCarrier,
     ec: ExecutionContext
   ): Future[Option[ConversationId]] = {
     val body = constructSubmission(fileName, enrolmentID, xmlDocument).toString()
-    httpClient.POSTString[HttpResponse](submitXmlUrl, body, headers).map {
+    httpClient.post(submitXmlUrl).withBody(body).setHeader(headers: _*).execute[HttpResponse] map {
       case response if is2xx(response.status) => Some(response.json.as[ConversationId])
       case errorResponse =>
         logger.warn(s"Failed to submit  XML document: received status: ${errorResponse.status} and message: ${errorResponse.body}")

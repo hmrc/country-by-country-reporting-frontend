@@ -19,12 +19,13 @@ package helpers
 import config.FrontendAppConfig
 import connectors.UpscanConnector
 import models.upscan._
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.client.HttpClientV2
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class FakeUpscanConnector @Inject() (configuration: FrontendAppConfig, httpClient: HttpClient)(implicit ec: ExecutionContext)
+class FakeUpscanConnector @Inject() (configuration: FrontendAppConfig, httpClient: HttpClientV2)(implicit ec: ExecutionContext)
     extends UpscanConnector(configuration, httpClient) {
 
   var statusBuffer: Option[UploadStatus]          = None

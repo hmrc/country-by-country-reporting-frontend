@@ -19,20 +19,23 @@ package connectors
 import config.FrontendAppConfig
 import models.subscription.{RequestDetailForUpdate, ResponseDetail}
 import play.api.Logging
+import play.api.libs.json.Json
 import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
 import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class SubscriptionConnector @Inject() (val config: FrontendAppConfig, val http: HttpClient) extends Logging {
+class SubscriptionConnector @Inject() (val config: FrontendAppConfig, val http: HttpClientV2) extends Logging {
 
   def readSubscription(subscriptionId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[ResponseDetail]] = {
 
-    val url = s"${config.cbcUrl}/country-by-country-reporting/subscription/read-subscription/$subscriptionId"
+    val url = url"${config.cbcUrl}/country-by-country-reporting/subscription/read-subscription/$subscriptionId"
     http
-      .POSTEmpty(url)
+      .post(url)
+      .execute[HttpResponse]
       .map {
         case responseMessage if is2xx(responseMessage.status) =>
           responseMessage.json
@@ -50,9 +53,11 @@ class SubscriptionConnector @Inject() (val config: FrontendAppConfig, val http: 
 
   def updateSubscription(requestDetail: RequestDetailForUpdate)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Boolean] = {
 
-    val url = s"${config.cbcUrl}/country-by-country-reporting/subscription/update-subscription"
+    val url = url"${config.cbcUrl}/country-by-country-reporting/subscription/update-subscription"
     http
-      .POST[RequestDetailForUpdate, HttpResponse](url, requestDetail)
+      .post(url)
+      .withBody(Json.toJson(requestDetail))
+      .execute[HttpResponse]
       .map {
         responseMessage =>
           logger.warn(s"updateSubscription: Status ${responseMessage.status} has been received when update subscription was called")

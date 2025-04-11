@@ -20,15 +20,16 @@ import config.FrontendAppConfig
 import play.api.Logging
 import play.api.http.HeaderNames
 import uk.gov.hmrc.http.HttpReads.Implicits._
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.xml.NodeSeq
 
-class TestProcessEISResponseConnector @Inject() (httpClient: HttpClient, config: FrontendAppConfig)(implicit ec: ExecutionContext) extends Logging {
+class TestProcessEISResponseConnector @Inject() (httpClient: HttpClientV2, config: FrontendAppConfig)(implicit ec: ExecutionContext) extends Logging {
 
-  val submitUrl = s"${config.cbcUrl}/country-by-country-reporting/validation-result"
+  val submitUrl = url"${config.cbcUrl}/country-by-country-reporting/validation-result"
 
   def submitEISResponse(conversationId: String, xmlDocument: NodeSeq): Future[HttpResponse] = {
     implicit val hc: HeaderCarrier = HeaderCarrier()
@@ -38,6 +39,6 @@ class TestProcessEISResponseConnector @Inject() (httpClient: HttpClient, config:
       HeaderNames.AUTHORIZATION -> "Bearer token"
     )
 
-    httpClient.POSTString[HttpResponse](submitUrl, xmlDocument.toString(), headers)
+    httpClient.post(submitUrl).withBody(xmlDocument.toString()).setHeader(headers: _*).execute[HttpResponse]
   }
 }

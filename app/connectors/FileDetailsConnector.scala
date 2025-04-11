@@ -22,16 +22,17 @@ import models.fileDetails.{FileDetails, FileStatus}
 import play.api.Logging
 import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
 import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class FileDetailsConnector @Inject() (httpClient: HttpClient, config: FrontendAppConfig) extends Logging {
+class FileDetailsConnector @Inject() (httpClient: HttpClientV2, config: FrontendAppConfig) extends Logging {
 
   def getAllFileDetails(subscriptionId: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[Seq[FileDetails]]] = {
-    val url = s"${config.cbcUrl}/country-by-country-reporting/files/details/$subscriptionId"
-    httpClient.GET[HttpResponse](url).map {
+    val url = url"${config.cbcUrl}/country-by-country-reporting/files/details/$subscriptionId"
+    httpClient.get(url).execute[HttpResponse].map {
       case responseMessage if is2xx(responseMessage.status) =>
         responseMessage.json
           .asOpt[Seq[FileDetails]]
@@ -42,8 +43,8 @@ class FileDetailsConnector @Inject() (httpClient: HttpClient, config: FrontendAp
   }
 
   def getFileDetails(conversationId: ConversationId)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[FileDetails]] = {
-    val url = s"${config.cbcUrl}/country-by-country-reporting/files/${conversationId.value}/details"
-    httpClient.GET(url).map {
+    val url = url"${config.cbcUrl}/country-by-country-reporting/files/${conversationId.value}/details"
+    httpClient.get(url).execute[HttpResponse].map {
       case responseMessage if is2xx(responseMessage.status) =>
         responseMessage.json
           .asOpt[FileDetails]
@@ -54,8 +55,8 @@ class FileDetailsConnector @Inject() (httpClient: HttpClient, config: FrontendAp
   }
 
   def getStatus(conversationId: ConversationId)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[FileStatus]] = {
-    val url = s"${config.cbcUrl}/country-by-country-reporting/files/${conversationId.value}/status"
-    httpClient.GET(url).map {
+    val url = url"${config.cbcUrl}/country-by-country-reporting/files/${conversationId.value}/status"
+    httpClient.get(url).execute[HttpResponse].map {
       case responseMessage if is2xx(responseMessage.status) =>
         responseMessage.json.asOpt[FileStatus]
       case _ =>
