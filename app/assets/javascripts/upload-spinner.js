@@ -8,7 +8,11 @@ $("#uploadForm").submit(function(e){
         var errorRequestId = $("#x-amz-meta-request-id").val();
         var errorUrl = $("#upScanErrorRedirectUrl").val() + "?errorCode=InvalidArgument&errorMessage=FileNotSelected&errorRequestId=" + errorRequestId;
         window.location = errorUrl;
-    } else {
+    } else if(isFileNameLengthValid()){
+        var errorRequestId = $("#x-amz-meta-request-id").val();
+        var errorUrl = $("#upScanErrorRedirectUrl").val() + "?errorCode=InvalidArgument&errorMessage=InvalidFileNameLength&errorRequestId=" + errorRequestId;
+        window.location = errorUrl;
+    }else {
         function disableFileUpload() {
             $("#file-upload").attr('disabled', 'disabled')
         };
@@ -30,6 +34,16 @@ $("#uploadForm").submit(function(e){
     }
 
 });
+
+function isFileNameLengthValid(){
+    let fileName = $("#file-upload")[0].files[0].name;
+    let trimmedFileName = fileName.replace(".xml","")
+    console.log(trimmedFileName.length)
+    if(trimmedFileName.length > 100){
+        return true;
+    }
+    return false;
+ }
 
 $(document).ready(function ()
 {

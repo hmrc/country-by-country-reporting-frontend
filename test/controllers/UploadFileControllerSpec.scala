@@ -103,6 +103,24 @@ class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks wi
       status(result) mustEqual SEE_OTHER
     }
 
+    "must show returned error when file name length is invalid" in {
+
+      val request = FakeRequest(GET, routes.UploadFileController.showError("InvalidArgument", "InvalidFileNameLength", "errorReqId").url)
+      val result  = route(application, request).value
+
+      status(result) mustEqual OK
+      contentAsString(result) contains "File name must be 100 characters or less and match the MessageRefId in the file"
+    }
+
+    "must show returned error when InvalidArgument" in {
+
+      val request = FakeRequest(GET, routes.UploadFileController.showError("InvalidArgument", "errorMessage", "errorReqId").url)
+      val result  = route(application, request).value
+
+      status(result) mustEqual OK
+      contentAsString(result) contains "Select a file to upload"
+    }
+
     "must show File to large error when the errorCode is EntityTooLarge" in {
 
       val request =
