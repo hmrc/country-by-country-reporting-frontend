@@ -9,7 +9,7 @@ $("#uploadForm").submit(function(e){
         var errorUrl = $("#upScanErrorRedirectUrl").val() + "?errorCode=InvalidArgument&errorMessage=FileNotSelected&errorRequestId=" + errorRequestId;
         window.location = errorUrl;
     } else if(isFileNameLengthValid()){
-        var errorRequestId = $("#x-amz-meta-request-id").val();
+        var errorRequestId = $("[name='x-amz-meta-request-id']").val();
         var errorUrl = $("#upScanErrorRedirectUrl").val() + "?errorCode=InvalidArgument&errorMessage=InvalidFileNameLength&errorRequestId=" + errorRequestId;
         window.location = errorUrl;
     }else {
