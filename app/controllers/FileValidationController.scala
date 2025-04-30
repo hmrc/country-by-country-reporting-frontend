@@ -102,7 +102,7 @@ class FileValidationController @Inject()(
         }
   }
 
-  private def navigaeToErrorPage(uploadId: UploadId, fileName: String) = {
+  private def navigateToErrorPage(uploadId: UploadId, fileName: String) = {
     logger.error(s"file name length is more than allowed limit : $fileName")
     Future.successful(
       Redirect(
