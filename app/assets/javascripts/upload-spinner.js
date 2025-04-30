@@ -8,7 +8,7 @@ $("#uploadForm").submit(function(e){
         var errorRequestId = $("#x-amz-meta-request-id").val();
         var errorUrl = $("#upScanErrorRedirectUrl").val() + "?errorCode=InvalidArgument&errorMessage=FileNotSelected&errorRequestId=" + errorRequestId;
         window.location = errorUrl;
-    } else if(isFileNameLengthValid()){
+    } else if(isFileNameInvalid()){
         var errorRequestId = $("[name='x-amz-meta-request-id']").val();
         var errorUrl = $("#upScanErrorRedirectUrl").val() + "?errorCode=InvalidArgument&errorMessage=InvalidFileNameLength&errorRequestId=" + errorRequestId;
         window.location = errorUrl;
@@ -35,7 +35,7 @@ $("#uploadForm").submit(function(e){
 
 });
 
-function isFileNameLengthValid(){
+function isFileNameInvalid(){
     let fileName = $("#file-upload")[0].files[0].name;
     let trimmedFileName = fileName.replace(".xml","")
     console.log(trimmedFileName.length)

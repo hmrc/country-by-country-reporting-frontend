@@ -33,19 +33,19 @@ import views.html.ThereIsAProblemView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class FileValidationController @Inject()(
-                                          override val messagesApi: MessagesApi,
-                                          identify: IdentifierAction,
-                                          getData: DataRetrievalAction,
-                                          val sessionRepository: SessionRepository,
-                                          val controllerComponents: MessagesControllerComponents,
-                                          upscanConnector: UpscanConnector,
-                                          requireData: DataRequiredAction,
-                                          validationConnector: ValidationConnector,
-                                          navigator: Navigator,
-                                          errorView: ThereIsAProblemView
-                                        )(implicit ec: ExecutionContext)
-  extends FrontendBaseController
+class FileValidationController @Inject() (
+  override val messagesApi: MessagesApi,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  val sessionRepository: SessionRepository,
+  val controllerComponents: MessagesControllerComponents,
+  upscanConnector: UpscanConnector,
+  requireData: DataRequiredAction,
+  validationConnector: ValidationConnector,
+  navigator: Navigator,
+  errorView: ThereIsAProblemView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport
     with Logging {
 
@@ -57,48 +57,49 @@ class FileValidationController @Inject()(
           logger.error("Cannot find upload Id from user answers")
           Future.successful(InternalServerError(errorView()))
         } {
-          uploadId => {
-            upscanConnector.getUploadDetails(uploadId) map {
-              uploadSessions =>
-                getDownloadUrl(uploadSessions).fold {
-                  logger.error(s"Failed to upload file with upload Id: [${uploadId.value}]")
-                  Future.successful(InternalServerError(errorView()))
-                } {
-                  downloadDetails =>
-                    val downloadUrl = downloadDetails.downloadUrl
-                    val fileName = downloadDetails.name
-                    if (isFileNameInValid(fileName)) {
-                      navigaeToErrorPage(uploadId, fileName)
-                    } else {
-                      validationConnector.sendForValidation(UpscanURL(downloadUrl)) flatMap {
-                        case Right(messageSpecData) =>
-                          val validatedFileData = ValidatedFileData(fileName, messageSpecData, downloadDetails.size, downloadDetails.checksum)
-                          for {
-                            updatedAnswers <- Future.fromTry(request.userAnswers.set(ValidXMLPage, validatedFileData))
-                            updatedAnswersWithURL <- Future.fromTry(updatedAnswers.set(URLPage, downloadUrl))
-                            _ <- sessionRepository.set(updatedAnswersWithURL)
-                          } yield Redirect(navigator.nextPage(ValidXMLPage, NormalMode, updatedAnswers))
+          uploadId =>
+            {
+              upscanConnector.getUploadDetails(uploadId) map {
+                uploadSessions =>
+                  getDownloadUrl(uploadSessions).fold {
+                    logger.error(s"Failed to upload file with upload Id: [${uploadId.value}]")
+                    Future.successful(InternalServerError(errorView()))
+                  } {
+                    downloadDetails =>
+                      val downloadUrl = downloadDetails.downloadUrl
+                      val fileName    = downloadDetails.name
+                      if (isFileNameInvalid(fileName)) {
+                        navigateToErrorPage(uploadId, fileName)
+                      } else {
+                        validationConnector.sendForValidation(UpscanURL(downloadUrl)) flatMap {
+                          case Right(messageSpecData) =>
+                            val validatedFileData = ValidatedFileData(fileName, messageSpecData, downloadDetails.size, downloadDetails.checksum)
+                            for {
+                              updatedAnswers        <- Future.fromTry(request.userAnswers.set(ValidXMLPage, validatedFileData))
+                              updatedAnswersWithURL <- Future.fromTry(updatedAnswers.set(URLPage, downloadUrl))
+                              _                     <- sessionRepository.set(updatedAnswersWithURL)
+                            } yield Redirect(navigator.nextPage(ValidXMLPage, NormalMode, updatedAnswers))
 
-                        case Left(ValidationErrors(errors, _)) =>
-                          for {
-                            updatedAnswers <- Future.fromTry(request.userAnswers.set(InvalidXMLPage, fileName))
-                            updatedAnswersWithErrors <- Future.fromTry(updatedAnswers.set(GenericErrorPage, errors))
-                            _ <- sessionRepository.set(updatedAnswersWithErrors)
-                          } yield Redirect(navigator.nextPage(InvalidXMLPage, NormalMode, updatedAnswers))
+                          case Left(ValidationErrors(errors, _)) =>
+                            for {
+                              updatedAnswers           <- Future.fromTry(request.userAnswers.set(InvalidXMLPage, fileName))
+                              updatedAnswersWithErrors <- Future.fromTry(updatedAnswers.set(GenericErrorPage, errors))
+                              _                        <- sessionRepository.set(updatedAnswersWithErrors)
+                            } yield Redirect(navigator.nextPage(InvalidXMLPage, NormalMode, updatedAnswers))
 
-                        case Left(InvalidXmlError(_)) =>
-                          for {
-                            updatedAnswers <- Future.fromTry(request.userAnswers.set(InvalidXMLPage, fileName))
-                            _ <- sessionRepository.set(updatedAnswers)
-                          } yield Redirect(routes.FileErrorController.onPageLoad())
+                          case Left(InvalidXmlError(_)) =>
+                            for {
+                              updatedAnswers <- Future.fromTry(request.userAnswers.set(InvalidXMLPage, fileName))
+                              _              <- sessionRepository.set(updatedAnswers)
+                            } yield Redirect(routes.FileErrorController.onPageLoad())
 
-                        case _ =>
-                          Future.successful(InternalServerError(errorView()))
+                          case _ =>
+                            Future.successful(InternalServerError(errorView()))
+                        }
                       }
-                    }
-                }
-            }
-          }.flatten
+                  }
+              }
+            }.flatten
         }
   }
 
@@ -113,7 +114,7 @@ class FileValidationController @Inject()(
     )
   }
 
-  private def isFileNameInValid(fileName: String) = fileName.replace(".xml", "").length > maxFileNameLength
+  private def isFileNameInvalid(fileName: String) = fileName.replace(".xml", "").length > maxFileNameLength
 
   private def getDownloadUrl(uploadSessions: Option[UploadSessionDetails]): Option[ExtractedFileStatus] =
     uploadSessions match {
