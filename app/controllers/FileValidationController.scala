@@ -18,7 +18,7 @@ package controllers
 
 import connectors.{UpscanConnector, ValidationConnector}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.upscan.{ExtractedFileStatus, UploadSessionDetails, UploadedSuccessfully, UpscanURL}
+import models.upscan.{ExtractedFileStatus, UploadId, UploadSessionDetails, UploadedSuccessfully, UpscanURL}
 import models.{InvalidXmlError, NormalMode, ValidatedFileData, ValidationErrors}
 import navigation.Navigator
 import pages._
@@ -27,6 +27,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import utils.CBCConstants.{invalidArgumentErrorMessage, invalidFileNameLength, maxFileNameLength}
 import views.html.ThereIsAProblemView
 
 import javax.inject.Inject
@@ -67,36 +68,53 @@ class FileValidationController @Inject() (
                     downloadDetails =>
                       val downloadUrl = downloadDetails.downloadUrl
                       val fileName    = downloadDetails.name
-                      validationConnector.sendForValidation(UpscanURL(downloadUrl)) flatMap {
-                        case Right(messageSpecData) =>
-                          val validatedFileData = ValidatedFileData(fileName, messageSpecData, downloadDetails.size, downloadDetails.checksum)
-                          for {
-                            updatedAnswers        <- Future.fromTry(request.userAnswers.set(ValidXMLPage, validatedFileData))
-                            updatedAnswersWithURL <- Future.fromTry(updatedAnswers.set(URLPage, downloadUrl))
-                            _                     <- sessionRepository.set(updatedAnswersWithURL)
-                          } yield Redirect(navigator.nextPage(ValidXMLPage, NormalMode, updatedAnswers))
+                      if (isFileNameInvalid(fileName)) {
+                        navigateToErrorPage(uploadId, fileName)
+                      } else {
+                        validationConnector.sendForValidation(UpscanURL(downloadUrl)) flatMap {
+                          case Right(messageSpecData) =>
+                            val validatedFileData = ValidatedFileData(fileName, messageSpecData, downloadDetails.size, downloadDetails.checksum)
+                            for {
+                              updatedAnswers        <- Future.fromTry(request.userAnswers.set(ValidXMLPage, validatedFileData))
+                              updatedAnswersWithURL <- Future.fromTry(updatedAnswers.set(URLPage, downloadUrl))
+                              _                     <- sessionRepository.set(updatedAnswersWithURL)
+                            } yield Redirect(navigator.nextPage(ValidXMLPage, NormalMode, updatedAnswers))
 
-                        case Left(ValidationErrors(errors, _)) =>
-                          for {
-                            updatedAnswers           <- Future.fromTry(request.userAnswers.set(InvalidXMLPage, fileName))
-                            updatedAnswersWithErrors <- Future.fromTry(updatedAnswers.set(GenericErrorPage, errors))
-                            _                        <- sessionRepository.set(updatedAnswersWithErrors)
-                          } yield Redirect(navigator.nextPage(InvalidXMLPage, NormalMode, updatedAnswers))
+                          case Left(ValidationErrors(errors, _)) =>
+                            for {
+                              updatedAnswers           <- Future.fromTry(request.userAnswers.set(InvalidXMLPage, fileName))
+                              updatedAnswersWithErrors <- Future.fromTry(updatedAnswers.set(GenericErrorPage, errors))
+                              _                        <- sessionRepository.set(updatedAnswersWithErrors)
+                            } yield Redirect(navigator.nextPage(InvalidXMLPage, NormalMode, updatedAnswers))
 
-                        case Left(InvalidXmlError(_)) =>
-                          for {
-                            updatedAnswers <- Future.fromTry(request.userAnswers.set(InvalidXMLPage, fileName))
-                            _              <- sessionRepository.set(updatedAnswers)
-                          } yield Redirect(routes.FileErrorController.onPageLoad())
+                          case Left(InvalidXmlError(_)) =>
+                            for {
+                              updatedAnswers <- Future.fromTry(request.userAnswers.set(InvalidXMLPage, fileName))
+                              _              <- sessionRepository.set(updatedAnswers)
+                            } yield Redirect(routes.FileErrorController.onPageLoad())
 
-                        case _ =>
-                          Future.successful(InternalServerError(errorView()))
+                          case _ =>
+                            Future.successful(InternalServerError(errorView()))
+                        }
                       }
                   }
               }
             }.flatten
         }
   }
+
+  private def navigateToErrorPage(uploadId: UploadId, fileName: String) = {
+    logger.error(s"file name length is more than allowed limit : $fileName")
+    Future.successful(
+      Redirect(
+        routes.UploadFileController
+          .showError(invalidArgumentErrorMessage, invalidFileNameLength, uploadId.value)
+          .url
+      )
+    )
+  }
+
+  private def isFileNameInvalid(fileName: String) = fileName.replace(".xml", "").length > maxFileNameLength
 
   private def getDownloadUrl(uploadSessions: Option[UploadSessionDetails]): Option[ExtractedFileStatus] =
     uploadSessions match {

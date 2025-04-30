@@ -234,6 +234,7 @@ uploadFile.heading = Upload an XML file
 uploadFile.p1 = We will automatically check the formatting of the file and send you to another page once completed.
 uploadFile.error.file.invalid = The selected file must be an XML
 uploadFile.error.file.empty = Select a file to upload
+uploadFile.error.file.name.length = File name must be 100 characters or less and match the MessageRefId in the file
 
 invalidXMLFile.title = There is a problem with the formatting of your file
 invalidXMLFile.heading = There is a problem with the formatting of your file

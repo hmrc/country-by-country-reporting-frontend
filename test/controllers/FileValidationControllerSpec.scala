@@ -92,6 +92,27 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
       userAnswersCaptor.getValue.data mustEqual expectedData
     }
 
+    "must redirect to Upload File error page and present the correct view for a GET" in {
+      val uploadDetails = UploadSessionDetails(
+        new ObjectId(),
+        UploadId("123"),
+        Reference("123"),
+        UploadedSuccessfully("FileNameMoreThan100ChFileNameMoreThan100ChFileNameMoreThan100ChFileNameMoreThan100ChFileNameMoreThan1.xml",
+                             downloadURL,
+                             FileSize,
+                             "MD5:123"
+        )
+      )
+
+      fakeUpscanConnector.setDetails(uploadDetails)
+
+      val request                = FakeRequest(GET, routes.FileValidationController.onPageLoad().url)
+      val result: Future[Result] = route(application, request).value
+
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result).value mustEqual routes.UploadFileController.showError("InvalidArgument", "InvalidFileNameLength", "123").url
+    }
+
     "must redirect to invalid XML page if XML validation fails" in {
 
       val errors: Seq[GenericError]                      = Seq(GenericError(1, Message("error")))
