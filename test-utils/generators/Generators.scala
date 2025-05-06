@@ -78,7 +78,7 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
     )
 
   def nonBooleans: Gen[String] =
-    arbitrary[String]
+    nonEmptyString
       .suchThat(_.nonEmpty)
       .suchThat(_ != "true")
       .suchThat(_ != "false")
