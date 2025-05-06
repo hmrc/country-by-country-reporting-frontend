@@ -27,6 +27,9 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators extends Generators {
 
+  def nonEmptyString: Gen[String] =
+    Gen.nonEmptyListOf(Gen.alphaChar).map(_.mkString)
+
   implicit lazy val arbitraryAgentClientDetails: Arbitrary[AgentClientDetails] =
     Arbitrary {
       for {

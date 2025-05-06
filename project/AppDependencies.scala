@@ -22,7 +22,7 @@ object AppDependencies {
     "org.scalatestplus"      %% "scalacheck-1-15"         % "3.2.11.0",
     "org.scalatestplus"      %% "mockito-3-4"             % "3.2.10.0",
     "org.pegdown"             % "pegdown"                 % "1.6.0",
-    "org.jsoup"               % "jsoup"                   % "1.18.1",
+    "org.jsoup"               % "jsoup"                   % "1.20.1",
     "org.mockito"            %% "mockito-scala"           % "1.17.37",
     "wolfendale"             %% "scalacheck-gen-regexp"   % "0.1.2"
   ).map(_ % Test)
