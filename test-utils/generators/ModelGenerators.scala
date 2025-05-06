@@ -25,7 +25,7 @@ import models.upscan.UploadId
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 
-trait ModelGenerators extends Generators {
+trait ModelGenerators {
 
   def nonEmptyString: Gen[String] =
     Gen.nonEmptyListOf(Gen.alphaChar).map(_.mkString)
