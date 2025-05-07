@@ -17,14 +17,8 @@
 package base
 
 import controllers.actions._
-import controllers.actions.agent.{
-  AgentCheckForSubmissionAction,
-  AgentDataRetrievalAction,
-  AgentIdentifierAction,
-  FakeAgentCheckForSubmissionAction,
-  FakeAgentDataRetrievalAction,
-  FakeAgentIdentifierActionForAgentIdentifierAction
-}
+import controllers.actions.agent._
+import generators.Generators
 import models.UserAnswers
 import org.mockito.MockitoSugar
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
@@ -51,13 +45,15 @@ trait SpecBase
     with TryValues
     with OptionValues
     with ScalaFutures
-    with IntegrationPatience {
+    with IntegrationPatience
+    with Generators {
 
   val userAnswersId: String = "id"
 
   implicit val hc: HeaderCarrier = HeaderCarrier()
 
-  def onwardRoute: Call                                  = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
+
   final val mockDataRetrievalAction: DataRetrievalAction = mock[DataRetrievalAction]
   final val mockSessionRepository: SessionRepository     = mock[SessionRepository]
 

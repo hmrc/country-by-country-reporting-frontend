@@ -27,11 +27,14 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  def nonEmptyString: Gen[String] =
+    Gen.nonEmptyListOf(Gen.alphaChar).map(_.mkString)
+
   implicit lazy val arbitraryAgentClientDetails: Arbitrary[AgentClientDetails] =
     Arbitrary {
       for {
-        clientID    <- arbitrary[String]
-        tradingName <- arbitrary[String]
+        clientID    <- nonEmptyString
+        tradingName <- nonEmptyString
       } yield AgentClientDetails(clientID, Some(tradingName))
     }
 
@@ -42,39 +45,39 @@ trait ModelGenerators {
 
   implicit val arbitraryOrganisationDetails: Arbitrary[OrganisationDetails] = Arbitrary {
     for {
-      orgName <- arbitrary[String]
+      orgName <- nonEmptyString
     } yield OrganisationDetails(orgName)
   }
 
   implicit val arbitraryAgentDetails: Arbitrary[AgentDetails] = Arbitrary {
     for {
-      orgName <- arbitrary[String]
+      orgName <- nonEmptyString
     } yield AgentDetails(orgName)
   }
 
   implicit val arbitraryContactInformation: Arbitrary[ContactInformation] = Arbitrary {
     for {
       contactType <- arbitrary[OrganisationDetails]
-      email       <- arbitrary[String]
-      phone       <- Gen.option(arbitrary[String])
-      mobile      <- Gen.option(arbitrary[String])
+      email       <- nonEmptyString
+      phone       <- Gen.option(nonEmptyString)
+      mobile      <- Gen.option(nonEmptyString)
     } yield ContactInformation(contactType, email, phone, mobile)
   }
 
   implicit val arbitraryAgentContactInformation: Arbitrary[AgentContactInformation] = Arbitrary {
     for {
       contactType <- arbitrary[AgentDetails]
-      email       <- arbitrary[String]
-      phone       <- Gen.option(arbitrary[String])
-      mobile      <- Gen.option(arbitrary[String])
+      email       <- nonEmptyString
+      phone       <- Gen.option(nonEmptyString)
+      mobile      <- Gen.option(nonEmptyString)
     } yield AgentContactInformation(contactType, email, phone, mobile)
   }
 
   implicit val arbitraryRequestDetail: Arbitrary[RequestDetailForUpdate] = Arbitrary {
     for {
-      idType           <- arbitrary[String]
-      idNumber         <- arbitrary[String]
-      tradingName      <- Gen.option(arbitrary[String])
+      idType           <- nonEmptyString
+      idNumber         <- nonEmptyString
+      tradingName      <- Gen.option(nonEmptyString)
       isGBUser         <- arbitrary[Boolean]
       primaryContact   <- arbitrary[ContactInformation]
       secondaryContact <- Gen.option(arbitrary[ContactInformation])
@@ -83,9 +86,9 @@ trait ModelGenerators {
 
   implicit val arbitraryAgentRequestDetailForUpdate: Arbitrary[AgentRequestDetailForUpdate] = Arbitrary {
     for {
-      idType           <- arbitrary[String]
-      idNumber         <- arbitrary[String]
-      tradingName      <- Gen.option(arbitrary[String])
+      idType           <- nonEmptyString
+      idNumber         <- nonEmptyString
+      tradingName      <- Gen.option(nonEmptyString)
       isGBUser         <- arbitrary[Boolean]
       primaryContact   <- arbitrary[AgentContactInformation]
       secondaryContact <- Gen.option(arbitrary[AgentContactInformation])
@@ -99,22 +102,22 @@ trait ModelGenerators {
   implicit val arbitraryUpdateFileErrors: Arbitrary[FileErrors] = Arbitrary {
     for {
       fileErrorCode <- arbitrary[BusinessRuleErrorCode]
-      details       <- Gen.option(arbitrary[String])
+      details       <- Gen.option(nonEmptyString)
     } yield FileErrors(fileErrorCode, details)
   }
 
   implicit val arbitraryUpdateRecordErrors: Arbitrary[RecordError] = Arbitrary {
     for {
       recordErrorCode <- arbitrary[BusinessRuleErrorCode]
-      details         <- Gen.option(arbitrary[String])
-      docRefIdRef     <- Gen.option(listWithMaxLength(5, arbitrary[String]))
+      details         <- Gen.option(nonEmptyString)
+      docRefIdRef     <- Gen.option(listWithMaxLength(5, nonEmptyString))
     } yield RecordError(recordErrorCode, details, docRefIdRef)
   }
 
   implicit val arbitraryResponseDetail: Arbitrary[ResponseDetail] = Arbitrary {
     for {
-      subscriptionID   <- arbitrary[String]
-      tradingName      <- Gen.option(arbitrary[String])
+      subscriptionID   <- nonEmptyString
+      tradingName      <- Gen.option(nonEmptyString)
       isGBUser         <- arbitrary[Boolean]
       primaryContact   <- arbitrary[ContactInformation]
       secondaryContact <- Gen.option(arbitrary[ContactInformation])
@@ -123,8 +126,8 @@ trait ModelGenerators {
 
   implicit val arbitraryAgentResponseDetail: Arbitrary[AgentResponseDetail] = Arbitrary {
     for {
-      subscriptionID   <- arbitrary[String]
-      tradingName      <- Gen.option(arbitrary[String])
+      subscriptionID   <- nonEmptyString
+      tradingName      <- Gen.option(nonEmptyString)
       isGBUser         <- arbitrary[Boolean]
       primaryContact   <- arbitrary[AgentContactInformation]
       secondaryContact <- Gen.option(arbitrary[AgentContactInformation])
@@ -141,9 +144,9 @@ trait ModelGenerators {
 
   implicit val arbitraryAgentRequestDetail: Arbitrary[AgentRequestDetail] = Arbitrary {
     for {
-      idType           <- arbitrary[String]
-      idNumber         <- arbitrary[String]
-      tradingName      <- Gen.option(arbitrary[String])
+      idType           <- nonEmptyString
+      idNumber         <- nonEmptyString
+      tradingName      <- Gen.option(nonEmptyString)
       isGBUser         <- arbitrary[Boolean]
       primaryContact   <- arbitrary[AgentContactInformation]
       secondaryContact <- Gen.option(arbitrary[AgentContactInformation])
@@ -160,8 +163,8 @@ trait ModelGenerators {
   implicit val arbitraryAgentRequestCommonForSubscription: Arbitrary[AgentRequestCommonForSubscription] =
     Arbitrary {
       for {
-        receiptDate        <- arbitrary[String]
-        acknowledgementRef <- arbitrary[String]
+        receiptDate        <- nonEmptyString
+        acknowledgementRef <- nonEmptyString
       } yield AgentRequestCommonForSubscription(
         regime = "CBC",
         conversationID = None,
@@ -184,21 +187,21 @@ trait ModelGenerators {
 
   implicit val arbitraryMessageSpecData: Arbitrary[MessageSpecData] = Arbitrary {
     for {
-      messageRefId        <- arbitrary[String]
+      messageRefId        <- nonEmptyString
       messageTypeIndic    <- Gen.oneOf(MessageTypeIndic.values)
-      reportingEntityName <- arbitrary[String]
+      reportingEntityName <- nonEmptyString
       reporterType        <- Gen.oneOf(ReportType.values.filterNot(_.equals(TestData)))
     } yield MessageSpecData(messageRefId, messageTypeIndic, reportingEntityName, reporterType)
   }
 
   implicit val arbitrarySubmissionDetails: Arbitrary[SubmissionDetails] = Arbitrary {
     for {
-      fileName        <- arbitrary[String]
+      fileName        <- nonEmptyString
       fileSize        <- arbitrary[Long]
-      fileChecksum    <- arbitrary[String]
-      enrolmentId     <- arbitrary[String]
-      uploadId        <- arbitrary[String]
-      documentUrl     <- arbitrary[String]
+      fileChecksum    <- nonEmptyString
+      enrolmentId     <- nonEmptyString
+      uploadId        <- nonEmptyString
+      documentUrl     <- nonEmptyString
       messageSpecData <- arbitrary[MessageSpecData]
     } yield SubmissionDetails(fileName, UploadId(uploadId), enrolmentId, fileSize, documentUrl, fileChecksum, messageSpecData)
   }
