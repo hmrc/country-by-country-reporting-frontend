@@ -1,21 +1,21 @@
 // =====================================================
 // UpScan upload
 // =====================================================
-$("#uploadForm").submit(function(e){
+$("#uploadForm").submit(function (e) {
     e.preventDefault();
     const fileLength = $("#file-upload")[0].files.length;
     if (fileLength === 0) {
         var errorRequestId = $("#x-amz-meta-request-id").val();
         var errorUrl = $("#upScanErrorRedirectUrl").val() + "?errorCode=InvalidArgument&errorMessage=FileNotSelected&errorRequestId=" + errorRequestId;
         window.location = errorUrl;
-    } else if(isFileNameInvalid()){
+    } else if (isFileNameInvalid()) {
         var errorRequestId = $("[name='x-amz-meta-request-id']").val();
         var errorUrl = $("#upScanErrorRedirectUrl").val() + "?errorCode=InvalidArgument&errorMessage=InvalidFileNameLength&errorRequestId=" + errorRequestId;
         window.location = errorUrl;
-    }else {
+    } else {
         function disableFileUpload() {
             $("#file-upload").attr('disabled', 'disabled')
-        };
+        }
 
         function addUploadSpinner() {
             $("#processing").empty();
@@ -27,7 +27,7 @@ $("#uploadForm").submit(function(e){
         }
 
         addUploadSpinner();
-        setTimeout(function() {
+        setTimeout(function () {
             this.submit();
             disableFileUpload();
         }.bind(this), 0);
@@ -35,18 +35,16 @@ $("#uploadForm").submit(function(e){
 
 });
 
-function isFileNameInvalid(){
-    let fileName = $("#file-upload")[0].files[0].name;
-    let trimmedFileName = fileName.replace(".xml","")
-    console.log(trimmedFileName.length)
-    if(trimmedFileName.length > 100){
+function isFileNameInvalid() {
+    var fileName = $("#file-upload")[0].files[0].name;
+    var trimmedFileName = fileName.replace(".xml", "");
+    if (trimmedFileName.length > 100) {
         return true;
     }
     return false;
- }
+}
 
-$(document).ready(function ()
-{
+$(document).ready(function () {
     var hasError = (window.location.href.indexOf("errorCode") > -1);
     var preFixError = hasError ? "Error: " : "";
     var appendError = preFixError + $("title").html();
