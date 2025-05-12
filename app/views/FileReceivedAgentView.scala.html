@@ -42,7 +42,7 @@
 
     @govukPanel(Panel(
       title = Text(messages("fileReceivedAgent.heading")),
-      content = HtmlContent(s"${messages("fileReceived.ChecksCompleted.prefix")} <strong>$date at $time</strong>"))
+      content = HtmlContent(s"${messages("fileReceived.ChecksCompleted.prefix")} <br><strong>$date at $time</strong>"))
     ))
 
     @govukSummaryList(fileDetails)
