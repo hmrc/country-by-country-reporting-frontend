@@ -28,7 +28,7 @@
         appConfig: FrontendAppConfig
 )
 
-@(fileDetails: SummaryList, firstContactEmail: String, secondContactEmail:Option[String])(implicit request: RequestHeader, messages: Messages)
+@(fileDetails: SummaryList, time: String, date: String, firstContactEmail: String, secondContactEmail:Option[String])(implicit request: RequestHeader, messages: Messages)
 
  @secondContactMessage = {
  @if(secondContactEmail.isDefined){@messages("fileReceived.p1.5", secondContactEmail.get)}
@@ -37,8 +37,9 @@
  @layout(pageTitle = titleNoForm(messages("fileReceived.title")), showBackLink = false) {
 
   @govukPanel(Panel(
-   title = Text(messages("fileReceived.heading"))
-  ))
+   title = Text(messages("fileReceived.heading")),
+   content = HtmlContent(s"${messages("fileReceived.ChecksCompleted.prefix")} <strong>$date at $time</strong>"))
+)
 
     @govukSummaryList(fileDetails)
  @if(secondContactEmail.isDefined){

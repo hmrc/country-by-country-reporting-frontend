@@ -35,10 +35,6 @@ object FileReceivedViewModel {
         actions = Seq()
       ),
       SummaryListRowViewModel(
-        key = "fileReceived.ChecksCompleted.key",
-        value = ValueViewModel(messages("fileReceived.ChecksCompleted.time", date, time))
-      ),
-      SummaryListRowViewModel(
         key = "fileReceived.reportType.key",
         value = ValueViewModel(
           HtmlFormat.escape(messages(s"reportType.${receivedFileDetails.reportType.toString}")).toString

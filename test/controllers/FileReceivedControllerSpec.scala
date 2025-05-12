@@ -113,7 +113,13 @@ class FileReceivedControllerSpec extends SpecBase {
           .withMargin()
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(list, firstContactEmail, Some(secondContactEmail))(request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          list,
+          "10:30am",
+          "1 January 2022",
+          firstContactEmail,
+          Some(secondContactEmail)
+        )(request, messages(application)).toString
       }
     }
     "must return OK and the correct view for a GET for Agent" in {
@@ -158,7 +164,15 @@ class FileReceivedControllerSpec extends SpecBase {
           .withMargin()
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(list, firstContactEmail, Some(secondContactEmail), agentFirstContactEmail, Some(agentSecondContactEmail))(
+        contentAsString(result) mustEqual view(
+          list,
+          "10:30am",
+          "1 January 2022",
+          firstContactEmail,
+          Some(secondContactEmail),
+          agentFirstContactEmail,
+          Some(agentSecondContactEmail)
+        )(
           request,
           messages(application)
         ).toString
