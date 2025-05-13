@@ -36,10 +36,12 @@
 
  @layout(pageTitle = titleNoForm(messages("fileReceived.title")), showBackLink = false) {
 
-  @govukPanel(Panel(
-   title = Text(messages("fileReceived.heading")),
-   content = HtmlContent(s"${messages("fileReceived.ChecksCompleted.prefix")}<br><strong>$date at $time</strong>"))
-)
+ @govukPanel(Panel(
+     title = Text(messages("fileReceivedAgent.heading")),
+     content = HtmlContent(
+        s"${messages("fileReceived.ChecksCompleted.prefix")}, <br><strong>${messages("fileReceived.ChecksCompleted.time", date, time)}</strong>"
+    )
+ ))
 
     @govukSummaryList(fileDetails)
  @if(secondContactEmail.isDefined){

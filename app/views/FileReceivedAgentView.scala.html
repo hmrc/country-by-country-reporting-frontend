@@ -41,9 +41,12 @@
     @layout(pageTitle = titleNoForm(messages("fileReceivedAgent.title")), showBackLink = false, showAgentHeader = true) {
 
     @govukPanel(Panel(
-      title = Text(messages("fileReceivedAgent.heading")),
-      content = HtmlContent(s"${messages("fileReceived.ChecksCompleted.prefix")} <br><strong>$date at $time</strong>"))
+        title = Text(messages("fileReceivedAgent.heading")),
+        content = HtmlContent(
+            s"${messages("fileReceived.ChecksCompleted.prefix")}, <br><strong>${messages("fileReceivedAgent.ChecksCompleted.time", date, time)}</strong>"
+        )
     ))
+
 
     @govukSummaryList(fileDetails)
 
