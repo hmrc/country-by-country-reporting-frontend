@@ -700,7 +700,7 @@ problemCBCId.heading = There is a problem with your CBC ID
 problemCBCId.p1 = The CBC ID you entered does not match any clients that have authorised you in your agent services account.
 problemCBCId.subheading = What you can do next
 problemCBCId.bullet1 = Try entering your client’s CBC ID again
-problemCBCId.bullet2 = Ask a client to authorize you through your {0}
+problemCBCId.bullet2 = Ask a client to authorise you through your {0}
 problemCBCId.bullet2.link = agent services account
 problemCBCId.bullet3 = Confirm your client has authorised you to start using CBC for them.
 
