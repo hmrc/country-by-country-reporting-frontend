@@ -49,7 +49,7 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
       "MD5:123"
     )
 
-    "must return OK and the correct view for a GET when fileStatus is Pending" in {
+    "must return OK and the correct view for a GET when fileStatus is Pending and filesize is normal" in {
 
       val userAnswers: UserAnswers = emptyUserAnswers
         .withPage(ConversationIdPage, conversationId)
@@ -73,7 +73,42 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
         val view    = application.injector.instanceOf[FilePendingChecksView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(fileSummaryList, action, "conversationId", false)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(fileSummaryList, action, "conversationId", "3", false)(request, messages(application)).toString
+      }
+    }
+
+    "must return OK and the correct view for a GET when fileStatus is Pending and filesize is above normal" in {
+
+      val validXmlDetails = ValidatedFileData(
+        "name",
+        MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData),
+        3145729L,
+        "MD5:123"
+      )
+
+      val userAnswers: UserAnswers = emptyUserAnswers
+        .withPage(ConversationIdPage, conversationId)
+        .withPage(ValidXMLPage, validXmlDetails)
+
+      when(mockFileDetailsConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(Some(Pending)))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[FileDetailsConnector].toInstance(mockFileDetailsConnector)
+        )
+        .build()
+
+      val fileSummaryList = FileCheckViewModel.createFileSummary(validXmlDetails.messageSpecData.messageRefId, "Pending")(messages(application))
+      val action          = routes.FilePendingChecksController.onPageLoad().url
+
+      running(application) {
+
+        val request = FakeRequest(GET, routes.FilePendingChecksController.onPageLoad().url)
+        val result  = route(application, request).value
+        val view    = application.injector.instanceOf[FilePendingChecksView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(fileSummaryList, action, "conversationId", "10", false)(request, messages(application)).toString
       }
     }
 
@@ -104,7 +139,7 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
         val view    = application.injector.instanceOf[FilePendingChecksView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(fileSummaryList, action, "conversationId", true)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(fileSummaryList, action, "conversationId", "3", true)(request, messages(application)).toString
       }
     }
 

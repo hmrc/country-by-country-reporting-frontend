@@ -74,4 +74,7 @@ class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig:
   val spinnerCounter: Int = configuration.get[Int]("spinner.counter")
 
   lazy val encryptionEnabled: Boolean = configuration.get[Boolean]("mongodb.encryptionEnabled")
+  val maxNormalFileSize: Long         = configuration.get[Long]("max-normal-file-size-bytes")
+  val normalFileWaitTime: String      = configuration.get[String]("normal-file-wait-time")
+  val largeFileWaitTime: String       = configuration.get[String]("large-file-wait-time")
 }

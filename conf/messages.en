@@ -310,9 +310,12 @@ fileSummary.viewErrors = Check errors
 
 filePendingChecks.title = We need a few minutes to check your file
 filePendingChecks.heading = We need a few minutes to check your file
-filePendingChecks.p1 = If you have been refreshing for more than 10 minutes, {0}. We will email you to tell you if your file has passed the checks or not.
+filePendingChecks.p1 = You need to refresh the page for updates on the status of our automatic checks.
+filePendingChecks.p2 = If you have been refreshing for more than {0} minutes, {1}. We will email you
+filePendingChecks.p2.organisation = to tell you
+filePendingChecks.p2.agent = and your client
+filePendingChecks.p3 = if your file has passed the checks or you can sign in again later to check the results.
 filePendingChecks.link = you can sign out
-filePendingChecks.agent.p2 = If the file passes the checks, we will also email your client.
 fileFailedChecks.title = Your file has failed our checks
 fileFailedChecks.heading = Your file has failed our checks
 fileFailedChecks.orgWarning = You must send another version. Late reports may result in a penalty.
