@@ -16,6 +16,7 @@
 
 package controllers
 
+import config.FrontendAppConfig
 import connectors.FileDetailsConnector
 import controllers.actions._
 import models.fileDetails.{FileValidationErrors, Pending, Rejected, RejectedSDES, RejectedSDESVirus, Accepted => FileStatusAccepted}
@@ -40,6 +41,7 @@ class FilePendingChecksController @Inject() (
   requireData: DataRequiredAction,
   fileConnector: FileDetailsConnector,
   sessionRepository: SessionRepository,
+  frontendAppConfig: FrontendAppConfig,
   val controllerComponents: MessagesControllerComponents,
   view: FilePendingChecksView,
   errorView: ThereIsAProblemView
@@ -81,10 +83,13 @@ class FilePendingChecksController @Inject() (
         for {
           updatedAnswers <- Future.fromTry(userAnswers.remove(UploadIDPage))
           _              <- sessionRepository.set(updatedAnswers)
-        } yield Ok(view(summary, routes.FilePendingChecksController.onPageLoad().url, conversationId.value, isAgent))
+        } yield Ok(view(summary, routes.FilePendingChecksController.onPageLoad().url, conversationId.value, getMinutesToWait(xmlDetails.fileSize), isAgent))
       case _ => Future.successful(InternalServerError(errorView()))
     }
   }
+
+  private def getMinutesToWait(fileSize: Long): String =
+    if (fileSize > frontendAppConfig.maxNormalFileSize) frontendAppConfig.largeFileWaitTime else frontendAppConfig.normalFileWaitTime
 
   private def slowJourneyErrorRoute(errors: FileValidationErrors, result: Future[Result]): Future[Result] =
     if (isProblemStatus(errors)) {

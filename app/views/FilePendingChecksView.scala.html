@@ -21,13 +21,23 @@
         govukButton: GovukButton
 )
 
-@(fileSummary: Seq[SummaryListRow], action: String, conversationId: String, isAgent:Boolean)(implicit request: RequestHeader, messages: Messages)
+@(fileSummary: Seq[SummaryListRow], action: String, conversationId: String, minutesToWait: String, isAgent:Boolean)(implicit request: RequestHeader, messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("filePendingChecks.title")), showBackLink = false, showAgentHeader = true) {
 
     <input type="hidden" id="conversationId" value="@conversationId">
 
     <h1 class="govuk-heading-l">@messages("filePendingChecks.heading")</h1>
+
+    <p class="govuk-body">@messages("filePendingChecks.p1")<br><br>
+        @Html(messages("filePendingChecks.p2",minutesToWait,link(controllers.auth.routes.AuthController.signOutNoSurvey.url, "filePendingChecks.link")))
+        @if(isAgent) {
+        @messages("filePendingChecks.p2.agent")
+        }else{
+        @messages("filePendingChecks.p2.organisation")
+        }
+        @messages("filePendingChecks.p3")
+    </p>
 
     @govukSummaryList(
         SummaryListViewModel(fileSummary)
@@ -36,12 +46,6 @@
     @govukButton(
         ButtonViewModel(Text(messages("fileSummary.refresh"))).withAttribute( "id" -> "submit").asLink(action)
     )
-
-    <p class="govuk-body">@Html(messages("filePendingChecks.p1", link(controllers.auth.routes.AuthController.signOutNoSurvey.url, "filePendingChecks.link")))
-        @if(isAgent) {
-        @messages("filePendingChecks.agent.p2")
-        }
-    </p>
 
 
 
