@@ -28,6 +28,7 @@ import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.auth.core.AffinityGroup.Organisation
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.ContactHelper
+import utils.DateTimeFormatUtil.{dateFormatter, timeFormatter}
 import viewmodels.FileReceivedViewModel
 import views.html.{FileReceivedAgentView, FileReceivedView, ThereIsAProblemView}
 
@@ -68,6 +69,8 @@ class FileReceivedController @Inject() (
                   } yield Ok(
                     agentView(
                       FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getAgentSummaryRows(details)),
+                      details.submitted.format(timeFormatter).toLowerCase,
+                      details.submitted.format(dateFormatter),
                       emails.firstContact,
                       emails.secondContact,
                       agentContactEmails.firstContact,
@@ -83,7 +86,13 @@ class FileReceivedController @Inject() (
                 updatedAnswers <- Future.fromTry(request.userAnswers.remove(UploadIDPage))
                 _              <- sessionRepository.set(updatedAnswers)
               } yield Ok(
-                view(FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getSummaryRows(details)), emails.firstContact, emails.secondContact)
+                view(
+                  FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getSummaryRows(details)),
+                  details.submitted.format(timeFormatter).toLowerCase,
+                  details.submitted.format(dateFormatter),
+                  emails.firstContact,
+                  emails.secondContact
+                )
               )
             case _ =>
               logger.warn("FileReceivedController: The User is neither an Organisation or an Agent")
