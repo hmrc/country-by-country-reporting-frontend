@@ -54,9 +54,13 @@
 
   <p class="govuk-body">@messages("fileReceived.p2")</p>
 
-  <ul class="govuk-list">
-   <li>@printLink("invalidXMLFile.print")</li>
-   <li>@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</li>
-   <li>@link(appConfig.feedbackUrl, "fileReceived.thoughts", openInNewWindow = true)</li>
-  </ul>
+  <h2 class="govuk-heading-m">@messages("fileReceived.subheading2")</h2>
+
+  <p class="govuk-body">@messages("fileReceived.p3")</p>
+  <p class="govuk-body">@Html(messages("fileReceived.shortSurvey", link(appConfig.feedbackUrl, "fileReceived.link")))</p>
+
+  <div class="govuk-!-padding-top-3">
+      <p class="govuk-body govuk-!-margin-bottom-2">@printLink("invalidXMLFile.print")</p>
+      <p class="govuk-body">@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</p>
+  </div>
  }

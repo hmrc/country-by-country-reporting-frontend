@@ -210,8 +210,11 @@ fileReceived.p1.0 = We have sent a confirmation email to {0}.
 fileReceived.p1.5 =and {0}.
 fileReceived.subheading = What happens next
 fileReceived.p2 = We will contact you if we have any questions about your report.
+fileReceived.subheading2 = Before you go
+fileReceived.p3 = Your feedback helps us make our service better.
 fileReceived.print = Print this page
-fileReceived.thoughts = What did you think of this service? (opens in new tab)
+fileReceived.link = Take a short survey
+fileReceived.shortSurvey = {0} to share your feedback on this service.
 fileReceived.reportType.key = File information
 
 fileReceivedAgent.title = File successfully sent
