@@ -42,6 +42,7 @@
                 field = form("value"),
                 label = LabelViewModel(messages("agentSecondContactEmail.heading", contactName)).withCssClass("govuk-visually-hidden")
             )
+            .asEmail()
             .withWidth(Full)
         )
 

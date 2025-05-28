@@ -38,7 +38,9 @@
             InputViewModel(
                 field = form("value"),
                 label = LabelViewModel(messages("contactName.heading")).asPageHeading()
-            ).withHint(HintViewModel(Text(messages("contactName.hint"))))
+            )
+            .asContactName()
+            .withHint(HintViewModel(Text(messages("contactName.hint"))))
             .withWidth(ThreeQuarters)
         )
 

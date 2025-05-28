@@ -41,7 +41,9 @@
             InputViewModel(
                     field = form("value"),
                     label = LabelViewModel(messages("agentSecondContactPhone.heading", secondContactName)).withCssClass("govuk-visually-hidden")
-                ).withWidth(ThreeQuarters)
+                )
+                .asTelephone()
+                .withWidth(ThreeQuarters)
                 .withHint(HintViewModel(Text(messages("agentSecondContactPhone.hint"))))
         )
 
