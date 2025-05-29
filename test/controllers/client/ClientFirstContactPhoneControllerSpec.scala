@@ -20,6 +20,7 @@ import base.SpecBase
 import forms.ContactPhoneFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{ClientContactDetailsNavigator, FakeClientContactDetailsNavigator}
+import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{ContactNamePage, ContactPhonePage}
@@ -61,7 +62,11 @@ class ClientFirstContactPhoneControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[ClientFirstContactPhoneView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, contactName, NormalMode)(request, messages(application)).toString
+        val resultAsString = contentAsString(result)
+        resultAsString mustEqual view(form, contactName, NormalMode)(request, messages(application)).toString
+        val page         = Jsoup.parse(resultAsString)
+        val labelElement = page.getElementsByTag("label").first()
+        labelElement.html() mustBe "What is the telephone number for first client contact name?"
       }
     }
 
