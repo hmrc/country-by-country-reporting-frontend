@@ -41,8 +41,9 @@
                 field = form("value"),
                 label = LabelViewModel(messages("agentFirstContactName.heading")).withCssClass("govuk-visually-hidden")
             )
+            .asContactName()
             .withWidth(ThreeQuarters)
-                    .withHint(Hint(content=messages("agentFirstContactName.hint")))
+            .withHint(Hint(content=messages("agentFirstContactName.hint")))
 
         )
 

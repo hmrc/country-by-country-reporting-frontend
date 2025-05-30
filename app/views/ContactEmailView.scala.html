@@ -40,7 +40,9 @@
             InputViewModel(
                 field = form("value"),
                 label = LabelViewModel(Text(messages(s"contactEmail.heading", contactName))).withCssClass("govuk-visually-hidden")
-            ).withWidth(Full)
+            )
+            .asEmail()
+            .withWidth(Full)
         )
 
 

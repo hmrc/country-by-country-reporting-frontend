@@ -41,8 +41,9 @@
             InputViewModel(
                 field = form("value"),
                 label = LabelViewModel(messages("agentFirstContactEmail.heading", contactName)).withCssClass("govuk-visually-hidden")
-        )
-                    .withWidth(Full)
+            )
+            .asEmail()
+            .withWidth(Full)
         )
 
 

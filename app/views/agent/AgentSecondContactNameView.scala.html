@@ -44,9 +44,9 @@
                 label = LabelViewModel(messages("agentSecondContactName.heading"))
                         .withCssClass("govuk-visually-hidden")
             )
-             .withWidth(ThreeQuarters)
-             .withHint(Hint(content=messages("agentSecondContactName.hint")))
-
+            .asContactName()
+            .withWidth(ThreeQuarters)
+            .withHint(Hint(content=messages("agentSecondContactName.hint")))
         )
 
         @govukButton(
