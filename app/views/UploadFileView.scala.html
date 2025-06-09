@@ -25,7 +25,7 @@
 
 @(form: Form[_], upscanInitiateResponse: UpscanInitiateResponse)(implicit request: RequestHeader, messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("uploadFile.title")), showAgentHeader = true) {
+@layout(pageTitle = title(form, messages("uploadFile.title")), showAgentHeader = true) {
 
     <form action="@upscanInitiateResponse.postTarget" method="post" id="uploadForm" enctype="multipart/form-data" novalidate>
 
