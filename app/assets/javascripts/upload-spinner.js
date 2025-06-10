@@ -46,7 +46,9 @@ function isFileNameInvalid() {
 
 $(document).ready(function () {
     var hasError = (window.location.href.indexOf("errorCode") > -1);
-    var preFixError = hasError ? "Error: " : "";
-    var appendError = preFixError + $("title").html();
-    $("title").html(appendError);
+    var currentTitle = $("title").html();
+
+    if (hasError && !currentTitle.startsWith("Error:")) {
+        $("title").html("Error: " + currentTitle);
+    }
 });
