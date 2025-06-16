@@ -26,8 +26,6 @@ import viewmodels.govuk.summarylist._
 object FileReceivedViewModel {
 
   def getSummaryRows(receivedFileDetails: FileDetails)(implicit messages: Messages): Seq[SummaryListRow] = {
-    val time = receivedFileDetails.submitted.format(timeFormatter).toLowerCase
-    val date = receivedFileDetails.submitted.format(dateFormatter)
     Seq(
       SummaryListRowViewModel(
         key = "fileReceived.messageRefId.key",
