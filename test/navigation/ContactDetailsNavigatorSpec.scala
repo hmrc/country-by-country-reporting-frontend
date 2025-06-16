@@ -69,6 +69,33 @@ class ContactDetailsNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks
         }
       }
 
+      "must go from ReviewContactDetailsPage" - {
+        "to Have Second Contact page when 'YES' is selected" in {
+
+          forAll(arbitrary[UserAnswers]) {
+            answers =>
+              val updatedAnswers =
+                answers.set(ReviewContactDetailsPage, true).success.value
+
+              navigator
+                .nextPage(ReviewContactDetailsPage, NormalMode, updatedAnswers)
+                .mustBe(routes.HaveSecondContactController.onPageLoad(NormalMode))
+          }
+        }
+
+        "Contact Name page when 'NO' is selected" in {
+          forAll(arbitrary[UserAnswers]) {
+            answers =>
+              val updatedAnswers =
+                answers.set(ReviewContactDetailsPage, false).success.value
+
+              navigator
+                .nextPage(ReviewContactDetailsPage, NormalMode, updatedAnswers)
+                .mustBe(routes.ContactNameController.onPageLoad(NormalMode))
+          }
+        }
+      }
+
       "must go from Have Second Contact page to Second Contact Name page when 'YES' is selected" in {
         forAll(arbitrary[UserAnswers]) {
           answers =>
