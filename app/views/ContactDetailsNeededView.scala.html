@@ -16,21 +16,22 @@
 
 @this(
         layout: templates.Layout,
-        govukButton: GovukButton
+        govukButton: GovukButton,
+        heading: components.Heading
 )
 
 @()(implicit request: RequestHeader, messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("contactDetailsNeeded.title"))) {
 
-    <h1 class="govuk-heading-l">@messages("contactDetailsNeeded.heading")</h1>
+    @heading(messages("contactDetailsNeeded.heading"))
 
     <p class="govuk-body">@messages("contactDetailsNeeded.p1")</p>
 
-    <p class="govuk-body">@messages("contactDetailsNeeded.p2")</p>
-
-    @govukButton(
-        ButtonViewModel(messages("site.continue")).withAttribute("id" -> "submit")
-                .asLink(controllers.routes.ContactNameController.onPageLoad(NormalMode).url)
-    )
+    <div class="govuk-!-padding-top-4">
+        @govukButton(
+            ButtonViewModel(messages("site.continue")).withAttribute("id" -> "submit")
+                    .asLink(controllers.routes.ContactNameController.onPageLoad(NormalMode).url)
+        )
+    </div>
 }
