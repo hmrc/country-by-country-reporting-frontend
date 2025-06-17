@@ -19,9 +19,9 @@ package controllers
 import controllers.actions._
 import forms.ReviewContactDetailsFormProvider
 import models.NormalMode
-import models.subscription.{ContactInformation, OrganisationDetails}
 import navigation.ContactDetailsNavigator
 import pages.{PrimaryClientContactInformationPage, ReviewContactDetailsPage}
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -47,8 +47,7 @@ class ReviewContactDetailsController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  val form = formProvider()
-  val x    = ContactInformation(OrganisationDetails("org"), "contactInfo", Some("phone"), Some("mobile"))
+  val form: Form[Boolean] = formProvider()
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
