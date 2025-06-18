@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import controllers.client.ReviewDetailsHelper
 import forms.ReviewContactDetailsFormProvider
 import models.NormalMode
 import navigation.ContactDetailsNavigator
@@ -45,7 +46,8 @@ class ReviewContactDetailsController @Inject() (
   view: ReviewContactDetailsView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
-    with I18nSupport {
+    with I18nSupport
+    with ReviewDetailsHelper {
 
   val form: Form[Boolean] = formProvider()
 
@@ -78,13 +80,15 @@ class ReviewContactDetailsController @Inject() (
                 value =>
                   for {
                     updatedAnswers <- Future.fromTry(request.userAnswers.set(ReviewContactDetailsPage, value))
-                    _              <- sessionRepository.set(updatedAnswers)
+                    populatedAnswers = populateUserAnswers(updatedAnswers, value)
+                    _ <- sessionRepository.set(populatedAnswers)
                   } yield Redirect(navigator.nextPage(ReviewContactDetailsPage, NormalMode, updatedAnswers))
               )
 
           case None => Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
         }
       }
+
   }
 
 }

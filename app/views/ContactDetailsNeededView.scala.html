@@ -31,7 +31,7 @@
     <div class="govuk-!-padding-top-4">
         @govukButton(
             ButtonViewModel(messages("site.continue")).withAttribute("id" -> "submit")
-                    .asLink(controllers.routes.ContactNameController.onPageLoad(NormalMode).url)
+                    .asLink(controllers.routes.ReviewContactDetailsController.onPageLoad().url)
         )
     </div>
 }

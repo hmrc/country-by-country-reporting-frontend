@@ -19,11 +19,9 @@ package controllers.client
 import controllers.actions._
 import controllers.routes
 import forms.ReviewClientContactDetailsFormProvider
-import models.subscription.ContactTypePage
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.ClientContactDetailsNavigator
 import pages.{PrimaryClientContactInformationPage, ReviewClientContactDetailsPage}
-import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -32,7 +30,6 @@ import views.html.client.ReviewClientContactDetailsView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success}
 
 class ReviewClientContactDetailsController @Inject() (
   override val messagesApi: MessagesApi,
@@ -47,7 +44,7 @@ class ReviewClientContactDetailsController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
-    with Logging {
+    with ReviewDetailsHelper {
 
   val form = formProvider()
 
@@ -89,30 +86,4 @@ class ReviewClientContactDetailsController @Inject() (
         )
   }
 
-  private def populateUserAnswers(userAnswers: UserAnswers, detailsAreCorrect: Boolean): UserAnswers =
-    if (detailsAreCorrect) populateContactDetails(userAnswers) else unPopulateContactDetails(userAnswers)
-
-  private def populateContactDetails(userAnswers: UserAnswers): UserAnswers = userAnswers.get(PrimaryClientContactInformationPage) match {
-    case None => userAnswers
-    case Some(contactInformation) =>
-      (for {
-        uaWithEmail         <- userAnswers.set(ContactTypePage.primaryContactDetailsPages.contactEmailPage, contactInformation.email)
-        uaWithTelephone     <- uaWithEmail.set(ContactTypePage.primaryContactDetailsPages.contactTelephonePage, contactInformation.phone.getOrElse(""))
-        uaWithHaveTelephone <- uaWithTelephone.set(ContactTypePage.primaryContactDetailsPages.haveTelephonePage, contactInformation.phone.exists(_.nonEmpty))
-        updatedAnswers <- uaWithHaveTelephone.set(ContactTypePage.primaryContactDetailsPages.contactNamePage,
-                                                  contactInformation.organisationDetails.organisationName
-        )
-      } yield updatedAnswers).getOrElse(userAnswers)
-  }
-
-  private def unPopulateContactDetails(userAnswers: UserAnswers): UserAnswers = userAnswers
-    .remove(ContactTypePage.primaryContactDetailsPages.contactNamePage)
-    .flatMap(_.remove(ContactTypePage.primaryContactDetailsPages.contactTelephonePage))
-    .flatMap(_.remove(ContactTypePage.primaryContactDetailsPages.haveTelephonePage))
-    .flatMap(_.remove(ContactTypePage.primaryContactDetailsPages.contactEmailPage)) match {
-    case Success(ua) => ua
-    case Failure(exception) =>
-      logger.warn(s"Could not remove contact details ${exception.getMessage}")
-      userAnswers
-  }
 }
