@@ -222,15 +222,18 @@ GET        /agent/change-client-contact/details-saved                           
 
 GET        /agent/use-agent-services                                             controllers.agent.AgentUseAgentServicesController.onPageLoad()
 
-GET        /agent/problem/cbc-id                                               controllers.client.ProblemCBCIdController.onPageLoad()
+GET        /agent/problem/cbc-id                                                controllers.client.ProblemCBCIdController.onPageLoad()
 
-GET        /problem/individual-sign-in-problem                                   controllers.IndividualSignInProblemController.onPageLoad()
+GET        /problem/individual-sign-in-problem                                  controllers.IndividualSignInProblemController.onPageLoad()
 
-GET        /agent/client-id                                                      controllers.agent.AgentClientIdController.onPageLoad()
-POST       /agent/client-id                                                      controllers.agent.AgentClientIdController.onSubmit()
+GET        /agent/client-id                                                     controllers.agent.AgentClientIdController.onPageLoad()
+POST       /agent/client-id                                                     controllers.agent.AgentClientIdController.onSubmit()
 
-GET        /agent/agent-is-this-your-client                                      controllers.agent.AgentIsThisYourClientController.onPageLoad
-POST       /agent/agent-is-this-your-client                                      controllers.agent.AgentIsThisYourClientController.onSubmit
+GET        /agent/agent-is-this-your-client                                     controllers.agent.AgentIsThisYourClientController.onPageLoad
+POST       /agent/agent-is-this-your-client                                     controllers.agent.AgentIsThisYourClientController.onSubmit
 
-GET        /agent/manage-your-clients                                         controllers.agent.ManageYourClientsController.onPageLoad(mode: Mode = NormalMode)
-POST       /agent/manage-your-clients                                         controllers.agent.ManageYourClientsController.onSubmit(mode: Mode = NormalMode)
+GET        /agent/manage-your-clients                                           controllers.agent.ManageYourClientsController.onPageLoad(mode: Mode = NormalMode)
+POST       /agent/manage-your-clients                                           controllers.agent.ManageYourClientsController.onSubmit(mode: Mode = NormalMode)
+
+GET        /change-contact/review-contact-details                               controllers.ReviewContactDetailsController.onPageLoad()
+POST       /change-contact/review-contact-details                               controllers.ReviewContactDetailsController.onSubmit()

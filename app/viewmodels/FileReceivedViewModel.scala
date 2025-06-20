@@ -20,14 +20,11 @@ import models.fileDetails.FileDetails
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
-import utils.DateTimeFormatUtil._
 import viewmodels.govuk.summarylist._
 
 object FileReceivedViewModel {
 
-  def getSummaryRows(receivedFileDetails: FileDetails)(implicit messages: Messages): Seq[SummaryListRow] = {
-    val time = receivedFileDetails.submitted.format(timeFormatter).toLowerCase
-    val date = receivedFileDetails.submitted.format(dateFormatter)
+  def getSummaryRows(receivedFileDetails: FileDetails)(implicit messages: Messages): Seq[SummaryListRow] =
     Seq(
       SummaryListRowViewModel(
         key = "fileReceived.messageRefId.key",
@@ -41,8 +38,6 @@ object FileReceivedViewModel {
         )
       )
     )
-
-  }
 
   def getAgentSummaryRows(receivedFileDetails: FileDetails)(implicit messages: Messages): Seq[SummaryListRow] =
     Seq(

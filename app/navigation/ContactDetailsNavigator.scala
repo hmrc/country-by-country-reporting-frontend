@@ -31,6 +31,14 @@ class ContactDetailsNavigator @Inject() () {
     case ContactEmailPage  => _ => routes.HaveTelephoneController.onPageLoad(NormalMode)
     case HaveTelephonePage => ua => haveTelephoneRoutes(NormalMode)(ua)
     case ContactPhonePage  => _ => routes.HaveSecondContactController.onPageLoad(NormalMode)
+    case ReviewContactDetailsPage =>
+      ua =>
+        yesNoPage(
+          ua,
+          ReviewContactDetailsPage,
+          routes.HaveSecondContactController.onPageLoad(NormalMode),
+          routes.ContactNameController.onPageLoad(NormalMode)
+        )
     case HaveSecondContactPage =>
       ua =>
         yesNoPage(
