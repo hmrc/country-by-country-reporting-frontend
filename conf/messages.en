@@ -753,3 +753,7 @@ pageNotFound.link = You can email {0} if you have any questions about this servi
 reviewContactDetails.title = Are these the right contact details for your organisation?
 reviewContactDetails.heading = Are these the right contact details for your organisation?
 reviewContactDetails.error.required = 	Select yes if these are the right contact details for your organisation
+
+someInformationMissing.title = Some information is missing
+someInformationMissing.heading = Some information is missing
+someInformationMissing.p1 = You must provide this information to continue.
