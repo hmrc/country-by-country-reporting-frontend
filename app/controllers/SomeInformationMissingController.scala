@@ -22,7 +22,7 @@ import pages.JourneyInProgressPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.CheckYourAnswersHelper
+import utils.CheckYourAnswersValidator
 import views.html.SomeInformationMissingView
 
 import javax.inject.Inject
@@ -39,11 +39,11 @@ class SomeInformationMissingController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) {
     implicit request =>
-      val answers                = request.userAnswers
-      val checkUserAnswersHelper = CheckYourAnswersHelper(answers)
-      val mode                   = if (answers.get(JourneyInProgressPage).getOrElse(false)) CheckMode else NormalMode
+      val answers  = request.userAnswers
+      val validate = CheckYourAnswersValidator(answers)
+      val mode     = if (answers.get(JourneyInProgressPage).getOrElse(false)) CheckMode else NormalMode
 
-      val redirectUrl = checkUserAnswersHelper.changeAnswersRedirectUrl(mode) match {
+      val redirectUrl = validate.changeAnswersRedirectUrl(mode) match {
         case Some(value) => value
         case None        => controllers.routes.ContactNameController.onPageLoad(NormalMode).url
       }

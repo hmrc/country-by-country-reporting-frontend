@@ -40,6 +40,7 @@ class ChangeContactDetailsController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   checkForSubmission: CheckForSubmissionAction,
+  validationSubmissionDataAction: ValidationSubmissionDataAction,
   subscriptionService: SubscriptionService,
   val controllerComponents: MessagesControllerComponents,
   view: ChangeContactDetailsView,
@@ -51,35 +52,23 @@ class ChangeContactDetailsController @Inject() (
   private def isOrganisationAndFirstVisitAfterMigration(isFirstVisitAfterMigration: Boolean)(implicit request: DataRequest[AnyContent]): Boolean =
     (request.userType == AffinityGroup.Organisation) & isFirstVisitAfterMigration
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData.apply andThen requireData andThen checkForSubmission()).async {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData.apply
+    andThen requireData andThen checkForSubmission() andThen validationSubmissionDataAction()).async {
     implicit request =>
-      val answers                = request.userAnswers
-      val checkUserAnswersHelper = CheckYourAnswersHelper(answers)
-      val currentMode            = if (answers.get(JourneyInProgressPage).getOrElse(false)) CheckMode else NormalMode
+      val checkUserAnswersHelper = CheckYourAnswersHelper(request.userAnswers)
+      val primaryContactList = SummaryListViewModel(
+        rows = checkUserAnswersHelper.getPrimaryContactDetails
+      )
+      val secondaryContactList = SummaryListViewModel(
+        rows = checkUserAnswersHelper.getSecondaryContactDetails
+      )
 
-      checkUserAnswersHelper.changeAnswersRedirectUrl(currentMode) match {
-        case Some(_) => Future.successful(Redirect(routes.SomeInformationMissingController.onPageLoad()))
-        case None =>
-          val primaryContactList = SummaryListViewModel(
-            rows = checkUserAnswersHelper.getPrimaryContactDetails
+      subscriptionService.isContactInformationUpdated(request.userAnswers, request.subscriptionId) map {
+        case Some((hasChanged, isFirstVisitAfterMigration)) =>
+          Ok(
+            view(primaryContactList, secondaryContactList, frontendAppConfig, hasChanged, isOrganisationAndFirstVisitAfterMigration(isFirstVisitAfterMigration))
           )
-
-          val secondaryContactList = SummaryListViewModel(
-            rows = checkUserAnswersHelper.getSecondaryContactDetails
-          )
-
-          subscriptionService.isContactInformationUpdated(request.userAnswers, request.subscriptionId) map {
-            case Some((hasChanged, isFirstVisitAfterMigration)) =>
-              Ok(
-                view(primaryContactList,
-                     secondaryContactList,
-                     frontendAppConfig,
-                     hasChanged,
-                     isOrganisationAndFirstVisitAfterMigration(isFirstVisitAfterMigration)
-                )
-              )
-            case _ => InternalServerError(errorView())
-          }
+        case _ => InternalServerError(errorView())
       }
   }
 

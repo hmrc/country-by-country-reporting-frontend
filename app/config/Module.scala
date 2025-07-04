@@ -29,6 +29,7 @@ class Module extends AbstractModule {
     bind(classOf[DataRetrievalAction]).to(classOf[DataRetrievalActionImpl]).asEagerSingleton()
     bind(classOf[DataRequiredAction]).to(classOf[DataRequiredActionImpl]).asEagerSingleton()
     bind(classOf[CheckForSubmissionAction]).to(classOf[CheckForSubmissionActionImpl]).asEagerSingleton()
+    bind(classOf[ValidationSubmissionDataAction]).to(classOf[OrgValidationSubmissionDataActionImpl]).asEagerSingleton()
     bind(classOf[AgentCheckForSubmissionAction]).to(classOf[AgentCheckForSubmissionActionImpl]).asEagerSingleton()
 
     // For session based storage instead of cred based, change to SessionIdentifierAction
