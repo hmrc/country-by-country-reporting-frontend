@@ -92,6 +92,8 @@ GET        /problem/rules-errors/:conversationId                                
 
 GET        /problem/information-sent                                            controllers.InformationSentController.onPageLoad()
 
+GET        /problem/some-information-is-missing                                 controllers.SomeInformationMissingController.onPageLoad()
+
 GET        /upload-file                                                         controllers.UploadFileController.onPageLoad()
 
 GET        /status                                                              controllers.UploadFileController.getStatus(uploadId: upscan.UploadId)
