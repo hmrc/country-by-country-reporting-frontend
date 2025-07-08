@@ -55,7 +55,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
       val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
 
       changeUrl.isDefined shouldBe true
-      changeUrl.get should equal("/send-a-country-by-country-report/change-contact/change-phone")
+      changeUrl.get should equal("/send-a-country-by-country-report/change-contact/change-have-phone")
     }
 
     "must return HaveSecondContact if all mandatory values are not available" in {
@@ -78,7 +78,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
       val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
 
       changeUrl.isDefined shouldBe true
-      changeUrl.get should equal("/send-a-country-by-country-report/change-contact/change-second-contact-name")
+      changeUrl.get should equal("/send-a-country-by-country-report/change-contact/change-have-second-contact")
     }
 
     "must return SecondContactEmail if all mandatory values are not available" in {
@@ -120,7 +120,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
       val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
 
       changeUrl.isDefined shouldBe true
-      changeUrl.get should equal("/send-a-country-by-country-report/change-contact/change-second-contact-phone")
+      changeUrl.get should equal("/send-a-country-by-country-report/change-contact/change-second-contact-have-phone")
     }
 
     "must return None if all mandatory values are available" in {
