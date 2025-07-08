@@ -18,7 +18,7 @@ package controllers
 
 import connectors.{UpscanConnector, ValidationConnector}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.upscan.{ExtractedFileStatus, UploadId, UploadSessionDetails, UploadedSuccessfully, UpscanURL}
+import models.upscan.{ExtractedFileStatus, FileValidateRequest, UploadId, UploadSessionDetails, UploadedSuccessfully}
 import models.{InvalidXmlError, NormalMode, ValidatedFileData, ValidationErrors}
 import navigation.Navigator
 import pages._
@@ -71,7 +71,7 @@ class FileValidationController @Inject() (
                       if (isFileNameInvalid(fileName)) {
                         navigateToErrorPage(uploadId, fileName)
                       } else {
-                        validationConnector.sendForValidation(UpscanURL(downloadUrl)) flatMap {
+                        validationConnector.sendForValidation(FileValidateRequest(downloadUrl, uploadId.value, request.subscriptionId)) flatMap {
                           case Right(messageSpecData) =>
                             val validatedFileData = ValidatedFileData(fileName, messageSpecData, downloadDetails.size, downloadDetails.checksum)
                             for {
