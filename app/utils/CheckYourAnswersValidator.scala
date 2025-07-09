@@ -62,12 +62,12 @@ class CheckYourAnswersValidator(userAnswers: UserAnswers) {
     ContactNamePage            -> controllers.routes.ContactNameController.onPageLoad(mode).url,
     ContactEmailPage           -> controllers.routes.ContactEmailController.onPageLoad(mode).url,
     HaveTelephonePage          -> controllers.routes.HaveTelephoneController.onPageLoad(mode).url,
-    ContactPhonePage           -> controllers.routes.ContactPhoneController.onPageLoad(mode).url,
+    ContactPhonePage           -> controllers.routes.HaveTelephoneController.onPageLoad(mode).url,
     HaveSecondContactPage      -> controllers.routes.HaveSecondContactController.onPageLoad(mode).url,
-    SecondContactNamePage      -> controllers.routes.SecondContactNameController.onPageLoad(mode).url,
+    SecondContactNamePage      -> controllers.routes.HaveSecondContactController.onPageLoad(mode).url,
     SecondContactEmailPage     -> controllers.routes.SecondContactEmailController.onPageLoad(mode).url,
     SecondContactHavePhonePage -> controllers.routes.SecondContactHavePhoneController.onPageLoad(mode).url,
-    SecondContactPhonePage     -> controllers.routes.SecondContactPhoneController.onPageLoad(mode).url
+    SecondContactPhonePage     -> controllers.routes.SecondContactHavePhoneController.onPageLoad(mode).url
   )
 
   def changeAnswersRedirectUrl(mode: Mode): Option[String] =
