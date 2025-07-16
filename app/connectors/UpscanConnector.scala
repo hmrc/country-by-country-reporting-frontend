@@ -50,7 +50,7 @@ class UpscanConnector @Inject() (configuration: FrontendAppConfig, httpClient: H
     httpClient
       .post(url"$upscanInitiateUrl")
       .withBody(Json.toJson(body))
-      .setHeader(headers.toSeq :+ ("X-Upload-Id" -> uploadId.value): _*)
+      .setHeader(headers.toSeq: _*)
       .execute[PreparedUpload] map {
       _.toUpscanInitiateResponse
     }

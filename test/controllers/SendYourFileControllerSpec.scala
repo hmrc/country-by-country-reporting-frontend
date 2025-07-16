@@ -23,11 +23,12 @@ import generators.Generators
 import models.fileDetails.BusinessRuleErrorCode.{DocRefIDFormat, InvalidMessageRefIDFormat}
 import models.fileDetails._
 import models.submission.SubmissionDetails
+import models.upscan.Reference
 import models.{ConversationId, NewInformation, UserAnswers, ValidatedFileData}
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import pages.{ConversationIdPage, URLPage, UploadIDPage, ValidXMLPage}
+import pages.{ConversationIdPage, FileReferencePage, URLPage, UploadIDPage, ValidXMLPage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -93,6 +94,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
               .withPage(ValidXMLPage, fileData)
               .withPage(URLPage, submissionDetails.documentUrl)
               .withPage(UploadIDPage, submissionDetails.uploadId)
+              .withPage(FileReferencePage, submissionDetails.fileReference)
 
             val application = applicationBuilder(userAnswers = Some(userAnswers))
               .overrides(bind[SubmissionConnector].toInstance(mockSubmissionConnector))
@@ -145,6 +147,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
               .withPage(ValidXMLPage, fileData)
               .withPage(URLPage, submissionDetails.documentUrl)
               .withPage(UploadIDPage, submissionDetails.uploadId)
+              .withPage(FileReferencePage, submissionDetails.fileReference)
 
             val application = applicationBuilder(userAnswers = Some(userAnswers))
               .overrides(bind[SubmissionConnector].toInstance(mockSubmissionConnector))

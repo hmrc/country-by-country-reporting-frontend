@@ -23,7 +23,7 @@ import models.ValidatedFileData
 import models.fileDetails.{FileValidationErrors, Pending, Rejected, RejectedSDES, RejectedSDESVirus, Accepted => FileStatusAccepted}
 import models.submission.SubmissionDetails
 import models.upscan.URL
-import pages.{ConversationIdPage, URLPage, UploadIDPage, ValidXMLPage}
+import pages._
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
@@ -61,10 +61,14 @@ class SendYourFileController @Inject() (
 
   def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
-      (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(URLPage), request.userAnswers.get(UploadIDPage)) match {
-        case (Some(ValidatedFileData(fileName, messageSpecData, fileSize, checksum)), Some(fileUrl), Some(uploadId)) =>
-          val submissionDetails = SubmissionDetails(fileName, uploadId, request.subscriptionId, fileSize, fileUrl, checksum, messageSpecData)
-          submissionConnector.submitDocument(submissionDetails) flatMap {
+      (request.userAnswers.get(ValidXMLPage),
+       request.userAnswers.get(URLPage),
+       request.userAnswers.get(UploadIDPage),
+       request.userAnswers.get(FileReferencePage)
+      ) match {
+        case (Some(ValidatedFileData(fileName, messageSpecData, fileSize, checksum)), Some(fileUrl), Some(uploadId), Some(fileReference)) =>
+          val submissionDetails = SubmissionDetails(fileName, uploadId, request.subscriptionId, fileSize, fileUrl, checksum, messageSpecData, fileReference)
+          submissionConnector.submitDocument(submissionDetails)(hc, ec) flatMap {
             case Some(conversationId) =>
               for {
                 userAnswers <- Future.fromTry(request.userAnswers.set(ConversationIdPage, conversationId))
