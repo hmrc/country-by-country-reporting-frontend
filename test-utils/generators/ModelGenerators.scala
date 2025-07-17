@@ -21,7 +21,7 @@ import models.agentSubscription._
 import models.fileDetails.{BusinessRuleErrorCode, FileErrors, FileValidationErrors, RecordError}
 import models.submission.SubmissionDetails
 import models.subscription._
-import models.upscan.UploadId
+import models.upscan.{Reference, UploadId}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 
@@ -53,6 +53,12 @@ trait ModelGenerators {
     for {
       orgName <- nonEmptyString
     } yield AgentDetails(orgName)
+  }
+
+  implicit val arbitraryReference: Arbitrary[Reference] = Arbitrary {
+    for {
+      str <- nonEmptyString
+    } yield Reference(str)
   }
 
   implicit val arbitraryContactInformation: Arbitrary[ContactInformation] = Arbitrary {
@@ -197,13 +203,14 @@ trait ModelGenerators {
   implicit val arbitrarySubmissionDetails: Arbitrary[SubmissionDetails] = Arbitrary {
     for {
       fileName        <- nonEmptyString
-      fileSize        <- arbitrary[Long]
+      fileSize        <- arbitrary[Long].suchThat(_ >= 0)
       fileChecksum    <- nonEmptyString
       enrolmentId     <- nonEmptyString
       uploadId        <- nonEmptyString
       documentUrl     <- nonEmptyString
       messageSpecData <- arbitrary[MessageSpecData]
-    } yield SubmissionDetails(fileName, UploadId(uploadId), enrolmentId, fileSize, documentUrl, fileChecksum, messageSpecData)
+      fileReference   <- arbitrary[Reference]
+    } yield SubmissionDetails(fileName, UploadId(uploadId), enrolmentId, fileSize, documentUrl, fileChecksum, messageSpecData, fileReference)
   }
 
   def listWithMaxLength[T](maxSize: Int, gen: Gen[T]): Gen[Seq[T]] =

@@ -18,7 +18,7 @@ package controllers.actions
 
 import controllers.routes
 import models.requests.DataRequest
-import pages.{JourneyInProgressPage, UploadIDPage}
+import pages.{FileReferencePage, JourneyInProgressPage, UploadIDPage}
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
 
@@ -37,7 +37,7 @@ class CheckForSubmissionActionProvider @Inject() (checkFileSubmission: Boolean)(
 
   override protected def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] =
     if (
-      (checkFileSubmission && request.userAnswers.get(UploadIDPage).isEmpty) ||
+      (checkFileSubmission && request.userAnswers.get(UploadIDPage).isEmpty && request.userAnswers.get(FileReferencePage).isEmpty) ||
       (!checkFileSubmission && request.userAnswers.get(JourneyInProgressPage).isEmpty)
     ) {
       Future.successful(Left(Redirect(routes.InformationSentController.onPageLoad())))

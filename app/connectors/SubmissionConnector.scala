@@ -19,10 +19,11 @@ package connectors
 import config.FrontendAppConfig
 import models.ConversationId
 import models.submission.SubmissionDetails
+import models.upscan.Reference
 import play.api.Logging
 import play.api.libs.json.Json
-import uk.gov.hmrc.http.HttpReads.Implicits._
 import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
+import uk.gov.hmrc.http.HttpReads.Implicits._
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 
@@ -37,7 +38,11 @@ class SubmissionConnector @Inject() (httpClient: HttpClientV2, config: FrontendA
     hc: HeaderCarrier,
     ec: ExecutionContext
   ): Future[Option[ConversationId]] =
-    httpClient.post(submitUrl).withBody(Json.toJson(submissionDetails)).execute[HttpResponse] map {
+    httpClient
+      .post(submitUrl)
+      .withBody(Json.toJson(submissionDetails))
+      .setHeader("x-file-reference-id" -> submissionDetails.fileReference.value)
+      .execute[HttpResponse] map {
       case response if is2xx(response.status) => Option(response.json.as[ConversationId])
       case errorResponse =>
         logger.warn(s"Failed to submit document with upload Id [${submissionDetails.uploadId.value}]: received status: ${errorResponse.status}")

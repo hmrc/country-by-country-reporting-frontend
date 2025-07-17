@@ -16,15 +16,15 @@
 
 package controllers
 
-import org.apache.pekko
 import config.FrontendAppConfig
 import connectors.UpscanConnector
 import controllers.actions._
 import forms.UploadFileFormProvider
 import models.requests.DataRequest
 import models.upscan._
+import org.apache.pekko
 import org.apache.pekko.actor.ActorSystem
-import pages.UploadIDPage
+import pages.{FileReferencePage, UploadIDPage}
 import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -67,8 +67,12 @@ class UploadFileController @Inject() (
     (for {
       upscanInitiateResponse <- upscanConnector.getUpscanFormData(uploadId)
       uploadId               <- upscanConnector.requestUpload(uploadId, upscanInitiateResponse.fileReference)
-      updatedAnswers         <- Future.fromTry(request.userAnswers.set(UploadIDPage, uploadId))
-      _                      <- sessionRepository.set(updatedAnswers)
+      updatedAnswers <- Future.fromTry(
+        request.userAnswers
+          .set(UploadIDPage, uploadId)
+          .flatMap(_.set(FileReferencePage, upscanInitiateResponse.fileReference))
+      )
+      _ <- sessionRepository.set(updatedAnswers)
     } yield Ok(view(preparedForm, upscanInitiateResponse)))
       .recover {
         case e: Exception =>
