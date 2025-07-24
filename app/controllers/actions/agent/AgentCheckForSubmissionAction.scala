@@ -17,8 +17,9 @@
 package controllers.actions.agent
 
 import controllers.routes
+import models.UserAnswers
 import models.requests.AgentDataRequest
-import pages.JourneyInProgressPage
+import pages.{AgentFirstContactEmailPage, AgentFirstContactNamePage, JourneyInProgressPage, QuestionPage}
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
 
@@ -31,8 +32,21 @@ class AgentCheckForSubmissionActionImpl @Inject() (implicit val executionContext
     if (request.userAnswers.get(JourneyInProgressPage).isEmpty) {
       Future.successful(Left(Redirect(routes.InformationSentController.onPageLoad())))
     } else {
-      Future.successful(Right(request))
+      if (areAllMandatoryFieldsPopulated(request.userAnswers))
+        Future.successful(Right(request))
+      else {
+        println("****************")
+        Future.successful(Left(Redirect(routes.SomeInformationMissingController.onPageLoad())))
+      }
+
     }
+
+  private def areAllMandatoryFieldsPopulated(userAnswers: UserAnswers): Boolean = {
+    val fields: List[QuestionPage[String]] = List(AgentFirstContactEmailPage, AgentFirstContactNamePage)
+    fields.forall(
+      key => userAnswers.get(key).isDefined
+    )
+  }
 }
 
 trait AgentCheckForSubmissionAction extends ActionRefiner[AgentDataRequest, AgentDataRequest]

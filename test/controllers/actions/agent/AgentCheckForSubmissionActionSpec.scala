@@ -18,10 +18,13 @@ package controllers.actions.agent
 
 import base.SpecBase
 import controllers.routes
+import models.UserAnswers
 import models.requests.AgentDataRequest
 import org.scalatest.EitherValues
-import pages.JourneyInProgressPage
+import org.scalatest.prop.TableDrivenPropertyChecks
+import pages.{AgentFirstContactEmailPage, AgentFirstContactNamePage, AgentFirstContactPhonePage, ContactEmailPage, ContactPhonePage, JourneyInProgressPage}
 import play.api.http.Status.SEE_OTHER
+import play.api.libs.json.Json
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -39,7 +42,7 @@ class AgentCheckForSubmissionActionSpec extends SpecBase with EitherValues {
 
     "when there is no flag set for contact details journeys" - {
 
-      "must redirect to already submitted page" in {
+      "must redirect to already submitted page" in new TestContext {
 
         val action = new Harness
 
@@ -52,16 +55,54 @@ class AgentCheckForSubmissionActionSpec extends SpecBase with EitherValues {
 
     "when there is a flag set for contact details journeys" - {
 
-      "must allow the user to continue" in {
+      "must allow the user to continue" in new TestContext {
 
         val action = new Harness
-
-        val userAnswers = emptyUserAnswers.set(JourneyInProgressPage, true).success.value
-        val result      = action.callRefine(AgentDataRequest(FakeRequest(), "id", userAnswers, "ARN")).futureValue
+        val result = action.callRefine(AgentDataRequest(FakeRequest(), "id", userAnswersWithAllDetails, "ARN")).futureValue
 
         result.isRight mustBe true
       }
     }
 
+    "when agents mandatory contact details are missing" - {
+      "must redirect to missing information page when mandatory details are missing" in new TestContext {
+        forAll(testCases) {
+          testUserAnswers =>
+            emptyUserAnswers
+            val action = new Harness
+            val result = action.callRefine(AgentDataRequest(FakeRequest(), "id", testUserAnswers, "ARN")).map(_.left.value)
+
+            status(result) mustBe SEE_OTHER
+            redirectLocation(result).value mustEqual routes.SomeInformationMissingController.onPageLoad().url
+        }
+      }
+    }
+
+    "when agent mandatory contact details are present" - {
+      "must allow the user to continue" in new TestContext {
+        val action = new Harness
+
+        val result = action.callRefine(AgentDataRequest(FakeRequest(), "id", userAnswersWithAllDetails, "ARN")).futureValue
+
+        result.isRight mustBe true
+      }
+    }
+  }
+
+  trait TestContext extends TableDrivenPropertyChecks {
+
+    val userAnswersWithEmail       = UserAnswers(userAnswersId).withPage(AgentFirstContactEmailPage, "email@example.com").withPage(JourneyInProgressPage, true)
+    val userAnswersWithContactName = UserAnswers(userAnswersId).withPage(AgentFirstContactNamePage, "Some Agent Name").withPage(JourneyInProgressPage, true)
+
+    val userAnswersWithAllDetails = UserAnswers(userAnswersId)
+      .withPage(AgentFirstContactNamePage, "Some Agent Name")
+      .withPage(AgentFirstContactEmailPage, "email@example.com")
+      .withPage(JourneyInProgressPage, true)
+
+    val testCases = Table(
+      "userAnswers",
+      userAnswersWithEmail,
+      userAnswersWithContactName
+    )
   }
 }
