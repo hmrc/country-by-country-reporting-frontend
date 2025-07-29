@@ -25,7 +25,7 @@ class CheckYourAnswersValidator(userAnswers: UserAnswers) {
   private def checkPage[A](page: QuestionPage[A])(implicit rds: Reads[A]): Option[Page] =
     userAnswers.get(page) match {
       case None => Some(page)
-      case _    => None
+      case _ => None
     }
 
   private def checkPrimaryContactDetails: Seq[Page] = Seq(
@@ -34,15 +34,15 @@ class CheckYourAnswersValidator(userAnswers: UserAnswers) {
   ).flatten ++ checkPrimaryContactNumber
 
   private def checkPrimaryContactNumber: Seq[Page] = (userAnswers.get(HaveTelephonePage) match {
-    case Some(true)  => checkPage(ContactPhonePage)
+    case Some(true) => checkPage(ContactPhonePage)
     case Some(false) => None
-    case _           => Some(HaveTelephonePage)
+    case _ => Some(HaveTelephonePage)
   }).toSeq
 
   private def checkSecondaryContactPhone: Seq[Page] = (userAnswers.get(SecondContactHavePhonePage) match {
-    case Some(true)  => checkPage(SecondContactPhonePage)
+    case Some(true) => checkPage(SecondContactPhonePage)
     case Some(false) => None
-    case _           => Some(SecondContactHavePhonePage)
+    case _ => Some(SecondContactHavePhonePage)
   }).toSeq
 
   private def checkSecondaryContactDetails: Seq[Page] =
@@ -53,30 +53,50 @@ class CheckYourAnswersValidator(userAnswers: UserAnswers) {
           checkPage(SecondContactEmailPage)
         ).flatten ++ checkSecondaryContactPhone
       case Some(false) => Seq.empty
-      case _           => Seq(HaveSecondContactPage)
+      case _ => Seq(HaveSecondContactPage)
     }
 
   private def validate: Seq[Page] = checkPrimaryContactDetails ++ checkSecondaryContactDetails
 
   private def pageToRedirectUrl(mode: Mode): Map[Page, String] = Map(
-    ContactNamePage            -> controllers.routes.ContactNameController.onPageLoad(mode).url,
-    ContactEmailPage           -> controllers.routes.ContactEmailController.onPageLoad(mode).url,
-    HaveTelephonePage          -> controllers.routes.HaveTelephoneController.onPageLoad(mode).url,
-    ContactPhonePage           -> controllers.routes.HaveTelephoneController.onPageLoad(mode).url,
-    HaveSecondContactPage      -> controllers.routes.HaveSecondContactController.onPageLoad(mode).url,
-    SecondContactNamePage      -> controllers.routes.HaveSecondContactController.onPageLoad(mode).url,
-    SecondContactEmailPage     -> controllers.routes.SecondContactEmailController.onPageLoad(mode).url,
+    ContactNamePage -> controllers.routes.ContactNameController.onPageLoad(mode).url,
+    ContactEmailPage -> controllers.routes.ContactEmailController.onPageLoad(mode).url,
+    HaveTelephonePage -> controllers.routes.HaveTelephoneController.onPageLoad(mode).url,
+    ContactPhonePage -> controllers.routes.HaveTelephoneController.onPageLoad(mode).url,
+    HaveSecondContactPage -> controllers.routes.HaveSecondContactController.onPageLoad(mode).url,
+    SecondContactNamePage -> controllers.routes.HaveSecondContactController.onPageLoad(mode).url,
+    SecondContactEmailPage -> controllers.routes.SecondContactEmailController.onPageLoad(mode).url,
     SecondContactHavePhonePage -> controllers.routes.SecondContactHavePhoneController.onPageLoad(mode).url,
-    SecondContactPhonePage     -> controllers.routes.SecondContactHavePhoneController.onPageLoad(mode).url
+    SecondContactPhonePage -> controllers.routes.SecondContactHavePhoneController.onPageLoad(mode).url
+  )
+
+  private def clientContactsPageToRedirectUrl(mode: Mode): Map[Page, String] = Map(
+    ContactNamePage -> controllers.client.routes.ClientFirstContactNameController.onPageLoad(mode).url,
+    ContactNamePage -> controllers.client.routes.ClientFirstContactNameController.onPageLoad(mode).url,
+    ContactEmailPage -> controllers.client.routes.ClientFirstContactEmailController.onPageLoad(mode).url,
+    HaveTelephonePage -> controllers.client.routes.ClientFirstContactHavePhoneController.onPageLoad(mode).url,
+    ContactPhonePage -> controllers.client.routes.ClientFirstContactHavePhoneController.onPageLoad(mode).url,
+    HaveSecondContactPage -> controllers.client.routes.ClientHaveSecondContactController.onPageLoad(mode).url,
+    SecondContactNamePage -> controllers.client.routes.ClientHaveSecondContactController.onPageLoad(mode).url,
+    SecondContactEmailPage -> controllers.client.routes.ClientSecondContactEmailController.onPageLoad(mode).url,
+    SecondContactHavePhonePage -> controllers.client.routes.ClientSecondContactHavePhoneController.onPageLoad(mode).url,
+    SecondContactPhonePage -> controllers.client.routes.ClientSecondContactHavePhoneController.onPageLoad(mode).url
   )
 
   def changeAnswersRedirectUrl(mode: Mode): Option[String] =
-    validate.headOption
-      .map(pageToRedirectUrl(mode))
+    userAnswers.get(ContactDetailsJourneyTypePage) match {
+      case Some(changeClientContactDetails) => validate.headOption.map(clientContactsPageToRedirectUrl(mode))
+      case _ => validate.headOption.map(pageToRedirectUrl(mode))
+    }
 }
 
 object CheckYourAnswersValidator {
 
   def apply(userAnswers: UserAnswers) =
     new CheckYourAnswersValidator(userAnswers)
+}
+
+object JourneyName {
+  val changeClientContactDetails = "changeClientContactDetails"
+  val changeOrgContactDetails = "changeOrgContactDetails"
 }
