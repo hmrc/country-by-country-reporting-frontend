@@ -129,7 +129,7 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
           val view = application.injector.instanceOf[ThereIsAProblemView]
 
           status(result) mustEqual INTERNAL_SERVER_ERROR
-          normalizeHtml(removeNonces(contentAsString(result))) mustEqual normalizeHtml(removeNonces(view()(request, messages(application)).toString))
+          contentAsString(result) mustEqual view()(request, messages(application)).toString
         }
       }
     }
@@ -209,18 +209,10 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
           val view = application.injector.instanceOf[ThereIsAProblemView]
 
           status(result) mustEqual INTERNAL_SERVER_ERROR
-          normalizeHtml(removeNonces(contentAsString(result))) mustEqual normalizeHtml(removeNonces(view()(request, messages(application)).toString))
+          contentAsString(result) mustEqual view()(request, messages(application)).toString
         }
       }
 
     }
-  }
-
-  def removeNonces(html: String): String =
-    html.replaceAll("""\s*nonce="[^"]*"""", "")
-
-  def normalizeHtml(html: String): String = {
-    val doc: Document = Jsoup.parse(html)
-    doc.html()
   }
 }
