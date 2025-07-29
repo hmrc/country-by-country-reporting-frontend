@@ -154,7 +154,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
   "ChangeAnswersRedirectUrl for journey name: changeClientContactDetails" - {
 
     "must return ChangeName if all mandatory values are not available for journey" in {
-      val answers = emptyUserAnswers.withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
+      val answers   = emptyUserAnswers.withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
       val changeUrl = CheckYourAnswersValidator(answers).changeAnswersRedirectUrl(CheckMode)
 
       changeUrl.isDefined shouldBe true

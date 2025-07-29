@@ -32,21 +32,21 @@ import views.html.{ChangeContactDetailsView, ThereIsAProblemView}
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class ChangeContactDetailsController @Inject()(
-                                                override val messagesApi: MessagesApi,
-                                                frontendAppConfig: FrontendAppConfig,
-                                                identify: IdentifierAction,
-                                                getData: DataRetrievalAction,
-                                                requireData: DataRequiredAction,
-                                                checkForSubmission: CheckForSubmissionAction,
-                                                addJourneyNameAction: AddJourneyNameAction,
-                                                validationSubmissionDataAction: ValidationSubmissionDataAction,
-                                                subscriptionService: SubscriptionService,
-                                                val controllerComponents: MessagesControllerComponents,
-                                                view: ChangeContactDetailsView,
-                                                errorView: ThereIsAProblemView
-                                              )(implicit ec: ExecutionContext)
-  extends FrontendBaseController
+class ChangeContactDetailsController @Inject() (
+  override val messagesApi: MessagesApi,
+  frontendAppConfig: FrontendAppConfig,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  checkForSubmission: CheckForSubmissionAction,
+  addJourneyNameAction: AddJourneyNameAction,
+  validationSubmissionDataAction: ValidationSubmissionDataAction,
+  subscriptionService: SubscriptionService,
+  val controllerComponents: MessagesControllerComponents,
+  view: ChangeContactDetailsView,
+  errorView: ThereIsAProblemView
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
   private def isOrganisationAndFirstVisitAfterMigration(isFirstVisitAfterMigration: Boolean)(implicit request: DataRequest[AnyContent]): Boolean =
@@ -75,7 +75,7 @@ class ChangeContactDetailsController @Inject()(
   def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
       subscriptionService.updateContactDetails(request.userAnswers, request.subscriptionId) map {
-        case true => Redirect(routes.DetailsUpdatedController.onPageLoad())
+        case true  => Redirect(routes.DetailsUpdatedController.onPageLoad())
         case false => InternalServerError(errorView())
       }
   }

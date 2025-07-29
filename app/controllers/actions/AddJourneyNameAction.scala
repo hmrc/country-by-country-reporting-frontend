@@ -24,14 +24,14 @@ import repositories.SessionRepository
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AddJourneyNameActionRefinerImpl @Inject()(sessionRepository: SessionRepository)(implicit val executionContext: ExecutionContext)
-  extends AddJourneyNameAction {
+class AddJourneyNameActionRefinerImpl @Inject() (sessionRepository: SessionRepository)(implicit val executionContext: ExecutionContext)
+    extends AddJourneyNameAction {
 
   override def apply(journeyType: String): ActionRefiner[DataRequest, DataRequest] = new AddJourneyNameActionProvider(journeyType, sessionRepository)
 }
 
-class AddJourneyNameActionProvider @Inject()(journeyType: String, sessionrepository: SessionRepository)(implicit val executionContext: ExecutionContext)
-  extends ActionRefiner[DataRequest, DataRequest] {
+class AddJourneyNameActionProvider @Inject() (journeyType: String, sessionrepository: SessionRepository)(implicit val executionContext: ExecutionContext)
+    extends ActionRefiner[DataRequest, DataRequest] {
 
   override protected def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
 

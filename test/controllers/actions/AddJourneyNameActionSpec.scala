@@ -39,7 +39,7 @@ class AddJourneyNameActionSpec extends SpecBase {
 
     "must update userAnswer with a journey Name" in {
       val sessionRepository = mock[SessionRepository]
-      val userAnswers = UserAnswers(userAnswersId).withPage(JourneyInProgressPage, true)
+      val userAnswers       = UserAnswers(userAnswersId).withPage(JourneyInProgressPage, true)
 
       when(sessionRepository.set(any())).thenReturn(Future(true))
       val action = new Harness(sessionRepository)
