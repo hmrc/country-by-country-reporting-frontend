@@ -20,6 +20,7 @@ import base.SpecBase
 import models.UserAnswers
 import models.requests.DataRequest
 import org.mockito.ArgumentMatchers.any
+import org.scalatest.Inside.inside
 import pages.{ContactDetailsJourneyTypePage, JourneyInProgressPage}
 import play.api.mvc.Result
 import play.api.test.FakeRequest
@@ -46,11 +47,9 @@ class AddJourneyNameActionSpec extends SpecBase {
 
       val result = action.callRefine(DataRequest(FakeRequest(), "id", "subscriptionId", Agent, userAnswers, None)).futureValue
 
-      result.isRight mustBe true
-      result match {
+      inside(result) {
         case Right(value) =>
           value.userAnswers.get(ContactDetailsJourneyTypePage).get mustBe "some-journey"
-        case _ => fail("Test failed due to userAnswers not being present")
       }
     }
   }
