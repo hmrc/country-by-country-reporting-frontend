@@ -216,9 +216,8 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
     }
   }
 
-  def removeNonces(html: String): String = {
+  def removeNonces(html: String): String =
     html.replaceAll("""\s*nonce="[^"]*"""", "")
-  }
 
   def normalizeHtml(html: String): String = {
     val doc: Document = Jsoup.parse(html)
