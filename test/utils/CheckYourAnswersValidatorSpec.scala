@@ -149,6 +149,135 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
 
       changeUrl.isDefined shouldBe false
     }
+  }
+
+  "ChangeAnswersRedirectUrl for journey name: changeClientContactDetails" - {
+
+    "must return ChangeName if all mandatory values are not available for journey" in {
+      val answers   = emptyUserAnswers.withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
+      val changeUrl = CheckYourAnswersValidator(answers).changeAnswersRedirectUrl(CheckMode)
+
+      changeUrl.isDefined shouldBe true
+      changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-first-contact-name")
+    }
+
+    "must return ChangeEmail if all mandatory values are not available" in {
+      val updatedUA = emptyUserAnswers.withPage(ContactNamePage, "test").withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+
+      changeUrl.isDefined shouldBe true
+      changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-first-contact-email")
+    }
+
+    "must return HavePhone if all mandatory values are not available" in {
+      val updatedUA = emptyUserAnswers
+        .withPage(ContactNamePage, "test")
+        .withPage(ContactEmailPage, "test@test.com")
+        .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+
+      changeUrl.isDefined shouldBe true
+      changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-first-contact-have-phone")
+    }
+
+    "must return ContactPhone if all mandatory values are not available" in {
+      val updatedUA = emptyUserAnswers
+        .withPage(ContactNamePage, "test")
+        .withPage(ContactEmailPage, "test@test.com")
+        .withPage(HaveTelephonePage, true)
+        .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+
+      changeUrl.isDefined shouldBe true
+      changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-first-contact-have-phone")
+    }
+
+    "must return HaveSecondContact if all mandatory values are not available" in {
+      val updatedUA = emptyUserAnswers
+        .withPage(ContactNamePage, "test")
+        .withPage(ContactEmailPage, "test@test.com")
+        .withPage(HaveTelephonePage, false)
+        .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+
+      changeUrl.isDefined shouldBe true
+      changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-have-second-contact")
+    }
+
+    "must return SecondContactName if all mandatory values are not available" in {
+      val updatedUA = emptyUserAnswers
+        .withPage(ContactNamePage, "test")
+        .withPage(ContactEmailPage, "test@test.com")
+        .withPage(HaveTelephonePage, false)
+        .withPage(HaveSecondContactPage, true)
+        .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+
+      changeUrl.isDefined shouldBe true
+      changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-have-second-contact")
+    }
+
+    "must return SecondContactEmail if all mandatory values are not available" in {
+      val updatedUA = emptyUserAnswers
+        .withPage(ContactNamePage, "test")
+        .withPage(ContactEmailPage, "test@test.com")
+        .withPage(HaveTelephonePage, false)
+        .withPage(HaveSecondContactPage, true)
+        .withPage(SecondContactNamePage, "test user")
+        .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+
+      changeUrl.isDefined shouldBe true
+      changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-second-contact-email")
+    }
+
+    "must return HaveSecondContactPhone if all mandatory values are not available" in {
+      val updatedUA = emptyUserAnswers
+        .withPage(ContactNamePage, "test")
+        .withPage(ContactEmailPage, "test@test.com")
+        .withPage(HaveTelephonePage, false)
+        .withPage(HaveSecondContactPage, true)
+        .withPage(SecondContactNamePage, "test user")
+        .withPage(SecondContactEmailPage, "t2@test.com")
+        .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+
+      changeUrl.isDefined shouldBe true
+      changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-second-contact-have-phone")
+    }
+
+    "must return SecondContactNumber if all mandatory values are not available" in {
+      val updatedUA = emptyUserAnswers
+        .withPage(ContactNamePage, "test")
+        .withPage(ContactEmailPage, "test@test.com")
+        .withPage(HaveTelephonePage, false)
+        .withPage(HaveSecondContactPage, true)
+        .withPage(SecondContactNamePage, "test user")
+        .withPage(SecondContactEmailPage, "t2@test.com")
+        .withPage(SecondContactHavePhonePage, true)
+        .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+
+      changeUrl.isDefined shouldBe true
+      changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-second-contact-have-phone")
+    }
+
+    "must return None if all mandatory values are available" in {
+      val updatedUA = emptyUserAnswers
+        .withPage(ContactNamePage, "test")
+        .withPage(ContactEmailPage, "test@test.com")
+        .withPage(HaveTelephonePage, true)
+        .withPage(ContactPhonePage, "6677889922")
+        .withPage(HaveSecondContactPage, true)
+        .withPage(SecondContactNamePage, "test user")
+        .withPage(SecondContactEmailPage, "t2@test.com")
+        .withPage(SecondContactHavePhonePage, true)
+        .withPage(SecondContactPhonePage, "8889988728")
+        .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+
+      changeUrl.isDefined shouldBe false
+    }
 
   }
 }

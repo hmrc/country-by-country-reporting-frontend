@@ -70,13 +70,33 @@ class CheckYourAnswersValidator(userAnswers: UserAnswers) {
     SecondContactPhonePage     -> controllers.routes.SecondContactHavePhoneController.onPageLoad(mode).url
   )
 
+  private def clientContactsPageToRedirectUrl(mode: Mode): Map[Page, String] = Map(
+    ContactNamePage            -> controllers.client.routes.ClientFirstContactNameController.onPageLoad(mode).url,
+    ContactNamePage            -> controllers.client.routes.ClientFirstContactNameController.onPageLoad(mode).url,
+    ContactEmailPage           -> controllers.client.routes.ClientFirstContactEmailController.onPageLoad(mode).url,
+    HaveTelephonePage          -> controllers.client.routes.ClientFirstContactHavePhoneController.onPageLoad(mode).url,
+    ContactPhonePage           -> controllers.client.routes.ClientFirstContactHavePhoneController.onPageLoad(mode).url,
+    HaveSecondContactPage      -> controllers.client.routes.ClientHaveSecondContactController.onPageLoad(mode).url,
+    SecondContactNamePage      -> controllers.client.routes.ClientHaveSecondContactController.onPageLoad(mode).url,
+    SecondContactEmailPage     -> controllers.client.routes.ClientSecondContactEmailController.onPageLoad(mode).url,
+    SecondContactHavePhonePage -> controllers.client.routes.ClientSecondContactHavePhoneController.onPageLoad(mode).url,
+    SecondContactPhonePage     -> controllers.client.routes.ClientSecondContactHavePhoneController.onPageLoad(mode).url
+  )
+
   def changeAnswersRedirectUrl(mode: Mode): Option[String] =
-    validate.headOption
-      .map(pageToRedirectUrl(mode))
+    userAnswers.get(ContactDetailsJourneyTypePage) match {
+      case Some(changeClientContactDetails) => validate.headOption.map(clientContactsPageToRedirectUrl(mode))
+      case _                                => validate.headOption.map(pageToRedirectUrl(mode))
+    }
 }
 
 object CheckYourAnswersValidator {
 
   def apply(userAnswers: UserAnswers) =
     new CheckYourAnswersValidator(userAnswers)
+}
+
+object JourneyName {
+  val changeClientContactDetails = "changeClientContactDetails"
+  val changeOrgContactDetails    = "changeOrgContactDetails"
 }

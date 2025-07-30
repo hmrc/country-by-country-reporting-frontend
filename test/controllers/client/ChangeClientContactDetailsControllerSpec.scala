@@ -19,8 +19,10 @@ package controllers.client
 import base.SpecBase
 import models.UserAnswers
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import org.mockito.ArgumentMatchers.any
 import org.scalatest.BeforeAndAfterEach
+import pages._
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -48,7 +50,14 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
         when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers], any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some((true, true))))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val inputUserAnswers = emptyUserAnswers
+          .withPage(ContactNamePage, "tester")
+          .withPage(ContactEmailPage, "tester@test.com")
+          .withPage(HaveTelephonePage, true)
+          .withPage(ContactPhonePage, "7778889993")
+          .withPage(HaveSecondContactPage, false)
+
+        val application = applicationBuilder(userAnswers = Some(inputUserAnswers))
           .overrides(
             bind[SubscriptionService].toInstance(mockSubscriptionService)
           )
@@ -70,7 +79,14 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
         when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers], any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some((false, false))))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val inputUserAnswers = emptyUserAnswers
+          .withPage(ContactNamePage, "tester")
+          .withPage(ContactEmailPage, "tester@test.com")
+          .withPage(HaveTelephonePage, true)
+          .withPage(ContactPhonePage, "7778889993")
+          .withPage(HaveSecondContactPage, false)
+
+        val application = applicationBuilder(userAnswers = Some(inputUserAnswers))
           .overrides(
             bind[SubscriptionService].toInstance(mockSubscriptionService)
           )
@@ -92,7 +108,14 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
         when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers], any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(None))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val inputUserAnswers = emptyUserAnswers
+          .withPage(ContactNamePage, "tester")
+          .withPage(ContactEmailPage, "tester@test.com")
+          .withPage(HaveTelephonePage, true)
+          .withPage(ContactPhonePage, "7778889993")
+          .withPage(HaveSecondContactPage, false)
+
+        val application = applicationBuilder(userAnswers = Some(inputUserAnswers))
           .overrides(
             bind[SubscriptionService].toInstance(mockSubscriptionService)
           )
@@ -160,13 +183,19 @@ class ChangeClientContactDetailsControllerSpec extends SpecBase with BeforeAndAf
       }
 
       "load ThereIsAProblemPage on failing to update ContactDetails" in {
+        val inputUserAnswers = emptyUserAnswers
+          .withPage(ContactNamePage, "tester")
+          .withPage(ContactEmailPage, "tester@test.com")
+          .withPage(HaveTelephonePage, true)
+          .withPage(ContactPhonePage, "7778889993")
+          .withPage(HaveSecondContactPage, false)
         when(mockSubscriptionService.updateContactDetails(any[UserAnswers], any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(false))
 
         when(mockSubscriptionService.doContactDetailsExist(any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(false)))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val application = applicationBuilder(userAnswers = Some(inputUserAnswers))
           .overrides(
             bind[SubscriptionService].toInstance(mockSubscriptionService)
           )

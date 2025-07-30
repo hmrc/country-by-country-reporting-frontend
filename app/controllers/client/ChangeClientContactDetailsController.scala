@@ -21,6 +21,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.SubscriptionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import utils.JourneyName.changeClientContactDetails
 import viewmodels.ClientCheckYourAnswersHelper
 import viewmodels.govuk.summarylist._
 import views.html.ThereIsAProblemView
@@ -35,6 +36,8 @@ class ChangeClientContactDetailsController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   checkForSubmission: CheckForSubmissionAction,
+  validationSubmissionDataAction: ValidationSubmissionDataAction,
+  addJourneyNameAction: AddJourneyNameAction,
   subscriptionService: SubscriptionService,
   val controllerComponents: MessagesControllerComponents,
   view: ChangeClientContactDetailsView,
@@ -43,26 +46,29 @@ class ChangeClientContactDetailsController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData.apply andThen requireData andThen checkForSubmission()).async {
-    implicit request =>
-      val checkUserAnswersHelper = ClientCheckYourAnswersHelper(request.userAnswers)
+  def onPageLoad: Action[AnyContent] =
+    (identify andThen getData.apply andThen requireData andThen checkForSubmission() andThen addJourneyNameAction(changeClientContactDetails)
+      andThen validationSubmissionDataAction())
+      .async {
+        implicit request =>
+          val checkUserAnswersHelper = ClientCheckYourAnswersHelper(request.userAnswers)
 
-      val primaryContactList = SummaryListViewModel(
-        rows = checkUserAnswersHelper.getPrimaryContactDetails
-      )
-
-      val secondaryContactList = SummaryListViewModel(
-        rows = checkUserAnswersHelper.getSecondaryContactDetails
-      )
-
-      subscriptionService.isContactInformationUpdated(request.userAnswers, request.subscriptionId) map {
-        case Some((hasChanged, isFirstVisitAfterMigration)) =>
-          Ok(
-            view(primaryContactList, secondaryContactList, hasChanged, isFirstVisitAfterMigration)
+          val primaryContactList = SummaryListViewModel(
+            rows = checkUserAnswersHelper.getPrimaryContactDetails
           )
-        case _ => InternalServerError(errorView())
+
+          val secondaryContactList = SummaryListViewModel(
+            rows = checkUserAnswersHelper.getSecondaryContactDetails
+          )
+
+          subscriptionService.isContactInformationUpdated(request.userAnswers, request.subscriptionId) map {
+            case Some((hasChanged, isFirstVisitAfterMigration)) =>
+              Ok(
+                view(primaryContactList, secondaryContactList, hasChanged, isFirstVisitAfterMigration)
+              )
+            case _ => InternalServerError(errorView())
+          }
       }
-  }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
