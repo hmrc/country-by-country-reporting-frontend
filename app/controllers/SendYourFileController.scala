@@ -55,8 +55,15 @@ class SendYourFileController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData andThen checkForSubmission(true)).async {
     implicit request =>
-      val reportType = request.userAnswers.get(ValidXMLPage).get.messageSpecData.reportType
-      Future.successful(Ok(view(appConfig, SendYourFileViewModel.getWarningText(reportType))))
+      request.userAnswers
+        .get(ValidXMLPage)
+        .fold(
+          Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+        ) {
+          validXMLData =>
+            val reportType = validXMLData.messageSpecData.reportType
+            Future.successful(Ok(view(appConfig, SendYourFileViewModel.getWarningText(reportType))))
+        }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
