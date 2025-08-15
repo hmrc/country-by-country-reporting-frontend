@@ -16,7 +16,13 @@
 
 package controllers.agent
 
-import controllers.actions.agent.{AgentCheckForSubmissionAction, AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
+import controllers.actions.agent.{
+  AgentCheckForSubmissionAction,
+  AgentDataRequiredAction,
+  AgentDataRetrievalAction,
+  AgentIdentifierAction,
+  AgentValidateSubmissionDataAction
+}
 import pages.AgentClientIdPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -36,6 +42,7 @@ class ChangeAgentContactDetailsController @Inject() (
   getData: AgentDataRetrievalAction,
   requireData: AgentDataRequiredAction,
   checkForSubmission: AgentCheckForSubmissionAction,
+  validateSubmission: AgentValidateSubmissionDataAction,
   agentSubscriptionService: AgentSubscriptionService,
   val controllerComponents: MessagesControllerComponents,
   view: ChangeAgentContactDetailsView,
@@ -44,7 +51,7 @@ class ChangeAgentContactDetailsController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData andThen checkForSubmission).async {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData andThen checkForSubmission andThen validateSubmission).async {
     implicit request =>
       val checkUserAnswersHelper = AgentCheckYourAnswersHelper(request.userAnswers)
 

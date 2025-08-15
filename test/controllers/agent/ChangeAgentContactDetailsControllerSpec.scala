@@ -21,18 +21,27 @@ import models.UserAnswers
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers.any
 import org.scalatest.BeforeAndAfterEach
+import pages._
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.AgentSubscriptionService
 import uk.gov.hmrc.http.HeaderCarrier
-import views.html.ThereIsAProblemView
 
 import scala.concurrent.Future
 
 class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAfterEach {
 
   val mockAgentSubscriptionService: AgentSubscriptionService = mock[AgentSubscriptionService]
+
+  val userAnswers = emptyUserAnswers
+    .withPage(AgentFirstContactNamePage, "test")
+    .withPage(AgentFirstContactEmailPage, "test@test.com")
+    .withPage(AgentFirstContactHavePhonePage, false)
+    .withPage(AgentHaveSecondContactPage, true)
+    .withPage(AgentSecondContactNamePage, "test user")
+    .withPage(AgentSecondContactEmailPage, "t2@test.com")
+    .withPage(AgentSecondContactHavePhonePage, false)
 
   override def beforeEach: Unit = {
     reset(mockAgentSubscriptionService)
@@ -43,6 +52,33 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
 
     "onPageLoad" - {
 
+      "must redirect to SomeInformation Missing Page when there is missing information in user answers" in {
+
+        val userAnswersWithMissingData = emptyUserAnswers
+          .withPage(AgentFirstContactNamePage, "test")
+          .withPage(AgentFirstContactEmailPage, "test@test.com")
+          .withPage(AgentFirstContactHavePhonePage, false)
+          .withPage(AgentHaveSecondContactPage, true)
+          .withPage(AgentSecondContactNamePage, "test user")
+          .withPage(AgentSecondContactEmailPage, "t2@test.com")
+          .withPage(AgentSecondContactHavePhonePage, true)
+
+        val application = applicationBuilder(userAnswers = Some(userAnswersWithMissingData))
+          .overrides(
+            bind[AgentSubscriptionService].toInstance(mockAgentSubscriptionService)
+          )
+          .build()
+
+        running(application) {
+          val request = FakeRequest(GET, controllers.agent.routes.ChangeAgentContactDetailsController.onPageLoad().url)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result) mustEqual Some("/send-a-country-by-country-report/agent/problem/some-information-is-missing")
+        }
+      }
+
       "must return OK and the correct view for a GET and show 'confirm and send' button on updating contact details" in {
 
         when(mockAgentSubscriptionService.isAgentContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
@@ -51,7 +87,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[AgentSubscriptionService].toInstance(mockAgentSubscriptionService)
           )
@@ -76,7 +112,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[AgentSubscriptionService].toInstance(mockAgentSubscriptionService)
           )
@@ -101,7 +137,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[AgentSubscriptionService].toInstance(mockAgentSubscriptionService)
           )
@@ -126,7 +162,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(false)))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[AgentSubscriptionService].toInstance(mockAgentSubscriptionService)
           )
@@ -148,7 +184,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.isAgentContactInformationUpdated(any[UserAnswers]())(any[HeaderCarrier]()))
           .thenReturn(Future.successful(None))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[AgentSubscriptionService].toInstance(mockAgentSubscriptionService)
           )
@@ -159,10 +195,9 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
 
           val result = route(application, request).value
 
-          val view = application.injector.instanceOf[ThereIsAProblemView]
-
           status(result) mustEqual INTERNAL_SERVER_ERROR
-          contentAsString(result) mustEqual view()(request, messages(application)).toString
+          val doc = Jsoup.parse(contentAsString(result))
+          doc.getElementsContainingText("Sorry, there is a problem with the service").isEmpty mustBe false
         }
       }
     }
@@ -176,7 +211,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(false)))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[AgentSubscriptionService].toInstance(mockAgentSubscriptionService)
           )
@@ -199,7 +234,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[AgentSubscriptionService].toInstance(mockAgentSubscriptionService)
           )
@@ -221,7 +256,7 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
         when(mockAgentSubscriptionService.doAgentContactDetailsExist()(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some(true)))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[AgentSubscriptionService].toInstance(mockAgentSubscriptionService)
           )
@@ -232,10 +267,9 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
 
           val result = route(application, request).value
 
-          val view = application.injector.instanceOf[ThereIsAProblemView]
-
           status(result) mustEqual INTERNAL_SERVER_ERROR
-          contentAsString(result) mustEqual view()(request, messages(application)).toString
+          val doc = Jsoup.parse(contentAsString(result))
+          doc.getElementsContainingText("Sorry, there is a problem with the service").isEmpty mustBe false
         }
       }
 

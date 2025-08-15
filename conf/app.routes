@@ -226,6 +226,8 @@ GET        /agent/use-agent-services                                            
 
 GET        /agent/problem/cbc-id                                                controllers.client.ProblemCBCIdController.onPageLoad()
 
+GET        /agent/problem/some-information-is-missing                           controllers.agent.AgentSomeInformationMissingController.onPageLoad()
+
 GET        /problem/individual-sign-in-problem                                  controllers.IndividualSignInProblemController.onPageLoad()
 
 GET        /agent/client-id                                                     controllers.agent.AgentClientIdController.onPageLoad()
