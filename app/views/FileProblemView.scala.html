@@ -31,7 +31,6 @@
 
         <p class="govuk-body">@messages("fileProblem.p1")</p>
 
-        <p class="govuk-body">@Html(messages("fileProblem.p2", link(s"mailto:${appConfig.emailEnquiries}", "fileProblem.link")))<br>
-            @messages("fileProblem.p3")
+        <p class="govuk-body">@Html(messages("fileProblem.p2", link(s"mailto:${appConfig.emailEnquiries}", appConfig.emailEnquiries)))
         </p>
     }
