@@ -64,7 +64,7 @@ signedOut.heading = For your security, we signed you out
 
 unauthorised.title = You cannot access this page
 unauthorised.heading = You cannot access this page
-unauthorised.guidance = You can email your HMRC Customer Compliance Manager or {0} if you have any questions about this service.
+unauthorised.guidance = You can email your HMRC Customer Compliance Manager or {0} if you need support with using the service.
 unauthorised.guidance.link = Refer to the country-by-country reporting guidance
 
 contactName.title = What is the name of the person or team we should contact?

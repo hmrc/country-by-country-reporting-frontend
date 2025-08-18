@@ -43,7 +43,7 @@ class UnauthorisedViewSpec extends SpecBase with GuiceOneAppPerSuite with Inject
       getWindowTitle(doc) must include("You cannot access this page")
       getPageHeading(doc) mustEqual "You cannot access this page"
       getAllParagraph(doc).text() must include(
-        "You can email your HMRC Customer Compliance Manager or msb.countrybycountryreportingmailbox@hmrc.gov.uk if you have any questions about this service."
+        "You can email your HMRC Customer Compliance Manager or msb.countrybycountryreportingmailbox@hmrc.gov.uk if you need support with using the service."
       )
       val linkElements = doc.select(".govuk-link")
       linkElements.select(":contains(Refer to the country-by-country reporting guidance)").attr("href") mustEqual "#"
