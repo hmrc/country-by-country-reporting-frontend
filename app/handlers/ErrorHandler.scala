@@ -32,13 +32,12 @@ import scala.concurrent.{ExecutionContext, Future}
 class ErrorHandler @Inject() (
   val messagesApi: MessagesApi,
   view: ErrorTemplate,
-  notFoundView: PageNotFoundView,
-  frontendAppConfig: FrontendAppConfig
+  notFoundView: PageNotFoundView
 )(implicit override val ec: ExecutionContext)
     extends FrontendErrorHandler
     with I18nSupport {
 
-  override def notFoundTemplate(implicit request: RequestHeader): Future[Html] = Future.successful(notFoundView(frontendAppConfig.emailEnquiries))
+  override def notFoundTemplate(implicit request: RequestHeader): Future[Html] = Future.successful(notFoundView())
 
   override def onClientError(request: RequestHeader, statusCode: Int, message: String): Future[Result] =
     statusCode match {

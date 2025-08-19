@@ -53,7 +53,7 @@ index.changeClientDetails = change this client’s contact details
 index.changeDetails = change your contact details
 index.viewFileDetailsForClient = view results of checks on recently sent files for this client
 index.viewFileDetails = view results of checks on your recently sent files
-index.p4 = Email {0} if you are having problems with the service.
+index.p4 = Email your HMRC Customer Compliance Manager or {0} if you are having problems with the service.
 index.upload = Upload an XML file
 
 checkYourAnswers.title = Check Your Answers
@@ -62,8 +62,10 @@ checkYourAnswers.heading = Check Your Answers
 signedOut.title = For your security, we signed you out
 signedOut.heading = For your security, we signed you out
 
-unauthorised.title = You can’t access this service with this account
-unauthorised.heading = You can’t access this service with this account
+unauthorised.title = You cannot access this page
+unauthorised.heading = You cannot access this page
+unauthorised.guidance = You can email your HMRC Customer Compliance Manager or {0} if you need support with using the service.
+unauthorised.guidance.link = Refer to the country-by-country reporting guidance
 
 contactName.title = What is the name of the person or team we should contact?
 contactName.heading = What is the name of the person or team we should contact?
@@ -163,7 +165,7 @@ contactDetailsNeeded.p1 = To send a country-by-country report, you must provide 
 thereIsAProblem.title = Sorry, there is a problem with the service
 thereIsAProblem.heading = Sorry, there is a problem with the service
 thereIsAProblem.p1 = Try again later.
-thereIsAProblem.p2 = You can email {0} if you have any questions about this service.
+thereIsAProblem.p2 = You can email your HMRC Customer Compliance Manager or {0} if you have any questions about this service.
 
 fileProblemVirus.title = There is a virus in your file
 fileProblemVirus.heading = There is a virus in your file
@@ -274,9 +276,7 @@ sendYourFile.warning.CorrectionForReportingEntity = This will permanently change
 fileProblem.title = Sorry, there is a problem with the service
 fileProblem.heading = Sorry, there is a problem with the service
 fileProblem.p1 = We have not accepted your file.
-fileProblem.p2 = You must email {0} so we can resolve the problem.
-fileProblem.link = aeoi.enquiries@hmrc.gov.uk
-fileProblem.p3 = Include the subject line ‘CBC file not accepted’.
+fileProblem.p2 = You must email your HMRC Customer Compliance Manager or {0} so we can resolve the problem. Include the subject line ‘CBC file not accepted’.
 
 fileStatus.title = Result of automatic checks
 fileStatus.heading = Result of automatic checks
@@ -748,7 +748,7 @@ pageNotFound.title = Page not found
 pageNotFound.heading = Page not found
 pageNotFound.p1 = If you typed the web address, check it is correct.
 pageNotFound.p2 = If you pasted the web address, check you copied the entire address.
-pageNotFound.link = You can email {0} if you have any questions about this service.
+pageNotFound.link = You can email your HMRC Customer Compliance Manager or {0} if you have any questions about this service.
 
 reviewContactDetails.title = Are these the right contact details for your organisation?
 reviewContactDetails.heading = Are these the right contact details for your organisation?
