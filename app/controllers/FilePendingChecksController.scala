@@ -21,7 +21,7 @@ import connectors.FileDetailsConnector
 import controllers.actions._
 import models.fileDetails.{FileValidationErrors, Pending, Rejected, RejectedSDES, RejectedSDESVirus, Accepted => FileStatusAccepted}
 import models.{UserAnswers, ValidatedFileData}
-import pages.{ConversationIdPage, UploadIDPage, ValidXMLPage}
+import pages.{ConversationIdPage, FileReferencePage, UploadIDPage, ValidXMLPage}
 import play.api.i18n.Lang.logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -81,7 +81,7 @@ class FilePendingChecksController @Inject() (
     userAnswers.get(ConversationIdPage) match {
       case Some(conversationId) =>
         for {
-          updatedAnswers <- Future.fromTry(userAnswers.remove(UploadIDPage))
+          updatedAnswers <- Future.fromTry(userAnswers.remove(UploadIDPage).flatMap(_.remove(FileReferencePage)))
           _              <- sessionRepository.set(updatedAnswers)
         } yield Ok(view(summary, routes.FilePendingChecksController.onPageLoad().url, conversationId.value, getMinutesToWait(xmlDetails.fileSize), isAgent))
       case _ => Future.successful(InternalServerError(errorView()))

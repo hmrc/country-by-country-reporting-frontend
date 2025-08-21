@@ -21,6 +21,7 @@ import models.UserAnswers
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers.any
 import org.scalatest.BeforeAndAfterEach
+import pages._
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -44,11 +45,17 @@ class ChangeContactDetailsControllerSpec extends SpecBase with BeforeAndAfterEac
     "onPageLoad" - {
 
       "must return OK and the correct view for a GET and show 'confirm and send' button on updating contact details" in {
+        val userAnswers = emptyUserAnswers
+          .withPage(ContactNamePage, "tester")
+          .withPage(ContactEmailPage, "tester@test.com")
+          .withPage(HaveTelephonePage, true)
+          .withPage(ContactPhonePage, "7778889993")
+          .withPage(HaveSecondContactPage, false)
 
         when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers], any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some((true, true))))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[SubscriptionService].toInstance(mockSubscriptionService)
           )
@@ -65,12 +72,94 @@ class ChangeContactDetailsControllerSpec extends SpecBase with BeforeAndAfterEac
         }
       }
 
+      "must redirect to SomeInformationMissingPage when all mandatory values are missing" in {
+
+        when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers], any[String])(any[HeaderCarrier]()))
+          .thenReturn(Future.successful(Some((true, true))))
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(
+            bind[SubscriptionService].toInstance(mockSubscriptionService)
+          )
+          .build()
+
+        running(application) {
+          val request = FakeRequest(GET, routes.ChangeContactDetailsController.onPageLoad().url)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result) mustEqual Some("/send-a-country-by-country-report/problem/some-information-is-missing")
+        }
+      }
+
+      "must redirect to SomeInformationMissingPage when any primary contact mandatory values are missing" in {
+
+        val userAnswers = emptyUserAnswers
+          .withPage(ContactNamePage, "tester")
+          .withPage(ContactEmailPage, "tester@test.com")
+          .withPage(HaveTelephonePage, true)
+          .withPage(HaveSecondContactPage, false)
+
+        when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers], any[String])(any[HeaderCarrier]()))
+          .thenReturn(Future.successful(Some((true, true))))
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
+          .overrides(
+            bind[SubscriptionService].toInstance(mockSubscriptionService)
+          )
+          .build()
+
+        running(application) {
+          val request = FakeRequest(GET, routes.ChangeContactDetailsController.onPageLoad().url)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result) mustEqual Some("/send-a-country-by-country-report/problem/some-information-is-missing")
+        }
+      }
+
+      "must redirect to SomeInformationMissingPage when any secondary contact mandatory values are missing" in {
+
+        val userAnswers = emptyUserAnswers
+          .withPage(ContactNamePage, "tester")
+          .withPage(ContactEmailPage, "tester@test.com")
+          .withPage(HaveTelephonePage, false)
+          .withPage(HaveSecondContactPage, true)
+
+        when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers], any[String])(any[HeaderCarrier]()))
+          .thenReturn(Future.successful(Some((true, true))))
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
+          .overrides(
+            bind[SubscriptionService].toInstance(mockSubscriptionService)
+          )
+          .build()
+
+        running(application) {
+          val request = FakeRequest(GET, routes.ChangeContactDetailsController.onPageLoad().url)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result) mustEqual Some("/send-a-country-by-country-report/problem/some-information-is-missing")
+        }
+      }
+
       "must return OK and the correct view for a GET and hide 'confirm and send' button on not updating contact details" in {
+
+        val userAnswers = emptyUserAnswers
+          .withPage(ContactNamePage, "tester")
+          .withPage(ContactEmailPage, "tester@test.com")
+          .withPage(HaveTelephonePage, true)
+          .withPage(ContactPhonePage, "7778889993")
+          .withPage(HaveSecondContactPage, false)
 
         when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers], any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(Some((false, false))))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[SubscriptionService].toInstance(mockSubscriptionService)
           )
@@ -89,10 +178,17 @@ class ChangeContactDetailsControllerSpec extends SpecBase with BeforeAndAfterEac
 
       "must load 'Internal server error' page on failing to read subscription details" in {
 
+        val userAnswers = emptyUserAnswers
+          .withPage(ContactNamePage, "tester")
+          .withPage(ContactEmailPage, "tester@test.com")
+          .withPage(HaveTelephonePage, true)
+          .withPage(ContactPhonePage, "7778889993")
+          .withPage(HaveSecondContactPage, false)
+
         when(mockSubscriptionService.isContactInformationUpdated(any[UserAnswers], any[String])(any[HeaderCarrier]()))
           .thenReturn(Future.successful(None))
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[SubscriptionService].toInstance(mockSubscriptionService)
           )

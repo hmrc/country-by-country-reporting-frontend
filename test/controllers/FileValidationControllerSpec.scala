@@ -25,7 +25,7 @@ import org.bson.types.ObjectId
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
 import org.scalatest.BeforeAndAfterEach
-import pages.UploadIDPage
+import pages.{FileReferencePage, UploadIDPage}
 import play.api.inject.bind
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Result
@@ -48,8 +48,9 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
   val fakeUpscanConnector: FakeUpscanConnector = app.injector.instanceOf[FakeUpscanConnector]
 
   "FileValidationController" - {
-    val uploadId    = UploadId("123")
-    val userAnswers = UserAnswers(userAnswersId).set(UploadIDPage, uploadId).success.value
+    val uploadId        = UploadId("123")
+    val fileReferenceId = Reference("fileReferenceId")
+    val userAnswers     = UserAnswers(userAnswersId).withPage(UploadIDPage, uploadId).withPage(FileReferencePage, fileReferenceId)
     val application = applicationBuilder(userAnswers = Some(userAnswers))
       .overrides(
         bind[UpscanConnector].toInstance(fakeUpscanConnector),
@@ -63,7 +64,7 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
 
     val uploadDetails = UploadSessionDetails(
       new ObjectId(),
-      UploadId("123"),
+      uploadId,
       Reference("123"),
       UploadedSuccessfully("afile", downloadURL, FileSize, "MD5:123")
     )
@@ -73,9 +74,10 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
       val userAnswersCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
       val messageSpecData                                = MessageSpecData("XBG1999999", CBC401, "Reporting Entity", TestData)
       val expectedData: JsObject = Json.obj(
-        "uploadID" -> UploadId("123"),
-        "validXML" -> ValidatedFileData("afile", messageSpecData, FileSize, "MD5:123"),
-        "url"      -> downloadURL
+        "uploadID"      -> uploadId,
+        "FileReference" -> fileReferenceId,
+        "validXML"      -> ValidatedFileData("afile", messageSpecData, FileSize, "MD5:123"),
+        "url"           -> downloadURL
       )
 
       when(mockValidationConnector.sendForValidation(any())(any(), any())).thenReturn(Future.successful(Right(messageSpecData)))
@@ -95,7 +97,7 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
     "must redirect to Upload File error page and present the correct view for a GET" in {
       val uploadDetails = UploadSessionDetails(
         new ObjectId(),
-        UploadId("123"),
+        uploadId,
         Reference("123"),
         UploadedSuccessfully("FileNameMoreThan100ChFileNameMoreThan100ChFileNameMoreThan100ChFileNameMoreThan100ChFileNameMoreThan1.xml",
                              downloadURL,
@@ -117,7 +119,7 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
 
       val errors: Seq[GenericError]                      = Seq(GenericError(1, Message("error")))
       val userAnswersCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
-      val expectedData                                   = Json.obj("invalidXML" -> "afile", "errors" -> errors, "uploadID" -> UploadId("123"))
+      val expectedData                                   = Json.obj("invalidXML" -> "afile", "errors" -> errors, "uploadID" -> uploadId, "FileReference" -> fileReferenceId)
 
       fakeUpscanConnector.setDetails(uploadDetails)
 
@@ -136,7 +138,7 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
     "must redirect to file error page if XML parser fails" in {
 
       val userAnswersCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
-      val expectedData                                   = Json.obj("invalidXML" -> "afile", "uploadID" -> UploadId("123"))
+      val expectedData                                   = Json.obj("invalidXML" -> "afile", "uploadID" -> UploadId("123"), "FileReference" -> fileReferenceId)
 
       fakeUpscanConnector.setDetails(uploadDetails)
       //noinspection ScalaStyle

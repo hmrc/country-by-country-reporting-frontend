@@ -17,7 +17,7 @@
 package connectors
 
 import config.FrontendAppConfig
-import models.upscan.UpscanURL
+import models.upscan.FileValidateRequest
 import models.{Errors, InvalidXmlError, MessageSpecData, NonFatalErrors, SubmissionValidationFailure, SubmissionValidationResult, SubmissionValidationSuccess}
 import play.api.Logging
 import play.api.http.Status.OK
@@ -33,10 +33,10 @@ class ValidationConnector @Inject() (http: HttpClientV2, config: FrontendAppConf
 
   val url = url"${config.cbcUrl}/country-by-country-reporting/validate-submission"
 
-  def sendForValidation(upScanUrl: UpscanURL)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[Errors, MessageSpecData]] =
+  def sendForValidation(fileValidateRequest: FileValidateRequest)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[Errors, MessageSpecData]] =
     http
       .post(url)
-      .withBody(Json.toJson(upScanUrl))
+      .withBody(Json.toJson(fileValidateRequest))
       .execute[HttpResponse]
       .map {
         response =>

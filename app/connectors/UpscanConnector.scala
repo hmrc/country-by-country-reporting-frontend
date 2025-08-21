@@ -47,7 +47,11 @@ class UpscanConnector @Inject() (configuration: FrontendAppConfig, httpClient: H
       Some(upscanMaxSize * 1048576),
       Some("text/xml")
     )
-    httpClient.post(url"$upscanInitiateUrl").withBody(Json.toJson(body)).setHeader(headers.toSeq: _*).execute[PreparedUpload] map {
+    httpClient
+      .post(url"$upscanInitiateUrl")
+      .withBody(Json.toJson(body))
+      .setHeader(headers.toSeq: _*)
+      .execute[PreparedUpload] map {
       _.toUpscanInitiateResponse
     }
   }

@@ -14,23 +14,15 @@
  * limitations under the License.
  */
 
-package models.submission
+package pages
 
-import models.MessageSpecData
-import models.upscan.{Reference, UploadId}
-import play.api.libs.json.{Json, OFormat}
+import models.upscan.Reference
+import play.api.libs.json.JsPath
 
-final case class SubmissionDetails(
-  fileName: String,
-  uploadId: UploadId,
-  enrolmentId: String,
-  fileSize: Long,
-  documentUrl: String,
-  checksum: String,
-  messageSpecData: MessageSpecData,
-  fileReference: Reference
-)
+case object FileReferencePage extends QuestionPage[Reference] {
 
-object SubmissionDetails {
-  implicit val format: OFormat[SubmissionDetails] = Json.format[SubmissionDetails]
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "FileReference"
+
 }

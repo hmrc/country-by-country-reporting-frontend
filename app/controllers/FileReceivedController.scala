@@ -19,7 +19,7 @@ package controllers
 import connectors.FileDetailsConnector
 import controllers.actions._
 import models.ConversationId
-import pages.UploadIDPage
+import pages.{FileReferencePage, UploadIDPage}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -64,7 +64,7 @@ class FileReceivedController @Inject() (
               getAgentContactEmails match {
                 case Some(agentContactEmails) =>
                   for {
-                    updatedAnswers <- Future.fromTry(request.userAnswers.remove(UploadIDPage))
+                    updatedAnswers <- Future.fromTry(request.userAnswers.remove(UploadIDPage).flatMap(_.remove(FileReferencePage)))
                     _              <- sessionRepository.set(updatedAnswers)
                   } yield Ok(
                     agentView(
@@ -83,7 +83,7 @@ class FileReceivedController @Inject() (
               }
             case Organisation =>
               for {
-                updatedAnswers <- Future.fromTry(request.userAnswers.remove(UploadIDPage))
+                updatedAnswers <- Future.fromTry(request.userAnswers.remove(UploadIDPage).flatMap(_.remove(FileReferencePage)))
                 _              <- sessionRepository.set(updatedAnswers)
               } yield Ok(
                 view(

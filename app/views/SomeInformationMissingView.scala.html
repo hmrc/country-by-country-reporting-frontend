@@ -14,27 +14,22 @@
  * limitations under the License.
  *@
 
-@import config.FrontendAppConfig
-
 @this(
-    layout: templates.Layout,
-    link: components.Link,
-    appConfig: FrontendAppConfig
+        layout: templates.Layout,
+        govukButton: GovukButton
 )
 
-@()(implicit request: RequestHeader, messages: Messages)
+@(continueUrl: String)(implicit request: Request[_], messages: Messages)
 
-@layout(
-    pageTitle = titleNoForm(messages("unauthorised.title")),
-    timeout   = false
-) {
+@layout(pageTitle = titleNoForm(messages("someInformationMissing.title")), showBackLink = false) {
 
-    <h1 class="govuk-heading-l">@messages("unauthorised.heading")</h1>
+    <h1 class="govuk-heading-l">@messages("someInformationMissing.heading")</h1>
 
-    <p class="govuk-body">
-        @Html(messages("unauthorised.guidance", link(s"mailto:${appConfig.emailEnquiries}", appConfig.emailEnquiries)))
-    </p>
+    <p class="govuk-body">@messages("someInformationMissing.p1")</p>
 
-    <p class="govuk-body">@link("#", "unauthorised.guidance.link")</p>@*TODO: Add link to guidance page when known*@
+    <div class = "govuk-!-padding-top-5"></div>
 
+    @govukButton(
+        ButtonViewModel(messages("site.continue")).withAttribute("id" -> "submit").asLink(continueUrl)
+    )
 }
