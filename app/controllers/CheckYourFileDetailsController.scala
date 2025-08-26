@@ -28,7 +28,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.CheckYourFileDetailsViewModel
 import viewmodels.govuk.summarylist._
-import views.html.{CheckYourFileDetailsView, ThereIsAProblemView}
+import views.html.{CheckYourFileDetailsView, SomeInformationMissingView}
 
 import javax.inject.Inject
 
@@ -39,7 +39,7 @@ class CheckYourFileDetailsController @Inject() (
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: CheckYourFileDetailsView,
-  errorView: ThereIsAProblemView
+  errorView: SomeInformationMissingView
 ) extends FrontendBaseController
     with I18nSupport
     with Logging {
@@ -54,7 +54,7 @@ class CheckYourFileDetailsController @Inject() (
           Ok(view(detailsList))
         case _ =>
           logger.warn("CheckYourFileDetailsController: Unable to retrieve XML information from UserAnswers")
-          InternalServerError(errorView())
+          InternalServerError(errorView(routes.UploadFileController.onPageLoad().url))
       }
   }
 

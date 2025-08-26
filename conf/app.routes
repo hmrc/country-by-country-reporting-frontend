@@ -94,6 +94,8 @@ GET        /problem/information-sent                                            
 
 GET        /problem/some-information-is-missing                                 controllers.SomeInformationMissingController.onPageLoad()
 
+GET        /problem/upload-file/some-information-is-missing                     controllers.FileProblemSomeInformationMissingController.onPageLoad()
+
 GET        /upload-file                                                         controllers.UploadFileController.onPageLoad()
 
 GET        /status                                                              controllers.UploadFileController.getStatus(uploadId: upscan.UploadId)
