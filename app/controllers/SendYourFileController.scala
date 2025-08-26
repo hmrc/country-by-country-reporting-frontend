@@ -84,7 +84,7 @@ class SendYourFileController @Inject() (
             case _ => Future.successful(InternalServerError)
           }
         case (None, _, _, _) =>
-          Future.successful(Redirect(controllers.routes.FileProblemSomeInformationMissingController.onPageLoad()))
+          Future.successful(Redirect(routes.FileProblemSomeInformationMissingController.onPageLoad()))
         case _ =>
           Future.successful(InternalServerError)
       }
@@ -96,18 +96,18 @@ class SendYourFileController @Inject() (
         case Some(conversationId) =>
           fileDetailsConnector.getStatus(conversationId) flatMap {
             case Some(FileStatusAccepted) =>
-              Future.successful(Ok(Json.toJson(URL(controllers.routes.FileReceivedController.onPageLoad(conversationId).url))))
+              Future.successful(Ok(Json.toJson(URL(routes.FileReceivedController.onPageLoad(conversationId).url))))
             case Some(Rejected(errors)) =>
               fastJourneyErrorRoute(
                 errors,
-                Future.successful(Ok(Json.toJson(URL(controllers.routes.FileRejectedController.onPageLoad(conversationId).url))))
+                Future.successful(Ok(Json.toJson(URL(routes.FileRejectedController.onPageLoad(conversationId).url))))
               )
             case Some(Pending) =>
               Future.successful(NoContent)
             case Some(RejectedSDES) =>
-              Future.successful(Ok(Json.toJson(URL(controllers.routes.ThereIsAProblemController.onPageLoad().url))))
+              Future.successful(Ok(Json.toJson(URL(routes.ThereIsAProblemController.onPageLoad().url))))
             case Some(RejectedSDESVirus) =>
-              Future.successful(Ok(Json.toJson(URL(controllers.routes.FileProblemVirusController.onPageLoad().url))))
+              Future.successful(Ok(Json.toJson(URL(routes.FileProblemVirusController.onPageLoad().url))))
             case None =>
               logger.warn("getStatus: no status returned")
               Future.successful(InternalServerError)
@@ -120,7 +120,7 @@ class SendYourFileController @Inject() (
 
   private def fastJourneyErrorRoute(errors: FileValidationErrors, result: Future[Result]): Future[Result] =
     if (isProblemStatus(errors)) {
-      Future.successful(Ok(Json.toJson(URL(controllers.routes.FileProblemSomeInformationMissingController.onPageLoad().url))))
+      Future.successful(Ok(Json.toJson(URL(routes.FileProblemSomeInformationMissingController.onPageLoad().url))))
     } else {
       result
     }
