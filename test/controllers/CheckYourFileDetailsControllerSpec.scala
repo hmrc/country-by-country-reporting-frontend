@@ -26,7 +26,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.CheckYourFileDetailsViewModel
 import viewmodels.govuk.summarylist._
-import views.html.CheckYourFileDetailsView
+import views.html.{CheckYourFileDetailsView, SomeInformationMissingView}
 
 class CheckYourFileDetailsControllerSpec extends SpecBase {
 
@@ -88,5 +88,26 @@ class CheckYourFileDetailsControllerSpec extends SpecBase {
       }
     }
 
+    "must return internal server error when there is no ValidXMLPage in request" in {
+      val uploadUrlPath   = routes.UploadFileController.onPageLoad().url
+      val ua: UserAnswers = emptyUserAnswers
+
+      val application = new GuiceApplicationBuilder()
+        .overrides(
+          bind[DataRequiredAction].to[DataRequiredActionImpl],
+          bind[IdentifierAction].to[FakeIdentifierActionAgent],
+          bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(Some(ua)))
+        )
+        .build()
+
+      val request = FakeRequest(GET, routes.CheckYourFileDetailsController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      val view = application.injector.instanceOf[SomeInformationMissingView]
+
+      status(result) mustEqual INTERNAL_SERVER_ERROR
+      contentAsString(result) mustEqual view(uploadUrlPath)(request, messages(application)).toString
+    }
   }
 }

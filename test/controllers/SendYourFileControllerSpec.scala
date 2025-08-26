@@ -20,15 +20,14 @@ import base.SpecBase
 import config.FrontendAppConfig
 import connectors.{FileDetailsConnector, SubmissionConnector}
 import generators.Generators
-import models.fileDetails.BusinessRuleErrorCode.{DocRefIDFormat, InvalidMessageRefIDFormat}
+import models.fileDetails.BusinessRuleErrorCode.{DocRefIDFormat, InvalidMessageRefIDFormat, UnknownErrorCode}
 import models.fileDetails._
 import models.submission.SubmissionDetails
-import models.upscan.Reference
 import models.{ConversationId, NewInformation, UserAnswers, ValidatedFileData}
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
-import pages.{ConversationIdPage, FileReferencePage, URLPage, UploadIDPage, ValidXMLPage}
+import pages._
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -74,6 +73,25 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
             }
         }
       }
+
+      "redirect to 'file problem some information missing' page when userAnswers missing" in {
+        val userAnswers = emptyUserAnswers
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+        running(application) {
+          val request   = FakeRequest(GET, routes.SendYourFileController.onPageLoad().url)
+          val appConfig = application.injector.instanceOf[FrontendAppConfig]
+
+          val result = route(application, request).value
+
+          val view = application.injector.instanceOf[SendYourFileView]
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.FileProblemSomeInformationMissingController.onPageLoad().url
+        }
+
+      }
     }
 
     "onSubmit" - {
@@ -116,7 +134,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
         }
       }
 
-      "redirect to there is a problem page if userAnswers missing" in {
+      "redirect to 'file problem some information missing' page when userAnswers missing" in {
 
         val userAnswers = emptyUserAnswers
 
@@ -128,7 +146,8 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
 
           val result = route(application, request).value
 
-          status(result) mustEqual INTERNAL_SERVER_ERROR
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.FileProblemSomeInformationMissingController.onPageLoad().url
         }
       }
 
@@ -298,7 +317,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
         }
       }
 
-      "must return OK and load the page 'FileProblem' when the file status is 'Rejected' with 'problem' errors" in {
+      "must return OK and load the page 'ThereIsAProblemView' when the file status is 'Rejected' with expected business rules errors" in {
 
         val mockFileDetailsConnector = mock[FileDetailsConnector]
         val validationErrors         = FileValidationErrors(Some(Seq(FileErrors(InvalidMessageRefIDFormat, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
@@ -321,6 +340,36 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
           val result = route(application, request).value
 
           status(result) mustEqual OK
+          contentAsString(result) must include(routes.FileRejectedController.onPageLoad(conversationId).url)
+        }
+      }
+
+      "must return OK and load the page 'Missing Information' when the file status is 'Rejected' with 'problem' errors" in {
+
+        val mockFileDetailsConnector = mock[FileDetailsConnector]
+        val validationErrors = FileValidationErrors(Some(Seq(FileErrors(UnknownErrorCode("unknown-error"), None))),
+                                                    Some(Seq(RecordError(UnknownErrorCode("unknown-error"), None, None)))
+        )
+
+        val userAnswers = UserAnswers("Id")
+          .withPage(ConversationIdPage, conversationId)
+
+        when(mockFileDetailsConnector.getStatus(any[ConversationId]())(any[HeaderCarrier](), any[ExecutionContext]()))
+          .thenReturn(Future.successful(Some(Rejected(validationErrors))))
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
+          .overrides(
+            bind[FileDetailsConnector].toInstance(mockFileDetailsConnector)
+          )
+          .build()
+
+        running(application) {
+          val request = FakeRequest(GET, routes.SendYourFileController.getStatus().url)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual OK
+          contentAsString(result) must include(routes.FileProblemSomeInformationMissingController.onPageLoad().url)
         }
       }
 
