@@ -81,11 +81,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
 
         running(application) {
           val request   = FakeRequest(GET, routes.SendYourFileController.onPageLoad().url)
-          val appConfig = application.injector.instanceOf[FrontendAppConfig]
-
           val result = route(application, request).value
-
-          val view = application.injector.instanceOf[SendYourFileView]
 
           status(result) mustEqual SEE_OTHER
           redirectLocation(result).value mustEqual routes.FileProblemSomeInformationMissingController.onPageLoad().url
