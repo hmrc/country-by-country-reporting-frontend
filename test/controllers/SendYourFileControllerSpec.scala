@@ -348,7 +348,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
           val result = route(application, request).value
 
           status(result) mustEqual OK
-          contentAsString(result) must include(routes.FileProblemSomeInformationMissingController.onPageLoad().url)
+          contentAsString(result) must include(routes.FileProblemController.onPageLoad().url)
         }
       }
 

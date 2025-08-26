@@ -118,7 +118,7 @@ class SendYourFileController @Inject() (
 
   private def fastJourneyErrorRoute(errors: FileValidationErrors, result: Future[Result]): Future[Result] =
     if (isProblemStatus(errors)) {
-      Future.successful(Ok(Json.toJson(URL(routes.FileProblemSomeInformationMissingController.onPageLoad().url))))
+      Future.successful(Ok(Json.toJson(URL(routes.FileProblemController.onPageLoad().url))))
     } else {
       result
     }
