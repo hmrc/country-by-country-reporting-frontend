@@ -106,8 +106,8 @@ class CheckYourFileDetailsControllerSpec extends SpecBase {
 
       val view = application.injector.instanceOf[SomeInformationMissingView]
 
-      status(result) mustEqual INTERNAL_SERVER_ERROR
-      contentAsString(result) mustEqual view(uploadUrlPath)(request, messages(application)).toString
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.FileProblemSomeInformationMissingController.onPageLoad().url
     }
   }
 }
