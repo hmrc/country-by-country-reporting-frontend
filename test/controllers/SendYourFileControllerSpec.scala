@@ -323,7 +323,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
         }
       }
 
-      "must return OK and load the page 'Missing Information' when the file status is 'Rejected' with 'problem' errors" in {
+      "must return OK and load the page 'problem page' when the file status is 'Rejected' with 'problem' errors" in {
 
         val mockFileDetailsConnector = mock[FileDetailsConnector]
         val validationErrors = FileValidationErrors(Some(Seq(FileErrors(UnknownErrorCode("unknown-error"), None))),
