@@ -83,8 +83,6 @@ class SendYourFileController @Inject() (
               } yield Redirect(controllers.routes.FilePendingChecksController.onPageLoad())
             case _ => Future.successful(InternalServerError)
           }
-        case (None, _, _, _) =>
-          Future.successful(Redirect(routes.FileProblemSomeInformationMissingController.onPageLoad()))
         case _ =>
           Future.successful(InternalServerError)
       }

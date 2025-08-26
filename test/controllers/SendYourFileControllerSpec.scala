@@ -130,23 +130,6 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
         }
       }
 
-      "redirect to 'file problem some information missing' page when userAnswers missing" in {
-
-        val userAnswers = emptyUserAnswers
-
-        val application = applicationBuilder(userAnswers = Some(userAnswers))
-          .build()
-
-        running(application) {
-          val request = FakeRequest(POST, routes.SendYourFileController.onSubmit().url)
-
-          val result = route(application, request).value
-
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.FileProblemSomeInformationMissingController.onPageLoad().url
-        }
-      }
-
       "return INTERNAL_SERVER_ERROR on failing to submit document" in {
         forAll {
           submissionDetails: SubmissionDetails =>
