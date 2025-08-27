@@ -88,8 +88,7 @@ class CheckYourFileDetailsControllerSpec extends SpecBase {
       }
     }
 
-    "must return internal server error when there is no ValidXMLPage in request" in {
-      val uploadUrlPath   = routes.UploadFileController.onPageLoad().url
+    "must redirect to file problem missing information page when there is no ValidXMLPage in request" in {
       val ua: UserAnswers = emptyUserAnswers
 
       val application = new GuiceApplicationBuilder()
@@ -103,8 +102,6 @@ class CheckYourFileDetailsControllerSpec extends SpecBase {
       val request = FakeRequest(GET, routes.CheckYourFileDetailsController.onPageLoad().url)
 
       val result = route(application, request).value
-
-      val view = application.injector.instanceOf[SomeInformationMissingView]
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.FileProblemSomeInformationMissingController.onPageLoad().url
