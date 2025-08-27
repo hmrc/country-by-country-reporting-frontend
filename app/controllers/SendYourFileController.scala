@@ -58,7 +58,7 @@ class SendYourFileController @Inject() (
       request.userAnswers
         .get(ValidXMLPage)
         .fold(
-          Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+          Future.successful(Redirect(controllers.routes.FileProblemSomeInformationMissingController.onPageLoad()))
         ) {
           validXMLData =>
             val reportType = validXMLData.messageSpecData.reportType
