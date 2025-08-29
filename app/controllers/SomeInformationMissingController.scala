@@ -21,6 +21,7 @@ import models.{CheckMode, NormalMode}
 import pages.JourneyInProgressPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.CheckYourAnswersValidator
 import views.html.SomeInformationMissingView
@@ -42,8 +43,9 @@ class SomeInformationMissingController @Inject() (
       val answers  = request.userAnswers
       val validate = CheckYourAnswersValidator(answers)
       val mode     = if (answers.get(JourneyInProgressPage).getOrElse(false)) CheckMode else NormalMode
+      val isOrg    = request.userType == AffinityGroup.Organisation
 
-      val redirectUrl = validate.changeAnswersRedirectUrl(mode) match {
+      val redirectUrl = validate.changeAnswersRedirectUrl(mode, isOrg) match {
         case Some(value) => value
         case None        => controllers.routes.ContactNameController.onPageLoad(NormalMode).url
       }

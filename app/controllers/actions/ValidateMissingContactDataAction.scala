@@ -18,30 +18,37 @@ package controllers.actions
 
 import controllers.routes
 import models.requests.DataRequest
-import models.{CheckMode, NormalMode}
+import models.{CheckMode, Mode, NormalMode, UserAnswers}
 import pages.JourneyInProgressPage
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
 import uk.gov.hmrc.auth.core.AffinityGroup
-import utils.CheckYourAnswersValidator
+import utils.{AgentCheckYourAnswersValidator, CheckYourAnswersValidator}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class OrgValidationSubmissionDataActionImpl @Inject() (implicit val executionContext: ExecutionContext) extends ValidationSubmissionDataAction {
-
-  override def apply(): ActionRefiner[DataRequest, DataRequest] =
-    new OrgValidationSubmissionDataActionProvider()
-
-}
-
-class OrgValidationSubmissionDataActionProvider @Inject() ()(implicit val executionContext: ExecutionContext) extends ActionRefiner[DataRequest, DataRequest] {
+class validateMissingContactDataActionImpl @Inject() (implicit val executionContext: ExecutionContext) extends ValidateMissingContactDataAction {
 
   override protected def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
-    val answers     = request.userAnswers
-    val validator   = CheckYourAnswersValidator(answers)
+    val answers = request.userAnswers
+
     val currentMode = if (answers.get(JourneyInProgressPage).getOrElse(false)) CheckMode else NormalMode
     val isOrg       = request.userType == AffinityGroup.Organisation
+
+    if (!isOrg) {
+      val agentCheckYourAnswersValidator = AgentCheckYourAnswersValidator(answers)
+      agentCheckYourAnswersValidator.changeAnswersRedirectUrl(currentMode) match {
+        case Some(_) => Future.successful(Left(Redirect(controllers.agent.routes.AgentSomeInformationMissingController.onPageLoad())))
+        case None    => validateNonAgentContactInformation(request, answers, currentMode, isOrg)
+      }
+    } else {
+      validateNonAgentContactInformation(request, answers, currentMode, isOrg)
+    }
+  }
+
+  private def validateNonAgentContactInformation[A](request: DataRequest[A], answers: UserAnswers, currentMode: Mode, isOrg: Boolean) = {
+    val validator = CheckYourAnswersValidator(answers)
     validator.changeAnswersRedirectUrl(currentMode, isOrg) match {
       case Some(_) => Future.successful(Left(Redirect(routes.SomeInformationMissingController.onPageLoad())))
       case None    => Future.successful(Right(request))
@@ -49,6 +56,4 @@ class OrgValidationSubmissionDataActionProvider @Inject() ()(implicit val execut
   }
 }
 
-trait ValidationSubmissionDataAction {
-  def apply(): ActionRefiner[DataRequest, DataRequest]
-}
+trait ValidateMissingContactDataAction extends ActionRefiner[DataRequest, DataRequest]
