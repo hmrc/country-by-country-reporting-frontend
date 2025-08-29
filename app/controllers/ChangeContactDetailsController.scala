@@ -24,7 +24,6 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.SubscriptionService
 import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import utils.JourneyName.changeOrgContactDetails
 import viewmodels.CheckYourAnswersHelper
 import viewmodels.govuk.summarylist._
 import views.html.{ChangeContactDetailsView, ThereIsAProblemView}
@@ -39,7 +38,6 @@ class ChangeContactDetailsController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   checkForSubmission: CheckForSubmissionAction,
-  addJourneyNameAction: AddJourneyNameAction,
   validationSubmissionDataAction: ValidationSubmissionDataAction,
   subscriptionService: SubscriptionService,
   val controllerComponents: MessagesControllerComponents,
@@ -53,7 +51,7 @@ class ChangeContactDetailsController @Inject() (
     (request.userType == AffinityGroup.Organisation) & isFirstVisitAfterMigration
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData.apply
-    andThen requireData andThen checkForSubmission() andThen addJourneyNameAction(changeOrgContactDetails) andThen validationSubmissionDataAction()).async {
+    andThen requireData andThen checkForSubmission() andThen validationSubmissionDataAction()).async {
     implicit request =>
       val checkUserAnswersHelper = CheckYourAnswersHelper(request.userAnswers)
       val primaryContactList = SummaryListViewModel(

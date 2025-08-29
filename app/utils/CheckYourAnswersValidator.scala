@@ -83,10 +83,11 @@ class CheckYourAnswersValidator(userAnswers: UserAnswers) {
     SecondContactPhonePage     -> controllers.client.routes.ClientSecondContactHavePhoneController.onPageLoad(mode).url
   )
 
-  def changeAnswersRedirectUrl(mode: Mode): Option[String] =
-    userAnswers.get(ContactDetailsJourneyTypePage) match {
-      case Some(changeClientContactDetails) => validate.headOption.map(clientContactsPageToRedirectUrl(mode))
-      case _                                => validate.headOption.map(pageToRedirectUrl(mode))
+  def changeAnswersRedirectUrl(mode: Mode, isOrg: Boolean): Option[String] =
+    if (isOrg) {
+      validate.headOption.map(pageToRedirectUrl(mode))
+    } else {
+      validate.headOption.map(clientContactsPageToRedirectUrl(mode))
     }
 }
 
@@ -94,9 +95,4 @@ object CheckYourAnswersValidator {
 
   def apply(userAnswers: UserAnswers) =
     new CheckYourAnswersValidator(userAnswers)
-}
-
-object JourneyName {
-  val changeClientContactDetails = "changeClientContactDetails"
-  val changeOrgContactDetails    = "changeOrgContactDetails"
 }

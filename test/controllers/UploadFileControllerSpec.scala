@@ -18,18 +18,21 @@ package controllers
 
 import base.SpecBase
 import connectors.UpscanConnector
+import controllers.actions._
 import forms.UploadFileFormProvider
 import generators.Generators
 import helpers.FakeUpscanConnector
-import models.UserAnswers
 import models.upscan._
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
-import pages.UploadIDPage
+import pages._
 import play.api.Application
 import play.api.inject.bind
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{status, _}
+import repositories.SessionRepository
+import services.{AgentSubscriptionService, SubscriptionService}
 import views.html.UploadFileView
 
 import scala.concurrent.Future
@@ -41,21 +44,77 @@ class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks wi
 
   val fakeUpscanConnector: FakeUpscanConnector = app.injector.instanceOf[FakeUpscanConnector]
 
-  val userAnswers: UserAnswers = UserAnswers(userAnswersId)
-    .set(UploadIDPage, UploadId("uploadId"))
-    .success
-    .value
-
-  val application: Application = applicationBuilder(userAnswers = Some(userAnswers))
-    .overrides(
-      bind[UpscanConnector].toInstance(fakeUpscanConnector)
-    )
-    .build()
+  val userAnswers = emptyUserAnswers
+    .withPage(UploadIDPage, UploadId("uploadId"))
+    .withPage(ContactNamePage, "test")
+    .withPage(ContactEmailPage, "test@test.com")
+    .withPage(HaveTelephonePage, true)
+    .withPage(ContactPhonePage, "6677889922")
+    .withPage(HaveSecondContactPage, true)
+    .withPage(SecondContactNamePage, "test user")
+    .withPage(SecondContactEmailPage, "t2@test.com")
+    .withPage(SecondContactHavePhonePage, true)
+    .withPage(SecondContactPhonePage, "8889988728")
 
   "upload file controller" - {
 
+    "must redirect to some information missing page when missing contact information for organisation " in {
+      when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
+      val userAnswers = emptyUserAnswers
+        .withPage(UploadIDPage, UploadId("uploadId"))
+
+      val application: Application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[UpscanConnector].toInstance(fakeUpscanConnector)
+        )
+        .build()
+
+      val form    = app.injector.instanceOf[UploadFileFormProvider]
+      val request = FakeRequest(GET, routes.UploadFileController.onPageLoad().url)
+      val result  = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result) mustEqual Some("/send-a-country-by-country-report/problem/some-information-is-missing")
+    }
+
+    "must redirect to some information missing page when missing contact information for agent " in {
+      val mockSubscriptionService      = mock[SubscriptionService]
+      val mockAgentSubscriptionService = mock[AgentSubscriptionService]
+
+      when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
+      val userAnswers = emptyUserAnswers
+        .withPage(UploadIDPage, UploadId("uploadId"))
+        .withPage(AgentFirstContactNamePage, "AgentName")
+        .withPage(AgentClientIdPage, "subscriptionId")
+
+      val application = new GuiceApplicationBuilder()
+        .overrides(
+          bind[DataRequiredAction].to[DataRequiredActionImpl],
+          bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(Some(userAnswers))),
+          bind[UpscanConnector].toInstance(fakeUpscanConnector),
+          bind[SubscriptionService].toInstance(mockSubscriptionService),
+          bind[AgentSubscriptionService].toInstance(mockAgentSubscriptionService),
+          bind[SessionRepository].toInstance(mockSessionRepository),
+          bind[IdentifierAction].to[FakeIdentifierActionAgent]
+        )
+        .build()
+
+      val form    = app.injector.instanceOf[UploadFileFormProvider]
+      val request = FakeRequest(GET, routes.UploadFileController.onPageLoad().url)
+      val result  = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result) mustEqual Some("/send-a-country-by-country-report/agent/problem/some-information-is-missing")
+    }
+
     "must initiate a request to upscan to bring back an upload form" in {
       when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
+
+      val application: Application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[UpscanConnector].toInstance(fakeUpscanConnector)
+        )
+        .build()
 
       val form    = app.injector.instanceOf[UploadFileFormProvider]
       val request = FakeRequest(GET, routes.UploadFileController.onPageLoad().url)
@@ -68,6 +127,12 @@ class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks wi
     }
 
     "must read the progress of the upload from the backend" in {
+
+      val application: Application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[UpscanConnector].toInstance(fakeUpscanConnector)
+        )
+        .build()
 
       val request = FakeRequest(GET, routes.UploadFileController.getStatus(uploadId).url)
 
@@ -97,6 +162,12 @@ class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks wi
 
     "must show any returned error" in {
 
+      val application: Application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[UpscanConnector].toInstance(fakeUpscanConnector)
+        )
+        .build()
+
       val request = FakeRequest(GET, routes.UploadFileController.showError("errorCode", "errorMessage", "errorReqId").url)
       val result  = route(application, request).value
 
@@ -104,6 +175,12 @@ class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks wi
     }
 
     "must show returned error when file name length is invalid" in {
+
+      val application: Application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[UpscanConnector].toInstance(fakeUpscanConnector)
+        )
+        .build()
 
       val request = FakeRequest(GET, routes.UploadFileController.showError("InvalidArgument", "InvalidFileNameLength", "errorReqId").url)
       val result  = route(application, request).value
@@ -113,6 +190,12 @@ class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks wi
     }
 
     "must show returned error with an InvalidArgument and include 'Error:' in the title" in {
+
+      val application: Application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[UpscanConnector].toInstance(fakeUpscanConnector)
+        )
+        .build()
 
       val request = FakeRequest(GET, routes.UploadFileController.showError("InvalidArgument", "errorMessage", "errorReqId").url)
       val result  = route(application, request).value
@@ -124,6 +207,12 @@ class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks wi
     }
 
     "must show File to large error when the errorCode is EntityTooLarge" in {
+
+      val application: Application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[UpscanConnector].toInstance(fakeUpscanConnector)
+        )
+        .build()
 
       val request =
         FakeRequest(GET, routes.UploadFileController.showError("EntityTooLarge", "Your proposed upload exceeds the maximum allowed size", "errorReqId").url)
