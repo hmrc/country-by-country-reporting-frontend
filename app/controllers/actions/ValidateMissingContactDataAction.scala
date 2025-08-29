@@ -28,7 +28,7 @@ import utils.{AgentCheckYourAnswersValidator, CheckYourAnswersValidator}
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class validateMissingContactDataActionImpl @Inject() (implicit val executionContext: ExecutionContext) extends ValidateMissingContactDataAction {
+class ValidateMissingContactDataActionImpl @Inject() (implicit val executionContext: ExecutionContext) extends ValidateMissingContactDataAction {
 
   override protected def refine[A](request: DataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
     val answers = request.userAnswers

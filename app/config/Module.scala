@@ -31,7 +31,7 @@ class Module extends AbstractModule {
     bind(classOf[DataRequiredAction]).to(classOf[DataRequiredActionImpl]).asEagerSingleton()
     bind(classOf[CheckForSubmissionAction]).to(classOf[CheckForSubmissionActionImpl]).asEagerSingleton()
     bind(classOf[ValidationSubmissionDataAction]).to(classOf[OrgValidationSubmissionDataActionImpl]).asEagerSingleton()
-    bind(classOf[ValidateMissingContactDataAction]).to(classOf[validateMissingContactDataActionImpl]).asEagerSingleton()
+    bind(classOf[ValidateMissingContactDataAction]).to(classOf[ValidateMissingContactDataActionImpl]).asEagerSingleton()
     bind(classOf[AgentCheckForSubmissionAction]).to(classOf[AgentCheckForSubmissionActionImpl]).asEagerSingleton()
     bind(classOf[AgentValidateSubmissionDataAction]).to(classOf[AgentValidateSubmissionDataActionImpl]).asEagerSingleton()
 
