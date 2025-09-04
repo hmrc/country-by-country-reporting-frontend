@@ -56,18 +56,26 @@ class AgentCheckYourAnswersValidator(userAnswers: UserAnswers) {
       case _           => Seq(AgentHaveSecondContactPage)
     }
 
-  private def validate: Seq[Page] = checkPrimaryContactDetails ++ checkSecondaryContactDetails
+  private def checkMigratedAgentAnswerUpdated: Seq[Page] =
+    userAnswers.get(IsMigratedAgentContactUpdatedPage) match {
+      case Some(false) =>
+        Seq(IsMigratedAgentContactUpdatedPage)
+      case _ => Seq.empty
+    }
+
+  private def validate: Seq[Page] = checkPrimaryContactDetails ++ checkSecondaryContactDetails ++ checkMigratedAgentAnswerUpdated
 
   private def pageToRedirectUrl(mode: Mode): Map[Page, String] = Map(
-    AgentFirstContactNamePage       -> controllers.agent.routes.AgentFirstContactNameController.onPageLoad(mode).url,
-    AgentFirstContactEmailPage      -> controllers.agent.routes.AgentFirstContactEmailController.onPageLoad(mode).url,
-    AgentFirstContactHavePhonePage  -> controllers.agent.routes.AgentFirstContactHavePhoneController.onPageLoad(mode).url,
-    AgentFirstContactPhonePage      -> controllers.agent.routes.AgentFirstContactHavePhoneController.onPageLoad(mode).url,
-    AgentHaveSecondContactPage      -> controllers.agent.routes.AgentHaveSecondContactController.onPageLoad(mode).url,
-    AgentSecondContactNamePage      -> controllers.agent.routes.AgentHaveSecondContactController.onPageLoad(mode).url,
-    AgentSecondContactEmailPage     -> controllers.agent.routes.AgentSecondContactEmailController.onPageLoad(mode).url,
-    AgentSecondContactHavePhonePage -> controllers.agent.routes.AgentSecondContactHavePhoneController.onPageLoad(mode).url,
-    AgentSecondContactPhonePage     -> controllers.agent.routes.AgentSecondContactHavePhoneController.onPageLoad(mode).url
+    AgentFirstContactNamePage         -> controllers.agent.routes.AgentFirstContactNameController.onPageLoad(mode).url,
+    AgentFirstContactEmailPage        -> controllers.agent.routes.AgentFirstContactEmailController.onPageLoad(mode).url,
+    AgentFirstContactHavePhonePage    -> controllers.agent.routes.AgentFirstContactHavePhoneController.onPageLoad(mode).url,
+    AgentFirstContactPhonePage        -> controllers.agent.routes.AgentFirstContactHavePhoneController.onPageLoad(mode).url,
+    AgentHaveSecondContactPage        -> controllers.agent.routes.AgentHaveSecondContactController.onPageLoad(mode).url,
+    AgentSecondContactNamePage        -> controllers.agent.routes.AgentHaveSecondContactController.onPageLoad(mode).url,
+    AgentSecondContactEmailPage       -> controllers.agent.routes.AgentSecondContactEmailController.onPageLoad(mode).url,
+    AgentSecondContactHavePhonePage   -> controllers.agent.routes.AgentSecondContactHavePhoneController.onPageLoad(mode).url,
+    AgentSecondContactPhonePage       -> controllers.agent.routes.AgentSecondContactHavePhoneController.onPageLoad(mode).url,
+    IsMigratedAgentContactUpdatedPage -> controllers.agent.routes.ChangeAgentContactDetailsController.onPageLoad().url
   )
 
   def changeAnswersRedirectUrl(mode: Mode): Option[String] =

@@ -17,9 +17,11 @@
 package controllers.agent
 
 import base.SpecBase
-import pages.{AgentClientIdPage, ContactNamePage}
+import pages.{AgentClientIdPage, ContactNamePage, IsMigratedAgentContactUpdatedPage, JourneyInProgressPage}
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.agent.AgentContactDetailsUpdatedView
 
 class AgentContactDetailsUpdatedControllerSpec extends SpecBase {
@@ -28,9 +30,18 @@ class AgentContactDetailsUpdatedControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET when client contact details does not exist" in {
 
-      val userAnswers = emptyUserAnswers.set(ContactNamePage, "name").success.value
+      val ua = emptyUserAnswers
+        .set(ContactNamePage, "name")
+        .success
+        .value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val userAnswers = ua.set(JourneyInProgressPage, true).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SessionRepository].toInstance(mockSessionRepository)
+        )
+        .build()
 
       running(application) {
         val request = FakeRequest(GET, routes.AgentContactDetailsUpdatedController.onPageLoad().url)
@@ -41,14 +52,20 @@ class AgentContactDetailsUpdatedControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(clientSelected = false)(request, messages(application)).toString
+        verify(mockSessionRepository, times(1)).set(ua)
       }
     }
 
     "must return OK and the correct view for a GET when client is selected by agent" in {
 
-      val userAnswers = emptyUserAnswers.set(AgentClientIdPage, "clientID").success.value
+      val ua          = emptyUserAnswers.set(AgentClientIdPage, "clientID").success.value
+      val userAnswers = ua.set(JourneyInProgressPage, true).success.value
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SessionRepository].toInstance(mockSessionRepository)
+        )
+        .build()
 
       running(application) {
         val request = FakeRequest(GET, routes.AgentContactDetailsUpdatedController.onPageLoad().url)
@@ -59,6 +76,32 @@ class AgentContactDetailsUpdatedControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(clientSelected = true)(request, messages(application)).toString
+        verify(mockSessionRepository, times(1)).set(ua)
+      }
+    }
+
+    "must set IsMigratedAgentContactUpdatedPage as true" in {
+
+      val ua          = emptyUserAnswers.set(AgentClientIdPage, "clientID").success.value
+      val userAnswers = ua.set(IsMigratedAgentContactUpdatedPage, false).success.value
+      val expectedUA  = ua.set(IsMigratedAgentContactUpdatedPage, true).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SessionRepository].toInstance(mockSessionRepository)
+        )
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.AgentContactDetailsUpdatedController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[AgentContactDetailsUpdatedView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(clientSelected = true)(request, messages(application)).toString
+        verify(mockSessionRepository, times(1)).set(expectedUA)
       }
     }
 

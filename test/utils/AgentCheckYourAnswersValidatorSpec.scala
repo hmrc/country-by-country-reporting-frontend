@@ -123,6 +123,19 @@ class AgentCheckYourAnswersValidatorSpec extends SpecBase {
       changeUrl.get should equal("/send-a-country-by-country-report/agent/agent-contact-details/change-second-contact-have-phone")
     }
 
+    "must return ChangeAgentContactDetails if all mandatory values are not available" in {
+      val updatedUA = emptyUserAnswers
+        .withPage(AgentFirstContactNamePage, "test")
+        .withPage(AgentFirstContactEmailPage, "test@test.com")
+        .withPage(AgentFirstContactHavePhonePage, false)
+        .withPage(AgentHaveSecondContactPage, false)
+        .withPage(IsMigratedAgentContactUpdatedPage, false)
+      val changeUrl = AgentCheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+
+      changeUrl.isDefined shouldBe true
+      changeUrl.get should equal("/send-a-country-by-country-report/agent/agent-contact-details/check-answers")
+    }
+
     "must return None if all mandatory values are available" in {
       val updatedUA = emptyUserAnswers
         .withPage(AgentFirstContactNamePage, "test")

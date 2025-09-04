@@ -17,8 +17,11 @@
 package controllers.agent
 
 import base.SpecBase
+import pages.{IsMigratedAgentContactUpdatedPage, JourneyInProgressPage}
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.agent.AgentContactDetailsSavedView
 
 class AgentContactDetailsSavedControllerSpec extends SpecBase {
@@ -27,7 +30,13 @@ class AgentContactDetailsSavedControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val ua          = emptyUserAnswers
+      val userAnswers = ua.set(JourneyInProgressPage, true).get
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SessionRepository].toInstance(mockSessionRepository)
+        )
+        .build()
 
       running(application) {
         val request = FakeRequest(GET, routes.AgentContactDetailsSavedController.onPageLoad().url)
@@ -38,6 +47,31 @@ class AgentContactDetailsSavedControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view()(request, messages(application)).toString
+        verify(mockSessionRepository, times(1)).set(ua)
+      }
+    }
+    "must set IsMigratedAgentContactUpdated as true" in {
+
+      val ua          = emptyUserAnswers
+      val userAnswers = ua.set(IsMigratedAgentContactUpdatedPage, false).get
+      val expectedUA  = ua.set(IsMigratedAgentContactUpdatedPage, true).get
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SessionRepository].toInstance(mockSessionRepository)
+        )
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.AgentContactDetailsSavedController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[AgentContactDetailsSavedView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view()(request, messages(application)).toString
+        verify(mockSessionRepository, times(1)).set(expectedUA)
       }
     }
 

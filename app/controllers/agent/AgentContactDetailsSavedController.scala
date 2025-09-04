@@ -17,7 +17,7 @@
 package controllers.agent
 
 import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
-import pages.JourneyInProgressPage
+import pages.{IsMigratedAgentContactUpdatedPage, IsMigratedUserContactUpdatedPage, JourneyInProgressPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -42,8 +42,15 @@ class AgentContactDetailsSavedController @Inject() (
   def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
     implicit request =>
       for {
-        updatedAnswers <- Future.fromTry(request.userAnswers.remove(JourneyInProgressPage))
-        _              <- sessionRepository.set(updatedAnswers)
-      } yield Ok(view())
+        a <- Future.fromTry(request.userAnswers.remove(JourneyInProgressPage))
+        b <- Future.fromTry(a.set(IsMigratedAgentContactUpdatedPage, true))
+      } yield {
+        if (request.userAnswers.get(IsMigratedAgentContactUpdatedPage).isDefined) {
+          sessionRepository.set(b)
+        } else {
+          sessionRepository.set(a)
+        }
+        Ok(view())
+      }
   }
 }

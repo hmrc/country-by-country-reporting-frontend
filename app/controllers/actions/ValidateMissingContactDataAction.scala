@@ -34,22 +34,21 @@ class ValidateMissingContactDataActionImpl @Inject() (implicit val executionCont
     val answers = request.userAnswers
 
     val currentMode = if (answers.get(JourneyInProgressPage).getOrElse(false)) CheckMode else NormalMode
-    val isOrg       = request.userType == AffinityGroup.Organisation
 
-    if (!isOrg) {
+    if (request.isAgent) {
       val agentCheckYourAnswersValidator = AgentCheckYourAnswersValidator(answers)
       agentCheckYourAnswersValidator.changeAnswersRedirectUrl(currentMode) match {
         case Some(_) => Future.successful(Left(Redirect(controllers.agent.routes.AgentSomeInformationMissingController.onPageLoad())))
-        case None    => validateNonAgentContactInformation(request, answers, currentMode, isOrg)
+        case None    => validateNonAgentContactInformation(request, answers, currentMode)
       }
     } else {
-      validateNonAgentContactInformation(request, answers, currentMode, isOrg)
+      validateNonAgentContactInformation(request, answers, currentMode)
     }
   }
 
-  private def validateNonAgentContactInformation[A](request: DataRequest[A], answers: UserAnswers, currentMode: Mode, isOrg: Boolean) = {
+  private def validateNonAgentContactInformation[A](request: DataRequest[A], answers: UserAnswers, currentMode: Mode) = {
     val validator = CheckYourAnswersValidator(answers)
-    validator.changeAnswersRedirectUrl(currentMode, isOrg) match {
+    validator.changeAnswersRedirectUrl(currentMode, request.isAgent) match {
       case Some(_) => Future.successful(Left(Redirect(routes.SomeInformationMissingController.onPageLoad())))
       case None    => Future.successful(Right(request))
     }

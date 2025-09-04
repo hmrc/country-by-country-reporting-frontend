@@ -22,7 +22,6 @@ import models.{CheckMode, NormalMode}
 import pages.JourneyInProgressPage
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
-import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.CheckYourAnswersValidator
 
 import javax.inject.Inject
@@ -41,10 +40,17 @@ class OrgValidationSubmissionDataActionProvider @Inject() ()(implicit val execut
     val answers     = request.userAnswers
     val validator   = CheckYourAnswersValidator(answers)
     val currentMode = if (answers.get(JourneyInProgressPage).getOrElse(false)) CheckMode else NormalMode
-    val isOrg       = request.userType == AffinityGroup.Organisation
-    validator.changeAnswersRedirectUrl(currentMode, isOrg) match {
-      case Some(_) => Future.successful(Left(Redirect(routes.SomeInformationMissingController.onPageLoad())))
-      case None    => Future.successful(Right(request))
+
+    validator.changeAnswersRedirectUrl(currentMode, request.isAgent) match {
+      case None => Future.successful(Right(request))
+      case Some(value) =>
+        if (value.equalsIgnoreCase(routes.ChangeContactDetailsController.onPageLoad().url) && !request.isAgent) {
+          Future.successful(Right(request))
+        } else if (value.equalsIgnoreCase(controllers.client.routes.ChangeClientContactDetailsController.onPageLoad().url) && request.isAgent) {
+          Future.successful(Right(request))
+        } else {
+          Future.successful(Left(Redirect(routes.SomeInformationMissingController.onPageLoad())))
+        }
     }
   }
 }

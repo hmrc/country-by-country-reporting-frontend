@@ -126,7 +126,7 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
           val ua = result.futureValue.value
 
           val json = Json.parse("""{"primaryClientContactInformation":{"organisation":{"organisationName":"wer"},
-            |"email":"test@test.com","phone":"99999","mobile":""}}""".stripMargin)
+            |"email":"test@test.com","phone":"99999","mobile":""},"isMigratedUserContactUpdated":false}""".stripMargin)
 
           ua.data mustBe json
         }

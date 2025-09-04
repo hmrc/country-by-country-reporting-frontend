@@ -19,7 +19,7 @@ package controllers
 import connectors.FileDetailsConnector
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import models.UserAnswers
-import pages.{AgentFirstContactNamePage, ContactNamePage, JourneyInProgressPage}
+import pages.{AgentFirstContactNamePage, ContactNamePage, IsMigratedAgentContactUpdatedPage, IsMigratedUserContactUpdatedPage, JourneyInProgressPage}
 import play.api.Logging
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -65,13 +65,14 @@ class IndexController @Inject() (
           clientContactDetails =>
             (agentContactDetails, clientContactDetails) match {
               case (Some(agentUserAnswers), Some(clientUserAnswers)) =>
-                sessionRepository.set(agentUserAnswers).flatMap {
+                val (updatedAgentUA, updatedClientUA) = setContactMigrationFlag(agentUserAnswers, clientUserAnswers)
+                sessionRepository.set(updatedAgentUA).flatMap {
                   _ =>
-                    sessionRepository.set(clientUserAnswers).flatMap {
+                    sessionRepository.set(updatedClientUA).flatMap {
                       _ =>
-                        if (agentUserAnswers.get(AgentFirstContactNamePage).isEmpty) {
+                        if (updatedAgentUA.get(AgentFirstContactNamePage).isEmpty) {
                           Future.successful(Redirect(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad()))
-                        } else if (clientUserAnswers.get(ContactNamePage).isEmpty) {
+                        } else if (updatedClientUA.get(ContactNamePage).isEmpty) {
                           Future.successful(Redirect(controllers.client.routes.ClientContactDetailsNeededController.onPageLoad()))
                         } else {
                           fileConnector.getAllFileDetails(subscriptionId) map {
@@ -85,6 +86,23 @@ class IndexController @Inject() (
                 Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
             }
         }
+    }
+
+  private def setContactMigrationFlag(agentUA: UserAnswers, clientUA: UserAnswers): (UserAnswers, UserAnswers) =
+    (setAgentMigrationFlag(agentUA), setClientMigrationFlag(clientUA))
+
+  private def setAgentMigrationFlag(agentUserAnswers: UserAnswers): UserAnswers =
+    if (agentUserAnswers.get(AgentFirstContactNamePage).isEmpty) {
+      agentUserAnswers.set(IsMigratedAgentContactUpdatedPage, false).get
+    } else {
+      agentUserAnswers
+    }
+
+  private def setClientMigrationFlag(clientUserAnswers: UserAnswers): UserAnswers =
+    if (clientUserAnswers.get(ContactNamePage).isEmpty) {
+      clientUserAnswers.set(IsMigratedUserContactUpdatedPage, false).get
+    } else {
+      clientUserAnswers
     }
 
   private def checkForOrgContactDetails(subscriptionId: String, ua: UserAnswers)(implicit hc: HeaderCarrier, request: RequestHeader): Future[Result] =

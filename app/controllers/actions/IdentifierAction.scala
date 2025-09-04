@@ -20,7 +20,7 @@ import config.FrontendAppConfig
 import controllers.routes
 import models.UserAnswers
 import models.requests.IdentifierRequest
-import pages.{AgentClientIdPage, JourneyInProgressPage}
+import pages.{AgentClientIdPage, IsMigratedAgentContactUpdatedPage, JourneyInProgressPage}
 import play.api.Logging
 import play.api.libs.json.Json
 import play.api.mvc.Results._
@@ -153,13 +153,11 @@ class AuthenticatedIdentifierAction @Inject() (
   private def redirectForAgentContactDetails[A](request: Request[A], internalId: String)(implicit hc: HeaderCarrier): Future[Result] =
     agentSubscriptionService.getAgentContactDetails(UserAnswers(internalId)) flatMap {
       case Some(agentUserAnswers) if agentUserAnswers.data == Json.obj() =>
-        Future.fromTry(agentUserAnswers.set(JourneyInProgressPage, true)).flatMap {
-          updatedAnswers =>
-            sessionRepository.set(updatedAnswers).map {
-              _ =>
-                Redirect(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad())
-            }
-        }
+        for {
+          a <- Future.fromTry(agentUserAnswers.set(JourneyInProgressPage, true))
+          b <- Future.fromTry(a.set(IsMigratedAgentContactUpdatedPage, false))
+          _ <- sessionRepository.set(b)
+        } yield Redirect(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad())
       case Some(_) =>
         logger.info(
           s"IdentifierAction: Agent with HMRC-AS-AGENT Enrolment. No UserAnswers in SessionRepository. Redirecting to /agent/client-id. ${request.headers}"

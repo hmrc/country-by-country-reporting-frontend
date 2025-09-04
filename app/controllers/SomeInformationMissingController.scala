@@ -43,9 +43,8 @@ class SomeInformationMissingController @Inject() (
       val answers  = request.userAnswers
       val validate = CheckYourAnswersValidator(answers)
       val mode     = if (answers.get(JourneyInProgressPage).getOrElse(false)) CheckMode else NormalMode
-      val isOrg    = request.userType == AffinityGroup.Organisation
 
-      val redirectUrl = validate.changeAnswersRedirectUrl(mode, isOrg) match {
+      val redirectUrl = validate.changeAnswersRedirectUrl(mode, request.isAgent) match {
         case Some(value) => value
         case None        => controllers.routes.ContactNameController.onPageLoad(NormalMode).url
       }
