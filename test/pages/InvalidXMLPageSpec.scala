@@ -16,6 +16,7 @@
 
 package pages
 
+import models.{CBC401, MessageSpecData, TestData, UserAnswers, ValidatedFileData}
 import pages.behaviours.PageBehaviours
 
 class InvalidXMLPageSpec extends PageBehaviours {
@@ -26,5 +27,20 @@ class InvalidXMLPageSpec extends PageBehaviours {
     beSettable[String](InvalidXMLPage)
 
     beRemovable[String](InvalidXMLPage)
+
+    "when invalid xml page is set" - {
+      "it should remove valid xml page from user answers" in {
+        val messageSpec             = MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData)
+        val validateFileData        = ValidatedFileData("filename.xml", messageSpec, 0L, "checksum")
+        val validXMLPageUserAnswers = UserAnswers("some-id").set(ValidXMLPage, validateFileData).success.value
+
+        validXMLPageUserAnswers.get(ValidXMLPage).isDefined mustEqual true
+
+        val invalidXMLPageUserAnswers = validXMLPageUserAnswers.set(InvalidXMLPage, "some-xml").success.value
+        invalidXMLPageUserAnswers.get(ValidXMLPage).isEmpty mustEqual true
+        invalidXMLPageUserAnswers.get(InvalidXMLPage).isDefined mustEqual true
+      }
+
+    }
   }
 }

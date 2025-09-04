@@ -74,7 +74,7 @@ class CheckForSubmissionActionSpec extends SpecBase with EitherValues {
         val result = action.callRefine(DataRequest(FakeRequest(), "id", "subscriptionId", Organisation, emptyUserAnswers)).map(_.left.value)
 
         status(result) mustBe SEE_OTHER
-        redirectLocation(result).value mustEqual routes.InformationSentController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.FileProblemSomeInformationMissingController.onPageLoad().url
       }
     }
 
