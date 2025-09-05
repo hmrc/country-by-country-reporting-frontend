@@ -44,13 +44,12 @@ class AgentContactDetailsSavedController @Inject() (
       for {
         a <- Future.fromTry(request.userAnswers.remove(JourneyInProgressPage))
         b <- Future.fromTry(a.set(IsMigratedAgentContactUpdatedPage, true))
-      } yield {
-        if (request.userAnswers.get(IsMigratedAgentContactUpdatedPage).isDefined) {
-          sessionRepository.set(b)
-        } else {
-          sessionRepository.set(a)
-        }
-        Ok(view())
-      }
+        _ <-
+          if (request.userAnswers.get(IsMigratedAgentContactUpdatedPage).isDefined) {
+            sessionRepository.set(b)
+          } else {
+            sessionRepository.set(a)
+          }
+      } yield Ok(view())
   }
 }

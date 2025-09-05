@@ -17,12 +17,15 @@
 package controllers.agent
 
 import base.SpecBase
+import org.mockito.ArgumentMatchers.any
 import pages.{IsMigratedAgentContactUpdatedPage, JourneyInProgressPage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.agent.AgentContactDetailsSavedView
+
+import scala.concurrent.Future
 
 class AgentContactDetailsSavedControllerSpec extends SpecBase {
 
@@ -37,6 +40,8 @@ class AgentContactDetailsSavedControllerSpec extends SpecBase {
           bind[SessionRepository].toInstance(mockSessionRepository)
         )
         .build()
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       running(application) {
         val request = FakeRequest(GET, routes.AgentContactDetailsSavedController.onPageLoad().url)
@@ -61,6 +66,8 @@ class AgentContactDetailsSavedControllerSpec extends SpecBase {
           bind[SessionRepository].toInstance(mockSessionRepository)
         )
         .build()
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       running(application) {
         val request = FakeRequest(GET, routes.AgentContactDetailsSavedController.onPageLoad().url)

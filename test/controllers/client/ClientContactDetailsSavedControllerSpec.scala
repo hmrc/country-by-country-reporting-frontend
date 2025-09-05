@@ -17,12 +17,15 @@
 package controllers.client
 
 import base.SpecBase
+import org.mockito.ArgumentMatchers.any
 import pages.{ContactNamePage, IsMigratedUserContactUpdatedPage, JourneyInProgressPage}
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.client.ClientContactDetailsSavedView
+
+import scala.concurrent.Future
 
 class ClientContactDetailsSavedControllerSpec extends SpecBase {
 
@@ -38,6 +41,8 @@ class ClientContactDetailsSavedControllerSpec extends SpecBase {
           bind[SessionRepository].toInstance(mockSessionRepository)
         )
         .build()
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       running(application) {
         val request = FakeRequest(GET, routes.ClientContactDetailsSavedController.onPageLoad().url)
@@ -63,6 +68,8 @@ class ClientContactDetailsSavedControllerSpec extends SpecBase {
           bind[SessionRepository].toInstance(mockSessionRepository)
         )
         .build()
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       running(application) {
         val request = FakeRequest(GET, routes.ClientContactDetailsSavedController.onPageLoad().url)

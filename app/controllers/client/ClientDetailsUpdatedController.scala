@@ -44,13 +44,12 @@ class ClientDetailsUpdatedController @Inject() (
       for {
         a <- Future.fromTry(request.userAnswers.remove(JourneyInProgressPage))
         b <- Future.fromTry(a.set(IsMigratedUserContactUpdatedPage, true))
-      } yield {
-        if (request.userAnswers.get(IsMigratedUserContactUpdatedPage).isDefined) {
-          sessionRepository.set(b)
-        } else {
-          sessionRepository.set(a)
-        }
-        Ok(view())
-      }
+        _ <-
+          if (request.userAnswers.get(IsMigratedUserContactUpdatedPage).isDefined) {
+            sessionRepository.set(b)
+          } else {
+            sessionRepository.set(a)
+          }
+      } yield Ok(view())
   }
 }
