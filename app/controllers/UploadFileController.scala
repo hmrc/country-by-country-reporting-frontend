@@ -24,7 +24,7 @@ import models.requests.DataRequest
 import models.upscan._
 import org.apache.pekko
 import org.apache.pekko.actor.ActorSystem
-import pages.{FileReferencePage, UploadIDPage, ValidXMLPage}
+import pages.{FileReferencePage, UploadIDPage}
 import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
