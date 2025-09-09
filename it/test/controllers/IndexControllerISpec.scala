@@ -45,12 +45,12 @@ class IndexControllerISpec
   override def fakeApplication(): Application =
     new GuiceApplicationBuilder()
       .configure(
-        "mongodb.uri"                 -> mongoUri,
+        "mongodb.uri" -> mongoUri
       )
       .build()
 
-  lazy val repository: PlayMongoRepository[SessionRepository] =
-    app.injector.instanceOf[PlayMongoRepository[SessionRepository]]
+  lazy val repository: SessionRepository =
+    app.injector.instanceOf[SessionRepository]
 
   lazy val wsClient: WSClient = app.injector.instanceOf[WSClient]
 
