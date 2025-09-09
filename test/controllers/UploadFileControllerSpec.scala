@@ -97,7 +97,7 @@ class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks wi
         answers: UserAnswers =>
           answers.get(FileReferencePage).isDefined &&
           answers.get(UploadIDPage).isDefined &&
-          !(answers.get(ValidXMLPage).isDefined)
+          answers.get(ValidXMLPage).isEmpty
       })
     }
 
