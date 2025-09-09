@@ -41,8 +41,6 @@ lazy val root = (project in file("."))
     scalacOptions ++= Seq("-feature", "-Xlint:-byname-implicit"),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged := true,
-    update / evictionWarningOptions :=
-      EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
     // concatenate js
     Concat.groups := Seq(
       "javascripts/application.js" ->
