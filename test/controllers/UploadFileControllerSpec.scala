@@ -23,7 +23,8 @@ import forms.UploadFileFormProvider
 import generators.Generators
 import helpers.FakeUpscanConnector
 import models.upscan._
-import org.mockito.ArgumentMatchers.any
+import models.{CBC401, MessageSpecData, TestData, UserAnswers, ValidatedFileData}
+import org.mockito.ArgumentMatchers.{any, argThat}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import pages._
 import play.api.Application
@@ -69,7 +70,6 @@ class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks wi
         )
         .build()
 
-      val form    = app.injector.instanceOf[UploadFileFormProvider]
       val request = FakeRequest(GET, routes.UploadFileController.onPageLoad().url)
       val result  = route(application, request).value
 
@@ -99,7 +99,6 @@ class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks wi
         )
         .build()
 
-      val form    = app.injector.instanceOf[UploadFileFormProvider]
       val request = FakeRequest(GET, routes.UploadFileController.onPageLoad().url)
       val result  = route(application, request).value
 
@@ -124,6 +123,38 @@ class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks wi
 
       status(result) mustEqual OK
       contentAsString(result) mustEqual view(form(), UpscanInitiateResponse(Reference(""), "target", Map.empty))(request, messages(application)).toString
+    }
+
+    "onPageLoad must remove any validXml page in the session" in {
+      val messageSpecData   = MessageSpecData("XBG1999999", CBC401, "Reporting Entity", TestData)
+      val validatedFileData = ValidatedFileData("afile", messageSpecData, FileSize, "MD5:123")
+
+      val userAnswersWithValidXmlPage: UserAnswers = userAnswers.set(ValidXMLPage, validatedFileData).success.value
+
+      val application: Application = applicationBuilder(userAnswers = Some(userAnswersWithValidXmlPage))
+        .overrides(
+          bind[UpscanConnector].toInstance(fakeUpscanConnector),
+          bind[SessionRepository].toInstance(mockSessionRepository)
+        )
+        .build()
+
+      when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
+
+      val form    = app.injector.instanceOf[UploadFileFormProvider]
+      val request = FakeRequest(GET, routes.UploadFileController.onPageLoad().url)
+      val result  = route(application, request).value
+
+      val view = application.injector.instanceOf[UploadFileView]
+
+      status(result) mustEqual OK
+      contentAsString(result) mustEqual view(form(), UpscanInitiateResponse(Reference(""), "target", Map.empty))(request, messages(application)).toString
+
+      verify(mockSessionRepository).set(argThat {
+        answers: UserAnswers =>
+          answers.get(FileReferencePage).isDefined &&
+          answers.get(UploadIDPage).isDefined &&
+          answers.get(ValidXMLPage).isEmpty
+      })
     }
 
     "must read the progress of the upload from the backend" in {

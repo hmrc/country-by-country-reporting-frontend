@@ -24,7 +24,7 @@ import models.requests.DataRequest
 import models.upscan._
 import org.apache.pekko
 import org.apache.pekko.actor.ActorSystem
-import pages.{FileReferencePage, UploadIDPage}
+import pages.{FileReferencePage, UploadIDPage, ValidXMLPage}
 import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -74,6 +74,7 @@ class UploadFileController @Inject() (
         request.userAnswers
           .set(UploadIDPage, uploadId)
           .flatMap(_.set(FileReferencePage, upscanInitiateResponse.fileReference))
+          .flatMap(_.remove(ValidXMLPage))
       )
       _ <- sessionRepository.set(updatedAnswers)
     } yield Ok(view(preparedForm, upscanInitiateResponse)))

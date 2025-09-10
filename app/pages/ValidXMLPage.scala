@@ -16,8 +16,10 @@
 
 package pages
 
-import models.ValidatedFileData
+import models.{UserAnswers, ValidatedFileData}
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object ValidXMLPage extends QuestionPage[ValidatedFileData] {
 
@@ -25,4 +27,11 @@ case object ValidXMLPage extends QuestionPage[ValidatedFileData] {
 
   override def toString: String = "validXML"
 
+  override def cleanup(value: Option[ValidatedFileData], userAnswers: UserAnswers): Try[UserAnswers] =
+    value match {
+      case Some(_) =>
+        userAnswers
+          .remove(InvalidXMLPage)
+      case _ => super.cleanup(value, userAnswers)
+    }
 }

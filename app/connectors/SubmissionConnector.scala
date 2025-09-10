@@ -19,7 +19,6 @@ package connectors
 import config.FrontendAppConfig
 import models.ConversationId
 import models.submission.SubmissionDetails
-import models.upscan.Reference
 import play.api.Logging
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
