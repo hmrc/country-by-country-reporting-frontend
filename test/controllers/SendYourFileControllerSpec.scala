@@ -23,7 +23,7 @@ import generators.Generators
 import models.fileDetails.BusinessRuleErrorCode.{DocRefIDFormat, InvalidMessageRefIDFormat, UnknownErrorCode}
 import models.fileDetails._
 import models.submission.SubmissionDetails
-import models.{ConversationId, NewInformation, UserAnswers, ValidatedFileData}
+import models.{CBC401, ConversationId, MessageSpecData, NewInformation, TestData, UserAnswers, ValidatedFileData}
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks
@@ -42,6 +42,17 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
 
   private val submissionDetailsArgCaptor: ArgumentCaptor[SubmissionDetails] = ArgumentCaptor.forClass(classOf[SubmissionDetails])
 
+  val userAnswersWithContactDetails: UserAnswers = emptyUserAnswers
+    .withPage(ContactNamePage, "test")
+    .withPage(ContactEmailPage, "test@test.com")
+    .withPage(HaveTelephonePage, true)
+    .withPage(ContactPhonePage, "6677889922")
+    .withPage(HaveSecondContactPage, true)
+    .withPage(SecondContactNamePage, "test user")
+    .withPage(SecondContactEmailPage, "t2@test.com")
+    .withPage(SecondContactHavePhonePage, true)
+    .withPage(SecondContactPhonePage, "8889988728")
+
   "SendYourFile Controller" - {
 
     "onPageLoad" - {
@@ -56,7 +67,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
               submissionDetails.checksum
             )
 
-            val userAnswers = UserAnswers("Id").withPage(ValidXMLPage, fileData)
+            val userAnswers = userAnswersWithContactDetails.withPage(ValidXMLPage, fileData)
 
             val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -75,7 +86,25 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
       }
 
       "redirect to 'file problem some information missing' page when userAnswers missing" in {
-        val userAnswers = emptyUserAnswers
+
+        val application = applicationBuilder(userAnswers = Some(userAnswersWithContactDetails)).build()
+
+        running(application) {
+          val request = FakeRequest(GET, routes.SendYourFileController.onPageLoad().url)
+          val result  = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.FileProblemSomeInformationMissingController.onPageLoad().url
+        }
+
+      }
+
+      "redirect to 'Some information missing' page when userAnswers missing contact details" in {
+
+        val messageSpecData   = MessageSpecData("XBG1999999", CBC401, "Reporting Entity", TestData)
+        val validatedFileData = ValidatedFileData("afile", messageSpecData, 20L, "MD5:123")
+
+        val userAnswers = emptyUserAnswers.withPage(ValidXMLPage, validatedFileData)
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -84,7 +113,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
           val result  = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.FileProblemSomeInformationMissingController.onPageLoad().url
+          redirectLocation(result).value mustEqual routes.SomeInformationMissingController.onPageLoad().url
         }
 
       }
