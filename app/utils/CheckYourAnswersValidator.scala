@@ -56,37 +56,47 @@ class CheckYourAnswersValidator(userAnswers: UserAnswers) {
       case _           => Seq(HaveSecondContactPage)
     }
 
-  private def validate: Seq[Page] = checkPrimaryContactDetails ++ checkSecondaryContactDetails
+  private def checkMigratedUserAnswerUpdated: Seq[Page] =
+    userAnswers.get(IsMigratedUserContactUpdatedPage) match {
+      case Some(false) =>
+        Seq(IsMigratedUserContactUpdatedPage)
+      case _ => Seq.empty
+    }
+
+  private def validate: Seq[Page] = checkPrimaryContactDetails ++ checkSecondaryContactDetails ++ checkMigratedUserAnswerUpdated
 
   private def pageToRedirectUrl(mode: Mode): Map[Page, String] = Map(
-    ContactNamePage            -> controllers.routes.ContactNameController.onPageLoad(mode).url,
-    ContactEmailPage           -> controllers.routes.ContactEmailController.onPageLoad(mode).url,
-    HaveTelephonePage          -> controllers.routes.HaveTelephoneController.onPageLoad(mode).url,
-    ContactPhonePage           -> controllers.routes.HaveTelephoneController.onPageLoad(mode).url,
-    HaveSecondContactPage      -> controllers.routes.HaveSecondContactController.onPageLoad(mode).url,
-    SecondContactNamePage      -> controllers.routes.HaveSecondContactController.onPageLoad(mode).url,
-    SecondContactEmailPage     -> controllers.routes.SecondContactEmailController.onPageLoad(mode).url,
-    SecondContactHavePhonePage -> controllers.routes.SecondContactHavePhoneController.onPageLoad(mode).url,
-    SecondContactPhonePage     -> controllers.routes.SecondContactHavePhoneController.onPageLoad(mode).url
+    ContactNamePage                  -> controllers.routes.ContactNameController.onPageLoad(mode).url,
+    ContactEmailPage                 -> controllers.routes.ContactEmailController.onPageLoad(mode).url,
+    HaveTelephonePage                -> controllers.routes.HaveTelephoneController.onPageLoad(mode).url,
+    ContactPhonePage                 -> controllers.routes.HaveTelephoneController.onPageLoad(mode).url,
+    HaveSecondContactPage            -> controllers.routes.HaveSecondContactController.onPageLoad(mode).url,
+    SecondContactNamePage            -> controllers.routes.HaveSecondContactController.onPageLoad(mode).url,
+    SecondContactEmailPage           -> controllers.routes.SecondContactEmailController.onPageLoad(mode).url,
+    SecondContactHavePhonePage       -> controllers.routes.SecondContactHavePhoneController.onPageLoad(mode).url,
+    SecondContactPhonePage           -> controllers.routes.SecondContactHavePhoneController.onPageLoad(mode).url,
+    IsMigratedUserContactUpdatedPage -> controllers.routes.ChangeContactDetailsController.onPageLoad().url
   )
 
   private def clientContactsPageToRedirectUrl(mode: Mode): Map[Page, String] = Map(
-    ContactNamePage            -> controllers.client.routes.ClientFirstContactNameController.onPageLoad(mode).url,
-    ContactNamePage            -> controllers.client.routes.ClientFirstContactNameController.onPageLoad(mode).url,
-    ContactEmailPage           -> controllers.client.routes.ClientFirstContactEmailController.onPageLoad(mode).url,
-    HaveTelephonePage          -> controllers.client.routes.ClientFirstContactHavePhoneController.onPageLoad(mode).url,
-    ContactPhonePage           -> controllers.client.routes.ClientFirstContactHavePhoneController.onPageLoad(mode).url,
-    HaveSecondContactPage      -> controllers.client.routes.ClientHaveSecondContactController.onPageLoad(mode).url,
-    SecondContactNamePage      -> controllers.client.routes.ClientHaveSecondContactController.onPageLoad(mode).url,
-    SecondContactEmailPage     -> controllers.client.routes.ClientSecondContactEmailController.onPageLoad(mode).url,
-    SecondContactHavePhonePage -> controllers.client.routes.ClientSecondContactHavePhoneController.onPageLoad(mode).url,
-    SecondContactPhonePage     -> controllers.client.routes.ClientSecondContactHavePhoneController.onPageLoad(mode).url
+    ContactNamePage                  -> controllers.client.routes.ClientFirstContactNameController.onPageLoad(mode).url,
+    ContactNamePage                  -> controllers.client.routes.ClientFirstContactNameController.onPageLoad(mode).url,
+    ContactEmailPage                 -> controllers.client.routes.ClientFirstContactEmailController.onPageLoad(mode).url,
+    HaveTelephonePage                -> controllers.client.routes.ClientFirstContactHavePhoneController.onPageLoad(mode).url,
+    ContactPhonePage                 -> controllers.client.routes.ClientFirstContactHavePhoneController.onPageLoad(mode).url,
+    HaveSecondContactPage            -> controllers.client.routes.ClientHaveSecondContactController.onPageLoad(mode).url,
+    SecondContactNamePage            -> controllers.client.routes.ClientHaveSecondContactController.onPageLoad(mode).url,
+    SecondContactEmailPage           -> controllers.client.routes.ClientSecondContactEmailController.onPageLoad(mode).url,
+    SecondContactHavePhonePage       -> controllers.client.routes.ClientSecondContactHavePhoneController.onPageLoad(mode).url,
+    SecondContactPhonePage           -> controllers.client.routes.ClientSecondContactHavePhoneController.onPageLoad(mode).url,
+    IsMigratedUserContactUpdatedPage -> controllers.client.routes.ChangeClientContactDetailsController.onPageLoad().url
   )
 
-  def changeAnswersRedirectUrl(mode: Mode): Option[String] =
-    userAnswers.get(ContactDetailsJourneyTypePage) match {
-      case Some(changeClientContactDetails) => validate.headOption.map(clientContactsPageToRedirectUrl(mode))
-      case _                                => validate.headOption.map(pageToRedirectUrl(mode))
+  def changeAnswersRedirectUrl(mode: Mode, isAgent: Boolean): Option[String] =
+    if (isAgent) {
+      validate.headOption.map(clientContactsPageToRedirectUrl(mode))
+    } else {
+      validate.headOption.map(pageToRedirectUrl(mode))
     }
 }
 
@@ -94,9 +104,4 @@ object CheckYourAnswersValidator {
 
   def apply(userAnswers: UserAnswers) =
     new CheckYourAnswersValidator(userAnswers)
-}
-
-object JourneyName {
-  val changeClientContactDetails = "changeClientContactDetails"
-  val changeOrgContactDetails    = "changeOrgContactDetails"
 }

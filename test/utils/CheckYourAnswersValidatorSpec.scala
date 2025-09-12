@@ -24,8 +24,10 @@ import pages._
 class CheckYourAnswersValidatorSpec extends SpecBase {
   "ChangeAnswersRedirectUrl" - {
 
+    val isAgent = false
+
     "must return ChangeName if all mandatory values are not available" in {
-      val changeUrl = CheckYourAnswersValidator(emptyUserAnswers).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(emptyUserAnswers).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/change-contact/change-name")
@@ -33,7 +35,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
 
     "must return ChangeEmail if all mandatory values are not available" in {
       val updatedUA = emptyUserAnswers.withPage(ContactNamePage, "test")
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/change-contact/change-email")
@@ -41,7 +43,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
 
     "must return HavePhone if all mandatory values are not available" in {
       val updatedUA = emptyUserAnswers.withPage(ContactNamePage, "test").withPage(ContactEmailPage, "test@test.com")
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/change-contact/change-have-phone")
@@ -52,7 +54,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
         .withPage(ContactNamePage, "test")
         .withPage(ContactEmailPage, "test@test.com")
         .withPage(HaveTelephonePage, true)
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/change-contact/change-have-phone")
@@ -63,7 +65,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
         .withPage(ContactNamePage, "test")
         .withPage(ContactEmailPage, "test@test.com")
         .withPage(HaveTelephonePage, false)
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/change-contact/change-have-second-contact")
@@ -75,7 +77,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
         .withPage(ContactEmailPage, "test@test.com")
         .withPage(HaveTelephonePage, false)
         .withPage(HaveSecondContactPage, true)
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/change-contact/change-have-second-contact")
@@ -88,7 +90,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
         .withPage(HaveTelephonePage, false)
         .withPage(HaveSecondContactPage, true)
         .withPage(SecondContactNamePage, "test user")
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/change-contact/change-second-contact-email")
@@ -102,7 +104,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
         .withPage(HaveSecondContactPage, true)
         .withPage(SecondContactNamePage, "test user")
         .withPage(SecondContactEmailPage, "t2@test.com")
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/change-contact/change-second-contact-have-phone")
@@ -117,10 +119,23 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
         .withPage(SecondContactNamePage, "test user")
         .withPage(SecondContactEmailPage, "t2@test.com")
         .withPage(SecondContactHavePhonePage, true)
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/change-contact/change-second-contact-have-phone")
+    }
+
+    "must return ChangeContactDetails if IsMigratedUserContactUpdatedPage is false" in {
+      val updatedUA = emptyUserAnswers
+        .withPage(ContactNamePage, "test")
+        .withPage(ContactEmailPage, "test@test.com")
+        .withPage(HaveTelephonePage, false)
+        .withPage(HaveSecondContactPage, false)
+        .withPage(IsMigratedUserContactUpdatedPage, false)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
+
+      changeUrl.isDefined shouldBe true
+      changeUrl.get should equal("/send-a-country-by-country-report/change-contact/details")
     }
 
     "must return None if all mandatory values are available" in {
@@ -134,7 +149,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
         .withPage(SecondContactEmailPage, "t2@test.com")
         .withPage(SecondContactHavePhonePage, true)
         .withPage(SecondContactPhonePage, "8889988728")
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe false
     }
@@ -145,7 +160,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
         .withPage(ContactEmailPage, "test@test.com")
         .withPage(HaveTelephonePage, false)
         .withPage(HaveSecondContactPage, false)
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe false
     }
@@ -153,9 +168,11 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
 
   "ChangeAnswersRedirectUrl for journey name: changeClientContactDetails" - {
 
+    val isAgent = true
+
     "must return ChangeName if all mandatory values are not available for journey" in {
       val answers   = emptyUserAnswers.withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
-      val changeUrl = CheckYourAnswersValidator(answers).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(answers).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-first-contact-name")
@@ -163,7 +180,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
 
     "must return ChangeEmail if all mandatory values are not available" in {
       val updatedUA = emptyUserAnswers.withPage(ContactNamePage, "test").withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-first-contact-email")
@@ -174,7 +191,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
         .withPage(ContactNamePage, "test")
         .withPage(ContactEmailPage, "test@test.com")
         .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-first-contact-have-phone")
@@ -186,7 +203,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
         .withPage(ContactEmailPage, "test@test.com")
         .withPage(HaveTelephonePage, true)
         .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-first-contact-have-phone")
@@ -198,7 +215,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
         .withPage(ContactEmailPage, "test@test.com")
         .withPage(HaveTelephonePage, false)
         .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-have-second-contact")
@@ -211,7 +228,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
         .withPage(HaveTelephonePage, false)
         .withPage(HaveSecondContactPage, true)
         .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-have-second-contact")
@@ -225,7 +242,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
         .withPage(HaveSecondContactPage, true)
         .withPage(SecondContactNamePage, "test user")
         .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-second-contact-email")
@@ -240,10 +257,24 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
         .withPage(SecondContactNamePage, "test user")
         .withPage(SecondContactEmailPage, "t2@test.com")
         .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-second-contact-have-phone")
+    }
+
+    "must return ChangeContactDetails if IsMigratedUserContactUpdatedPage is false" in {
+      val updatedUA = emptyUserAnswers
+        .withPage(ContactNamePage, "test")
+        .withPage(ContactEmailPage, "test@test.com")
+        .withPage(HaveTelephonePage, false)
+        .withPage(HaveSecondContactPage, false)
+        .withPage(IsMigratedUserContactUpdatedPage, false)
+
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
+
+      changeUrl.isDefined shouldBe true
+      changeUrl.get should equal("/send-a-country-by-country-report/agent/change-client-contact/check-answers")
     }
 
     "must return SecondContactNumber if all mandatory values are not available" in {
@@ -256,7 +287,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
         .withPage(SecondContactEmailPage, "t2@test.com")
         .withPage(SecondContactHavePhonePage, true)
         .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
       changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/change-second-contact-have-phone")
@@ -274,7 +305,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
         .withPage(SecondContactHavePhonePage, true)
         .withPage(SecondContactPhonePage, "8889988728")
         .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
-      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode)
+      val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe false
     }

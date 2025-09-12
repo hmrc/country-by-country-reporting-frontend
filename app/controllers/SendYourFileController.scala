@@ -42,6 +42,7 @@ class SendYourFileController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
+  validateDataAction: ValidateMissingContactDataAction,
   checkForSubmission: CheckForSubmissionAction,
   appConfig: FrontendAppConfig,
   submissionConnector: SubmissionConnector,
@@ -53,7 +54,10 @@ class SendYourFileController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData andThen checkForSubmission(true)).async {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData()
+    andThen requireData
+    andThen validateDataAction
+    andThen checkForSubmission(true)).async {
     implicit request =>
       request.userAnswers
         .get(ValidXMLPage)

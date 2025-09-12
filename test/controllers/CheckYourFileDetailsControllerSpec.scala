@@ -19,14 +19,14 @@ package controllers
 import base.SpecBase
 import controllers.actions._
 import models.{CBC401, MessageSpecData, TestData, UserAnswers, ValidatedFileData}
-import pages.ValidXMLPage
+import pages._
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.CheckYourFileDetailsViewModel
 import viewmodels.govuk.summarylist._
-import views.html.{CheckYourFileDetailsView, SomeInformationMissingView}
+import views.html.CheckYourFileDetailsView
 
 class CheckYourFileDetailsControllerSpec extends SpecBase {
 
@@ -39,10 +39,20 @@ class CheckYourFileDetailsControllerSpec extends SpecBase {
       FileSize,
       "MD5:123"
     )
+    val userAnswersWithContactDetails: UserAnswers = emptyUserAnswers
+      .withPage(ContactNamePage, "test")
+      .withPage(ContactEmailPage, "test@test.com")
+      .withPage(HaveTelephonePage, true)
+      .withPage(ContactPhonePage, "6677889922")
+      .withPage(HaveSecondContactPage, true)
+      .withPage(SecondContactNamePage, "test user")
+      .withPage(SecondContactEmailPage, "t2@test.com")
+      .withPage(SecondContactHavePhonePage, true)
+      .withPage(SecondContactPhonePage, "8889988728")
 
     "must return OK and the correct view for a GET" in {
 
-      val ua: UserAnswers = emptyUserAnswers.set(ValidXMLPage, vfd).success.value
+      val ua: UserAnswers = userAnswersWithContactDetails.set(ValidXMLPage, vfd).success.value
       val application     = applicationBuilder(userAnswers = Some(ua)).build()
 
       running(application) {
@@ -63,7 +73,12 @@ class CheckYourFileDetailsControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET for Agent" in {
 
-      val ua: UserAnswers = emptyUserAnswers.set(ValidXMLPage, vfd).success.value
+      val ua: UserAnswers = userAnswersWithContactDetails
+        .withPage(AgentFirstContactNamePage, "test")
+        .withPage(AgentFirstContactEmailPage, "test@test.com")
+        .withPage(AgentFirstContactHavePhonePage, false)
+        .withPage(AgentHaveSecondContactPage, false)
+        .withPage(ValidXMLPage, vfd)
       val application = new GuiceApplicationBuilder()
         .overrides(
           bind[DataRequiredAction].to[DataRequiredActionImpl],
@@ -89,13 +104,18 @@ class CheckYourFileDetailsControllerSpec extends SpecBase {
     }
 
     "must redirect to file problem missing information page when there is no ValidXMLPage in request" in {
-      val ua: UserAnswers = emptyUserAnswers
+
+      val userAnswers = userAnswersWithContactDetails
+        .withPage(AgentFirstContactNamePage, "test")
+        .withPage(AgentFirstContactEmailPage, "test@test.com")
+        .withPage(AgentFirstContactHavePhonePage, false)
+        .withPage(AgentHaveSecondContactPage, false)
 
       val application = new GuiceApplicationBuilder()
         .overrides(
           bind[DataRequiredAction].to[DataRequiredActionImpl],
           bind[IdentifierAction].to[FakeIdentifierActionAgent],
-          bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(Some(ua)))
+          bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(Some(userAnswers)))
         )
         .build()
 
@@ -105,6 +125,51 @@ class CheckYourFileDetailsControllerSpec extends SpecBase {
 
       status(result) mustEqual SEE_OTHER
       redirectLocation(result).value mustEqual routes.FileProblemSomeInformationMissingController.onPageLoad().url
+    }
+
+    "must redirect to Agent Some Info missing information page when there is no agent contact in request" in {
+
+      val userAnswers = userAnswersWithContactDetails.withPage(ValidXMLPage, vfd)
+
+      val application = new GuiceApplicationBuilder()
+        .overrides(
+          bind[DataRequiredAction].to[DataRequiredActionImpl],
+          bind[IdentifierAction].to[FakeIdentifierActionAgent],
+          bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(Some(userAnswers)))
+        )
+        .build()
+
+      val request = FakeRequest(GET, routes.CheckYourFileDetailsController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual controllers.agent.routes.AgentSomeInformationMissingController.onPageLoad().url
+    }
+
+    "must redirect to Some Info missing information page when there is no contact in request" in {
+
+      val userAnswers = emptyUserAnswers
+        .withPage(AgentFirstContactNamePage, "test")
+        .withPage(AgentFirstContactEmailPage, "test@test.com")
+        .withPage(AgentFirstContactHavePhonePage, false)
+        .withPage(AgentHaveSecondContactPage, false)
+        .withPage(ValidXMLPage, vfd)
+
+      val application = new GuiceApplicationBuilder()
+        .overrides(
+          bind[DataRequiredAction].to[DataRequiredActionImpl],
+          bind[IdentifierAction].to[FakeIdentifierActionAgent],
+          bind[DataRetrievalAction].toInstance(new FakeDataRetrievalActionProvider(Some(userAnswers)))
+        )
+        .build()
+
+      val request = FakeRequest(GET, routes.CheckYourFileDetailsController.onPageLoad().url)
+
+      val result = route(application, request).value
+
+      status(result) mustEqual SEE_OTHER
+      redirectLocation(result).value mustEqual routes.SomeInformationMissingController.onPageLoad().url
     }
   }
 }

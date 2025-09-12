@@ -21,7 +21,6 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.SubscriptionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import utils.JourneyName.changeClientContactDetails
 import viewmodels.ClientCheckYourAnswersHelper
 import viewmodels.govuk.summarylist._
 import views.html.ThereIsAProblemView
@@ -37,7 +36,6 @@ class ChangeClientContactDetailsController @Inject() (
   requireData: DataRequiredAction,
   checkForSubmission: CheckForSubmissionAction,
   validationSubmissionDataAction: ValidationSubmissionDataAction,
-  addJourneyNameAction: AddJourneyNameAction,
   subscriptionService: SubscriptionService,
   val controllerComponents: MessagesControllerComponents,
   view: ChangeClientContactDetailsView,
@@ -47,7 +45,7 @@ class ChangeClientContactDetailsController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] =
-    (identify andThen getData.apply andThen requireData andThen checkForSubmission() andThen addJourneyNameAction(changeClientContactDetails)
+    (identify andThen getData.apply andThen requireData andThen checkForSubmission()
       andThen validationSubmissionDataAction())
       .async {
         implicit request =>

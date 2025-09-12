@@ -33,10 +33,15 @@ class AgentValidateSubmissionDataActionImpl @Inject() (implicit val executionCon
     val validator   = AgentCheckYourAnswersValidator(answers)
     val currentMode = if (answers.get(JourneyInProgressPage).getOrElse(false)) CheckMode else NormalMode
     validator.changeAnswersRedirectUrl(currentMode) match {
-      case Some(_) => Future.successful(Left(Redirect(controllers.agent.routes.AgentSomeInformationMissingController.onPageLoad())))
-      case None    => Future.successful(Right(request))
+      case None                                         => Future.successful(Right(request))
+      case Some(value) if isChangeContactDetails(value) => Future.successful(Right(request))
+      case _ =>
+        Future.successful(Left(Redirect(controllers.agent.routes.AgentSomeInformationMissingController.onPageLoad())))
     }
   }
+
+  private def isChangeContactDetails[A](value: String) =
+    value.equalsIgnoreCase(controllers.agent.routes.ChangeAgentContactDetailsController.onPageLoad().url)
 }
 
 trait AgentValidateSubmissionDataAction extends ActionRefiner[AgentDataRequest, AgentDataRequest]

@@ -37,13 +37,14 @@ class CheckYourFileDetailsController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
+  validateDataAction: ValidateMissingContactDataAction,
   val controllerComponents: MessagesControllerComponents,
   view: CheckYourFileDetailsView
 ) extends FrontendBaseController
     with I18nSupport
     with Logging {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) {
+  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData andThen validateDataAction) {
     implicit request =>
       request.userAnswers.get(ValidXMLPage) match {
         case Some(details) =>

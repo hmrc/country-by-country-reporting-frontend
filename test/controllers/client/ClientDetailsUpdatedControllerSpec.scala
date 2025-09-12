@@ -17,9 +17,15 @@
 package controllers.client
 
 import base.SpecBase
+import org.mockito.ArgumentMatchers.any
+import pages.{IsMigratedUserContactUpdatedPage, JourneyInProgressPage}
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.client.ClientDetailsUpdatedView
+
+import scala.concurrent.Future
 
 class ClientDetailsUpdatedControllerSpec extends SpecBase {
 
@@ -27,7 +33,15 @@ class ClientDetailsUpdatedControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val ua          = emptyUserAnswers
+      val userAnswers = ua.set(JourneyInProgressPage, true).success.value
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SessionRepository].toInstance(mockSessionRepository)
+        )
+        .build()
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       running(application) {
         val request = FakeRequest(GET, routes.ClientDetailsUpdatedController.onPageLoad().url)
@@ -38,6 +52,33 @@ class ClientDetailsUpdatedControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view()(request, messages(application)).toString
+        verify(mockSessionRepository, times(1)).set(ua)
+      }
+    }
+
+    "must set IsMigratedUserContactUpdatedPage as true" in {
+
+      val ua          = emptyUserAnswers
+      val userAnswers = ua.set(IsMigratedUserContactUpdatedPage, false).success.value
+      val expectedUA  = ua.set(IsMigratedUserContactUpdatedPage, true).success.value
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SessionRepository].toInstance(mockSessionRepository)
+        )
+        .build()
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      running(application) {
+        val request = FakeRequest(GET, routes.ClientDetailsUpdatedController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[ClientDetailsUpdatedView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view()(request, messages(application)).toString
+        verify(mockSessionRepository, times(1)).set(expectedUA)
       }
     }
   }

@@ -46,6 +46,7 @@ class UploadFileController @Inject() (
   requireData: DataRequiredAction,
   upscanConnector: UpscanConnector,
   formProvider: UploadFileFormProvider,
+  validateDataAction: ValidateMissingContactDataAction,
   config: FrontendAppConfig,
   actorSystem: ActorSystem,
   val controllerComponents: MessagesControllerComponents,
@@ -57,10 +58,12 @@ class UploadFileController @Inject() (
 
   val form = formProvider()
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      toResponse(form)
-  }
+  def onPageLoad: Action[AnyContent] =
+    (identify andThen getData() andThen requireData
+      andThen validateDataAction).async {
+      implicit request =>
+        toResponse(form)
+    }
 
   private def toResponse(preparedForm: Form[String])(implicit request: DataRequest[AnyContent], hc: HeaderCarrier): Future[Result] = {
     val uploadId: UploadId = UploadId.generate
