@@ -29,7 +29,7 @@ import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import repositories.SessionRepository
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 import uk.gov.hmrc.mongo.test.MongoSupport
-import utils.ISpecBase
+import utils.{ISpecBase, SpecCommonHelper}
 
 class IndexControllerISpec
     extends PlaySpec
@@ -37,6 +37,7 @@ class IndexControllerISpec
     with ScalaFutures
     with GuiceOneServerPerSuite
     with ISpecBase
+      with SpecCommonHelper
     with BeforeAndAfterEach
     with MongoSupport {
 
@@ -52,8 +53,6 @@ class IndexControllerISpec
   lazy val repository: SessionRepository =
     app.injector.instanceOf[SessionRepository]
 
-  lazy val wsClient: WSClient = app.injector.instanceOf[WSClient]
-
   override def beforeEach(): Unit = {
     super.beforeEach()
     repository.collection.drop().toFuture().futureValue
@@ -63,6 +62,7 @@ class IndexControllerISpec
 
     "return OK when the user is authorised" in {
       authorised()
+      lazy val wsClient: WSClient = app.injector.instanceOf[WSClient]
 
       val response = await(wsClient.url(url).get())
 
