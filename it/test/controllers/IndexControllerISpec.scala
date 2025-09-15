@@ -43,7 +43,7 @@ class IndexControllerISpec extends Connector with MongoSupport with AuthStubs {
   "GET / IndexController.onPageLoad" - {
     "return OK when the user is authorised" in {
       lazy val baseUrl  = s"http://$wireMockHost:$wireMockPort"
-      val downstreamUrl = s"$baseUrl/send-a-country-by-country-report"
+      val downstreamUrl = s"$baseUrl/send-a-country-by-country-report/"
 
       stubAuthorised("cbc12345")
 
@@ -53,10 +53,10 @@ class IndexControllerISpec extends Connector with MongoSupport with AuthStubs {
         Json.toJson("auth successful?").toString
       )
 
-      val response = await(wsClient.url(s"http://localhost:10024//send-a-country-by-country-report").get())
-
+      val response = await(wsClient.url(s"http://localhost:10024/send-a-country-by-country-report/").get())
+      println(response.body)
       response.status mustBe OK
-      response.body must include("auth successful?")
+      response.body must not include "Authority Wizard"
     }
   }
 

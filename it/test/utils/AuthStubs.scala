@@ -46,13 +46,14 @@ trait AuthStubs extends WireMockHelper { this: Suite =>
        |  {
        |    "confidenceLevel":50
        |  }],
-       |  "retrieve":[ "internalId", "authorisedEnrolments" ]
+       |  "retrieve":[ "internalId", "affinityGroup", "allEnrolments" ]
        |}""".stripMargin
 
   def authOKResponse(cbcId: String) =
     s"""|  {
         |    "internalId": "$testAuthInternalId",
-        |    "authorisedEnrolments" : [ {
+        |    "affinityGroup": "Organisation",
+        |    "allEnrolments" : [ {
         |      "key" : "HMRC-CBC-ORG",
         |      "identifiers" : [ {
         |        "key" : "cbcId",
@@ -64,6 +65,7 @@ trait AuthStubs extends WireMockHelper { this: Suite =>
         |  }
          """.stripMargin
 
+  //get internalId object and affinityGroup object and allEnrolments ^^
   def stubAuthorised(appaId: String): Unit =
     stubPost(authUrl, OK, authRequest, authOKResponse(appaId))
 
