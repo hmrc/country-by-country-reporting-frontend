@@ -54,9 +54,11 @@ class IndexControllerISpec extends Connector with MongoSupport with AuthStubs {
       )
 
       val response = await(wsClient.url(s"http://localhost:10024/send-a-country-by-country-report/").get())
-      println(response.body)
+
       response.status mustBe OK
+//      verifyAuthorised()
       response.body must not include "Authority Wizard"
+
     }
   }
 

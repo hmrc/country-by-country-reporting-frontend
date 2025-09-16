@@ -42,26 +42,30 @@ import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
 
 trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach {
   this: Suite =>
-  protected val server: WireMockServer = new WireMockServer(wireMockConfig().dynamicPort())
+
+  val wireMockHost: String                = "localhost"
+  val wireMockPort: Int                   = 1111
+  val mockServerUrl                       = s"http://$wireMockHost:$wireMockPort"
+  protected val endpointConfigurationPath = "microservice.services"
+
+  protected val server: WireMockServer = new WireMockServer(wireMockConfig().port(wireMockPort))
 
   override def beforeAll(): Unit = {
-    server.start()
     super.beforeAll()
+    server.start()
+    WireMock.configureFor("localhost", wireMockPort)
+
   }
 
   override def beforeEach(): Unit = {
-    server.resetAll()
     super.beforeEach()
+    server.resetAll()
   }
 
   override def afterAll(): Unit = {
-    super.afterAll()
     server.stop()
+    super.afterAll()
   }
-
-  val wireMockHost: String                = "localhost"
-  lazy val wireMockPort: Int              = server.port()
-  protected val endpointConfigurationPath = "microservice.services"
 
   protected def getWireMockAppConfig(endpointNames: Seq[String]): Map[String, Any] =
     endpointNames
