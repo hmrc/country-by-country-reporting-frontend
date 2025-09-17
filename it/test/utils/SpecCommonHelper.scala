@@ -13,6 +13,7 @@ import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.{WSClient, WSRequest}
+import play.api.test.FakeRequest
 import uk.gov.hmrc.mongo.test.MongoSupport
 
 trait SpecCommonHelper extends PlaySpec with GuiceOneServerPerSuite with MongoSupport
@@ -25,6 +26,14 @@ trait SpecCommonHelper extends PlaySpec with GuiceOneServerPerSuite with MongoSu
     "microservice.services.auth.port" -> WireMockConstants.stubPort.toString,
     "mongodb.uri" -> mongoUri
   )
+
+  def buildClient(): WSRequest = {
+    app.injector.instanceOf[WSClient].url(s"http://localhost:$port/send-a-country-by-country-report")
+  }
+
+  def buildFakeRequest() = {
+    FakeRequest("GET", s"http://localhost:$port/send-a-country-by-country-report").withSession("authToken" -> "my-token")
+  }
 
   implicit override val patienceConfig: PatienceConfig = PatienceConfig(scaled(Span(20, Seconds)))
 
@@ -42,7 +51,7 @@ trait SpecCommonHelper extends PlaySpec with GuiceOneServerPerSuite with MongoSu
     super.beforeEach()
   }
 
-  override def afterAll(): Unit = {
+  override protected def afterAll(): Unit = {
     wireMock.stop()
     super.afterAll()
   }

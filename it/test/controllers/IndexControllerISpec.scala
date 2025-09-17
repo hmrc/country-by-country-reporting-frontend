@@ -16,55 +16,47 @@
 
 package controllers
 
-import org.scalatest.BeforeAndAfterEach
-import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.matchers.must.Matchers
-import org.scalatestplus.play.PlaySpec
-import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.Application
+import models.UserAnswers
 import play.api.http.Status._
-import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.ws.WSClient
+import play.api.libs.crypto.CookieSigner
+import play.api.libs.ws.{DefaultWSCookie, WSClient}
+import play.api.mvc.{Session, SessionCookieBaker}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import repositories.SessionRepository
-import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
-import uk.gov.hmrc.mongo.test.MongoSupport
+import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 import utils.{ISpecBase, SpecCommonHelper}
 
 class IndexControllerISpec
-    extends PlaySpec
-    with Matchers
-    with ScalaFutures
-    with GuiceOneServerPerSuite
-    with ISpecBase
-      with SpecCommonHelper
-    with BeforeAndAfterEach
-    with MongoSupport {
+extends SpecCommonHelper
+with ISpecBase
+    with DefaultPlayMongoRepositorySupport[UserAnswers] {
 
-  private val url = s"http://localhost:$port/"
+  lazy val repository: SessionRepository = app.injector.instanceOf[SessionRepository]
 
-  override def fakeApplication(): Application =
-    new GuiceApplicationBuilder()
-      .configure(
-        "mongodb.uri" -> mongoUri
-      )
-      .build()
+  lazy val wsClient: WSClient = app.injector.instanceOf[WSClient]
 
-  lazy val repository: SessionRepository =
-    app.injector.instanceOf[SessionRepository]
+  val signer = app.injector.instanceOf[CookieSigner]
+
 
   override def beforeEach(): Unit = {
     super.beforeEach()
     repository.collection.drop().toFuture().futureValue
   }
-
   "GET / (IndexController.onPageLoad)" must {
 
     "return OK when the user is authorised" in {
-      authorised()
-      lazy val wsClient: WSClient = app.injector.instanceOf[WSClient]
 
-      val response = await(wsClient.url(url).get())
+      authorised()
+
+      val session = Session(Map("authToken" -> "abc123", "role" -> "admin"))
+      val sessionCookieBaker = app.injector.instanceOf[SessionCookieBaker]
+      val sessionCookie = sessionCookieBaker.encodeAsCookie(session)
+      val wsSessionCookie = DefaultWSCookie(sessionCookie.name,sessionCookie.value)
+
+
+      val response = await(buildClient()
+        .addCookies(wsSessionCookie)
+        .get())
 
       response.status mustBe OK
       response.body must include("CBC")
