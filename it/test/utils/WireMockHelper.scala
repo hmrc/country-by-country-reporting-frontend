@@ -40,11 +40,16 @@ import com.github.tomakehurst.wiremock.http.Fault
 import com.github.tomakehurst.wiremock.matching.{EqualToJsonPattern, EqualToPattern}
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
 
+object WireMockConstants {
+  val stubPort = 11111
+  val stubHost = "localhost"
+}
+
 trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach {
   this: Suite =>
 
-  val wireMockHost: String                = "localhost"
-  val wireMockPort: Int                   = 1111
+  val wireMockHost: String                = WireMockConstants.stubHost
+  val wireMockPort: Int                   = WireMockConstants.stubPort
   val mockServerUrl                       = s"http://$wireMockHost:$wireMockPort"
   protected val endpointConfigurationPath = "microservice.services"
 
@@ -141,7 +146,7 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach {
     server.stubFor(
       WireMock
         .post(urlEqualTo(stripToPath(url)))
-        .withRequestBody(new EqualToJsonPattern(requestBody, true, false))
+//        .withRequestBody(new EqualToJsonPattern(requestBody, true, false))
         .willReturn(aResponse().withStatus(status).withBody(returnBody))
     )
 

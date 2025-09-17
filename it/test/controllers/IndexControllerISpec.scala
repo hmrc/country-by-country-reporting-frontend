@@ -16,49 +16,36 @@
 
 package controllers
 
-import connectors.Connector
-import play.api.Application
+import models.UserAnswers
 import play.api.http.Status.OK
-import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.json.Json
 import play.api.libs.ws.{DefaultWSCookie, WSClient, WSRequest}
 import play.api.mvc.{Session, SessionCookieBaker}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import uk.gov.hmrc.mongo.test.MongoSupport
+import repositories.SessionRepository
+import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 import utils.AuthStubs
+import utils.utils.SpecCommonHelper
 
-class IndexControllerISpec extends Connector with MongoSupport with AuthStubs {
-
-  override def fakeApplication(): Application =
-    new GuiceApplicationBuilder()
-      .configure("mongodb.uri" -> mongoUri)
-      .build()
+class IndexControllerISpec
+  extends SpecCommonHelper
+  with AuthStubs  {
 
   lazy val wsClient: WSClient = app.injector.instanceOf[WSClient]
 
-  override def beforeAll(): Unit = {
-    dropDatabase()
-    super.beforeAll()
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    repository.collection.drop().toFuture().futureValue
   }
 
-  "GET / IndexController.onPageLoad" - {
+
+  "GET / IndexController.onPageLoad" must {
     "return OK when the user is authorised" in {
-      lazy val baseUrl  = s"http://$wireMockHost:$wireMockPort"
-      val downstreamUrl = s"$baseUrl/send-a-country-by-country-report/"
-      def buildClient(): WSRequest =
-        app.injector.instanceOf[WSClient].url(downstreamUrl)
       stubAuthorised("cbc12345")
 
       val session            = Session(Map("authToken" -> "abc123", "role" -> "admin"))
       val sessionCookieBaker = app.injector.instanceOf[SessionCookieBaker]
       val sessionCookie      = sessionCookieBaker.encodeAsCookie(session)
       val wsSessionCookie    = DefaultWSCookie(sessionCookie.name, sessionCookie.value)
-
-      stubGet(
-        downstreamUrl,
-        OK,
-        Json.toJson("auth successful?").toString
-      )
 
       val response = await(
         buildClient()
