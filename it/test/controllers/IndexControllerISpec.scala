@@ -21,7 +21,8 @@ import play.api.Application
 import play.api.http.Status.OK
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
-import play.api.libs.ws.WSClient
+import play.api.libs.ws.{DefaultWSCookie, WSClient, WSRequest}
+import play.api.mvc.{Session, SessionCookieBaker}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.mongo.test.MongoSupport
 import utils.AuthStubs
@@ -44,8 +45,14 @@ class IndexControllerISpec extends Connector with MongoSupport with AuthStubs {
     "return OK when the user is authorised" in {
       lazy val baseUrl  = s"http://$wireMockHost:$wireMockPort"
       val downstreamUrl = s"$baseUrl/send-a-country-by-country-report/"
-
+      def buildClient(): WSRequest =
+        app.injector.instanceOf[WSClient].url(downstreamUrl)
       stubAuthorised("cbc12345")
+
+      val session            = Session(Map("authToken" -> "abc123", "role" -> "admin"))
+      val sessionCookieBaker = app.injector.instanceOf[SessionCookieBaker]
+      val sessionCookie      = sessionCookieBaker.encodeAsCookie(session)
+      val wsSessionCookie    = DefaultWSCookie(sessionCookie.name, sessionCookie.value)
 
       stubGet(
         downstreamUrl,
@@ -53,10 +60,12 @@ class IndexControllerISpec extends Connector with MongoSupport with AuthStubs {
         Json.toJson("auth successful?").toString
       )
 
-      val response = await(wsClient.url(s"http://localhost:10024/send-a-country-by-country-report/").get())
-
+      val response = await(
+        buildClient()
+          .addCookies(wsSessionCookie)
+          .get()
+      )
       response.status mustBe OK
-//      verifyAuthorised()
       response.body must not include "Authority Wizard"
 
     }
