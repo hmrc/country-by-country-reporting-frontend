@@ -17,7 +17,7 @@
 package controllers
 
 import org.scalatestplus.play.PlaySpec
-import play.api.http.Status.OK
+import play.api.http.Status._
 import play.api.libs.ws.{DefaultWSCookie, WSClient}
 import play.api.mvc.{Session, SessionCookieBaker}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
@@ -26,15 +26,15 @@ import utils.SpecCommonHelper
 class IndexControllerISpec extends PlaySpec with SpecCommonHelper {
 
   lazy val wsClient: WSClient = app.injector.instanceOf[WSClient]
+  val session                 = Session(Map("authToken" -> "abc123", "role" -> "admin"))
+  val sessionCookieBaker      = app.injector.instanceOf[SessionCookieBaker]
+  val sessionCookie           = sessionCookieBaker.encodeAsCookie(session)
+  val wsSessionCookie         = DefaultWSCookie(sessionCookie.name, sessionCookie.value)
 
   "GET / IndexController.onPageLoad" must {
     "return OK when the user is authorised" in {
       stubAuthorised("cbc12345")
 
-      val session             = Session(Map("authToken" -> "abc123", "role" -> "admin"))
-      val sessionCookieBaker  = app.injector.instanceOf[SessionCookieBaker]
-      val sessionCookie       = sessionCookieBaker.encodeAsCookie(session)
-      val wsSessionCookie     = DefaultWSCookie(sessionCookie.name, sessionCookie.value)
       val readSubscriptionUrl = "/country-by-country-reporting/subscription/read-subscription/.*"
       val responseDetailString: String =
         """
@@ -67,8 +67,18 @@ class IndexControllerISpec extends PlaySpec with SpecCommonHelper {
           .get()
       )
       response.status mustBe OK
-      response.body must not include "Authority Wizard"
+      verifyPost(authUrl)
+      response.body must not include "Sorry, there is a problem with the service"
 
+    }
+
+    "redirect to login when there is no active session" in {
+      val response = await(
+        buildClient()
+          .get()
+      )
+      response.status mustBe OK
+      response.body must include("Authority Wizard")
     }
   }
 
