@@ -25,29 +25,19 @@ trait AuthStubs extends WireMockHelper { this: Suite =>
   val testAuthInternalId = "internalId"
 
   val authRequest =
-    s"""{
-       |  "authorise":[
-       |    [
-       |      {
-       |         "authProviders":["GovernmentGateway"]
-       |      },
-       |      {
-       |         "identifiers":[],
-       |         "state":"Activated",
-       |         "enrolment":"HMRC-CBC-ORG"
-       |      },
-       |      {
-       |        "credentialStrength":"strong"
-       |      }
-       |    ],
-       |  {
-       |    "affinityGroup":"Organisation"
-       |  },
-       |  {
-       |    "confidenceLevel":50
-       |  }],
-       |  "retrieve":[ "internalId", "affinityGroup", "allEnrolments" ]
-       |}""".stripMargin
+    s"""
+       |{
+       |  "authorise": [
+       |    {
+       |      "authProviders": [ "GovernmentGateway" ]
+       |    },
+       |    {
+       |      "confidenceLevel": 50
+       |    }
+       |  ],
+       |  "retrieve": [ "internalId", "allEnrolments", "affinityGroup" ]
+       |}
+       |""".stripMargin
 
   def authOKResponse(cbcId: String) =
     s"""|  {
@@ -65,7 +55,6 @@ trait AuthStubs extends WireMockHelper { this: Suite =>
         |  }
          """.stripMargin
 
-  //get internalId object and affinityGroup object and allEnrolments ^^
   def stubAuthorised(appaId: String): Unit =
     stubPost(authUrl, OK, authRequest, authOKResponse(appaId))
 

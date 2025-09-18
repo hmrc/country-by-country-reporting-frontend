@@ -18,11 +18,10 @@ package connectors
 
 import base.SpecBase
 import com.github.tomakehurst.wiremock.client.WireMock
-import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, post, urlEqualTo}
+import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, post, urlEqualTo, urlPathMatching}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import generators.Generators
 import org.scalacheck.Gen
-import org.scalatest.Suite
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.Json
 import utils.WireMockHelper
@@ -32,7 +31,7 @@ trait Connector extends SpecBase with WireMockHelper with Generators with ScalaC
 
   def stubPostResponse(url: String, status: Int, body: String = Json.obj().toString()): StubMapping =
     server.stubFor(
-      post(urlEqualTo(url))
+      post(urlPathMatching(url))
         .willReturn(
           aResponse()
             .withStatus(status)

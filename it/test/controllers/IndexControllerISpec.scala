@@ -16,37 +16,51 @@
 
 package controllers
 
-import models.UserAnswers
+import org.scalatestplus.play.PlaySpec
 import play.api.http.Status.OK
-import play.api.libs.ws.{DefaultWSCookie, WSClient, WSRequest}
+import play.api.libs.ws.{DefaultWSCookie, WSClient}
 import play.api.mvc.{Session, SessionCookieBaker}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import repositories.SessionRepository
-import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
-import utils.AuthStubs
-import utils.utils.SpecCommonHelper
+import utils.SpecCommonHelper
 
-class IndexControllerISpec
-  extends SpecCommonHelper
-  with AuthStubs  {
+class IndexControllerISpec extends PlaySpec with SpecCommonHelper {
 
   lazy val wsClient: WSClient = app.injector.instanceOf[WSClient]
-
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-    repository.collection.drop().toFuture().futureValue
-  }
-
 
   "GET / IndexController.onPageLoad" must {
     "return OK when the user is authorised" in {
       stubAuthorised("cbc12345")
 
-      val session            = Session(Map("authToken" -> "abc123", "role" -> "admin"))
-      val sessionCookieBaker = app.injector.instanceOf[SessionCookieBaker]
-      val sessionCookie      = sessionCookieBaker.encodeAsCookie(session)
-      val wsSessionCookie    = DefaultWSCookie(sessionCookie.name, sessionCookie.value)
+      val session             = Session(Map("authToken" -> "abc123", "role" -> "admin"))
+      val sessionCookieBaker  = app.injector.instanceOf[SessionCookieBaker]
+      val sessionCookie       = sessionCookieBaker.encodeAsCookie(session)
+      val wsSessionCookie     = DefaultWSCookie(sessionCookie.name, sessionCookie.value)
+      val readSubscriptionUrl = "/country-by-country-reporting/subscription/read-subscription/.*"
+      val responseDetailString: String =
+        """
+          |{
+          |"subscriptionID": "111111111",
+          |"tradingName": "",
+          |"isGBUser": true,
+          |"primaryContact":
+          |{
+          |"email": "",
+          |"phone": "",
+          |"mobile": "",
+          |"organisation": {
+          |"organisationName": "orgName"
+          |}
+          |},
+          |"secondaryContact":
+          |{
+          |"email": "",
+          |"organisation": {
+          |"organisationName": ""
+          |}
+          |}
+          |}""".stripMargin
 
+      stubPostResponseB(readSubscriptionUrl, OK, responseDetailString)
       val response = await(
         buildClient()
           .addCookies(wsSessionCookie)
