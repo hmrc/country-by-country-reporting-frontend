@@ -21,7 +21,7 @@ import org.scalacheck.Gen
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import utils.WireMockHelper
 
-class Connector extends SpecBase with ScalaCheckPropertyChecks with WireMockHelper {
+trait Connector extends SpecBase with WireMockHelper with ScalaCheckPropertyChecks {
   val errorCodes: Gen[Int] = Gen.oneOf(400, 403, 404, 405, 409, 500, 503)
 
 }

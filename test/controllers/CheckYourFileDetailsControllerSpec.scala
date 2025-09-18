@@ -74,6 +74,7 @@ class CheckYourFileDetailsControllerSpec extends SpecBase {
     "must return OK and the correct view for a GET for Agent" in {
 
       val ua: UserAnswers = userAnswersWithContactDetails
+        .withPage(AgentIsThisYourClientPage, true)
         .withPage(AgentFirstContactNamePage, "test")
         .withPage(AgentFirstContactEmailPage, "test@test.com")
         .withPage(AgentFirstContactHavePhonePage, false)
@@ -106,6 +107,7 @@ class CheckYourFileDetailsControllerSpec extends SpecBase {
     "must redirect to file problem missing information page when there is no ValidXMLPage in request" in {
 
       val userAnswers = userAnswersWithContactDetails
+        .withPage(AgentIsThisYourClientPage, true)
         .withPage(AgentFirstContactNamePage, "test")
         .withPage(AgentFirstContactEmailPage, "test@test.com")
         .withPage(AgentFirstContactHavePhonePage, false)

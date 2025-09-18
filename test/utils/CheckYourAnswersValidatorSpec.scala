@@ -170,8 +170,18 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
 
     val isAgent = true
 
-    "must return ChangeName if all mandatory values are not available for journey" in {
+    "must return AgentIsThisYourClient if all mandatory values are not available for journey" in {
       val answers   = emptyUserAnswers.withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
+      val changeUrl = CheckYourAnswersValidator(answers).changeAnswersRedirectUrl(CheckMode, isAgent)
+
+      changeUrl.isDefined shouldBe true
+      changeUrl.get should equal("/send-a-country-by-country-report/agent/agent-is-this-your-client")
+    }
+
+    "must return ChangeName if all mandatory values are not available for journey" in {
+      val answers = emptyUserAnswers
+        .withPage(AgentIsThisYourClientPage, true)
+        .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
       val changeUrl = CheckYourAnswersValidator(answers).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
@@ -179,7 +189,10 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
     }
 
     "must return ChangeEmail if all mandatory values are not available" in {
-      val updatedUA = emptyUserAnswers.withPage(ContactNamePage, "test").withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
+      val updatedUA = emptyUserAnswers
+        .withPage(AgentIsThisYourClientPage, true)
+        .withPage(ContactNamePage, "test")
+        .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
       val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
@@ -188,6 +201,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
 
     "must return HavePhone if all mandatory values are not available" in {
       val updatedUA = emptyUserAnswers
+        .withPage(AgentIsThisYourClientPage, true)
         .withPage(ContactNamePage, "test")
         .withPage(ContactEmailPage, "test@test.com")
         .withPage(ContactDetailsJourneyTypePage, "changeClientContactDetails")
@@ -199,6 +213,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
 
     "must return ContactPhone if all mandatory values are not available" in {
       val updatedUA = emptyUserAnswers
+        .withPage(AgentIsThisYourClientPage, true)
         .withPage(ContactNamePage, "test")
         .withPage(ContactEmailPage, "test@test.com")
         .withPage(HaveTelephonePage, true)
@@ -211,6 +226,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
 
     "must return HaveSecondContact if all mandatory values are not available" in {
       val updatedUA = emptyUserAnswers
+        .withPage(AgentIsThisYourClientPage, true)
         .withPage(ContactNamePage, "test")
         .withPage(ContactEmailPage, "test@test.com")
         .withPage(HaveTelephonePage, false)
@@ -223,6 +239,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
 
     "must return SecondContactName if all mandatory values are not available" in {
       val updatedUA = emptyUserAnswers
+        .withPage(AgentIsThisYourClientPage, true)
         .withPage(ContactNamePage, "test")
         .withPage(ContactEmailPage, "test@test.com")
         .withPage(HaveTelephonePage, false)
@@ -236,6 +253,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
 
     "must return SecondContactEmail if all mandatory values are not available" in {
       val updatedUA = emptyUserAnswers
+        .withPage(AgentIsThisYourClientPage, true)
         .withPage(ContactNamePage, "test")
         .withPage(ContactEmailPage, "test@test.com")
         .withPage(HaveTelephonePage, false)
@@ -250,6 +268,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
 
     "must return HaveSecondContactPhone if all mandatory values are not available" in {
       val updatedUA = emptyUserAnswers
+        .withPage(AgentIsThisYourClientPage, true)
         .withPage(ContactNamePage, "test")
         .withPage(ContactEmailPage, "test@test.com")
         .withPage(HaveTelephonePage, false)
@@ -265,6 +284,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
 
     "must return ChangeContactDetails if IsMigratedUserContactUpdatedPage is false" in {
       val updatedUA = emptyUserAnswers
+        .withPage(AgentIsThisYourClientPage, true)
         .withPage(ContactNamePage, "test")
         .withPage(ContactEmailPage, "test@test.com")
         .withPage(HaveTelephonePage, false)
@@ -279,6 +299,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
 
     "must return SecondContactNumber if all mandatory values are not available" in {
       val updatedUA = emptyUserAnswers
+        .withPage(AgentIsThisYourClientPage, true)
         .withPage(ContactNamePage, "test")
         .withPage(ContactEmailPage, "test@test.com")
         .withPage(HaveTelephonePage, false)
@@ -295,6 +316,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
 
     "must return None if all mandatory values are available" in {
       val updatedUA = emptyUserAnswers
+        .withPage(AgentIsThisYourClientPage, true)
         .withPage(ContactNamePage, "test")
         .withPage(ContactEmailPage, "test@test.com")
         .withPage(HaveTelephonePage, true)

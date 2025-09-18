@@ -63,7 +63,14 @@ class CheckYourAnswersValidator(userAnswers: UserAnswers) {
       case _ => Seq.empty
     }
 
-  private def validate: Seq[Page] = checkPrimaryContactDetails ++ checkSecondaryContactDetails ++ checkMigratedUserAnswerUpdated
+  private def checkClientDetails: Seq[Page] =
+    userAnswers.get(AgentIsThisYourClientPage) match {
+      case Some(true) => Seq.empty
+      case _          => Seq(AgentIsThisYourClientPage)
+    }
+
+  private def validateForOrg: Seq[Page]    = checkPrimaryContactDetails ++ checkSecondaryContactDetails ++ checkMigratedUserAnswerUpdated
+  private def validateForClient: Seq[Page] = checkClientDetails ++ checkPrimaryContactDetails ++ checkSecondaryContactDetails ++ checkMigratedUserAnswerUpdated
 
   private def pageToRedirectUrl(mode: Mode): Map[Page, String] = Map(
     ContactNamePage                  -> controllers.routes.ContactNameController.onPageLoad(mode).url,
@@ -79,6 +86,7 @@ class CheckYourAnswersValidator(userAnswers: UserAnswers) {
   )
 
   private def clientContactsPageToRedirectUrl(mode: Mode): Map[Page, String] = Map(
+    AgentIsThisYourClientPage        -> controllers.agent.routes.AgentIsThisYourClientController.onPageLoad.url,
     ContactNamePage                  -> controllers.client.routes.ClientFirstContactNameController.onPageLoad(mode).url,
     ContactNamePage                  -> controllers.client.routes.ClientFirstContactNameController.onPageLoad(mode).url,
     ContactEmailPage                 -> controllers.client.routes.ClientFirstContactEmailController.onPageLoad(mode).url,
@@ -94,9 +102,9 @@ class CheckYourAnswersValidator(userAnswers: UserAnswers) {
 
   def changeAnswersRedirectUrl(mode: Mode, isAgent: Boolean): Option[String] =
     if (isAgent) {
-      validate.headOption.map(clientContactsPageToRedirectUrl(mode))
+      validateForClient.headOption.map(clientContactsPageToRedirectUrl(mode))
     } else {
-      validate.headOption.map(pageToRedirectUrl(mode))
+      validateForOrg.headOption.map(pageToRedirectUrl(mode))
     }
 }
 
