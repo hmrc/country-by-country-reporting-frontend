@@ -26,7 +26,7 @@ import utils.ISpecBase
 class IndexControllerISpec extends PlaySpec with ISpecBase {
 
   lazy val wsClient: WSClient = app.injector.instanceOf[WSClient]
-  val session                 = Session(Map("authToken" -> "abc123", "role" -> "admin"))
+  val session                 = Session(Map("authToken" -> "abc123"))
   val sessionCookieBaker      = app.injector.instanceOf[SessionCookieBaker]
   val sessionCookie           = sessionCookieBaker.encodeAsCookie(session)
   val wsSessionCookie         = DefaultWSCookie(sessionCookie.name, sessionCookie.value)
