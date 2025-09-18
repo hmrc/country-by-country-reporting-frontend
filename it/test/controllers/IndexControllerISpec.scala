@@ -21,9 +21,9 @@ import play.api.http.Status._
 import play.api.libs.ws.{DefaultWSCookie, WSClient}
 import play.api.mvc.{Session, SessionCookieBaker}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import utils.SpecCommonHelper
+import utils.ISpecBase
 
-class IndexControllerISpec extends PlaySpec with SpecCommonHelper {
+class IndexControllerISpec extends PlaySpec with ISpecBase {
 
   lazy val wsClient: WSClient = app.injector.instanceOf[WSClient]
   val session                 = Session(Map("authToken" -> "abc123", "role" -> "admin"))
@@ -63,22 +63,35 @@ class IndexControllerISpec extends PlaySpec with SpecCommonHelper {
       stubPostResponseB(readSubscriptionUrl, OK, responseDetailString)
       val response = await(
         buildClient()
+          .withFollowRedirects(false)
           .addCookies(wsSessionCookie)
           .get()
       )
       response.status mustBe OK
       verifyPost(authUrl)
-      response.body must not include "Sorry, there is a problem with the service"
-
+      response.body must include("Manage your country-by-country report")
     }
 
     "redirect to login when there is no active session" in {
       val response = await(
         buildClient()
+          .withFollowRedirects(false)
           .get()
       )
-      response.status mustBe OK
-      response.body must include("Authority Wizard")
+      response.status mustBe SEE_OTHER
+      response.header("Location").value must include("gg-sign-in")
+    }
+    "redirect to /unauthorised" in {
+      stubPostUnauthorised("/auth/authorise")
+      val response = await(
+        buildClient()
+          .withFollowRedirects(false)
+          .addCookies(wsSessionCookie)
+          .get()
+      )
+      response.status mustBe SEE_OTHER
+      response.header("Location") mustBe Some("/send-a-country-by-country-report/unauthorised")
+      verifyPost(authUrl)
     }
   }
 

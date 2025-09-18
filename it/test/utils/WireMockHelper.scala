@@ -24,6 +24,7 @@ import com.github.tomakehurst.wiremock.http.Fault
 import com.github.tomakehurst.wiremock.matching.{EqualToJsonPattern, EqualToPattern}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
+import play.api.http.Status.UNAUTHORIZED
 import play.api.libs.json.Json
 
 object WireMockConstants {
@@ -112,12 +113,11 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach {
       WireMock.get(urlEqualTo(stripToPath(url))).willReturn(aResponse().withStatus(status).withBody(body))
     )
 
-  def stubGetFault(
-    url: String,
-    fault: Fault = Fault.EMPTY_RESPONSE
+  def stubPostUnauthorised(
+    url: String
   ): Unit =
     server.stubFor(
-      WireMock.get(urlEqualTo(stripToPath(url))).willReturn(aResponse().withFault(fault))
+      WireMock.post(urlEqualTo(stripToPath(url))).willReturn(aResponse().withStatus(UNAUTHORIZED))
     )
 
   def stubGetWithParameters(url: String, parameters: Seq[(String, String)], status: Int, body: String): Unit =
@@ -142,7 +142,7 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach {
     server.stubFor(
       WireMock
         .post(urlEqualTo(stripToPath(url)))
-//        .withRequestBody(new EqualToJsonPattern(requestBody, true, false))
+        .withRequestBody(new EqualToJsonPattern(requestBody, true, false))
         .willReturn(aResponse().withStatus(status).withBody(returnBody))
     )
 
