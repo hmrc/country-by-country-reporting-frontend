@@ -20,11 +20,10 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
-import com.github.tomakehurst.wiremock.http.Fault
 import com.github.tomakehurst.wiremock.matching.{EqualToJsonPattern, EqualToPattern}
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
-import play.api.http.Status.UNAUTHORIZED
+import play.api.http.Status.{OK, UNAUTHORIZED}
 import play.api.libs.json.Json
 
 object WireMockConstants {
@@ -32,7 +31,7 @@ object WireMockConstants {
   val stubHost = "localhost"
 }
 
-trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach {
+trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach with AuthStubs {
   this: Suite =>
 
   val wireMockHost: String                = WireMockConstants.stubHost
@@ -59,6 +58,33 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach {
     super.afterAll()
   }
 
+  def stubAuthorised(appaId: String): Unit =
+    stubPost(authUrl, OK, authRequest, authOKResponse(appaId))
+
+  def verifyAuthorised(): Unit =
+    verifyPost(authUrl)
+
+  def stubPostResponse(url: String, status: Int, body: String = Json.obj().toString()): StubMapping =
+    server.stubFor(
+      post(urlPathMatching(url))
+        .willReturn(
+          aResponse()
+            .withStatus(status)
+            .withBody(body)
+        )
+    )
+
+  def stubGetResponse(url: String, status: Int, body: String = Json.obj().toString()): StubMapping =
+    server.stubFor(
+      WireMock
+        .get(urlEqualTo(url))
+        .willReturn(
+          aResponse()
+            .withStatus(status)
+            .withBody(body)
+        )
+    )
+
   protected def getWireMockAppConfig(endpointNames: Seq[String]): Map[String, Any] =
     endpointNames
       .flatMap(
@@ -81,16 +107,6 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach {
           )
       )
       .toMap
-
-  def stubPostResponseB(url: String, status: Int, body: String = Json.obj().toString()): StubMapping = //TODO REMOVED DUPE
-    server.stubFor(
-      post(urlPathMatching(url))
-        .willReturn(
-          aResponse()
-            .withStatus(status)
-            .withBody(body)
-        )
-    )
 
   private def stripToPath(url: String) =
     if (url.startsWith("http://") || url.startsWith("https://"))
@@ -118,24 +134,6 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach {
   ): Unit =
     server.stubFor(
       WireMock.post(urlEqualTo(stripToPath(url))).willReturn(aResponse().withStatus(UNAUTHORIZED))
-    )
-
-  def stubGetWithParameters(url: String, parameters: Seq[(String, String)], status: Int, body: String): Unit =
-    server.stubFor(
-      WireMock
-        .get(urlEqualTo(urlWithParameters(url, parameters)))
-        .willReturn(aResponse().withStatus(status).withBody(body))
-    )
-
-  def stubGetFaultWithParameters(
-    url: String,
-    parameters: Seq[(String, String)],
-    fault: Fault = Fault.EMPTY_RESPONSE
-  ): Unit =
-    server.stubFor(
-      WireMock
-        .get(urlEqualTo(urlWithParameters(url, parameters)))
-        .willReturn(aResponse().withFault(fault))
     )
 
   def stubPost(url: String, status: Int, requestBody: String, returnBody: String): Unit =

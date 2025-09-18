@@ -16,6 +16,7 @@
 
 package utils
 
+import generators.Generators
 import models.UserAnswers
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.time.{Seconds, Span}
@@ -25,11 +26,13 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.{WSClient, WSRequest}
 import play.api.test.FakeRequest
 import repositories.SessionRepository
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
-trait ISpecBase extends GuiceOneServerPerSuite with DefaultPlayMongoRepositorySupport[UserAnswers] with ScalaFutures with WireMockHelper {
+trait ISpecBase extends GuiceOneServerPerSuite with DefaultPlayMongoRepositorySupport[UserAnswers] with ScalaFutures with WireMockHelper with Generators {
 
   lazy val repository: SessionRepository = app.injector.instanceOf[SessionRepository]
+  implicit val hc: HeaderCarrier         = HeaderCarrier()
 
   def config: Map[String, String] = Map(
     "microservice.services.auth.host"                         -> WireMockConstants.stubHost,

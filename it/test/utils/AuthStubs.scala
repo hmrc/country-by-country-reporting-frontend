@@ -19,7 +19,7 @@ package utils
 import org.scalatest.Suite
 import play.api.http.Status.OK
 
-trait AuthStubs extends WireMockHelper { this: Suite =>
+trait AuthStubs { this: Suite =>
 
   val authUrl            = "/auth/authorise"
   val testAuthInternalId = "internalId"
@@ -55,9 +55,4 @@ trait AuthStubs extends WireMockHelper { this: Suite =>
         |  }
          """.stripMargin
 
-  def stubAuthorised(appaId: String): Unit =
-    stubPost(authUrl, OK, authRequest, authOKResponse(appaId))
-
-  def verifyAuthorised(): Unit =
-    verifyPost(authUrl)
 }
