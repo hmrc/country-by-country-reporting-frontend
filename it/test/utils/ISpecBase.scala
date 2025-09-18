@@ -27,7 +27,7 @@ import play.api.test.FakeRequest
 import repositories.SessionRepository
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
-trait ISpecBase extends GuiceOneServerPerSuite with DefaultPlayMongoRepositorySupport[UserAnswers] with ScalaFutures with WireMockHelper with AuthStubs {
+trait ISpecBase extends GuiceOneServerPerSuite with DefaultPlayMongoRepositorySupport[UserAnswers] with ScalaFutures with WireMockHelper {
 
   lazy val repository: SessionRepository = app.injector.instanceOf[SessionRepository]
 

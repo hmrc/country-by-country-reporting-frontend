@@ -21,9 +21,9 @@ import play.api.http.Status._
 import play.api.libs.ws.{DefaultWSCookie, WSClient}
 import play.api.mvc.{Session, SessionCookieBaker}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import utils.ISpecBase
+import utils.{AuthStubs, ISpecBase}
 
-class IndexControllerISpec extends PlaySpec with ISpecBase {
+class IndexControllerISpec extends PlaySpec with ISpecBase with AuthStubs {
 
   lazy val wsClient: WSClient = app.injector.instanceOf[WSClient]
   val session                 = Session(Map("authToken" -> "abc123", "role" -> "admin"))
