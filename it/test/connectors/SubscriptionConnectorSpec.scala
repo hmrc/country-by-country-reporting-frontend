@@ -16,7 +16,6 @@
 
 package connectors
 
-import generators.ModelGenerators
 import models.subscription.{RequestDetailForUpdate, ResponseDetail}
 import org.scalacheck.Arbitrary
 import play.api.Application
@@ -26,7 +25,7 @@ import play.api.libs.json.Json
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class SubscriptionConnectorSpec extends Connector with ModelGenerators {
+class SubscriptionConnectorSpec extends Connector {
 
   override lazy val app: Application = new GuiceApplicationBuilder()
     .configure(
