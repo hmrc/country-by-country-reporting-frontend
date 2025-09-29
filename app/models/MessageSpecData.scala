@@ -18,6 +18,8 @@ package models
 
 import play.api.libs.json._
 
+import java.time.{LocalDate, LocalDateTime}
+
 sealed trait MessageTypeIndic
 case object CBC401 extends MessageTypeIndic
 case object CBC402 extends MessageTypeIndic
@@ -38,7 +40,13 @@ object MessageTypeIndic {
   }
 }
 
-case class MessageSpecData(messageRefId: String, messageTypeIndic: MessageTypeIndic, reportingEntityName: String, reportType: ReportType)
+case class MessageSpecData(messageRefId: String,
+                           messageTypeIndic: MessageTypeIndic,
+                           reportType: ReportType,
+                           reportingEntityStartDate: LocalDate,
+                           reportingEntityEndDate: LocalDate,
+                           reportingEntityName: String
+)
 
 object MessageSpecData {
   implicit val format: OFormat[MessageSpecData] = Json.format[MessageSpecData]
