@@ -49,7 +49,7 @@ class AgentSubscriptionConnector @Inject() (val config: FrontendAppConfig, val h
       }
       .recover {
         case e: Exception =>
-          logger.error(s"Error message ${e.getMessage} has been thrown when create agent subscription was called")
+          logger.error(s"An Error  has been thrown when create agent subscription was called", e)
           None
       }
   }
@@ -71,7 +71,7 @@ class AgentSubscriptionConnector @Inject() (val config: FrontendAppConfig, val h
       }
       .recover {
         case e: Exception =>
-          logger.error(s"checkSubscriptionExists: S${e.getMessage} has been thrown when read agent subscription was called")
+          logger.error(s"checkSubscriptionExists: An error has been thrown when read agent subscription was called", e)
           None
       }
   }
@@ -92,7 +92,7 @@ class AgentSubscriptionConnector @Inject() (val config: FrontendAppConfig, val h
       }
       .recover {
         case e: Exception =>
-          logger.error(s"readSubscription: S${e.getMessage} has been thrown when read agent subscription was called")
+          logger.error(s"readSubscription: An error has been thrown when read agent subscription was called", e)
           None
       }
   }
