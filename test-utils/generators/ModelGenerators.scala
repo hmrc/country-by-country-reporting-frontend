@@ -25,6 +25,8 @@ import models.upscan.{Reference, UploadId}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 
+import java.time.LocalDate
+
 trait ModelGenerators {
 
   def nonEmptyString: Gen[String] =
@@ -193,11 +195,13 @@ trait ModelGenerators {
 
   implicit val arbitraryMessageSpecData: Arbitrary[MessageSpecData] = Arbitrary {
     for {
-      messageRefId        <- nonEmptyString
-      messageTypeIndic    <- Gen.oneOf(MessageTypeIndic.values)
-      reportingEntityName <- nonEmptyString
-      reporterType        <- Gen.oneOf(ReportType.values.filterNot(_.equals(TestData)))
-    } yield MessageSpecData(messageRefId, messageTypeIndic, reportingEntityName, reporterType)
+      messageRefId             <- nonEmptyString
+      messageTypeIndic         <- Gen.oneOf(MessageTypeIndic.values)
+      reportingEntityName      <- nonEmptyString
+      reporterType             <- Gen.oneOf(ReportType.values.filterNot(_.equals(TestData)))
+      reportingPeriodStartDate <- arbitrary[LocalDate]
+      reportingPeriodEndDate   <- arbitrary[LocalDate]
+    } yield MessageSpecData(messageRefId, messageTypeIndic, reporterType, reportingPeriodStartDate, reportingPeriodEndDate, reportingEntityName)
   }
 
   implicit val arbitrarySubmissionDetails: Arbitrary[SubmissionDetails] = Arbitrary {

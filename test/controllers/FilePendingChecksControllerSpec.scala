@@ -44,7 +44,7 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
     val conversationId                                 = ConversationId("conversationId")
     val validXmlDetails = ValidatedFileData(
       "name",
-      MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData),
+      MessageSpecData("messageRefId", CBC401, TestData, startDate, endDate, "Reporting Entity"),
       FileSize,
       "MD5:123"
     )
@@ -81,7 +81,7 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
 
       val validXmlDetails = ValidatedFileData(
         "name",
-        MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData),
+        MessageSpecData("messageRefId", CBC401, TestData, startDate, endDate, "Reporting Entity"),
         3145729L,
         "MD5:123"
       )

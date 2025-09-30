@@ -43,8 +43,8 @@ object MessageTypeIndic {
 case class MessageSpecData(messageRefId: String,
                            messageTypeIndic: MessageTypeIndic,
                            reportType: ReportType,
-                           reportingEntityStartDate: LocalDate,
-                           reportingEntityEndDate: LocalDate,
+                           reportingPeriodStartDate: LocalDate,
+                           reportingPeriodEndDate: LocalDate,
                            reportingEntityName: String
 )
 
