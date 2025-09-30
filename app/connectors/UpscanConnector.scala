@@ -96,7 +96,7 @@ class UpscanConnector @Inject() (configuration: FrontendAppConfig, httpClient: H
                 None
             }
           case _ =>
-            logger.warn(s"Failed to getUploadStatus")
+            logger.error(s"Failed to getUploadStatus")
             None
         }
     }

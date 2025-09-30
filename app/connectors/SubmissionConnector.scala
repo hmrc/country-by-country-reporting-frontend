@@ -44,7 +44,7 @@ class SubmissionConnector @Inject() (httpClient: HttpClientV2, config: FrontendA
       .execute[HttpResponse] map {
       case response if is2xx(response.status) => Option(response.json.as[ConversationId])
       case errorResponse =>
-        logger.warn(s"Failed to submit document with upload Id [${submissionDetails.uploadId.value}]: received status: ${errorResponse.status}")
+        logger.error(s"Failed to submit document with upload Id [${submissionDetails.uploadId.value}]: received status: ${errorResponse.status}")
         None
     }
 }
