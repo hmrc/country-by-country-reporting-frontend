@@ -294,7 +294,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
       val changeUrl = CheckYourAnswersValidator(updatedUA).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
-      changeUrl.get should equal("/send-a-country-by-country-report/agent/change-client-contact/check-answers")
+      changeUrl.get should equal("/send-a-country-by-country-report/agent/client-contact-details/check-answers")
     }
 
     "must return SecondContactNumber if all mandatory values are not available" in {
