@@ -217,12 +217,12 @@ POST       /agent/client-contact-details/second-contact-have-phone              
 GET        /agent/client-contact-details/change-second-contact-have-phone        controllers.client.ClientSecondContactHavePhoneController.onPageLoad(mode: Mode = CheckMode)
 POST       /agent/client-contact-details/change-second-contact-have-phone        controllers.client.ClientSecondContactHavePhoneController.onSubmit(mode: Mode = CheckMode)
 
-GET        /agent/change-client-contact/check-answers                            controllers.client.ChangeClientContactDetailsController.onPageLoad()
-POST       /agent/change-client-contact/check-answers                            controllers.client.ChangeClientContactDetailsController.onSubmit()
+GET        /agent/client-contact-details/check-answers                            controllers.client.ChangeClientContactDetailsController.onPageLoad()
+POST       /agent/client-contact-details/check-answers                            controllers.client.ChangeClientContactDetailsController.onSubmit()
 
-GET        /agent/change-client-contact/details-updated                          controllers.client.ClientDetailsUpdatedController.onPageLoad()
+GET        /agent/client-contact-details/details-updated                          controllers.client.ClientDetailsUpdatedController.onPageLoad()
 
-GET        /agent/change-client-contact/details-saved                            controllers.client.ClientContactDetailsSavedController.onPageLoad()
+GET        /agent/client-contact-details/details-saved                            controllers.client.ClientContactDetailsSavedController.onPageLoad()
 
 GET        /agent/use-agent-services                                             controllers.agent.AgentUseAgentServicesController.onPageLoad()
 
