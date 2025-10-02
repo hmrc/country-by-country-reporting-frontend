@@ -59,7 +59,7 @@ class ValidationConnector @Inject() (http: HttpClientV2, config: FrontendAppConf
             logger.warn(s"XML parsing failed. The XML parser in country-by-country-reporting backend has thrown the exception: $e")
             Left(InvalidXmlError(e.getMessage))
           } else {
-            logger.warn(s"Remote service timed out. The XML parser in country-by-country-reporting backend backend has thrown the exception: $e")
+            logger.error(s"Remote service timed out. The XML parser in country-by-country-reporting backend backend has thrown the exception", e)
             Left(NonFatalErrors(e.getMessage))
           }
       }
