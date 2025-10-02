@@ -126,7 +126,7 @@ class UploadFileControllerSpec extends SpecBase with ScalaCheckPropertyChecks wi
     }
 
     "onPageLoad must remove any validXml page in the session" in {
-      val messageSpecData   = MessageSpecData("XBG1999999", CBC401, "Reporting Entity", TestData)
+      val messageSpecData   = MessageSpecData("XBG1999999", CBC401, TestData, startDate, endDate, "Reporting Entity")
       val validatedFileData = ValidatedFileData("afile", messageSpecData, FileSize, "MD5:123")
 
       val userAnswersWithValidXmlPage: UserAnswers = userAnswers.set(ValidXMLPage, validatedFileData).success.value

@@ -50,7 +50,7 @@ class FileReceivedControllerSpec extends SpecBase {
     val agentSecondContactEmail = "agentsecond@email.com"
     val vfd: ValidatedFileData = ValidatedFileData(
       "filename.xml",
-      MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData),
+      MessageSpecData("messageRefId", CBC401, TestData, startDate, endDate, "Reporting Entity"),
       FileSize,
       "MD5:123"
     )

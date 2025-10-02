@@ -37,6 +37,8 @@ import queries.Settable
 import repositories.SessionRepository
 import uk.gov.hmrc.http.HeaderCarrier
 
+import java.time.LocalDate
+
 trait SpecBase
     extends AnyFreeSpec
     with GuiceOneAppPerSuite
@@ -58,6 +60,9 @@ trait SpecBase
   final val mockSessionRepository: SessionRepository     = mock[SessionRepository]
 
   def emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
+
+  val startDate = LocalDate.of(2012, 1, 1)
+  val endDate   = LocalDate.of(2016, 1, 1)
 
   def messages(app: Application): Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 

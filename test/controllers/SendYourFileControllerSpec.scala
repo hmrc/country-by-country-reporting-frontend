@@ -101,7 +101,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
 
       "redirect to 'Some information missing' page when userAnswers missing contact details" in {
 
-        val messageSpecData   = MessageSpecData("XBG1999999", CBC401, "Reporting Entity", TestData)
+        val messageSpecData   = MessageSpecData("XBG1999999", CBC401, TestData, startDate, endDate, "Reporting Entity")
         val validatedFileData = ValidatedFileData("afile", messageSpecData, 20L, "MD5:123")
 
         val userAnswers = emptyUserAnswers.withPage(ValidXMLPage, validatedFileData)

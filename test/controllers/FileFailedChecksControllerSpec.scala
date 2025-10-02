@@ -34,7 +34,7 @@ class FileFailedChecksControllerSpec extends SpecBase {
   "FileFailedChecks Controller" - {
     val validXmlDetails = ValidatedFileData(
       "test.xml",
-      MessageSpecData("messageRefId", CBC401, "Reporting Entity", TestData),
+      MessageSpecData("messageRefId", CBC401, TestData, startDate, endDate, "Reporting Entity"),
       FileSize,
       "MD5:123"
     )
