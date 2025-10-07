@@ -56,6 +56,7 @@ class AuthenticatedIdentifierAction @Inject() (
     with Logging {
 
   val NO_ASSIGNMENT = "NO_ASSIGNMENT"
+
   override def refine[A](request: Request[A]): Future[Either[Result, IdentifierRequest[A]]] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
