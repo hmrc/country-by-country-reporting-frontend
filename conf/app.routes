@@ -243,3 +243,5 @@ POST       /agent/manage-your-clients                                           
 
 GET        /change-contact/review-contact-details                               controllers.ReviewContactDetailsController.onPageLoad()
 POST       /change-contact/review-contact-details                               controllers.ReviewContactDetailsController.onSubmit()
+
+GET        /agent/problem/client-access                                         controllers.client.ProblemClientAccessController.onPageLoad()

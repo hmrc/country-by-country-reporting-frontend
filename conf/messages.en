@@ -757,3 +757,11 @@ reviewContactDetails.error.required = 	Select yes if these are the right contact
 someInformationMissing.title = Some information is missing
 someInformationMissing.heading = Some information is missing
 someInformationMissing.p1 = You must provide this information to continue.
+
+problemClientAccess.title = You must have access from your organisation to report for this client
+problemClientAccess.heading = You must have access from your organisation to report for this client
+problemClientAccess.p1 = This client has authorised your organisation to report for them, but you do not have access.
+problemClientAccess.p2 = An administrator for your agent services account can manage access through access groups. This is under ‘Manage account’ in agent services.
+problemClientAccess.p3 = If you’re not an administrator, you can ask an administrator to give you access. You can find a list of your administrators in your agent services account.
+problemClientAccess.link.text = Go to your agent services account
+problemClientAccess.link.url = https://www.tax.service.gov.uk/agent-services-account/no-assignment
