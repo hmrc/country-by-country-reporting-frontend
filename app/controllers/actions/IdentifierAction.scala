@@ -55,6 +55,8 @@ class AuthenticatedIdentifierAction @Inject() (
     with AuthorisedFunctions
     with Logging {
 
+  val NO_ASSIGNMENT = "NO_ASSIGNMENT"
+
   override def refine[A](request: Request[A]): Future[Either[Result, IdentifierRequest[A]]] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
@@ -139,9 +141,14 @@ class AuthenticatedIdentifierAction @Inject() (
                   case _: NoActiveSession =>
                     logger.debug("IdentifierAction: Agent does not have an active session, rendering Session Timeout")
                     Left(Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl))))
-                  case _: AuthorisationException =>
-                    logger.warn("IdentifierAction: Agent does not have delegated authority for Client. Redirecting to /agent/client-not-identified")
-                    Left(Redirect(controllers.client.routes.ProblemCBCIdController.onPageLoad))
+                  case e: AuthorisationException =>
+                    if (e.reason.contains(NO_ASSIGNMENT)) {
+                      logger.warn("IdentifierAction: Agent does not belong to access group that has access to the Client.")
+                      Left(Redirect(controllers.client.routes.ProblemClientAccessController.onPageLoad))
+                    } else {
+                      logger.warn("IdentifierAction: Agent does not have delegated authority for Client. Redirecting to /agent/client-not-identified")
+                      Left(Redirect(controllers.client.routes.ProblemCBCIdController.onPageLoad))
+                    }
                 }
             }
         }
