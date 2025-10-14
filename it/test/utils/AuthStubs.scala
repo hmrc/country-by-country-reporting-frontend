@@ -21,8 +21,9 @@ import play.api.http.Status.OK
 
 trait AuthStubs { this: Suite =>
 
-  val authUrl            = "/auth/authorise"
-  val testAuthInternalId = "internalId"
+  val authUrl                = "/auth/authorise"
+  val problemClientAccessUrl = "/agent/problem/client-access"
+  val testAuthInternalId     = "internalId"
 
   val authRequest =
     s"""
@@ -55,4 +56,20 @@ trait AuthStubs { this: Suite =>
         |  }
          """.stripMargin
 
+  def authOkResponseForAgent() =
+    s"""
+       |{
+       |  "internalId" : "$testAuthInternalId",
+       |  "allEnrolments" : [ {
+       |    "key" : "HMRC-AS-AGENT",
+       |    "identifiers" : [ {
+       |      "key" : "AgentReferenceNumber",
+       |      "value" : "ARN123779"
+       |    } ],
+       |    "state" : "Activated",
+       |    "confidenceLevel" : 50
+       |  } ],
+       |  "affinityGroup" : "Agent"
+       |}
+       |""".stripMargin
 }

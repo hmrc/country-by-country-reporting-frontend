@@ -271,6 +271,64 @@ class AuthActionSpec extends SpecBase {
         }
       }
 
+      "must redirect to Problem Client Access page when AGENT does not belong to the access groups of the client" in {
+        val authRetrievals: RetrievalType = new ~(new ~(Some("userId"),
+                                                        Enrolments(
+                                                          Set(
+                                                            Enrolment("HMRC-AS-AGENT").withIdentifier("AgentReferenceNumber", "arn123")
+                                                          )
+                                                        )
+                                                  ),
+                                                  Some(AffinityGroup.Agent)
+        )
+
+        val mockAuthConnector = mock[AuthConnector]
+        val application = applicationBuilder(userAnswers = None)
+          .overrides(
+            inject.bind[AuthConnector].toInstance(mockAuthConnector)
+          )
+          .build()
+
+        when(
+          mockAuthConnector.authorise(mockEq(AuthProviders(GovernmentGateway) and ConfidenceLevel.L50), any[Retrieval[Any]])(any(), any())
+        ).thenReturn(Future.successful(authRetrievals), Future.successful(()))
+
+        when(
+          mockAuthConnector.authorise(
+            mockEq(
+              Enrolment("HMRC-CBC-ORG")
+                .withIdentifier("cbcId", "NonMatchingId")
+                .withDelegatedAuthRule("cbc-auth") or
+                Enrolment("HMRC-CBC-NONUK-ORG")
+                  .withIdentifier("cbcId", "NonMatchingId")
+                  .withDelegatedAuthRule("cbc-auth")
+            ),
+            any[Retrieval[Any]]
+          )(any(), any())
+        )
+          .thenReturn(Future.failed(InsufficientEnrolments("NO_ASSIGNMENT,HMRC-CBC-NONUK-ORG")))
+
+        when(mockSessionRepository.get("userId"))
+          .thenReturn(
+            Future.successful(
+              UserAnswers("userId")
+                .set(AgentClientIdPage, "NonMatchingId")
+                .fold(_ => None, userAnswers => Some(userAnswers))
+            )
+          )
+
+        running(application) {
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
+
+          val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, mockAgentSubscriptionService, bodyParsers, mockSessionRepository)
+          val controller = new Harness(authAction)
+          val result     = controller.onPageLoad()(FakeRequest())
+          redirectLocation(result) mustBe Some(controllers.client.routes.ProblemClientAccessController.onPageLoad().url)
+        }
+      }
+
       "must allow the user enrolment to continue the journey when AGENT and delegated auth rule passes for HMRC-CBC-ORG enrolment" in {
         val authRetrievals: RetrievalType = new ~(new ~(Some("userId"),
                                                         Enrolments(
