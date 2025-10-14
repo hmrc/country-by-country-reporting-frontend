@@ -90,7 +90,7 @@ class IndexControllerISpec extends PlaySpec with ISpecBase {
           .get()
       )
       response.status mustBe SEE_OTHER
-      response.header("Location") mustBe Some("/send-a-country-by-country-report/unauthorised")
+      response.header("Location") mustBe Some("/send-a-country-by-country-report/problem/unauthorised")
       verifyPost(authUrl)
     }
   }
