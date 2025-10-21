@@ -28,7 +28,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import utils.CBCConstants.{invalidArgumentErrorMessage, invalidFileNameLength, maxFileNameLength}
+import utils.CBCConstants._
 import views.html.ThereIsAProblemView
 
 import javax.inject.Inject
@@ -62,12 +62,11 @@ class FileValidationController @Inject() (
                   Future.successful(InternalServerError(errorView()))
                 } {
                   downloadDetails: ExtractedFileStatus =>
-                    val downloadUrl = downloadDetails.downloadUrl
-                    val fileName    = downloadDetails.name
-                    if (isFileNameInvalid(fileName)) {
-                      navigateToErrorPage(uploadId, fileName)
-                    } else {
-                      handleFileValidation(downloadDetails, uploadId, fileReference, downloadUrl)
+                    val trimmedFileName = downloadDetails.name.stripSuffix(".xml")
+                    (isFileNameLengthInvalid(trimmedFileName), isDisallowedCharactersPresent(trimmedFileName)) match {
+                      case (true, _) => navigateToErrorPage(uploadId, invalidFileNameLength)
+                      case (_, true) => navigateToErrorPage(uploadId, disallowedCharacters)
+                      case _         => handleFileValidation(downloadDetails, uploadId, fileReference)
                     }
                 }
             }
@@ -82,9 +81,9 @@ class FileValidationController @Inject() (
   private def handleFileValidation(
     downloadDetails: ExtractedFileStatus,
     uploadId: UploadId,
-    fileReference: Reference,
-    downloadUrl: String
-  )(implicit request: DataRequest[_]) =
+    fileReference: Reference
+  )(implicit request: DataRequest[_]) = {
+    val downloadUrl = downloadDetails.downloadUrl
     validationConnector.sendForValidation(
       FileValidateRequest(downloadUrl, uploadId.value, request.subscriptionId, fileReference.value)
     ) flatMap {
@@ -112,6 +111,7 @@ class FileValidationController @Inject() (
       case _ =>
         Future.successful(InternalServerError(errorView()))
     }
+  }
 
   private def extractIds(answers: UserAnswers): Option[(UploadId, Reference)] =
     for {
@@ -119,18 +119,16 @@ class FileValidationController @Inject() (
       fileReference <- answers.get(FileReferencePage)
     } yield (uploadId, fileReference)
 
-  private def navigateToErrorPage(uploadId: UploadId, fileName: String) = {
-    logger.error(s"file name length is more than allowed limit : $fileName")
+  private def navigateToErrorPage(uploadId: UploadId, errorType: String) =
     Future.successful(
       Redirect(
         routes.UploadFileController
-          .showError(invalidArgumentErrorMessage, invalidFileNameLength, uploadId.value)
+          .showError(invalidArgumentErrorMessage, errorType, uploadId.value)
           .url
       )
     )
-  }
 
-  private def isFileNameInvalid(fileName: String) = fileName.replace(".xml", "").length > maxFileNameLength
+  private def isFileNameLengthInvalid(fileName: String) = fileName.length > maxFileNameLength
 
   private def getDownloadUrl(uploadSessions: Option[UploadSessionDetails]): Option[ExtractedFileStatus] =
     uploadSessions match {
@@ -142,4 +140,6 @@ class FileValidationController @Inject() (
         }
       case _ => None
     }
+
+  private def isDisallowedCharactersPresent(trimmedFileName: String) = disallowedCharactersList.findFirstIn(trimmedFileName).isDefined
 }

@@ -21,4 +21,6 @@ object CBCConstants {
   val maxFileNameLength           = 100
   val invalidArgumentErrorMessage = "InvalidArgument"
   val invalidFileNameLength       = "InvalidFileNameLength"
+  val disallowedCharacters        = "DisallowedCharacters"
+  val disallowedCharactersList    = raw"""[<>:"/\\|?*]""".r
 }

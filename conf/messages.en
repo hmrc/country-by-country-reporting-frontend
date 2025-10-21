@@ -239,6 +239,7 @@ uploadFile.p1 = We will automatically check the formatting of the file and send 
 uploadFile.error.file.invalid = The selected file must be an XML
 uploadFile.error.file.empty = Select a file to upload
 uploadFile.error.file.name.length = File name must be 100 characters or less and match the MessageRefId in the file
+uploadFile.error.file.name.disallowed.characters = File name must not include less than signs (<), greater than signs (>), colons (:), straight double quotes ("), forward slashes (/), backslashes (\), vertical bars (|), question marks (?) or asterisks (*)
 
 invalidXMLFile.title = There is a problem with the formatting of your file
 invalidXMLFile.heading = There is a problem with the formatting of your file
