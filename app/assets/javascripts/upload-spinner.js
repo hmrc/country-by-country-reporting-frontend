@@ -3,16 +3,12 @@
 // =====================================================
 $("#uploadForm").submit(function (e) {
     e.preventDefault();
-    const fileLength = $("#file-upload")[0].files.length;
-    if (fileLength === 0) {
+    const fileError = validateFile()
+    if(fileError.isPresent){
         var errorRequestId = $("#x-amz-meta-request-id").val();
-        var errorUrl = $("#upScanErrorRedirectUrl").val() + "?errorCode=InvalidArgument&errorMessage=FileNotSelected&errorRequestId=" + errorRequestId;
+        var errorUrl = $("#upScanErrorRedirectUrl").val() + "?errorCode=InvalidArgument&errorMessage="+fileError.errorType+"&errorRequestId=" + errorRequestId;
         window.location = errorUrl;
-    } else if (isFileNameInvalid()) {
-        var errorRequestId = $("[name='x-amz-meta-request-id']").val();
-        var errorUrl = $("#upScanErrorRedirectUrl").val() + "?errorCode=InvalidArgument&errorMessage=InvalidFileNameLength&errorRequestId=" + errorRequestId;
-        window.location = errorUrl;
-    } else {
+    }else {
         function disableFileUpload() {
             $("#file-upload").attr('disabled', 'disabled')
         }
@@ -35,13 +31,44 @@ $("#uploadForm").submit(function (e) {
 
 });
 
-function isFileNameInvalid() {
+function validateFile() {
+    if(isFileNotSelected()) {
+        return {
+            isPresent: true,
+            errorType: 'FileNotSelected'
+        };
+    }
     var fileName = $("#file-upload")[0].files[0].name;
     var trimmedFileName = fileName.replace(".xml", "");
-    if (trimmedFileName.length > 100) {
-        return true;
+    if (isFileNameLengthInvalid(trimmedFileName)) {
+        return {
+            isPresent: true,
+            errorType: 'InvalidFileNameLength'
+        };
     }
-    return false;
+    if (isFileNameContainsDisallowedCharacters(trimmedFileName)) {
+        return {
+            isPresent: true,
+            errorType: 'DisallowedCharacters'
+        };
+    }
+    return {
+        isPresent: false,
+        errorType: null
+    };
+}
+
+function isFileNotSelected() {
+    const fileLength = $("#file-upload")[0].files.length;
+    return fileLength == 0
+}
+
+function isFileNameLengthInvalid(fileName) {
+    return fileName.length > 100;
+}
+
+function isFileNameContainsDisallowedCharacters(fileName) {
+    return /[<>:"/\\|?*]/.test(fileName)
 }
 
 $(document).ready(function () {

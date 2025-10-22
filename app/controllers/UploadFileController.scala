@@ -91,13 +91,12 @@ class UploadFileController @Inject() (
         case "EntityTooLarge" =>
           Future.successful(Redirect(routes.FileProblemTooLargeController.onPageLoad()))
         case "InvalidArgument" | "OctetStream" =>
-          if (errorMessage.equalsIgnoreCase("InvalidFileNameLength")) {
-            val formWithErrors: Form[String] = form.withError("file-upload", "uploadFile.error.file.name.length")
-            toResponse(formWithErrors)
-          } else {
-            val formWithErrors: Form[String] = form.withError("file-upload", "uploadFile.error.file.empty")
-            toResponse(formWithErrors)
+          val formWithErrors = errorMessage.toLowerCase match {
+            case "invalidfilenamelength" => form.withError("file-upload", "uploadFile.error.file.name.length")
+            case "disallowedcharacters"  => form.withError("file-upload", "uploadFile.error.file.name.disallowed.characters")
+            case _                       => form.withError("file-upload", "uploadFile.error.file.empty")
           }
+          toResponse(formWithErrors)
         case _ =>
           logger.warn(s"Upscan error $errorCode: $errorMessage, requestId is $errorRequestId")
           Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))

@@ -94,7 +94,7 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
       userAnswersCaptor.getValue.data mustEqual expectedData
     }
 
-    "must redirect to Upload File error page and present the correct view for a GET" in {
+    "must redirect to Upload File error page when file name length is more than 100 characters" in {
       val uploadDetails = UploadSessionDetails(
         new ObjectId(),
         uploadId,
@@ -113,6 +113,28 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
 
       status(result) mustBe SEE_OTHER
       redirectLocation(result).value mustEqual routes.UploadFileController.showError("InvalidArgument", "InvalidFileNameLength", "123").url
+    }
+
+    "must redirect to Upload File error page when file name contains disallowed characters" in {
+      val disallowedCharacters: Set[Char] = Set('<', '>', ':', '"', '/', '\\', '|', '?', '*')
+      disallowedCharacters.foreach {
+        ch =>
+          val uploadDetails = UploadSessionDetails(
+            new ObjectId(),
+            uploadId,
+            Reference("123"),
+            UploadedSuccessfully(s"filenamecontains$ch.xml", downloadURL, FileSize, "MD5:123")
+          )
+
+          fakeUpscanConnector.setDetails(uploadDetails)
+
+          val request                = FakeRequest(GET, routes.FileValidationController.onPageLoad().url)
+          val result: Future[Result] = route(application, request).value
+
+          status(result) mustBe SEE_OTHER
+          redirectLocation(result).value mustEqual routes.UploadFileController.showError("InvalidArgument", "DisallowedCharacters", "123").url
+      }
+
     }
 
     "must redirect to invalid XML page if XML validation fails" in {
