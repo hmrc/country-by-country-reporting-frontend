@@ -134,7 +134,23 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
           status(result) mustBe SEE_OTHER
           redirectLocation(result).value mustEqual routes.UploadFileController.showError("InvalidArgument", "DisallowedCharacters", "123").url
       }
+    }
 
+    "must redirect to Upload File error page when file name contains encoded string %22" in {
+      val uploadDetails = UploadSessionDetails(
+        new ObjectId(),
+        uploadId,
+        Reference("123"),
+        UploadedSuccessfully(s"filenamecontains%22.xml", downloadURL, FileSize, "MD5:123")
+      )
+
+      fakeUpscanConnector.setDetails(uploadDetails)
+
+      val request                = FakeRequest(GET, routes.FileValidationController.onPageLoad().url)
+      val result: Future[Result] = route(application, request).value
+
+      status(result) mustBe SEE_OTHER
+      redirectLocation(result).value mustEqual routes.UploadFileController.showError("InvalidArgument", "DisallowedCharacters", "123").url
     }
 
     "must redirect to invalid XML page if XML validation fails" in {
