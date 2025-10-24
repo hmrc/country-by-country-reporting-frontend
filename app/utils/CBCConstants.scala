@@ -23,4 +23,5 @@ object CBCConstants {
   val invalidFileNameLength       = "InvalidFileNameLength"
   val disallowedCharacters        = "DisallowedCharacters"
   val disallowedCharactersList    = raw"""[<>:"/\\|?*]""".r
+  val disallowedEncodedCharacters = "%22"
 }

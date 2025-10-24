@@ -141,5 +141,6 @@ class FileValidationController @Inject() (
       case _ => None
     }
 
-  private def isDisallowedCharactersPresent(trimmedFileName: String) = disallowedCharactersList.findFirstIn(trimmedFileName).isDefined
+  private def isDisallowedCharactersPresent(trimmedFileName: String) =
+    disallowedCharactersList.findFirstIn(trimmedFileName).isDefined || trimmedFileName.contains(disallowedEncodedCharacters)
 }
