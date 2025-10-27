@@ -42,8 +42,13 @@ trait ISpecBase extends GuiceOneServerPerSuite with DefaultPlayMongoRepositorySu
     "mongodb.uri"                                             -> mongoUri
   )
 
-  def buildClient(): WSRequest =
-    app.injector.instanceOf[WSClient].url(s"http://localhost:$port/send-a-country-by-country-report")
+  def buildClient(path: Option[String] = None): WSRequest = {
+    val url = path match {
+      case Some(value) => s"http://localhost:$port/send-a-country-by-country-report$value"
+      case None        => s"http://localhost:$port/send-a-country-by-country-report"
+    }
+    app.injector.instanceOf[WSClient].url(url)
+  }
 
   def buildFakeRequest() =
     FakeRequest("GET", s"http://localhost:$port/send-a-country-by-country-report").withSession("authToken" -> "my-token")

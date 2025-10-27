@@ -16,25 +16,11 @@
 
 package controllers
 
-import com.github.tomakehurst.wiremock.client.WireMock
-import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, urlEqualTo}
-import com.github.tomakehurst.wiremock.matching.{EqualToJsonPattern, MultiValuePattern}
-import models.UserAnswers
-import org.scalatestplus.play.PlaySpec
-import pages.{AgentClientIdPage, AgentFirstContactNamePage, ContactNamePage}
 import play.api.http.Status._
-import play.api.libs.ws.{DefaultWSCookie, WSClient, WSRequest}
-import play.api.mvc.{Session, SessionCookieBaker}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import utils.ISpecBase
+import utils.ISpecBehaviours
 
-class IndexControllerISpec extends PlaySpec with ISpecBase {
-
-  lazy val wsClient: WSClient = app.injector.instanceOf[WSClient]
-  val session                 = Session(Map("authToken" -> "abc123"))
-  val sessionCookieBaker      = app.injector.instanceOf[SessionCookieBaker]
-  val sessionCookie           = sessionCookieBaker.encodeAsCookie(session)
-  val wsSessionCookie         = DefaultWSCookie(sessionCookie.name, sessionCookie.value)
+class IndexControllerISpec extends ISpecBehaviours {
 
   "GET / IndexController.onPageLoad" must {
     "return OK when the user is authorised" in {
@@ -76,68 +62,7 @@ class IndexControllerISpec extends PlaySpec with ISpecBase {
       verifyPost(authUrl)
       response.body must include("Manage your country-by-country report")
     }
-
-    "redirect to login when there is no active session" in {
-      val response = await(
-        buildClient()
-          .withFollowRedirects(false)
-          .get()
-      )
-      response.status mustBe SEE_OTHER
-      response.header("Location").value must include("gg-sign-in")
-    }
-    "redirect to /unauthorised" in {
-      stubPostUnauthorised("/auth/authorise")
-      val response = await(
-        buildClient()
-          .withFollowRedirects(false)
-          .addCookies(wsSessionCookie)
-          .get()
-      )
-      response.status mustBe SEE_OTHER
-      response.header("Location") mustBe Some("/send-a-country-by-country-report/problem/unauthorised")
-      verifyPost(authUrl)
-    }
-
-    "redirect to /problem/client-access when agent does not belong to access-group of the client" in {
-      val userAnswers = UserAnswers("internalId")
-        .set(AgentClientIdPage, "XACBC0000123779")
-        .success
-        .value
-
-      repository.set(userAnswers)
-
-      server.stubFor(
-        WireMock
-          .post(urlEqualTo(authUrl))
-          .inScenario("Auth scenario")
-          .withRequestBody(new EqualToJsonPattern(authRequest, true, false))
-          .willReturn(aResponse().withStatus(OK).withBody(authOkResponseForAgent()))
-          .willSetStateTo("Second_call")
-      )
-
-      server.stubFor(
-        WireMock
-          .post(authUrl)
-          .inScenario("Auth scenario")
-          .whenScenarioStateIs("Second_call")
-          .willReturn(
-            aResponse()
-              .withStatus(UNAUTHORIZED)
-              .withHeader("Failing-Enrolment", "NO_ASSIGNMENT;HMRC-CBC-ORG")
-              .withHeader("WWW-Authenticate", "MDTP detail=\"InsufficientEnrolments\"")
-          )
-      )
-
-      val response = await(
-        buildClient()
-          .withFollowRedirects(false)
-          .addCookies(wsSessionCookie)
-          .get()
-      )
-      response.status mustBe SEE_OTHER
-      response.header("Location") mustBe Some("/send-a-country-by-country-report/agent/problem/client-access")
-    }
+    behave like pageRedirectsWhenNotAuthorised(None)
   }
 
 }

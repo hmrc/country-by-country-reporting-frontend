@@ -61,6 +61,30 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach with Auth
   def stubAuthorised(appaId: String): Unit =
     stubPost(authUrl, OK, authRequest, authOKResponse(appaId))
 
+  def stubAuthorisedAgent(): Unit =
+    server.stubFor(
+      WireMock
+        .post(urlEqualTo(authUrl))
+        .inScenario("Auth scenario")
+        .withRequestBody(new EqualToJsonPattern(authRequest, true, false))
+        .willReturn(aResponse().withStatus(OK).withBody(authOkResponseForAgent()))
+        .willSetStateTo("Second_call")
+    )
+
+  def stubClientAccessProblem(): Unit =
+    server.stubFor(
+      WireMock
+        .post(authUrl)
+        .inScenario("Auth scenario")
+        .whenScenarioStateIs("Second_call")
+        .willReturn(
+          aResponse()
+            .withStatus(UNAUTHORIZED)
+            .withHeader("Failing-Enrolment", "NO_ASSIGNMENT;HMRC-CBC-ORG")
+            .withHeader("WWW-Authenticate", "MDTP detail=\"InsufficientEnrolments\"")
+        )
+    )
+
   def verifyAuthorised(): Unit =
     verifyPost(authUrl)
 
@@ -129,7 +153,7 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach with Auth
       WireMock.get(urlEqualTo(stripToPath(url))).willReturn(aResponse().withStatus(status).withBody(body))
     )
 
-  def stubPostUnauthorised(
+  def stubUnauthorised(
     url: String
   ): Unit =
     server.stubFor(
