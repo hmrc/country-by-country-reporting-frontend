@@ -51,7 +51,8 @@ class FileRejectedTableSpec extends SpecBase {
 
     view.render(errors, messages).toString() must {
       include(messages("fileRejected.50008.intro")) and
-        include(messages("fileRejected.50008.bullet1"))
+        include(messages("fileRejected.50008.bullet1")) and
+        include("MessageRefId must also not include less than signs")
     }
   }
 

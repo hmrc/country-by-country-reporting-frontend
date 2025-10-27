@@ -407,6 +407,7 @@ fileRejected.50008.bullet5 = the same value as the MessageTypeIndic, either ‘C
 fileRejected.50008.bullet6 = the same value as the Timestamp in the format ‘YYYYMMDDThhmmss’ or ‘YYYYMMDDThhmmssnnn’
 fileRejected.50008.bullet7 = up to 53 characters of your choice if the Timestamp includes milliseconds, or up to 56 characters of your choice if it does not include milliseconds, to make the ID unique
 fileRejected.50008.example = For example, ‘GB2022GBXACBC0000999999CBC40120230523T140000123456789’.
+fileRejected.50008.disallowed.characters = MessageRefId must also not include less than signs (<), greater than signs (>), colons (:), straight double quotes ("), forward slashes (/), backslashes (\), vertical bars (|), question marks (?) or asterisks (*).
 fileRejected.50009.value = MessageRefId must not be the same as one used for a previously sent file. We only keep a record of the MessageRefId for successfully sent files.
 fileRejected.50010.value = DocTypeIndic contains a value that indicates the file contains test data, like OECD10, OECD11, OECD12 or OECD13. Replace the test data value with a value for real data, such as OECD0, OECD1, OECD2 or OECD3.
 fileRejected.80000.value = DocRefId has already been used in this file or a file that was previously sent. We only keep a record of these IDs for successfully sent files.
