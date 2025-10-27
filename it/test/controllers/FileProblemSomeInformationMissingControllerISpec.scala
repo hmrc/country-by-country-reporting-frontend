@@ -23,6 +23,7 @@ class FileProblemSomeInformationMissingControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some("/problem/upload-file/some-information-is-missing")
 
   "FileProblemSomeInformationMissingController" must {
+    behave like pageLoads(pageUrl, "someInformationMissing.title")
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 

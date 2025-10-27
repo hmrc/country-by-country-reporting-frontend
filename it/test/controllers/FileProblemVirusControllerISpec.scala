@@ -23,6 +23,7 @@ class FileProblemVirusControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some("/problem/virus-found")
 
   "FileProblemVirusController" must {
+    behave like pageLoads(pageUrl, "fileProblemVirus.title")
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 

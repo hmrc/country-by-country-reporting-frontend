@@ -23,6 +23,7 @@ class DetailsUpdatedControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some("/change-contact/details-updated")
 
   "DetailsUpdatedController" must {
+    behave like pageLoads(pageUrl, "detailsUpdated.title")
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 

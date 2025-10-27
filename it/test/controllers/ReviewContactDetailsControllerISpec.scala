@@ -16,6 +16,10 @@
 
 package controllers
 
+import models.subscription.{ContactInformation, OrganisationDetails}
+import pages.PrimaryClientContactInformationPage
+import play.api.http.Status.OK
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import utils.ISpecBehaviours
 
 class ReviewContactDetailsControllerISpec extends ISpecBehaviours {
@@ -23,6 +27,26 @@ class ReviewContactDetailsControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some("/change-contact/review-contact-details")
 
   "ReviewContactDetailsController" must {
+// TODO    behave like pageLoads(pageUrl, "reviewContactDetails.title")
+
+//    "load relative page" in {
+//      stubAuthorised("testId")
+//      stubRegistrationReadSubscription()
+//
+//      val testContactDetails = ContactInformation(OrganisationDetails("testName"), "test@test.com", None, None)
+//
+//      await(repository.set(emptyUserAnswers.withPage(PrimaryClientContactInformationPage, testContactDetails)))
+//
+//      val response = await(
+//        buildClient(pageUrl)
+//          .addCookies(wsSessionCookie)
+//          .get()
+//      )
+//      response.status mustBe OK
+//      response.body must include(messages("reviewContactDetails.title"))
+//
+//    }
+
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 

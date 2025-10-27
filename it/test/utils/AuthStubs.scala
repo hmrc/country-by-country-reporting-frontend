@@ -17,7 +17,6 @@
 package utils
 
 import org.scalatest.Suite
-import play.api.http.Status.OK
 
 trait AuthStubs { this: Suite =>
 
@@ -40,10 +39,10 @@ trait AuthStubs { this: Suite =>
        |}
        |""".stripMargin
 
-  def authOKResponse(cbcId: String): String =
+  def authOKResponse(cbcId: String, affinity: String = "Organisation") =
     s"""|  {
         |    "internalId": "$testAuthInternalId",
-        |    "affinityGroup": "Organisation",
+        |    "affinityGroup": "$affinity",
         |    "allEnrolments" : [ {
         |      "key" : "HMRC-CBC-ORG",
         |      "identifiers" : [ {

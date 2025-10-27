@@ -23,6 +23,7 @@ class ContactEmailControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some("/change-contact/email")
 
   "ContactEmailController" must {
+    behave like pageLoads(pageUrl, "contactEmail.title")
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 

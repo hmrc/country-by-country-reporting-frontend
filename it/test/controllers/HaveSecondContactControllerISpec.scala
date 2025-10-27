@@ -23,6 +23,7 @@ class HaveSecondContactControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some("/change-contact/have-second-contact")
 
   "HaveSecondContactController" must {
+    behave like pageLoads(pageUrl, "haveSecondContact.title")
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 

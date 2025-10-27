@@ -60,7 +60,7 @@ trait ISpecBehaviours extends PlaySpec with ISpecBase {
     }
 
     "redirect to /problem/client-access when agent does not belong to access-group of the client" in {
-      val userAnswers = UserAnswers("internalId")
+      val userAnswers = emptyUserAnswers
         .set(AgentClientIdPage, "testClientId")
         .success
         .value
@@ -82,7 +82,7 @@ trait ISpecBehaviours extends PlaySpec with ISpecBase {
     }
   }
 
-  def pageLoads(pageUrl: Option[String], pageTitle: String = "", userAnswers: UserAnswers = UserAnswers("internalId")): Unit =
+  def pageLoads(pageUrl: Option[String], pageTitle: String = "", userAnswers: UserAnswers = emptyUserAnswers): Unit =
     "load relative page" in {
       stubAuthorised("testId")
 
@@ -98,87 +98,44 @@ trait ISpecBehaviours extends PlaySpec with ISpecBase {
 
     }
 
-//  def standardOnPageLoadRedirects(pageUrl: Option[String]): Unit = {
-//
-//    "redirect to cbc reporting when the user is automatched for GET" in {
-//      stubAuthorised(Some("cbc12345"))
-//
-//      val response = await(
-//        buildClient(pageUrl)
-//          .withFollowRedirects(false)
-//          .addCookies(wsSessionCookie)
-//          .get()
-//      )
-//
-//      response.status mustBe SEE_OTHER
-//      val loc = response.header("Location").value
-//      loc must include("/send-a-country-by-country-report")
-//      verifyPost(authUrl)
-//    }
-//
-//    "redirect to login when there is no active session for GET" in {
-//      val response = await(
-//        buildClient(pageUrl)
-//          .withFollowRedirects(false)
-//          .get()
-//      )
-//
-//      response.status mustBe SEE_OTHER
-//      response.header("Location").value must include("gg-sign-in")
-//    }
-//
-//    "redirect to /individual-sign-in-problem for GET" in {
-//      stubAuthorisedIndividual("cbc12345")
-//      val response = await(
-//        buildClient(pageUrl)
-//          .withFollowRedirects(false)
-//          .addCookies(wsSessionCookie)
-//          .get()
-//      )
-//
-//      response.status mustBe SEE_OTHER
-//      response.header("Location").value must include("register/problem/individual-sign-in-problem")
-//      verifyPost(authUrl)
-//    }
-//  }
-//
-//  def pageSubmits(pageUrl: Option[String], requestBody: Map[String, Seq[String]], redirectLocation: String): Unit =
-//    "should submit form" in {
-//      stubAuthorised(appId = None)
-//
-//      await(repository.set(UserAnswers("internalId")))
-//
-//      val response = await(
-//        buildClient(pageUrl)
-//          .addCookies(wsSessionCookie)
-//          .addHttpHeaders("Csrf-Token" -> "nocheck")
-//          .withFollowRedirects(false)
-//          .post(requestBody)
-//      )
-//
-//      response.status mustBe SEE_OTHER
-//      response.header("Location").value must
-//        include(redirectLocation)
-//    }
-//
+  def pageSubmits(pageUrl: Option[String],
+                  requestBody: Map[String, Seq[String]],
+                  redirectLocation: String,
+                  ua: UserAnswers = UserAnswers("internalId")
+  ): Unit = {
+    "should submit form" in {
+      stubAuthorised("testId")
+
+      await(repository.set(ua))
+
+      val response = await(
+        buildClient(pageUrl)
+          .addCookies(wsSessionCookie)
+          .addHttpHeaders("Csrf-Token" -> "nocheck")
+          .withFollowRedirects(false)
+          .post(requestBody)
+      )
+
+      response.status mustBe SEE_OTHER
+      response.header("Location").value must
+        include(redirectLocation)
+    }
+
+    "redirect to login when there is no active session for POST" in {
+      val response = await(
+        buildClient(pageUrl)
+          .addHttpHeaders("Csrf-Token" -> "nocheck")
+          .withFollowRedirects(false)
+          .post(requestBody)
+      )
+
+      response.status mustBe SEE_OTHER
+      response.header("Location").value must include("gg-sign-in")
+    }
+
+  }
+
 //  def standardOnSubmit(pageUrl: Option[String], requestBody: Map[String, Seq[String]]): Unit = {
-//
-//    "redirect to cbc reporting when the user is automatched for POST" in {
-//      stubAuthorised(Some("cbc12345"))
-//
-//      val response = await(
-//        buildClient(pageUrl)
-//          .addHttpHeaders("Csrf-Token" -> "nocheck")
-//          .addCookies(wsSessionCookie)
-//          .withFollowRedirects(false)
-//          .post(requestBody)
-//      )
-//
-//      response.status mustBe SEE_OTHER
-//      val loc = response.header("Location").value
-//      loc must include("/send-a-country-by-country-report")
-//      verifyPost(authUrl)
-//    }
 //
 //    "redirect to login when there is no active session for POST" in {
 //      val response = await(
@@ -192,21 +149,6 @@ trait ISpecBehaviours extends PlaySpec with ISpecBase {
 //      response.header("Location").value must include("gg-sign-in")
 //    }
 //
-//    "redirect to /individual-sign-in-problem for POST" in {
-//
-//      stubAuthorisedIndividual("cbc12345")
-//
-//      val response = await(
-//        buildClient(pageUrl)
-//          .addHttpHeaders("Csrf-Token" -> "nocheck")
-//          .withFollowRedirects(false)
-//          .addCookies(wsSessionCookie)
-//          .post(requestBody)
-//      )
-//
-//      response.status mustBe SEE_OTHER
-//      response.header("Location").value must include("register/problem/individual-sign-in-problem")
-//    }
 //  }
 
 }

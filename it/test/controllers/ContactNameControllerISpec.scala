@@ -23,6 +23,7 @@ class ContactNameControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some("/change-contact/name")
 
   "ContactNameController" must {
+    behave like pageLoads(pageUrl, "contactName.title")
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 

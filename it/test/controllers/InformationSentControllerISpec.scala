@@ -21,10 +21,9 @@ import utils.ISpecBehaviours
 class InformationSentControllerISpec extends ISpecBehaviours {
 
   private val pageUrl: Option[String] = Some("/problem/information-sent")
-  private val pageTitle: String       = "informationSent.title"
 
   "InformationSentController" must {
-    behave like pageLoads(pageUrl, pageTitle)
+    behave like pageLoads(pageUrl, "informationSent.title")
   }
 
 }

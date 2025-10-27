@@ -23,8 +23,10 @@ import org.scalatest.time.{Seconds, Span}
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.Writes
 import play.api.libs.ws.{WSClient, WSRequest}
 import play.api.test.FakeRequest
+import queries.Settable
 import repositories.SessionRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
@@ -33,6 +35,7 @@ trait ISpecBase extends GuiceOneServerPerSuite with DefaultPlayMongoRepositorySu
 
   lazy val repository: SessionRepository = app.injector.instanceOf[SessionRepository]
   implicit val hc: HeaderCarrier         = HeaderCarrier()
+  val emptyUserAnswers: UserAnswers      = UserAnswers("internalId")
 
   def config: Map[String, String] = Map(
     "microservice.services.auth.host"                         -> WireMockConstants.stubHost,
@@ -58,5 +61,12 @@ trait ISpecBase extends GuiceOneServerPerSuite with DefaultPlayMongoRepositorySu
   override lazy val app: Application = new GuiceApplicationBuilder()
     .configure(config)
     .build()
+
+  implicit class UserAnswersExtension(userAnswers: UserAnswers) {
+
+    def withPage[T](page: Settable[T], value: T)(implicit writes: Writes[T]): UserAnswers =
+      userAnswers.set(page, value).success.value
+
+  }
 
 }

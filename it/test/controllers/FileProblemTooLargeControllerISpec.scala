@@ -23,6 +23,7 @@ class FileProblemTooLargeControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some("/problem/file-too-large")
 
   "FileProblemTooLargeController" must {
+    behave like pageLoads(pageUrl, "fileProblemTooLarge.title")
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 

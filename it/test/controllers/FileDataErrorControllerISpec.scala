@@ -16,6 +16,8 @@
 
 package controllers
 
+import models.{GenericError, Message}
+import pages.{GenericErrorPage, InvalidXMLPage}
 import utils.ISpecBehaviours
 
 class FileDataErrorControllerISpec extends ISpecBehaviours {
@@ -23,6 +25,10 @@ class FileDataErrorControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some("/problem/data-errors")
 
   "FileDataErrorController" must {
+    val ua = emptyUserAnswers
+      .withPage(InvalidXMLPage, "test.xml")
+      .withPage(GenericErrorPage, Seq(GenericError(1, Message("testError"))))
+    behave like pageLoads(pageUrl, "fileDataError.title", ua)
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 

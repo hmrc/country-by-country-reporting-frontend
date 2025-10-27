@@ -21,10 +21,9 @@ import utils.ISpecBehaviours
 class IndividualSignInProblemControllerISpec extends ISpecBehaviours {
 
   private val pageUrl: Option[String] = Some("/problem/individual-sign-in-problem")
-  private val pageTitle: String       = "You’re unable to use this service"
 
   "IndividualSignInProblemController" must {
-    behave like pageLoads(pageUrl, pageTitle)
+    behave like pageLoads(pageUrl, "individualSignInProblem.title")
 
   }
 

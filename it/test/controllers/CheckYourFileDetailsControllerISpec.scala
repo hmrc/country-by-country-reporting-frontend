@@ -16,13 +16,36 @@
 
 package controllers
 
+import models.{CBC401, MessageSpecData, TestData, UserAnswers, ValidatedFileData}
+import pages._
 import utils.ISpecBehaviours
+
+import java.time.LocalDate
 
 class CheckYourFileDetailsControllerISpec extends ISpecBehaviours {
 
   private val pageUrl: Option[String] = Some("/check-your-file-details")
 
   "CheckYourFileDetailsController" must {
+    val vfd: ValidatedFileData = ValidatedFileData(
+      "filename.xml",
+      MessageSpecData("messageRefId", CBC401, TestData, LocalDate.of(2012, 1, 1), LocalDate.of(2016, 1, 1), "testReportingEntity"),
+      20L,
+      "testChecksum"
+    )
+    val userAnswersWithContactDetails: UserAnswers = emptyUserAnswers
+      .withPage(ContactNamePage, "test")
+      .withPage(ContactEmailPage, "test@test.com")
+      .withPage(HaveTelephonePage, true)
+      .withPage(ContactPhonePage, "6677889922")
+      .withPage(HaveSecondContactPage, true)
+      .withPage(SecondContactNamePage, "test user")
+      .withPage(SecondContactEmailPage, "t2@test.com")
+      .withPage(SecondContactHavePhonePage, true)
+      .withPage(SecondContactPhonePage, "8889988728")
+      .withPage(ValidXMLPage, vfd)
+
+    behave like pageLoads(pageUrl, "checkYourFileDetails.title", userAnswersWithContactDetails)
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 

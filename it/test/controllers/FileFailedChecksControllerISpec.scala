@@ -16,13 +16,27 @@
 
 package controllers
 
+import models.{CBC401, ConversationId, MessageSpecData, TestData, ValidatedFileData}
+import pages.{ConversationIdPage, ValidXMLPage}
 import utils.ISpecBehaviours
+
+import java.time.LocalDate
 
 class FileFailedChecksControllerISpec extends ISpecBehaviours {
 
   private val pageUrl: Option[String] = Some("/file-failed-checks")
 
   "FileFailedChecksController" must {
+    val vfd: ValidatedFileData = ValidatedFileData(
+      "filename.xml",
+      MessageSpecData("messageRefId", CBC401, TestData, LocalDate.of(2012, 1, 1), LocalDate.of(2016, 1, 1), "testReportingEntity"),
+      20L,
+      "testChecksum"
+    )
+    val ua = emptyUserAnswers
+      .withPage(ValidXMLPage, vfd)
+      .withPage(ConversationIdPage, ConversationId("testId"))
+    behave like pageLoads(pageUrl, "fileFailedChecks.title", ua)
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 

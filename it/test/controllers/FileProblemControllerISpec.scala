@@ -23,6 +23,7 @@ class FileProblemControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some("/problem/file-not-accepted")
 
   "FileProblemController" must {
+    behave like pageLoads(pageUrl, "fileProblem.title")
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 
