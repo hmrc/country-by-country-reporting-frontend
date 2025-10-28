@@ -63,12 +63,9 @@ class ReviewContactDetailsController @Inject() (
           userAnswers.get(PrimaryClientContactInformationPage) match {
             case Some(migratedContactDetails) => Ok(view(preparedForm, migratedContactDetails))
             case None =>
-              println(Console.BLUE + "deets got but still broke." + Console.RESET)
-
               Redirect(routes.ThereIsAProblemController.onPageLoad())
           }
         case None =>
-          println(Console.BLUE + "No contact details found for the user." + Console.RESET)
           Redirect(routes.ThereIsAProblemController.onPageLoad())
       }
   }

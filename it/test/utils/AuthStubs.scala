@@ -39,10 +39,10 @@ trait AuthStubs { this: Suite =>
        |}
        |""".stripMargin
 
-  def authOKResponse(cbcId: String, affinity: String = "Organisation") =
+  def authOKResponse(cbcId: String, affinityGroup: String) =
     s"""|  {
         |    "internalId": "$testAuthInternalId",
-        |    "affinityGroup": "$affinity",
+        |    "affinityGroup": "$affinityGroup",
         |    "allEnrolments" : [ {
         |      "key" : "HMRC-CBC-ORG",
         |      "identifiers" : [ {

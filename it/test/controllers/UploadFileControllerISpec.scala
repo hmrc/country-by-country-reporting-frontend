@@ -23,6 +23,8 @@ class UploadFileControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some("/upload-file")
 
   "UploadFileController" must {
+    //todo UPSCAN
+    behave like pageLoads(pageUrl, "uploadFile.title")
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 

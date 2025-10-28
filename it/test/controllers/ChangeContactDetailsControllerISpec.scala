@@ -16,31 +16,14 @@
 
 package controllers
 
-import play.api.http.Status.OK
-import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import utils.ISpecBehaviours
 
-class FileReceivedControllerISpec extends ISpecBehaviours {
+class ChangeContactDetailsControllerISpec extends ISpecBehaviours {
 
-  private val pageUrl: Option[String] = Some(s"/file-confirmation/${conversationId.value}")
+  private val pageUrl: Option[String] = Some("/change-contact/details")
 
-  "FileReceivedController" must {
-    //TODO fileDetailsConnector.getFileDetails(conversationId)
-    "load relative page" in {
-      stubAuthorised("cbcId", "Agent")
-      stubGetResponse(fileUrl, OK, file)
-
-      await(repository.set(emptyUserAnswers))
-
-      val response = await(
-        buildClient(pageUrl)
-          .addCookies(wsSessionCookie)
-          .get()
-      )
-      response.status mustBe OK
-      response.body must include(messages("fileReceived.title"))
-
-    }
+  "ChangeContactDetailsController" must {
+// todo:   behave like pageLoads(pageUrl, "ChangeContactDetails.title", emptyUserAnswers.withPage(JourneyInProgressPage, true))
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 

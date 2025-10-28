@@ -16,6 +16,8 @@
 
 package controllers
 
+import play.api.http.Status.OK
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import utils.ISpecBehaviours
 
 class FileStatusControllerISpec extends ISpecBehaviours {
@@ -23,6 +25,22 @@ class FileStatusControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some("/result-of-automatic-checks")
 
   "FileStatusController" must {
+    "load relative page" in {
+      stubAuthorised("cbcId")
+      stubGetResponse(allFilesUrls, OK, allFiles)
+
+      await(repository.set(emptyUserAnswers))
+
+      val response = await(
+        buildClient(pageUrl)
+          .addCookies(wsSessionCookie)
+          .get()
+      )
+      response.status mustBe OK
+      response.body must include(messages("fileStatus.title"))
+
+    }
+
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 

@@ -16,13 +16,32 @@
 
 package controllers
 
+import play.api.http.Status.OK
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import utils.ISpecBehaviours
 
 class FileRejectedControllerISpec extends ISpecBehaviours {
 
-  private val pageUrl: Option[String] = Some("/problem/rules-errors/:testConvId")
+  private val pageUrl: Option[String] = Some(s"/problem/rules-errors/${conversationId.value}")
 
   "FileRejectedController" must {
+
+    "load relative page" in {
+      stubAuthorised("cbcId")
+      stubGetResponse(fileUrl, OK, rejectedFile)
+
+      await(repository.set(emptyUserAnswers))
+
+      val response = await(
+        buildClient(pageUrl)
+          .addCookies(wsSessionCookie)
+          .get()
+      )
+      response.status mustBe OK
+      response.body must include(messages("fileRejected.title"))
+
+    }
+
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 

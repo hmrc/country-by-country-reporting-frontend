@@ -33,7 +33,6 @@ class SubscriptionConnectorSpec extends Connector {
     )
     .build()
 
-  private val cbcId                         = "cbcId"
   lazy val connector: SubscriptionConnector = app.injector.instanceOf[SubscriptionConnector]
   private val readSubscriptionUrl           = s"/country-by-country-reporting/subscription/read-subscription/$cbcId"
   private val updateSubscriptionUrl         = "/country-by-country-reporting/subscription/update-subscription"

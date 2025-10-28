@@ -31,7 +31,7 @@ object WireMockConstants {
   val stubHost = "localhost"
 }
 
-trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach with AuthStubs {
+trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach with AuthStubs with FileUploadStubs {
   this: Suite =>
 
   val wireMockHost: String                = WireMockConstants.stubHost
@@ -58,8 +58,8 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach with Auth
     super.afterAll()
   }
 
-  def stubAuthorised(appaId: String): Unit =
-    stubPost(authUrl, OK, authRequest, authOKResponse(appaId))
+  def stubAuthorised(appaId: String, affinityGroup: String = "Organisation"): Unit =
+    stubPost(authUrl, OK, authRequest, authOKResponse(appaId, affinityGroup))
 
   def stubAuthorisedAgent(): Unit =
     server.stubFor(
@@ -212,5 +212,7 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach with Auth
 
   def verifyPutWithRetry(url: String): Unit =
     server.verify(2, putRequestedFor(urlEqualTo(stripToPath(url))))
+
+  //UPSCAN
 
 }
