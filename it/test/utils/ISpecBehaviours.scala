@@ -99,9 +99,9 @@ trait ISpecBehaviours extends PlaySpec with ISpecBase {
     }
 
   def pageSubmits(pageUrl: Option[String],
-                  requestBody: Map[String, Seq[String]],
                   redirectLocation: String,
-                  ua: UserAnswers = UserAnswers("internalId")
+                  ua: UserAnswers = UserAnswers("internalId"),
+                  requestBody: Map[String, Seq[String]] = Map("value" -> Seq("testValue"))
   ): Unit = {
     "should submit form" in {
       stubAuthorised("testId")

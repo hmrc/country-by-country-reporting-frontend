@@ -23,8 +23,10 @@ class ChangeContactDetailsControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some("/change-contact/details")
 
   "ChangeContactDetailsController" must {
-// todo:   behave like pageLoads(pageUrl, "ChangeContactDetails.title", emptyUserAnswers.withPage(JourneyInProgressPage, true))
+// todo: subscriptionService.isContactInformationUpdated stub
+    // behave like pageLoads(pageUrl, "ChangeContactDetails.title", emptyUserAnswers.withPage(JourneyInProgressPage, true))
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
+    //todo on Submit subscriptionService.updateContactDetails stub
   }
 
 }

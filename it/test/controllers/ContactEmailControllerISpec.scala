@@ -16,6 +16,7 @@
 
 package controllers
 
+import pages.ContactNamePage
 import utils.ISpecBehaviours
 
 class ContactEmailControllerISpec extends ISpecBehaviours {
@@ -25,6 +26,8 @@ class ContactEmailControllerISpec extends ISpecBehaviours {
   "ContactEmailController" must {
     behave like pageLoads(pageUrl, "contactEmail.title")
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
+    //todo: behave like pageSubmits(pageUrl, "/upload-file")
+
   }
 
 }

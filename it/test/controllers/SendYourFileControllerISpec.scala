@@ -16,8 +16,9 @@
 
 package controllers
 
+import models.upscan.{Reference, UploadId}
 import models.{CBC401, MessageSpecData, TestData, ValidatedFileData}
-import pages.ValidXMLPage
+import pages.{FileReferencePage, URLPage, UploadIDPage, ValidXMLPage}
 import utils.ISpecBehaviours
 
 import java.time.LocalDate
@@ -26,19 +27,25 @@ class SendYourFileControllerISpec extends ISpecBehaviours {
 
   private val pageUrl: Option[String] = Some("/send-your-file")
 
-  "SendYourFileController" must {
+  private val vfd: ValidatedFileData = ValidatedFileData(
+    "filename.xml",
+    MessageSpecData("messageRefId", CBC401, TestData, LocalDate.of(2012, 1, 1), LocalDate.of(2016, 1, 1), "testReportingEntity"),
+    20L,
+    "testChecksum"
+  )
 
-    val vfd: ValidatedFileData = ValidatedFileData(
-      "filename.xml",
-      MessageSpecData("messageRefId", CBC401, TestData, LocalDate.of(2012, 1, 1), LocalDate.of(2016, 1, 1), "testReportingEntity"),
-      20L,
-      "testChecksum"
-    )
-    val ua = emptyUserAnswers
-      .withPage(ValidXMLPage, vfd)
+  private val ua = emptyUserAnswers
+    .withPage(ValidXMLPage, vfd)
+    .withPage(URLPage, "http://test.com")
+    .withPage(UploadIDPage, UploadId("upload123"))
+    .withPage(FileReferencePage, Reference("fileRef123"))
+
+  "SendYourFileController" must {
 
     behave like pageLoads(pageUrl, "sendYourFile.title", ua)
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
+
+    behave like pageSubmits(pageUrl, "/upload-file", ua)
   }
 
 }

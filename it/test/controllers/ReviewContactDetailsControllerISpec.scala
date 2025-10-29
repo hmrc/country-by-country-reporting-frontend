@@ -27,11 +27,10 @@ class ReviewContactDetailsControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some("/change-contact/review-contact-details")
 
   "ReviewContactDetailsController" must {
-// TODO    behave like pageLoads(pageUrl, "reviewContactDetails.title")
+// TODO   needs subscriptionService.getContactDetails stub
 
 //    "load relative page" in {
 //      stubAuthorised("testId")
-//      stubRegistrationReadSubscription()
 //
 //      val testContactDetails = ContactInformation(OrganisationDetails("testName"), "test@test.com", None, None)
 //
