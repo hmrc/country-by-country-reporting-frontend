@@ -21,6 +21,7 @@ import models.UserAnswers
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.time.{Seconds, Span}
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
+import pages.{ContactEmailPage, ContactNamePage, ContactPhonePage, HaveSecondContactPage, HaveTelephonePage}
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Writes
@@ -36,6 +37,13 @@ trait ISpecBase extends GuiceOneServerPerSuite with DefaultPlayMongoRepositorySu
   lazy val repository: SessionRepository = app.injector.instanceOf[SessionRepository]
   implicit val hc: HeaderCarrier         = HeaderCarrier()
   val emptyUserAnswers: UserAnswers      = UserAnswers("internalId")
+
+  val userAnswersWithContactDetails: UserAnswers = emptyUserAnswers
+    .withPage(ContactNamePage, "test")
+    .withPage(ContactEmailPage, "test@test.com")
+    .withPage(HaveTelephonePage, true)
+    .withPage(ContactPhonePage, "1234567890")
+    .withPage(HaveSecondContactPage, false)
 
   def config: Map[String, String] = Map(
     "microservice.services.auth.host"                         -> WireMockConstants.stubHost,

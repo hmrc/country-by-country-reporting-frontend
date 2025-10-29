@@ -25,12 +25,11 @@ class FileReceivedControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some(s"/file-confirmation/${conversationId.value}")
 
   "FileReceivedController" must {
-    //TODO fileDetailsConnector.getFileDetails(conversationId)
     "load relative page" in {
-      stubAuthorised("cbcId", "Agent")
+      stubAuthorised("cbcId")
       stubGetResponse(fileUrl, OK, file)
 
-      await(repository.set(emptyUserAnswers))
+      await(repository.set(userAnswersWithContactDetails))
 
       val response = await(
         buildClient(pageUrl)

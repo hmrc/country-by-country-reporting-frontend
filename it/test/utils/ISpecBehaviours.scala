@@ -84,7 +84,7 @@ trait ISpecBehaviours extends PlaySpec with ISpecBase {
 
   def pageLoads(pageUrl: Option[String], pageTitle: String = "", userAnswers: UserAnswers = emptyUserAnswers): Unit =
     "load relative page" in {
-      stubAuthorised("testId")
+      stubAuthorised("cbcId")
 
       await(repository.set(userAnswers))
 
