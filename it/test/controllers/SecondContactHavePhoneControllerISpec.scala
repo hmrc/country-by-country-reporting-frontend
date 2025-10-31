@@ -16,15 +16,27 @@
 
 package controllers
 
+import models.UserAnswers
+import pages.ContactNamePage
 import utils.ISpecBehaviours
 
 class SecondContactHavePhoneControllerISpec extends ISpecBehaviours {
 
   private val pageUrl: Option[String] = Some("/change-contact/second-contact-have-phone")
 
-  "SecondContactHavePhoneController" must {
+  "GET SecondContactHavePhoneController.onPageLoad" must {
     behave like pageLoads(pageUrl, "secondContactHavePhone.title")
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
+  }
+
+  "POST SecondContactHavePhoneController.onSubmit" must {
+    val requestBody: Map[String, Seq[String]] = Map("value" -> Seq("true"))
+
+    val ua: UserAnswers = emptyUserAnswers
+      .withPage(ContactNamePage, "test")
+
+    behave like standardOnSubmit(pageUrl, requestBody)
+    behave like pageSubmits(pageUrl, "change-contact/second-contact-phone", ua, requestBody)
   }
 
 }

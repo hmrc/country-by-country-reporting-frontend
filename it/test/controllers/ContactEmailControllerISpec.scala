@@ -16,6 +16,7 @@
 
 package controllers
 
+import models.UserAnswers
 import pages.ContactNamePage
 import utils.ISpecBehaviours
 
@@ -23,11 +24,19 @@ class ContactEmailControllerISpec extends ISpecBehaviours {
 
   private val pageUrl: Option[String] = Some("/change-contact/email")
 
-  "ContactEmailController" must {
+  "GET ContactEmailController.onPageLoad" must {
     behave like pageLoads(pageUrl, "contactEmail.title")
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
-    //todo: behave like pageSubmits(pageUrl, "/upload-file")
+  }
 
+  "POST ContactEmailController.onSubmit" must {
+    val requestBody: Map[String, Seq[String]] = Map("value" -> Seq("some-email@email.com"))
+
+    val ua: UserAnswers = emptyUserAnswers
+      .withPage(ContactNamePage, "test")
+
+    behave like pageSubmits(pageUrl, "/change-contact/have-phone", ua, requestBody)
+    behave like standardOnSubmit(pageUrl, requestBody)
   }
 
 }

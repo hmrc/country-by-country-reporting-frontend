@@ -102,7 +102,7 @@ trait ISpecBehaviours extends PlaySpec with ISpecBase {
                   redirectLocation: String,
                   ua: UserAnswers = UserAnswers("internalId"),
                   requestBody: Map[String, Seq[String]] = Map("value" -> Seq("testValue"))
-  ): Unit = {
+  ): Unit =
     "should submit form" in {
       stubAuthorised("testId")
 
@@ -119,6 +119,24 @@ trait ISpecBehaviours extends PlaySpec with ISpecBase {
       response.status mustBe SEE_OTHER
       response.header("Location").value must
         include(redirectLocation)
+      verifyPost(authUrl)
+    }
+
+  def standardOnSubmit(pageUrl: Option[String], requestBody: Map[String, Seq[String]]): Unit = {
+    "redirect to /individual-sign-in-problem for POST" in {
+
+      stubAuthorisedIndividual("cbc12345")
+
+      val response = await(
+        buildClient(pageUrl)
+          .addHttpHeaders("Csrf-Token" -> "nocheck")
+          .withFollowRedirects(false)
+          .addCookies(wsSessionCookie)
+          .post(requestBody)
+      )
+
+      response.status mustBe SEE_OTHER
+      response.header("Location").value must include("/send-a-country-by-country-report/problem/individual-sign-in-problem")
     }
 
     "redirect to login when there is no active session for POST" in {
@@ -134,21 +152,5 @@ trait ISpecBehaviours extends PlaySpec with ISpecBase {
     }
 
   }
-
-//  def standardOnSubmit(pageUrl: Option[String], requestBody: Map[String, Seq[String]]): Unit = {
-//
-//    "redirect to login when there is no active session for POST" in {
-//      val response = await(
-//        buildClient(pageUrl)
-//          .addHttpHeaders("Csrf-Token" -> "nocheck")
-//          .withFollowRedirects(false)
-//          .post(requestBody)
-//      )
-//
-//      response.status mustBe SEE_OTHER
-//      response.header("Location").value must include("gg-sign-in")
-//    }
-//
-//  }
 
 }
