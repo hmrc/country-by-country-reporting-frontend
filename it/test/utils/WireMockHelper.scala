@@ -31,7 +31,7 @@ object WireMockConstants {
   val stubHost = "localhost"
 }
 
-trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach with AuthStubs {
+trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach with AuthStubs with FileUploadStubs {
   this: Suite =>
 
   val wireMockHost: String                = WireMockConstants.stubHost
@@ -58,8 +58,35 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach with Auth
     super.afterAll()
   }
 
-  def stubAuthorised(appaId: String): Unit =
-    stubPost(authUrl, OK, authRequest, authOKResponse(appaId))
+  def stubAuthorisedIndividual(appaId: String): Unit =
+    stubPost(authUrl, OK, authRequest, authOKResponse(appaId, "Individual"))
+
+  def stubAuthorised(appaId: String, affinityGroup: String = "Organisation"): Unit =
+    stubPost(authUrl, OK, authRequest, authOKResponse(appaId, affinityGroup))
+
+  def stubAuthorisedAgent(): Unit =
+    server.stubFor(
+      WireMock
+        .post(urlEqualTo(authUrl))
+        .inScenario("Auth scenario")
+        .withRequestBody(new EqualToJsonPattern(authRequest, true, false))
+        .willReturn(aResponse().withStatus(OK).withBody(authOkResponseForAgent()))
+        .willSetStateTo("Second_call")
+    )
+
+  def stubClientAccessProblem(): Unit =
+    server.stubFor(
+      WireMock
+        .post(authUrl)
+        .inScenario("Auth scenario")
+        .whenScenarioStateIs("Second_call")
+        .willReturn(
+          aResponse()
+            .withStatus(UNAUTHORIZED)
+            .withHeader("Failing-Enrolment", "NO_ASSIGNMENT;HMRC-CBC-ORG")
+            .withHeader("WWW-Authenticate", "MDTP detail=\"InsufficientEnrolments\"")
+        )
+    )
 
   def verifyAuthorised(): Unit =
     verifyPost(authUrl)
@@ -129,7 +156,7 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach with Auth
       WireMock.get(urlEqualTo(stripToPath(url))).willReturn(aResponse().withStatus(status).withBody(body))
     )
 
-  def stubPostUnauthorised(
+  def stubUnauthorised(
     url: String
   ): Unit =
     server.stubFor(
@@ -188,5 +215,7 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach with Auth
 
   def verifyPutWithRetry(url: String): Unit =
     server.verify(2, putRequestedFor(urlEqualTo(stripToPath(url))))
+
+  //UPSCAN
 
 }

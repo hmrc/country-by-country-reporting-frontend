@@ -62,9 +62,11 @@ class ReviewContactDetailsController @Inject() (
         case Some(userAnswers) =>
           userAnswers.get(PrimaryClientContactInformationPage) match {
             case Some(migratedContactDetails) => Ok(view(preparedForm, migratedContactDetails))
-            case None                         => Redirect(routes.ThereIsAProblemController.onPageLoad())
+            case None =>
+              Redirect(routes.ThereIsAProblemController.onPageLoad())
           }
-        case None => Redirect(routes.ThereIsAProblemController.onPageLoad())
+        case None =>
+          Redirect(routes.ThereIsAProblemController.onPageLoad())
       }
   }
 

@@ -36,55 +36,6 @@ class FileDetailsConnectorSpec extends Connector {
 
   lazy val connector: FileDetailsConnector = app.injector.instanceOf[FileDetailsConnector]
 
-  private val cbcId          = "cbcId"
-  private val conversationId = ConversationId("conversationId3")
-
-  private val allFilesUrls  = s"/country-by-country-reporting/files/details/$cbcId"
-  private val fileUrl       = s"/country-by-country-reporting/files/${conversationId.value}/details"
-  private val fileStatusUrl = s"/country-by-country-reporting/files/${conversationId.value}/status"
-
-  private val allFiles: String = """
-      |[
-      |  {
-      |    "name": "test1.xml",
-      |    "messageRefId": "messageRefId1",
-      |    "reportingEntityName": "Reporting Entity",
-      |    "reportType": "NEW_INFORMATION",
-      |    "submitted": "2022-02-10T15:35:37.636",
-      |    "lastUpdated": "2022-02-10T15:35:37.636",
-      |    "status":{"Pending":{}},
-      |    "conversationId": "conversationId1"
-      |  },
-      |  {
-      |    "name": "test2.xml",
-      |    "messageRefId": "messageRefId2",
-      |    "reportingEntityName": "Reporting Entity",
-      |    "reportType": "NEW_INFORMATION",
-      |    "submitted": "2022-02-10T15:35:37.636",
-      |    "lastUpdated": "2022-02-10T15:45:37.636",
-      |    "status": {
-      |    "Rejected":{
-      |      "error":{"fileError":[{"code":"50009","details":"Duplicate message ref ID"}],"recordError":[{"code":"80010","details":"A message can contain either new records (OECD1) or corrections/deletions (OECD2 and OECD3), but cannot contain a mixture of both","docRefIDInError":["asjdhjjhjssjhdjshdAJGSJJS"]}]}
-      |      }
-      |    },
-      |    "conversationId": "conversationId2"
-      |  }
-      |]""".stripMargin
-
-  private val file: String = """
-     |  {
-     |    "name": "test3.xml",
-     |    "messageRefId": "messageRefId3",
-     |    "reportingEntityName": "Reporting Entity",
-     |    "reportType": "NEW_INFORMATION",
-     |    "submitted": "2022-02-10T15:35:37.636",
-     |    "lastUpdated": "2022-02-10T15:45:37.636",
-     |    "status": {"Accepted":{}},
-     |    "conversationId": "conversationId3"
-     |  }""".stripMargin
-
-  private val fileStatus: String = """{"Accepted":{}}""".stripMargin
-
   "FileDetailsConnector" - {
 
     "getAllFileDetails" - {
@@ -207,7 +158,7 @@ class FileDetailsConnectorSpec extends Connector {
       "must return 'file status' when getStatus is successful" in {
         val expectedResult = Some(Accepted)
 
-        stubGetResponse(fileStatusUrl, OK, fileStatus)
+        stubGetResponse(fileStatusUrl, OK, acceptedFileStatus)
 
         val result = connector.getStatus(conversationId)
 

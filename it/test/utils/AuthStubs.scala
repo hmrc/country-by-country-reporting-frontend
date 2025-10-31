@@ -17,7 +17,6 @@
 package utils
 
 import org.scalatest.Suite
-import play.api.http.Status.OK
 
 trait AuthStubs { this: Suite =>
 
@@ -25,7 +24,7 @@ trait AuthStubs { this: Suite =>
   val problemClientAccessUrl = "/agent/problem/client-access"
   val testAuthInternalId     = "internalId"
 
-  val authRequest =
+  val authRequest: String =
     s"""
        |{
        |  "authorise": [
@@ -40,10 +39,10 @@ trait AuthStubs { this: Suite =>
        |}
        |""".stripMargin
 
-  def authOKResponse(cbcId: String) =
+  def authOKResponse(cbcId: String, affinityGroup: String) =
     s"""|  {
         |    "internalId": "$testAuthInternalId",
-        |    "affinityGroup": "Organisation",
+        |    "affinityGroup": "$affinityGroup",
         |    "allEnrolments" : [ {
         |      "key" : "HMRC-CBC-ORG",
         |      "identifiers" : [ {
@@ -56,7 +55,7 @@ trait AuthStubs { this: Suite =>
         |  }
          """.stripMargin
 
-  def authOkResponseForAgent() =
+  def authOkResponseForAgent(): String =
     s"""
        |{
        |  "internalId" : "$testAuthInternalId",
@@ -64,7 +63,7 @@ trait AuthStubs { this: Suite =>
        |    "key" : "HMRC-AS-AGENT",
        |    "identifiers" : [ {
        |      "key" : "AgentReferenceNumber",
-       |      "value" : "ARN123779"
+       |      "value" : "testARN"
        |    } ],
        |    "state" : "Activated",
        |    "confidenceLevel" : 50
