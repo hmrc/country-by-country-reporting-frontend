@@ -25,11 +25,10 @@ import utils.ISpecBehaviours
 class UploadFileControllerISpec extends ISpecBehaviours {
 
   private val pageUrl: Option[String] = Some("/upload-file")
-  val upscanInitiatePath: String = "/upscan/v2/initiate"
+  private val upscanInitiatePath: String = "/upscan/v2/initiate"
 
   "UploadFileController pageRedirectsWhenNotAuthorised" must {
     behave like pageLoads(pageUrl, "uploadFile.title", userAnswersWithContactDetails)
-   // behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 
   "UploadFileController pageLoads" in {
