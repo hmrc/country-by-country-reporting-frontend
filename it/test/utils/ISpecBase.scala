@@ -51,9 +51,9 @@ trait ISpecBase extends GuiceOneServerPerSuite with DefaultPlayMongoRepositorySu
     "microservice.services.country-by-country-reporting.host" -> WireMockConstants.stubHost,
     "microservice.services.country-by-country-reporting.port" -> WireMockConstants.stubPort.toString,
     "mongodb.uri"                                             -> mongoUri,
-    "play.filters.csrf.header.bypassHeaders.Csrf-Token"       -> "nocheck",
-    "logger.root"                                             -> "INFO",
-    "logger.controllers"                                      -> "DEBUG"
+    "play.filters.csrf.header.bypassHeaders.Csrf-Token"       -> "nocheck"
+    //  "logger.root"                                             -> "INFO",
+    //  "logger.controllers"                                      -> "DEBUG"
   )
 
   def buildClient(path: Option[String] = None): WSRequest = {

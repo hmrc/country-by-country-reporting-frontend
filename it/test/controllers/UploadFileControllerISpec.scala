@@ -18,24 +18,27 @@ package controllers
 
 import models.upscan.{PreparedUpload, Reference, UploadForm}
 import play.api.http.Status.OK
-import play.api.libs.json.Json
+import play.api.libs.json.{Format, Json}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import utils.ISpecBehaviours
 
 class UploadFileControllerISpec extends ISpecBehaviours {
 
-  private val pageUrl: Option[String] = Some("/upload-file")
+  private val pageUrl: Option[String]    = Some("/upload-file")
   private val upscanInitiatePath: String = "/upscan/v2/initiate"
+  private val upscanUploadPath: String   = "/country-by-country-reporting/upscan/upload"
 
   "UploadFileController pageRedirectsWhenNotAuthorised" must {
-    behave like pageLoads(pageUrl, "uploadFile.title", userAnswersWithContactDetails)
+    behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 
   "UploadFileController pageLoads" in {
-    val body = PreparedUpload(Reference("Reference"), UploadForm("downloadUrl", Map("formKey" -> "formValue")))
+    val body       = PreparedUpload(Reference("Reference"), UploadForm("downloadUrl", Map("formKey" -> "formValue")))
+    val uploadBody = UpscanUploadRequest(UploadId("12345"), "Reference")
 
-    stubPostResponse(upscanInitiatePath, OK, Json.toJson(body).toString())
     stubAuthorised("cbcId")
+    stubPostResponse(upscanInitiatePath, OK, Json.toJson(body).toString())
+    stubPostResponse(upscanUploadPath, OK, Json.toJson(uploadBody).toString())
 
     await(repository.set(userAnswersWithContactDetails))
 
@@ -49,4 +52,11 @@ class UploadFileControllerISpec extends ISpecBehaviours {
   }
 }
 
+case class UploadId(value: String)
 
+case class UpscanUploadRequest(uploadId: UploadId, fileReference: String)
+
+object UpscanUploadRequest {
+  implicit val uploadIdFormFormat: Format[UploadId] = Json.format[UploadId]
+  implicit val format: Format[UpscanUploadRequest]  = Json.format[UpscanUploadRequest]
+}
