@@ -19,6 +19,9 @@ package controllers
 import models.upscan.{Reference, UploadId}
 import models.{CBC401, MessageSpecData, TestData, ValidatedFileData}
 import pages.{FileReferencePage, URLPage, UploadIDPage, ValidXMLPage}
+import play.api.http.Status.{OK, SEE_OTHER}
+import play.api.libs.json.Json
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import utils.ISpecBehaviours
 
 import java.time.LocalDate
@@ -45,7 +48,29 @@ class SendYourFileControllerISpec extends ISpecBehaviours {
     behave like pageLoads(pageUrl, "sendYourFile.title", ua)
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
 
-    //behave like pageSubmits(pageUrl, "next page url", ua) //todo
+    "submit file" in {
+      val requestBody = Map("value" -> Seq("testValue"))
+      val submitUrl   = "/country-by-country-reporting/submit"
+
+      stubAuthorised("testId")
+      stubPostResponse(submitUrl, OK, Json.toJson(conversationId).toString())
+
+      await(repository.set(ua))
+
+      val response = await(
+        buildClient(pageUrl)
+          .addCookies(wsSessionCookie)
+          .addHttpHeaders("Csrf-Token" -> "nocheck")
+          .withFollowRedirects(false)
+          .post(requestBody)
+      )
+
+      response.status mustBe SEE_OTHER
+      response.header("Location").value must
+        include("/send-a-country-by-country-report/still-checking-your-file")
+      verifyPost(authUrl)
+    }
+
   }
 
 }
