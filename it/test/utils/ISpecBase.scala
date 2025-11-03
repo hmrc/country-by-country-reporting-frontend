@@ -52,7 +52,7 @@ trait ISpecBase extends GuiceOneServerPerSuite with DefaultPlayMongoRepositorySu
     "microservice.services.country-by-country-reporting.port" -> WireMockConstants.stubPort.toString,
     "microservice.services.upscan.port"                       -> WireMockConstants.stubPort.toString,
     "mongodb.uri"                                             -> mongoUri,
-    "play.filters.csrf.header.bypassHeaders.Csrf-Token"       -> "nocheck",
+    "play.filters.csrf.header.bypassHeaders.Csrf-Token"       -> "nocheck"
     //"logger.root"                                             -> "INFO",
     //"logger.controllers"                                      -> "DEBUG"
   )

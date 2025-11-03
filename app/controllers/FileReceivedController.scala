@@ -98,7 +98,6 @@ class FileReceivedController @Inject() (
               logger.warn("FileReceivedController: The User is neither an Organisation or an Agent")
               Future.successful(InternalServerError(errorView()))
           }).getOrElse {
-            println(Console.BLUE + "BANANA" + Console.RESET)
             Future.successful(InternalServerError(errorView()))
           }
       }

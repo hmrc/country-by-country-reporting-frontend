@@ -22,7 +22,7 @@ import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import utils.ISpecBehaviours
 
-class ChangeContactDetailsControllerISpec extends TestContext {
+class ChangeContactDetailsControllerISpec extends ChangeContactDetailsControllerTestContext {
 
   private val pageUrl: Option[String] = Some("/change-contact/details")
 
@@ -75,7 +75,7 @@ class ChangeContactDetailsControllerISpec extends TestContext {
   }
 }
 
-trait TestContext extends ISpecBehaviours {
+trait ChangeContactDetailsControllerTestContext extends ISpecBehaviours {
   def answers: UserAnswers = UserAnswers("internalId")
 
   val ua: UserAnswers = answers

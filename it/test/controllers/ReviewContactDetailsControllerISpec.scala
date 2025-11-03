@@ -16,37 +16,105 @@
 
 package controllers
 
+import models.UserAnswers
 import models.subscription.{ContactInformation, OrganisationDetails}
 import pages.PrimaryClientContactInformationPage
-import play.api.http.Status.OK
+import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import utils.ISpecBehaviours
 
-class ReviewContactDetailsControllerISpec extends ISpecBehaviours {
+class ReviewContactDetailsControllerISpec extends ReviewContactDetailsControllerTestContext {
 
   private val pageUrl: Option[String] = Some("/change-contact/review-contact-details")
 
-  "ReviewContactDetailsController" must {
-// TODO   needs subscriptionService.getContactDetails stub
-
-//    "load relative page" in {
-//      stubAuthorised("testId")
-//
-//      val testContactDetails = ContactInformation(OrganisationDetails("testName"), "test@test.com", None, None)
-//
-//      await(repository.set(emptyUserAnswers.withPage(PrimaryClientContactInformationPage, testContactDetails)))
-//
-//      val response = await(
-//        buildClient(pageUrl)
-//          .addCookies(wsSessionCookie)
-//          .get()
-//      )
-//      response.status mustBe OK
-//      response.body must include(messages("reviewContactDetails.title"))
-//
-//    }
-
+  "GET ReviewContactDetailsController pageRedirectsWhenNotAuthorised" must {
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 
+  "GET ReviewContactDetailsController pageLoad" in {
+    stubAuthorised("testId")
+    stubPostResponse(readSubscriptionUrl, OK, responseDetailString)
+
+    await(repository.set(ua))
+
+    val response = await(
+      buildClient(pageUrl)
+        .addCookies(wsSessionCookie)
+        .get()
+    )
+
+    response.status mustBe OK
+    response.body must include(messages("reviewContactDetails.title"))
+  }
+
+  "Post ReviewContactDetailsController standardOnSubmit" must {
+    val requestBody: Map[String, Seq[String]] = Map("value" -> Seq("7777"))
+    behave like standardOnSubmit(pageUrl, requestBody)
+  }
+
+  "Post ReviewContactDetailsController pageSubmits" in {
+    stubAuthorised("testId")
+    stubPostResponse(readSubscriptionUrl, OK, responseDetailString)
+
+    await(repository.set(ua))
+
+    val requestBody: Map[String, Seq[String]] = Map("value" -> Seq("true"))
+
+    val response = await(
+      buildClient(pageUrl)
+        .addCookies(wsSessionCookie)
+        .addHttpHeaders("Csrf-Token" -> "nocheck")
+        .withFollowRedirects(false)
+        .post(requestBody)
+    )
+
+    response.status mustBe SEE_OTHER
+    response.header("Location").value must include("/change-contact/have-second-contact")
+    verifyPost(authUrl)
+  }
+
+}
+
+trait ReviewContactDetailsControllerTestContext extends ISpecBehaviours {
+  val contactEmail     = "test@example.com"
+  val contactPhone     = Some("0123456789")
+  val organisationName = "Test Org"
+
+  val contactInfo = ContactInformation(
+    organisationDetails = OrganisationDetails(organisationName),
+    email = contactEmail,
+    phone = contactPhone,
+    mobile = None
+  )
+  def answers: UserAnswers = UserAnswers("internalId")
+
+  val ua: UserAnswers = answers
+    .withPage(PrimaryClientContactInformationPage, contactInfo)
+
+  val readSubscriptionUrl   = s"/country-by-country-reporting/subscription/read-subscription/testId"
+  val updateSubscriptionUrl = "/country-by-country-reporting/subscription/update-subscription"
+
+  val responseDetailString: String =
+    """
+      |{
+      |"subscriptionID": "111111111",
+      |"tradingName": "",
+      |"isGBUser": true,
+      |"primaryContact":
+      |{
+      |"email": "some@email.com",
+      |"phone": "7777",
+      |"mobile": "77777",
+      |"organisation": {
+      |"organisationName": "orgName"
+      |}
+      |},
+      |"secondaryContact":
+      |{
+      |"email": "",
+      |"organisation": {
+      |"organisationName": ""
+      |}
+      |}
+      |}""".stripMargin
 }
