@@ -32,7 +32,6 @@ package connectors
  * limitations under the License.
  */
 
-import models.ConversationId
 import models.submission.SubmissionDetails
 import play.api.Application
 import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, OK}
@@ -48,7 +47,6 @@ class SubmissionConnectorSpec extends Connector {
     .build()
 
   lazy val connector: SubmissionConnector = app.injector.instanceOf[SubmissionConnector]
-  val conversationId: ConversationId      = ConversationId("UUID")
   val submitUrl                           = "/country-by-country-reporting/submit"
 
   "SubmissionConnector" - {

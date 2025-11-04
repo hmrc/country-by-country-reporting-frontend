@@ -97,7 +97,9 @@ class FileReceivedController @Inject() (
             case _ =>
               logger.warn("FileReceivedController: The User is neither an Organisation or an Agent")
               Future.successful(InternalServerError(errorView()))
-          }).getOrElse(Future.successful(InternalServerError(errorView())))
+          }).getOrElse {
+            Future.successful(InternalServerError(errorView()))
+          }
       }
   }
 }
