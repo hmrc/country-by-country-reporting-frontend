@@ -22,7 +22,6 @@ import models.{CheckMode, Mode, NormalMode, UserAnswers}
 import pages.JourneyInProgressPage
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
-import uk.gov.hmrc.auth.core.AffinityGroup
 import utils.{AgentCheckYourAnswersValidator, CheckYourAnswersValidator}
 
 import javax.inject.Inject

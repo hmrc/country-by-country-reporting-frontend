@@ -21,7 +21,6 @@ import models.{CheckMode, NormalMode}
 import pages.JourneyInProgressPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.auth.core.AffinityGroup
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.CheckYourAnswersValidator
 import views.html.SomeInformationMissingView
