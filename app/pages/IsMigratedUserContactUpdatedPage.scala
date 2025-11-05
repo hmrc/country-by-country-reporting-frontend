@@ -16,10 +16,7 @@
 
 package pages
 
-import models.UserAnswers
 import play.api.libs.json.JsPath
-
-import scala.util.Try
 
 case object IsMigratedUserContactUpdatedPage extends QuestionPage[Boolean] {
 

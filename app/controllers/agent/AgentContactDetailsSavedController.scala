@@ -17,7 +17,7 @@
 package controllers.agent
 
 import controllers.actions.agent.{AgentDataRequiredAction, AgentDataRetrievalAction, AgentIdentifierAction}
-import pages.{IsMigratedAgentContactUpdatedPage, IsMigratedUserContactUpdatedPage, JourneyInProgressPage}
+import pages.{IsMigratedAgentContactUpdatedPage, JourneyInProgressPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

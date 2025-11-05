@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json._
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDate
 
 sealed trait MessageTypeIndic
 case object CBC401 extends MessageTypeIndic
