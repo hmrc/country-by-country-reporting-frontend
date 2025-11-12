@@ -18,14 +18,12 @@ package views
 
 import base.SpecBase
 import org.jsoup.Jsoup
-import org.scalatest.matchers.must.Matchers.include
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.mvc.{AnyContent, MessagesControllerComponents}
 import play.api.i18n.{Lang, Messages}
+import play.api.mvc.{AnyContent, MessagesControllerComponents}
 import play.api.test.{FakeRequest, Injecting}
-import play.test.Helpers.fakeRequest
 import utils.ViewHelper
-import views.html.{FileProblemView, ProblemClientAccessView}
+import views.html.ProblemClientAccessView
 
 class ProblemClientAccessViewSpec extends SpecBase with GuiceOneAppPerSuite with Injecting with ViewHelper {
 
@@ -56,7 +54,7 @@ class ProblemClientAccessViewSpec extends SpecBase with GuiceOneAppPerSuite with
       val linkElements = doc.select(".govuk-link")
       linkElements
         .select(":contains(Go to your agent services account)")
-        .attr("href") mustEqual "https://www.tax.service.gov.uk/agent-services-account/no-assignment"
+        .attr("href") must include("/agent-services-account/no-assignment")
     }
   }
 

@@ -35,12 +35,13 @@ class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig:
   def feedbackUrl(implicit request: RequestHeader): String =
     s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${SafeRedirectUrl(host + request.uri).encodedUrl}"
 
-  val loginUrl: String             = configuration.get[String]("urls.login")
-  val loginContinueUrl: String     = configuration.get[String]("urls.loginContinue")
-  val signOutUrl: String           = configuration.get[String]("urls.signOut")
-  val registerUrl: String          = configuration.get[String]("urls.register")
-  val guidanceAgentService: String = configuration.get[String]("urls.guidance.agentService")
-  val agentServiceUrl: String      = configuration.get[String]("urls.agentService")
+  val loginUrl: String                    = configuration.get[String]("urls.login")
+  val loginContinueUrl: String            = configuration.get[String]("urls.loginContinue")
+  val signOutUrl: String                  = configuration.get[String]("urls.signOut")
+  val registerUrl: String                 = configuration.get[String]("urls.register")
+  val guidanceAgentService: String        = configuration.get[String]("urls.guidance.agentService")
+  val agentServiceHomeUrl: String         = configuration.get[String]("urls.agentServiceHome")
+  val agentServiceNoAssignmentUrl: String = configuration.get[String]("urls.agentServiceNoAssignment")
 
   val upscanInitiateHost: String        = servicesConfig.baseUrl("upscan")
   val upscanBucketHost: String          = servicesConfig.baseUrl("upscan")
