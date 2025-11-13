@@ -14,10 +14,13 @@
  * limitations under the License.
  *@
 
+@import config.FrontendAppConfig
+
 @this(
         layout: templates.Layout,
         govukButton: GovukButton,
-        link: components.Link
+        link: components.Link,
+        appConfig: FrontendAppConfig
 )
 
 @()(implicit request: Request[_], messages: Messages)
@@ -29,9 +32,8 @@
     <p class="govuk-body">@messages("problemClientAccess.p1")</p>
     <p class="govuk-body">@messages("problemClientAccess.p2")</p>
     <p class="govuk-body">@messages("problemClientAccess.p3")</p>
-
     <p class="govuk-body">
-       @link(messages("problemClientAccess.link.url"), "problemClientAccess.link.text")
+       @link(appConfig.agentServiceNoAssignmentUrl, "problemClientAccess.link.text")
     </p>
 
 }

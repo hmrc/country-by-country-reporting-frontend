@@ -14,10 +14,13 @@
  * limitations under the License.
  *@
 
+@import config.FrontendAppConfig
+
 @this(
   layout: templates.Layout,
   govukPanel : GovukPanel,
-  link: components.Link
+  link: components.Link,
+  appConfig: FrontendAppConfig
 )
 
 @(clientSelected : Boolean)(implicit request: RequestHeader, messages: Messages  )
@@ -36,7 +39,7 @@
    <p class="govuk-body">@messages("agentContactDetailsSaved.p1")</p>
    <ul class="govuk-list govuk-list--bullet">
    <li>@link(controllers.agent.routes.AgentClientIdController.onPageLoad().url, "agentContactDetailsSaved.bullet1")</li>
-   <li>@link("#", "agentContactDetailsSaved.bullet2")</li> @*TODO: Add link to agent services when known*@
+   <li>@link(appConfig.agentServiceHomeUrl, "agentContactDetailsSaved.bullet2")</li>
    </ul>
   }
 }
