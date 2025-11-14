@@ -28,7 +28,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class FileDetailsConnectorSpec extends Connector {
 
-  override lazy val app: Application = new GuiceApplicationBuilder()
+  override def fakeApplication(): Application = new GuiceApplicationBuilder()
     .configure(
       conf = "microservice.services.country-by-country-reporting.port" -> server.port()
     )
