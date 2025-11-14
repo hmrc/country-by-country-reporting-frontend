@@ -18,7 +18,6 @@ package views
 
 import base.SpecBase
 import org.jsoup.Jsoup
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages}
 import play.api.mvc.{AnyContent, MessagesControllerComponents}
 import play.api.test.{FakeRequest, Injecting}
@@ -26,16 +25,17 @@ import play.twirl.api.HtmlFormat
 import utils.ViewHelper
 import views.html.IndexView
 
-class IndexViewSpec extends SpecBase with GuiceOneAppPerSuite with Injecting with ViewHelper {
-
-  val view1: IndexView                                                  = app.injector.instanceOf[IndexView]
-  val messagesControllerComponentsForView: MessagesControllerComponents = app.injector.instanceOf[MessagesControllerComponents]
+class IndexViewSpec extends SpecBase with Injecting with ViewHelper {
 
   implicit private val request: FakeRequest[AnyContent] = FakeRequest()
-  implicit private val messages: Messages               = messagesControllerComponentsForView.messagesApi.preferred(Seq(Lang("en")))
 
   "IndexView" - {
     "should render page components" in {
+
+      val view1: IndexView                                                  = inject[IndexView]
+      val messagesControllerComponentsForView: MessagesControllerComponents = inject[MessagesControllerComponents]
+      implicit val messages: Messages                                       = messagesControllerComponentsForView.messagesApi.preferred(Seq(Lang("en")))
+
       val renderedHtml: HtmlFormat.Appendable =
         view1(false, "XTCBC0100000001", false)
       lazy val doc = Jsoup.parse(renderedHtml.body)

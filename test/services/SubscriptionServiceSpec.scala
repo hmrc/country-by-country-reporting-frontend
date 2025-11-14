@@ -17,6 +17,7 @@
 package services
 
 import base.SpecBase
+import config.FrontendAppConfig
 import connectors.SubscriptionConnector
 import generators.ModelGenerators
 import models.subscription.{ContactInformation, OrganisationDetails, ResponseDetail}
@@ -29,21 +30,23 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
 class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
 
   val mockSubscriptionConnector: SubscriptionConnector = mock[SubscriptionConnector]
+  val mockFrontendAppConfig: FrontendAppConfig         = mock[FrontendAppConfig]
 
   private val cbcId = "111111111"
 
-  override lazy val app: Application = new GuiceApplicationBuilder()
+  override def fakeApplication(): Application = new GuiceApplicationBuilder()
     .overrides(
       bind[SubscriptionConnector].toInstance(mockSubscriptionConnector)
     )
     .build()
 
-  val service: SubscriptionService = app.injector.instanceOf[SubscriptionService]
+  val service: SubscriptionService = new SubscriptionService(mockSubscriptionConnector, mockFrontendAppConfig)
 
   "SubscriptionService" - {
     "GetContactDetails" - {
@@ -82,6 +85,7 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
         val result = service.getContactDetails(emptyUserAnswers, cbcId)
 
         val ua = result.futureValue.value
+        println(ua)
 
         ua.get(ContactNamePage) mustBe Some("acme")
         ua.get(ContactEmailPage) mustBe Some("test@test.com")
