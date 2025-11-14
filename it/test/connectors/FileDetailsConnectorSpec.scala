@@ -34,13 +34,13 @@ class FileDetailsConnectorSpec extends Connector {
     )
     .build()
 
-  lazy val connector: FileDetailsConnector = app.injector.instanceOf[FileDetailsConnector]
-
   "FileDetailsConnector" - {
 
     "getAllFileDetails" - {
 
       "must return 'all file details' when getAllFileDetails is successful" in {
+        lazy val connector: FileDetailsConnector = inject[FileDetailsConnector]
+
         val expectedResult = Some(
           Seq(
             FileDetails(
@@ -89,6 +89,7 @@ class FileDetailsConnectorSpec extends Connector {
       }
 
       "must return 'None' when getAllFileDetails is successful but response json is invalid" in {
+        lazy val connector: FileDetailsConnector = inject[FileDetailsConnector]
 
         stubGetResponse(allFilesUrls, OK)
 
@@ -98,6 +99,7 @@ class FileDetailsConnectorSpec extends Connector {
       }
 
       "must return 'None' when getAllFileDetails fails with Error" in {
+        lazy val connector: FileDetailsConnector = inject[FileDetailsConnector]
 
         val errorCode = errorCodes.sample.value
         stubGetResponse(allFilesUrls, errorCode)
@@ -112,6 +114,8 @@ class FileDetailsConnectorSpec extends Connector {
     "getFileDetails" - {
 
       "must return 'file details' when getFileDetails is successful" in {
+        lazy val connector: FileDetailsConnector = inject[FileDetailsConnector]
+
         val expectedResult = Some(
           fileDetails.FileDetails(
             "test3.xml",
@@ -133,6 +137,7 @@ class FileDetailsConnectorSpec extends Connector {
       }
 
       "must return 'None' when getFileDetails is successful but response json is invalid" in {
+        lazy val connector: FileDetailsConnector = inject[FileDetailsConnector]
 
         stubPostResponse(fileUrl, OK)
 
@@ -142,6 +147,7 @@ class FileDetailsConnectorSpec extends Connector {
       }
 
       "must return 'None' when getFileDetails fails with Error" in {
+        lazy val connector: FileDetailsConnector = inject[FileDetailsConnector]
 
         val errorCode = errorCodes.sample.value
         stubPostResponse(fileUrl, errorCode)
@@ -156,6 +162,8 @@ class FileDetailsConnectorSpec extends Connector {
     "getStatus" - {
 
       "must return 'file status' when getStatus is successful" in {
+        lazy val connector: FileDetailsConnector = inject[FileDetailsConnector]
+
         val expectedResult = Some(Accepted)
 
         stubGetResponse(fileStatusUrl, OK, acceptedFileStatus)
@@ -166,6 +174,7 @@ class FileDetailsConnectorSpec extends Connector {
       }
 
       "must return 'None' when getStatus is successful but response json is invalid" in {
+        lazy val connector: FileDetailsConnector = inject[FileDetailsConnector]
 
         stubPostResponse(fileStatusUrl, OK)
 
@@ -175,6 +184,7 @@ class FileDetailsConnectorSpec extends Connector {
       }
 
       "must return 'None' when getStatus fails with Error" in {
+        lazy val connector: FileDetailsConnector = inject[FileDetailsConnector]
 
         val errorCode = errorCodes.sample.value
         stubPostResponse(fileStatusUrl, errorCode)

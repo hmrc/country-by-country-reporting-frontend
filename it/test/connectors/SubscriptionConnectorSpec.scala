@@ -33,9 +33,8 @@ class SubscriptionConnectorSpec extends Connector {
     )
     .build()
 
-  lazy val connector: SubscriptionConnector = app.injector.instanceOf[SubscriptionConnector]
-  private val readSubscriptionUrl           = s"/country-by-country-reporting/subscription/read-subscription/$cbcId"
-  private val updateSubscriptionUrl         = "/country-by-country-reporting/subscription/update-subscription"
+  private val readSubscriptionUrl   = s"/country-by-country-reporting/subscription/read-subscription/$cbcId"
+  private val updateSubscriptionUrl = "/country-by-country-reporting/subscription/update-subscription"
 
   val responseDetailString: String =
     """
@@ -66,6 +65,8 @@ class SubscriptionConnectorSpec extends Connector {
   "SubmissionConnector" - {
     "readSubscription" - {
       "must return a ResponseDetails when readSubscription is successful" in {
+        lazy val connector: SubscriptionConnector = inject[SubscriptionConnector]
+
         stubPostResponse(readSubscriptionUrl, OK, responseDetailString)
 
         whenReady(connector.readSubscription(cbcId)) {
@@ -75,6 +76,8 @@ class SubscriptionConnectorSpec extends Connector {
       }
 
       "must return a None when readSubscription  fails with InternalServerError" in {
+        lazy val connector: SubscriptionConnector = inject[SubscriptionConnector]
+
         stubPostResponse(readSubscriptionUrl, INTERNAL_SERVER_ERROR)
 
         whenReady(connector.readSubscription(cbcId)) {
@@ -86,6 +89,8 @@ class SubscriptionConnectorSpec extends Connector {
 
     "updateSubscription" - {
       "must return status 200 when updateSubscription is successful" in {
+        lazy val connector: SubscriptionConnector = inject[SubscriptionConnector]
+
         val requestDetails = Arbitrary.arbitrary[RequestDetailForUpdate].sample.value
         stubPostResponse(updateSubscriptionUrl, OK)
 
@@ -96,6 +101,8 @@ class SubscriptionConnectorSpec extends Connector {
       }
 
       "must return a error status code when updateSubscription fails with Error" in {
+        lazy val connector: SubscriptionConnector = inject[SubscriptionConnector]
+
         val requestDetails = Arbitrary.arbitrary[RequestDetailForUpdate].sample.value
 
         val errorCode = errorCodes.sample.value

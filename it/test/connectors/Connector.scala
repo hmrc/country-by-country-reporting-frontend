@@ -19,9 +19,10 @@ package connectors
 import base.SpecBase
 import org.scalacheck.Gen
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import play.api.test.Injecting
 import utils.WireMockHelper
 
-trait Connector extends SpecBase with WireMockHelper with ScalaCheckPropertyChecks {
+trait Connector extends SpecBase with WireMockHelper with ScalaCheckPropertyChecks with Injecting {
   val errorCodes: Gen[Int] = Gen.oneOf(400, 403, 404, 405, 409, 500, 503)
 
 }

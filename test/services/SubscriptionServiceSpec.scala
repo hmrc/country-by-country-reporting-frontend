@@ -24,9 +24,6 @@ import models.subscription.{ContactInformation, OrganisationDetails, ResponseDet
 import org.mockito.ArgumentMatchers.any
 import org.scalacheck.Arbitrary
 import pages._
-import play.api.Application
-import play.api.inject.bind
-import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -37,14 +34,10 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
 
   val mockSubscriptionConnector: SubscriptionConnector = mock[SubscriptionConnector]
   val mockFrontendAppConfig: FrontendAppConfig         = mock[FrontendAppConfig]
+  when(mockFrontendAppConfig.migratedUserName).thenReturn("MIGRATED")
+  when(mockFrontendAppConfig.migratedUserEmail).thenReturn("migrated@email.com")
 
   private val cbcId = "111111111"
-
-  override def fakeApplication(): Application = new GuiceApplicationBuilder()
-    .overrides(
-      bind[SubscriptionConnector].toInstance(mockSubscriptionConnector)
-    )
-    .build()
 
   val service: SubscriptionService = new SubscriptionService(mockSubscriptionConnector, mockFrontendAppConfig)
 
@@ -81,13 +74,10 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
 
         when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
           .thenReturn(Future.successful(Some(responseDetail)))
-        when(mockFrontendAppConfig.migratedUserName).thenReturn("MIGRATED")
-        when(mockFrontendAppConfig.migratedUserEmail).thenReturn("migrated@email.com")
 
         val result = service.getContactDetails(emptyUserAnswers, cbcId)
 
         val ua = result.futureValue.value
-        println(ua)
 
         ua.get(ContactNamePage) mustBe Some("acme")
         ua.get(ContactEmailPage) mustBe Some("test@test.com")
