@@ -29,38 +29,27 @@ import pages.{FileReferencePage, UploadIDPage}
 import play.api.inject.bind
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.Result
-import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import play.api.test.{FakeRequest, Injecting}
 import repositories.SessionRepository
 import views.html.ThereIsAProblemView
 
-import scala.concurrent.{ExecutionContextExecutor, Future}
+import scala.concurrent.Future
 
-class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
+class FileValidationControllerSpec extends SpecBase with Injecting with BeforeAndAfterEach {
 
   val mockValidationConnector: ValidationConnector = mock[ValidationConnector]
 
-  implicit val ec: ExecutionContextExecutor = scala.concurrent.ExecutionContext.global
-
   override def beforeEach: Unit =
-    reset(mockSessionRepository)
-
-  val fakeUpscanConnector: FakeUpscanConnector = app.injector.instanceOf[FakeUpscanConnector]
+    reset(mockSessionRepository, mockValidationConnector)
 
   "FileValidationController" - {
+
     val uploadId        = UploadId("123")
     val fileReferenceId = Reference("fileReferenceId")
     val userAnswers     = UserAnswers(userAnswersId).withPage(UploadIDPage, uploadId).withPage(FileReferencePage, fileReferenceId)
-    val application = applicationBuilder(userAnswers = Some(userAnswers))
-      .overrides(
-        bind[UpscanConnector].toInstance(fakeUpscanConnector),
-        bind[SessionRepository].toInstance(mockSessionRepository),
-        bind[ValidationConnector].toInstance(mockValidationConnector)
-      )
-      .build()
-
-    val downloadURL = "http://dummy-url.com"
-    val FileSize    = 20L
+    val downloadURL     = "http://dummy-url.com"
+    val FileSize        = 20L
 
     val uploadDetails = UploadSessionDetails(
       new ObjectId(),
@@ -70,6 +59,14 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
     )
 
     "must redirect to Check your answers and present the correct view for a GET" in {
+      val fakeUpscanConnector = inject[FakeUpscanConnector]
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SessionRepository].toInstance(mockSessionRepository),
+          bind[ValidationConnector].toInstance(mockValidationConnector),
+          bind[UpscanConnector].toInstance(fakeUpscanConnector)
+        )
+        .build()
 
       val userAnswersCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
       val messageSpecData                                = MessageSpecData("XBG1999999", CBC401, TestData, startDate, endDate, "Reporting Entity")
@@ -82,6 +79,7 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
 
       when(mockValidationConnector.sendForValidation(any())(any(), any())).thenReturn(Future.successful(Right(messageSpecData)))
       when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
+
       fakeUpscanConnector.setDetails(uploadDetails)
 
       val request                = FakeRequest(GET, routes.FileValidationController.onPageLoad().url)
@@ -95,6 +93,14 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
     }
 
     "must redirect to Upload File error page when file name length is more than 100 characters" in {
+      val fakeUpscanConnector = inject[FakeUpscanConnector]
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SessionRepository].toInstance(mockSessionRepository),
+          bind[ValidationConnector].toInstance(mockValidationConnector),
+          bind[UpscanConnector].toInstance(fakeUpscanConnector)
+        )
+        .build()
       val uploadDetails = UploadSessionDetails(
         new ObjectId(),
         uploadId,
@@ -116,6 +122,14 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
     }
 
     "must redirect to Upload File error page when file name contains disallowed characters" in {
+      val fakeUpscanConnector = inject[FakeUpscanConnector]
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SessionRepository].toInstance(mockSessionRepository),
+          bind[ValidationConnector].toInstance(mockValidationConnector),
+          bind[UpscanConnector].toInstance(fakeUpscanConnector)
+        )
+        .build()
       val disallowedCharacters: Set[Char] = Set('<', '>', ':', '"', '/', '\\', '|', '?', '*')
       disallowedCharacters.foreach {
         ch =>
@@ -137,6 +151,14 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
     }
 
     "must redirect to Upload File error page when file name contains encoded string %22" in {
+      val fakeUpscanConnector = inject[FakeUpscanConnector]
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SessionRepository].toInstance(mockSessionRepository),
+          bind[ValidationConnector].toInstance(mockValidationConnector),
+          bind[UpscanConnector].toInstance(fakeUpscanConnector)
+        )
+        .build()
       val uploadDetails = UploadSessionDetails(
         new ObjectId(),
         uploadId,
@@ -154,7 +176,14 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
     }
 
     "must redirect to invalid XML page if XML validation fails" in {
-
+      val fakeUpscanConnector = inject[FakeUpscanConnector]
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SessionRepository].toInstance(mockSessionRepository),
+          bind[ValidationConnector].toInstance(mockValidationConnector),
+          bind[UpscanConnector].toInstance(fakeUpscanConnector)
+        )
+        .build()
       val errors: Seq[GenericError]                      = Seq(GenericError(1, Message("error")))
       val userAnswersCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
       val expectedData                                   = Json.obj("invalidXML" -> "afile", "errors" -> errors, "uploadID" -> uploadId, "FileReference" -> fileReferenceId)
@@ -174,7 +203,14 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
     }
 
     "must redirect to file error page if XML parser fails" in {
-
+      val fakeUpscanConnector = inject[FakeUpscanConnector]
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SessionRepository].toInstance(mockSessionRepository),
+          bind[ValidationConnector].toInstance(mockValidationConnector),
+          bind[UpscanConnector].toInstance(fakeUpscanConnector)
+        )
+        .build()
       val userAnswersCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
       val expectedData                                   = Json.obj("invalidXML" -> "afile", "uploadID" -> UploadId("123"), "FileReference" -> fileReferenceId)
 
@@ -194,12 +230,12 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
     }
 
     "must return ThereIsAProblemPage when a valid UploadId cannot be found" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+      val fakeUpscanConnector = inject[FakeUpscanConnector]
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
         .overrides(
-          bind[UpscanConnector].toInstance(fakeUpscanConnector),
           bind[SessionRepository].toInstance(mockSessionRepository),
-          bind[ValidationConnector].toInstance(mockValidationConnector)
+          bind[ValidationConnector].toInstance(mockValidationConnector),
+          bind[UpscanConnector].toInstance(fakeUpscanConnector)
         )
         .build()
 
@@ -216,7 +252,14 @@ class FileValidationControllerSpec extends SpecBase with BeforeAndAfterEach {
     }
 
     "must return ThereIsAProblemPage when meta data cannot be found" in {
-
+      val fakeUpscanConnector = inject[FakeUpscanConnector]
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[SessionRepository].toInstance(mockSessionRepository),
+          bind[ValidationConnector].toInstance(mockValidationConnector),
+          bind[UpscanConnector].toInstance(fakeUpscanConnector)
+        )
+        .build()
       fakeUpscanConnector.resetDetails()
 
       running(application) {

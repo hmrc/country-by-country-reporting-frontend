@@ -42,16 +42,16 @@ import play.twirl.api.HtmlFormat
 import utils.ViewHelper
 import views.html.SomeInformationMissingView
 
-class SomeInformationMissingViewSpec extends SpecBase with GuiceOneAppPerSuite with Injecting with ViewHelper {
-
-  val view1: SomeInformationMissingView                                 = app.injector.instanceOf[SomeInformationMissingView]
-  val messagesControllerComponentsForView: MessagesControllerComponents = app.injector.instanceOf[MessagesControllerComponents]
+class SomeInformationMissingViewSpec extends SpecBase with Injecting with ViewHelper {
 
   implicit private val request: FakeRequest[AnyContent] = FakeRequest()
-  implicit private val messages: Messages               = messagesControllerComponentsForView.messagesApi.preferred(Seq(Lang("en")))
 
   "SomeInformationMissingView" - {
     "should render page components" in {
+      val view1: SomeInformationMissingView                                 = inject[SomeInformationMissingView]
+      val messagesControllerComponentsForView: MessagesControllerComponents = inject[MessagesControllerComponents]
+      implicit val messages: Messages                                       = messagesControllerComponentsForView.messagesApi.preferred(Seq(Lang("en")))
+
       val renderedHtml: HtmlFormat.Appendable =
         view1("/test")
       lazy val doc = Jsoup.parse(renderedHtml.body)

@@ -17,33 +17,29 @@
 package services
 
 import base.SpecBase
+import config.FrontendAppConfig
 import connectors.SubscriptionConnector
 import generators.ModelGenerators
 import models.subscription.{ContactInformation, OrganisationDetails, ResponseDetail}
 import org.mockito.ArgumentMatchers.any
 import org.scalacheck.Arbitrary
 import pages._
-import play.api.Application
-import play.api.inject.bind
-import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HeaderCarrier
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
 class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
 
   val mockSubscriptionConnector: SubscriptionConnector = mock[SubscriptionConnector]
+  val mockFrontendAppConfig: FrontendAppConfig         = mock[FrontendAppConfig]
+  when(mockFrontendAppConfig.migratedUserName).thenReturn("MIGRATED")
+  when(mockFrontendAppConfig.migratedUserEmail).thenReturn("migrated@email.com")
 
   private val cbcId = "111111111"
 
-  override lazy val app: Application = new GuiceApplicationBuilder()
-    .overrides(
-      bind[SubscriptionConnector].toInstance(mockSubscriptionConnector)
-    )
-    .build()
-
-  val service: SubscriptionService = app.injector.instanceOf[SubscriptionService]
+  val service: SubscriptionService = new SubscriptionService(mockSubscriptionConnector, mockFrontendAppConfig)
 
   "SubscriptionService" - {
     "GetContactDetails" - {

@@ -19,77 +19,99 @@ package views.components
 import base.SpecBase
 import models.fileDetails.BusinessRuleErrorCode._
 import play.api.i18n.{Messages, MessagesApi}
+import play.api.test.Injecting
 import viewmodels.FileRejectedError
 import views.html.components.FileRejectedTable
 
-class FileRejectedTableSpec extends SpecBase {
+class FileRejectedTableSpec extends SpecBase with Injecting {
 
-  val view: FileRejectedTable  = app.injector.instanceOf[FileRejectedTable]
-  val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
-  val messages: Messages       = messagesApi.preferred(Nil)
+  "FileRejectedTable" - {
 
-  "render a error without a doc ref id" in {
-    val errors = List(FileRejectedError(MessageRefIDHasAlreadyBeenUsed.code, Nil))
+    "render a error without a doc ref id" in {
+      val view: FileRejectedTable  = inject[FileRejectedTable]
+      val messagesApi: MessagesApi = inject[MessagesApi]
+      val messages: Messages       = messagesApi.preferred(Nil)
 
-    view.render(errors, messages).toString() must {
-      include(messages("fileRejected.50009.value"))
+      val errors = List(FileRejectedError(MessageRefIDHasAlreadyBeenUsed.code, Nil))
+
+      view.render(errors, messages).toString() must {
+        include(messages("fileRejected.50009.value"))
+      }
     }
-  }
 
-  "render a error with a doc ref id" in {
-    val docRefId = "doc reference 12345"
-    val errors   = List(FileRejectedError(FileContainsTestDataForProductionEnvironment.code, Seq(docRefId)))
+    "render a error with a doc ref id" in {
+      val view: FileRejectedTable  = inject[FileRejectedTable]
+      val messagesApi: MessagesApi = inject[MessagesApi]
+      val messages: Messages       = messagesApi.preferred(Nil)
+      val docRefId                 = "doc reference 12345"
+      val errors                   = List(FileRejectedError(FileContainsTestDataForProductionEnvironment.code, Seq(docRefId)))
 
-    view.render(errors, messages).toString() must {
-      include(messages("fileRejected.50010.value")) and
-        include(docRefId)
+      view.render(errors, messages).toString() must {
+        include(messages("fileRejected.50010.value")) and
+          include(docRefId)
+      }
     }
-  }
 
-  "render a error with a html error message" in {
-    val errors = List(FileRejectedError(InvalidMessageRefIDFormat.code, Nil))
+    "render a error with a html error message" in {
+      val view: FileRejectedTable  = inject[FileRejectedTable]
+      val messagesApi: MessagesApi = inject[MessagesApi]
+      val messages: Messages       = messagesApi.preferred(Nil)
+      val errors                   = List(FileRejectedError(InvalidMessageRefIDFormat.code, Nil))
 
-    view.render(errors, messages).toString() must {
-      include(messages("fileRejected.50008.intro")) and
-        include(messages("fileRejected.50008.bullet1")) and
-        include("MessageRefId must also not include less than signs")
+      view.render(errors, messages).toString() must {
+        include(messages("fileRejected.50008.intro")) and
+          include(messages("fileRejected.50008.bullet1")) and
+          include("MessageRefId must also not include less than signs")
+      }
     }
-  }
 
-  "render a bulleted list error for error code 80001" in {
-    val errors = List(FileRejectedError(DocRefIDFormat.code, Nil))
+    "render a bulleted list error for error code 80001" in {
+      val view: FileRejectedTable  = inject[FileRejectedTable]
+      val messagesApi: MessagesApi = inject[MessagesApi]
+      val messages: Messages       = messagesApi.preferred(Nil)
+      val errors                   = List(FileRejectedError(DocRefIDFormat.code, Nil))
 
-    view.render(errors, messages).toString() must {
-      include(messages("fileRejected.80001.intro")) and
-        include(messages("fileRejected.80001.bullet1"))
+      view.render(errors, messages).toString() must {
+        include(messages("fileRejected.80001.intro")) and
+          include(messages("fileRejected.80001.bullet1"))
+      }
     }
-  }
 
-  "render a list of paragraphs error for error code 12" in {
-    val errors = List(FileRejectedError(ReportingPeriodCantChange.code, Nil))
+    "render a list of paragraphs error for error code 12" in {
+      val view: FileRejectedTable  = inject[FileRejectedTable]
+      val messagesApi: MessagesApi = inject[MessagesApi]
+      val messages: Messages       = messagesApi.preferred(Nil)
+      val errors                   = List(FileRejectedError(ReportingPeriodCantChange.code, Nil))
 
-    view.render(errors, messages).toString() must {
-      include(messages("fileRejected.12.p1")) and
-        include(messages("fileRejected.12.p2"))
+      view.render(errors, messages).toString() must {
+        include(messages("fileRejected.12.p1")) and
+          include(messages("fileRejected.12.p2"))
+      }
     }
-  }
 
-  "render a bulleted list error for error code 24" in {
-    val errors = List(FileRejectedError(ConstEntitiesRoleInitial.code, Nil))
+    "render a bulleted list error for error code 24" in {
+      val view: FileRejectedTable  = inject[FileRejectedTable]
+      val messagesApi: MessagesApi = inject[MessagesApi]
+      val messages: Messages       = messagesApi.preferred(Nil)
+      val errors                   = List(FileRejectedError(ConstEntitiesRoleInitial.code, Nil))
 
-    view.render(errors, messages).toString() must {
-      include(messages("fileRejected.24.intro")) and
-        include(messages("fileRejected.24.bullet1"))
+      view.render(errors, messages).toString() must {
+        include(messages("fileRejected.24.intro")) and
+          include(messages("fileRejected.24.bullet1"))
+      }
     }
-  }
 
-  "render a bulleted list error for 24b error code" in {
-    val errors = List(FileRejectedError(ConstEntitiesRoleCorrection.code, Nil))
+    "render a bulleted list error for 24b error code" in {
+      val view: FileRejectedTable  = inject[FileRejectedTable]
+      val messagesApi: MessagesApi = inject[MessagesApi]
+      val messages: Messages       = messagesApi.preferred(Nil)
+      val errors                   = List(FileRejectedError(ConstEntitiesRoleCorrection.code, Nil))
 
-    view.render(errors, messages).toString() must {
-      include(messages("fileRejected.24.intro")) and
-        include(messages("fileRejected.24b.value"))
+      view.render(errors, messages).toString() must {
+        include(messages("fileRejected.24.intro")) and
+          include(messages("fileRejected.24b.value"))
+      }
     }
-  }
 
+  }
 }
