@@ -81,6 +81,8 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
 
         when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
           .thenReturn(Future.successful(Some(responseDetail)))
+        when(mockFrontendAppConfig.migratedUserName).thenReturn("MIGRATED")
+        when(mockFrontendAppConfig.migratedUserEmail).thenReturn("migrated@email.com")
 
         val result = service.getContactDetails(emptyUserAnswers, cbcId)
 
