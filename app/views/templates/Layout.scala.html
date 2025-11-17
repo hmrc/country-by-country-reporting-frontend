@@ -16,6 +16,7 @@
 
 @import config.FrontendAppConfig
 @import uk.gov.hmrc.hmrcfrontend.views.config.StandardAlphaBanner
+@import uk.gov.hmrc.hmrcfrontend.views.config.StandardBetaBanner
 @import views.html.helper.CSPNonce
 
 @this(
@@ -24,6 +25,7 @@
         hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         alphaBanner: StandardAlphaBanner,
+        betaBanner: StandardBetaBanner,
         clientHeader: components.AgentClientHeader,
         defaultMainContentLayout: TwoThirdsMainContent,
         autocompleteCss: HmrcAccessibleAutocompleteCss,
@@ -67,7 +69,7 @@
     additionalHeadBlock = if(timeout) Some(timeOutDialog) else None,
     serviceUrl  = Some(routes.IndexController.onPageLoad.url),
     signOutUrl  = if(showSignOut) Some(controllers.auth.routes.AuthController.signOut.url) else None,
-    phaseBanner = Some(alphaBanner(appConfig.feedbackUrl)),
+    phaseBanner = if(appConfig.betaPhaseEnabled) Some(betaBanner(appConfig.feedbackUrl)) else Some(alphaBanner(appConfig.feedbackUrl)),
     additionalScriptsBlock = Some(additionalScripts),
     backLink = if(showBackLink) Some(BackLinkViewModel(href = "#").withCssClass("js-enabled govuk-!-display-none-print")) else None,
     beforeContentBlock = if(showAgentHeader) Some(clientHeader(showBackLink)) else None,
