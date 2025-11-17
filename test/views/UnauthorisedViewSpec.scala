@@ -26,16 +26,16 @@ import play.twirl.api.HtmlFormat
 import utils.ViewHelper
 import views.html.UnauthorisedView
 
-class UnauthorisedViewSpec extends SpecBase with GuiceOneAppPerSuite with Injecting with ViewHelper {
-
-  val view1: UnauthorisedView                                           = app.injector.instanceOf[UnauthorisedView]
-  val messagesControllerComponentsForView: MessagesControllerComponents = app.injector.instanceOf[MessagesControllerComponents]
+class UnauthorisedViewSpec extends SpecBase with Injecting with ViewHelper {
 
   implicit private val request: FakeRequest[AnyContent] = FakeRequest()
-  implicit private val messages: Messages               = messagesControllerComponentsForView.messagesApi.preferred(Seq(Lang("en")))
 
   "UnauthorisedView" - {
     "should render page components" in {
+      val view1: UnauthorisedView                                           = inject[UnauthorisedView]
+      val messagesControllerComponentsForView: MessagesControllerComponents = inject[MessagesControllerComponents]
+      implicit val messages: Messages                                       = messagesControllerComponentsForView.messagesApi.preferred(Seq(Lang("en")))
+
       val renderedHtml: HtmlFormat.Appendable =
         view1()
       lazy val doc = Jsoup.parse(renderedHtml.body)

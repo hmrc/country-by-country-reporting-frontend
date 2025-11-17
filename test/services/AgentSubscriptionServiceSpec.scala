@@ -30,19 +30,20 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.HeaderCarrier
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
 class AgentSubscriptionServiceSpec extends SpecBase with ModelGenerators {
 
   val mockAgentSubscriptionConnector: AgentSubscriptionConnector = mock[AgentSubscriptionConnector]
 
-  override lazy val app: Application = new GuiceApplicationBuilder()
+  override def fakeApplication(): Application = new GuiceApplicationBuilder()
     .overrides(
       bind[AgentSubscriptionConnector].toInstance(mockAgentSubscriptionConnector)
     )
     .build()
 
-  val service: AgentSubscriptionService = app.injector.instanceOf[AgentSubscriptionService]
+  val service: AgentSubscriptionService = new AgentSubscriptionService(mockAgentSubscriptionConnector)
 
   "AgentSubscriptionService" - {
     "CreateAgentContactDetails" - {

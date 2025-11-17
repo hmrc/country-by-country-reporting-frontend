@@ -25,16 +25,16 @@ import play.api.test.{FakeRequest, Injecting}
 import utils.ViewHelper
 import views.html.ProblemClientAccessView
 
-class ProblemClientAccessViewSpec extends SpecBase with GuiceOneAppPerSuite with Injecting with ViewHelper {
-
-  val view: ProblemClientAccessView                                     = app.injector.instanceOf[ProblemClientAccessView]
-  val messagesControllerComponentsForView: MessagesControllerComponents = app.injector.instanceOf[MessagesControllerComponents]
+class ProblemClientAccessViewSpec extends SpecBase with Injecting with ViewHelper {
 
   implicit private val request: FakeRequest[AnyContent] = FakeRequest()
-  implicit private val messages: Messages               = messagesControllerComponentsForView.messagesApi.preferred(Seq(Lang("en")))
 
   "ProblemClientAccessView" - {
     "should render page components" in {
+      val view: ProblemClientAccessView                                     = inject[ProblemClientAccessView]
+      val messagesControllerComponentsForView: MessagesControllerComponents = inject[MessagesControllerComponents]
+
+      implicit val messages: Messages = messagesControllerComponentsForView.messagesApi.preferred(Seq(Lang("en")))
 
       val renderedHtml = view()
       lazy val doc     = Jsoup.parse(renderedHtml.body)

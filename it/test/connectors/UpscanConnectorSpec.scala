@@ -37,12 +37,13 @@ class UpscanConnectorSpec extends Connector {
     )
     .build()
 
-  lazy val connector: UpscanConnector = app.injector.instanceOf[UpscanConnector]
-  val request: UpscanInitiateRequest  = UpscanInitiateRequest("callbackUrl")
+  val request: UpscanInitiateRequest = UpscanInitiateRequest("callbackUrl")
 
   "getUpscanFormData" - {
     "should return an UpscanInitiateResponse" - {
       "when upscan returns a valid successful response" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
+
         val body = PreparedUpload(Reference("Reference"), UploadForm("downloadUrl", Map("formKey" -> "formValue")))
 
         stubPostResponse(connector.upscanInitiatePath, OK, Json.toJson(body).toString())
@@ -57,6 +58,8 @@ class UpscanConnectorSpec extends Connector {
 
     "throw an exception" - {
       "when upscan returns a 4xx response" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
+
         stubPostResponse(connector.upscanInitiatePath, BAD_REQUEST)
 
         val result = connector.getUpscanFormData(uploadId)
@@ -70,6 +73,8 @@ class UpscanConnectorSpec extends Connector {
       }
 
       "when upscan returns 5xx response" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
+
         stubPostResponse(connector.upscanInitiatePath, SERVICE_UNAVAILABLE)
 
         val result = connector.getUpscanFormData(uploadId)
@@ -86,6 +91,8 @@ class UpscanConnectorSpec extends Connector {
   "getUploadDetails" - {
     "should return an UploadSessionDetails" - {
       "when a valid successful response is returned" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
+
         val body = UploadSessionDetails(_id = ObjectId.get(),
                                         uploadId = UploadId("12345"),
                                         reference = Reference("Reference"),
@@ -104,6 +111,8 @@ class UpscanConnectorSpec extends Connector {
 
     "should return None" - {
       "when an invalid response is returned" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
+
         stubGetResponse("/country-by-country-reporting/upscan/details/12345", OK, Json.obj().toString())
 
         whenReady(connector.getUploadDetails(uploadId)) {
@@ -118,6 +127,8 @@ class UpscanConnectorSpec extends Connector {
   "getUploadStatus" - {
     "should return an UploadStatus for a valid UploadId" - {
       "when an UploadedSuccessfully response is returned" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
+
         val body =
           """{
             | "_type": "UploadedSuccessfully",
@@ -137,6 +148,7 @@ class UpscanConnectorSpec extends Connector {
       }
 
       "when a NotStarted response is returned" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
 
         val body =
           """{
@@ -153,6 +165,7 @@ class UpscanConnectorSpec extends Connector {
       }
 
       "when a InProgress response is returned" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
 
         val body =
           """{
@@ -169,6 +182,7 @@ class UpscanConnectorSpec extends Connector {
       }
 
       "when a Failed response is returned" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
 
         val body =
           """{
@@ -185,6 +199,7 @@ class UpscanConnectorSpec extends Connector {
       }
 
       "when a Quarantined response is returned" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
 
         val body =
           """{
@@ -203,6 +218,8 @@ class UpscanConnectorSpec extends Connector {
 
     "should return None" - {
       "when an invalid response is returned" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
+
         stubGetResponse("/country-by-country-reporting/upscan/status/12345", OK, Json.obj().toString())
 
         whenReady(connector.getUploadStatus(uploadId)) {

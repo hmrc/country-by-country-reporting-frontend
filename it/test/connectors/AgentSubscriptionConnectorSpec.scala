@@ -28,16 +28,15 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
 
-  override lazy val app: Application = new GuiceApplicationBuilder()
+  override def fakeApplication(): Application = new GuiceApplicationBuilder()
     .configure(
       conf = "microservice.services.country-by-country-reporting.port" -> server.port()
     )
     .build()
 
-  lazy val connector: AgentSubscriptionConnector = app.injector.instanceOf[AgentSubscriptionConnector]
-  private val createSubscriptionUrl              = "/country-by-country-reporting/agent/subscription/create-subscription"
-  private val readSubscriptionUrl                = "/country-by-country-reporting/agent/subscription/read-subscription"
-  private val updateSubscriptionUrl              = "/country-by-country-reporting/agent/subscription/update-subscription"
+  private val createSubscriptionUrl = "/country-by-country-reporting/agent/subscription/create-subscription"
+  private val readSubscriptionUrl   = "/country-by-country-reporting/agent/subscription/read-subscription"
+  private val updateSubscriptionUrl = "/country-by-country-reporting/agent/subscription/update-subscription"
 
   val agentResponseDetailString: String =
     """
@@ -70,6 +69,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
       val createAgentSubscriptionRequest = Arbitrary.arbitrary[CreateAgentSubscriptionRequest].sample.value
 
       "must return Json response for valid input request" in {
+        lazy val connector: AgentSubscriptionConnector = inject[AgentSubscriptionConnector]
+
         val subscriptionResponse: String =
           s"""
              |{
@@ -90,6 +91,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
       }
 
       "must return None when create subscription fails" in {
+        lazy val connector: AgentSubscriptionConnector = inject[AgentSubscriptionConnector]
+
         val errorCode: Int = errorCodes.sample.value
 
         val subscriptionErrorResponse: String =
@@ -112,6 +115,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
 
     "checkSubscriptionExists" - {
       "must return true when readSubscription is successful" in {
+        lazy val connector: AgentSubscriptionConnector = inject[AgentSubscriptionConnector]
+
         stubPostResponse(readSubscriptionUrl, OK, agentResponseDetailString)
 
         whenReady(connector.checkSubscriptionExists()) {
@@ -121,6 +126,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
       }
 
       "must return false when readSubscription fails with a NOT_FOUND" in {
+        lazy val connector: AgentSubscriptionConnector = inject[AgentSubscriptionConnector]
+
         stubPostResponse(readSubscriptionUrl, NOT_FOUND)
 
         whenReady(connector.checkSubscriptionExists()) {
@@ -130,6 +137,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
       }
 
       "must return a None when readSubscription fails with InternalServerError" in {
+        lazy val connector: AgentSubscriptionConnector = inject[AgentSubscriptionConnector]
+
         stubPostResponse(readSubscriptionUrl, INTERNAL_SERVER_ERROR)
 
         whenReady(connector.readSubscription()) {
@@ -141,6 +150,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
 
     "readSubscription" - {
       "must return a AgentResponseDetails when readSubscription is successful" in {
+        lazy val connector: AgentSubscriptionConnector = inject[AgentSubscriptionConnector]
+
         stubPostResponse(readSubscriptionUrl, OK, agentResponseDetailString)
 
         whenReady(connector.readSubscription()) {
@@ -150,6 +161,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
       }
 
       "must return a None when readSubscription fails with InternalServerError" in {
+        lazy val connector: AgentSubscriptionConnector = inject[AgentSubscriptionConnector]
+
         stubPostResponse(readSubscriptionUrl, INTERNAL_SERVER_ERROR)
 
         whenReady(connector.readSubscription()) {
@@ -161,6 +174,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
 
     "updateSubscription" - {
       "must return status 200 when updateSubscription is successful" in {
+        lazy val connector: AgentSubscriptionConnector = inject[AgentSubscriptionConnector]
+
         val agentRequestDetails = Arbitrary.arbitrary[AgentRequestDetailForUpdate].sample.value
         stubPostResponse(updateSubscriptionUrl, OK)
 
@@ -171,6 +186,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
       }
 
       "must return a error status code when updateSubscription fails with Error" in {
+        lazy val connector: AgentSubscriptionConnector = inject[AgentSubscriptionConnector]
+
         val agentRequestDetails = Arbitrary.arbitrary[AgentRequestDetailForUpdate].sample.value
 
         val errorCode = errorCodes.sample.value
