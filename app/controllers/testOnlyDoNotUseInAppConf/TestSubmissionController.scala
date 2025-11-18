@@ -35,15 +35,14 @@ class TestSubmissionController @Inject() (
     extends FrontendBaseController
     with Logging {
 
-  def insertTestSubmission(fileName: String): Action[NodeSeq] = (agentDelegatedAuthAction(parse.xml) andThen identifierAction).async {
-    implicit request =>
-      logger.debug(s"inserting test submission: ${request.body}")
-      connector
-        .submitXmlDocument(fileName, request.subscriptionId, request.body)
-        .map {
-          case Some(conversationId) => Ok(Json.toJson(conversationId))
-          case _                    => InternalServerError
-        }
+  def insertTestSubmission(fileName: String): Action[NodeSeq] = (agentDelegatedAuthAction(parse.xml) andThen identifierAction).async { implicit request =>
+    logger.debug(s"inserting test submission: ${request.body}")
+    connector
+      .submitXmlDocument(fileName, request.subscriptionId, request.body)
+      .map {
+        case Some(conversationId) => Ok(Json.toJson(conversationId))
+        case _                    => InternalServerError
+      }
   }
 
 }

@@ -31,143 +31,130 @@ class ContactDetailsNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks
     "in Normal mode" - {
 
       "must go from Contact Phone page to have second contact details page" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            navigator
-              .nextPage(ContactPhonePage, NormalMode, answers)
-              .mustBe(routes.HaveSecondContactController.onPageLoad(NormalMode))
+        forAll(arbitrary[UserAnswers]) { answers =>
+          navigator
+            .nextPage(ContactPhonePage, NormalMode, answers)
+            .mustBe(routes.HaveSecondContactController.onPageLoad(NormalMode))
         }
       }
 
       "must go from Contact Name page to Contact Email page" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            navigator
-              .nextPage(ContactNamePage, NormalMode, answers)
-              .mustBe(routes.ContactEmailController.onPageLoad(NormalMode))
+        forAll(arbitrary[UserAnswers]) { answers =>
+          navigator
+            .nextPage(ContactNamePage, NormalMode, answers)
+            .mustBe(routes.ContactEmailController.onPageLoad(NormalMode))
         }
       }
 
       "must go from Contact Email page to Have Telephone page" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            navigator
-              .nextPage(ContactEmailPage, NormalMode, answers)
-              .mustBe(routes.HaveTelephoneController.onPageLoad(NormalMode))
+        forAll(arbitrary[UserAnswers]) { answers =>
+          navigator
+            .nextPage(ContactEmailPage, NormalMode, answers)
+            .mustBe(routes.HaveTelephoneController.onPageLoad(NormalMode))
         }
       }
 
       "must go from Have Phone page to Phone page when 'YES' is selected" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            val updatedAnswers =
-              answers.set(HaveTelephonePage, true).success.value
+        forAll(arbitrary[UserAnswers]) { answers =>
+          val updatedAnswers =
+            answers.set(HaveTelephonePage, true).success.value
 
-            navigator
-              .nextPage(HaveTelephonePage, NormalMode, updatedAnswers)
-              .mustBe(routes.ContactPhoneController.onPageLoad(NormalMode))
+          navigator
+            .nextPage(HaveTelephonePage, NormalMode, updatedAnswers)
+            .mustBe(routes.ContactPhoneController.onPageLoad(NormalMode))
         }
       }
 
       "must go from ReviewContactDetailsPage" - {
         "to Have Second Contact page when 'YES' is selected" in {
 
-          forAll(arbitrary[UserAnswers]) {
-            answers =>
-              val updatedAnswers =
-                answers.set(ReviewContactDetailsPage, true).success.value
+          forAll(arbitrary[UserAnswers]) { answers =>
+            val updatedAnswers =
+              answers.set(ReviewContactDetailsPage, true).success.value
 
-              navigator
-                .nextPage(ReviewContactDetailsPage, NormalMode, updatedAnswers)
-                .mustBe(routes.HaveSecondContactController.onPageLoad(NormalMode))
+            navigator
+              .nextPage(ReviewContactDetailsPage, NormalMode, updatedAnswers)
+              .mustBe(routes.HaveSecondContactController.onPageLoad(NormalMode))
           }
         }
 
         "Contact Name page when 'NO' is selected" in {
-          forAll(arbitrary[UserAnswers]) {
-            answers =>
-              val updatedAnswers =
-                answers.set(ReviewContactDetailsPage, false).success.value
+          forAll(arbitrary[UserAnswers]) { answers =>
+            val updatedAnswers =
+              answers.set(ReviewContactDetailsPage, false).success.value
 
-              navigator
-                .nextPage(ReviewContactDetailsPage, NormalMode, updatedAnswers)
-                .mustBe(routes.ContactNameController.onPageLoad(NormalMode))
+            navigator
+              .nextPage(ReviewContactDetailsPage, NormalMode, updatedAnswers)
+              .mustBe(routes.ContactNameController.onPageLoad(NormalMode))
           }
         }
       }
 
       "must go from Have Second Contact page to Second Contact Name page when 'YES' is selected" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            val updatedAnswers =
-              answers.set(HaveSecondContactPage, true).success.value
+        forAll(arbitrary[UserAnswers]) { answers =>
+          val updatedAnswers =
+            answers.set(HaveSecondContactPage, true).success.value
 
-            navigator
-              .nextPage(HaveSecondContactPage, NormalMode, updatedAnswers)
-              .mustBe(routes.SecondContactNameController.onPageLoad(NormalMode))
+          navigator
+            .nextPage(HaveSecondContactPage, NormalMode, updatedAnswers)
+            .mustBe(routes.SecondContactNameController.onPageLoad(NormalMode))
         }
       }
 
       "must go from Have Second Contact page to Change Organisation Details page when 'NO' is selected" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            val updatedAnswers =
-              answers.set(HaveSecondContactPage, false).success.value
+        forAll(arbitrary[UserAnswers]) { answers =>
+          val updatedAnswers =
+            answers.set(HaveSecondContactPage, false).success.value
 
-            navigator
-              .nextPage(HaveSecondContactPage, NormalMode, updatedAnswers)
-              .mustBe(routes.ChangeContactDetailsController.onPageLoad())
+          navigator
+            .nextPage(HaveSecondContactPage, NormalMode, updatedAnswers)
+            .mustBe(routes.ChangeContactDetailsController.onPageLoad())
         }
       }
 
       "must go from Second Contact Name page to Second Contact Email page" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            navigator
-              .nextPage(SecondContactNamePage, NormalMode, answers)
-              .mustBe(routes.SecondContactEmailController.onPageLoad(NormalMode))
+        forAll(arbitrary[UserAnswers]) { answers =>
+          navigator
+            .nextPage(SecondContactNamePage, NormalMode, answers)
+            .mustBe(routes.SecondContactEmailController.onPageLoad(NormalMode))
         }
       }
 
       "must go from Second Contact Email page to Second Contact Have Phone page" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            navigator
-              .nextPage(SecondContactEmailPage, NormalMode, answers)
-              .mustBe(routes.SecondContactHavePhoneController.onPageLoad(NormalMode))
+        forAll(arbitrary[UserAnswers]) { answers =>
+          navigator
+            .nextPage(SecondContactEmailPage, NormalMode, answers)
+            .mustBe(routes.SecondContactHavePhoneController.onPageLoad(NormalMode))
         }
       }
 
       "must go from Second Contact Have Phone page to Second Contact Phone page when 'YES' is selected" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            val updatedAnswers =
-              answers.set(SecondContactHavePhonePage, true).success.value
+        forAll(arbitrary[UserAnswers]) { answers =>
+          val updatedAnswers =
+            answers.set(SecondContactHavePhonePage, true).success.value
 
-            navigator
-              .nextPage(SecondContactHavePhonePage, NormalMode, updatedAnswers)
-              .mustBe(routes.SecondContactPhoneController.onPageLoad(NormalMode))
+          navigator
+            .nextPage(SecondContactHavePhonePage, NormalMode, updatedAnswers)
+            .mustBe(routes.SecondContactPhoneController.onPageLoad(NormalMode))
         }
       }
 
       "must go from Second Contact Have Phone page to Change Organisation Details page when 'NO' is selected" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            val updatedAnswers =
-              answers.set(SecondContactHavePhonePage, false).success.value
+        forAll(arbitrary[UserAnswers]) { answers =>
+          val updatedAnswers =
+            answers.set(SecondContactHavePhonePage, false).success.value
 
-            navigator
-              .nextPage(SecondContactHavePhonePage, NormalMode, updatedAnswers)
-              .mustBe(routes.ChangeContactDetailsController.onPageLoad())
+          navigator
+            .nextPage(SecondContactHavePhonePage, NormalMode, updatedAnswers)
+            .mustBe(routes.ChangeContactDetailsController.onPageLoad())
         }
       }
 
       "must go from Second Contact Phone page to Change Organisation Details page" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            navigator
-              .nextPage(SecondContactPhonePage, NormalMode, answers)
-              .mustBe(routes.ChangeContactDetailsController.onPageLoad())
+        forAll(arbitrary[UserAnswers]) { answers =>
+          navigator
+            .nextPage(SecondContactPhonePage, NormalMode, answers)
+            .mustBe(routes.ChangeContactDetailsController.onPageLoad())
         }
       }
     }
@@ -175,128 +162,116 @@ class ContactDetailsNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks
     "in Check mode" - {
 
       "must go from Contact Phone page to Change Organisation Details page" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            navigator
-              .nextPage(ContactPhonePage, CheckMode, answers)
-              .mustBe(routes.ChangeContactDetailsController.onPageLoad())
+        forAll(arbitrary[UserAnswers]) { answers =>
+          navigator
+            .nextPage(ContactPhonePage, CheckMode, answers)
+            .mustBe(routes.ChangeContactDetailsController.onPageLoad())
         }
       }
 
       "must go from Have Telephone Page to Change Organisation Details page" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            val updatedAnswers =
-              answers.set(HaveTelephonePage, false).success.value
+        forAll(arbitrary[UserAnswers]) { answers =>
+          val updatedAnswers =
+            answers.set(HaveTelephonePage, false).success.value
 
-            navigator
-              .nextPage(ContactPhonePage, CheckMode, updatedAnswers)
-              .mustBe(routes.ChangeContactDetailsController.onPageLoad())
+          navigator
+            .nextPage(ContactPhonePage, CheckMode, updatedAnswers)
+            .mustBe(routes.ChangeContactDetailsController.onPageLoad())
         }
       }
 
       "must go from Contact Name page to Contact Email page" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            navigator
-              .nextPage(ContactNamePage, CheckMode, answers)
-              .mustBe(routes.ContactEmailController.onPageLoad(CheckMode))
+        forAll(arbitrary[UserAnswers]) { answers =>
+          navigator
+            .nextPage(ContactNamePage, CheckMode, answers)
+            .mustBe(routes.ContactEmailController.onPageLoad(CheckMode))
         }
       }
 
       "must go from Contact Email page to Have Telephone page" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            navigator
-              .nextPage(ContactEmailPage, CheckMode, answers)
-              .mustBe(routes.HaveTelephoneController.onPageLoad(CheckMode))
+        forAll(arbitrary[UserAnswers]) { answers =>
+          navigator
+            .nextPage(ContactEmailPage, CheckMode, answers)
+            .mustBe(routes.HaveTelephoneController.onPageLoad(CheckMode))
         }
       }
 
       "must go from Have Phone page to Phone page when 'YES' is selected" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            val updatedAnswers =
-              answers.set(HaveTelephonePage, true).success.value
+        forAll(arbitrary[UserAnswers]) { answers =>
+          val updatedAnswers =
+            answers.set(HaveTelephonePage, true).success.value
 
-            navigator
-              .nextPage(HaveTelephonePage, CheckMode, updatedAnswers)
-              .mustBe(routes.ContactPhoneController.onPageLoad(CheckMode))
+          navigator
+            .nextPage(HaveTelephonePage, CheckMode, updatedAnswers)
+            .mustBe(routes.ContactPhoneController.onPageLoad(CheckMode))
         }
       }
 
       "must go from Have Second Contact page to Second Contact Name page when 'YES' is selected" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            val updatedAnswers =
-              answers.set(HaveSecondContactPage, true).success.value
+        forAll(arbitrary[UserAnswers]) { answers =>
+          val updatedAnswers =
+            answers.set(HaveSecondContactPage, true).success.value
 
-            navigator
-              .nextPage(HaveSecondContactPage, CheckMode, updatedAnswers)
-              .mustBe(routes.SecondContactNameController.onPageLoad(CheckMode))
+          navigator
+            .nextPage(HaveSecondContactPage, CheckMode, updatedAnswers)
+            .mustBe(routes.SecondContactNameController.onPageLoad(CheckMode))
         }
       }
 
       "must go from Have Second Contact page to Change Organisation Details page when 'NO' is selected" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            val updatedAnswers =
-              answers.set(HaveSecondContactPage, false).success.value
+        forAll(arbitrary[UserAnswers]) { answers =>
+          val updatedAnswers =
+            answers.set(HaveSecondContactPage, false).success.value
 
-            navigator
-              .nextPage(HaveSecondContactPage, CheckMode, updatedAnswers)
-              .mustBe(routes.ChangeContactDetailsController.onPageLoad())
+          navigator
+            .nextPage(HaveSecondContactPage, CheckMode, updatedAnswers)
+            .mustBe(routes.ChangeContactDetailsController.onPageLoad())
         }
       }
 
       "must go from Second Contact Name page to Second Contact Email page" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            navigator
-              .nextPage(SecondContactNamePage, CheckMode, answers)
-              .mustBe(routes.SecondContactEmailController.onPageLoad(CheckMode))
+        forAll(arbitrary[UserAnswers]) { answers =>
+          navigator
+            .nextPage(SecondContactNamePage, CheckMode, answers)
+            .mustBe(routes.SecondContactEmailController.onPageLoad(CheckMode))
         }
       }
 
       "must go from Second Contact Email page to Second Contact Have Phone page" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            navigator
-              .nextPage(SecondContactEmailPage, CheckMode, answers)
-              .mustBe(routes.SecondContactHavePhoneController.onPageLoad(CheckMode))
+        forAll(arbitrary[UserAnswers]) { answers =>
+          navigator
+            .nextPage(SecondContactEmailPage, CheckMode, answers)
+            .mustBe(routes.SecondContactHavePhoneController.onPageLoad(CheckMode))
         }
       }
 
       "must go from Second Contact Have Phone page to Second Contact Phone page when 'YES' is selected" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            val updatedAnswers =
-              answers.set(SecondContactHavePhonePage, true).success.value
+        forAll(arbitrary[UserAnswers]) { answers =>
+          val updatedAnswers =
+            answers.set(SecondContactHavePhonePage, true).success.value
 
-            navigator
-              .nextPage(SecondContactHavePhonePage, CheckMode, updatedAnswers)
-              .mustBe(routes.SecondContactPhoneController.onPageLoad(CheckMode))
+          navigator
+            .nextPage(SecondContactHavePhonePage, CheckMode, updatedAnswers)
+            .mustBe(routes.SecondContactPhoneController.onPageLoad(CheckMode))
         }
       }
 
       "must go from Second Contact Have Phone page to Change Organisation Details page when 'NO' is selected" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            val updatedAnswers =
-              answers.set(SecondContactHavePhonePage, false).success.value
+        forAll(arbitrary[UserAnswers]) { answers =>
+          val updatedAnswers =
+            answers.set(SecondContactHavePhonePage, false).success.value
 
-            navigator
-              .nextPage(SecondContactHavePhonePage, CheckMode, updatedAnswers)
-              .mustBe(routes.ChangeContactDetailsController.onPageLoad())
+          navigator
+            .nextPage(SecondContactHavePhonePage, CheckMode, updatedAnswers)
+            .mustBe(routes.ChangeContactDetailsController.onPageLoad())
         }
       }
 
       "must go from Second Contact Phone page to Change Organisation Details page" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            navigator
-              .nextPage(SecondContactPhonePage, CheckMode, answers)
-              .mustBe(routes.ChangeContactDetailsController.onPageLoad())
+        forAll(arbitrary[UserAnswers]) { answers =>
+          navigator
+            .nextPage(SecondContactPhonePage, CheckMode, answers)
+            .mustBe(routes.ChangeContactDetailsController.onPageLoad())
         }
       }
     }

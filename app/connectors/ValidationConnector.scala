@@ -24,6 +24,7 @@ import play.api.http.Status.OK
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
+import play.api.libs.ws.JsonBodyWritables._
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -38,29 +39,27 @@ class ValidationConnector @Inject() (http: HttpClientV2, config: FrontendAppConf
       .post(url)
       .withBody(Json.toJson(fileValidateRequest))
       .execute[HttpResponse]
-      .map {
-        response =>
-          response.status match {
-            case OK =>
-              response.json.as[SubmissionValidationResult] match {
-                case x: SubmissionValidationSuccess =>
-                  Right(x.messageSpecData)
-                case x: SubmissionValidationFailure =>
-                  Left(x.validationErrors)
-              }
-            case status =>
-              logger.warn(s"Unexpected response status $status: ${response.body}")
-              Left(NonFatalErrors(s"Unexpected response status $status: ${response.body}"))
-          }
+      .map { response =>
+        response.status match {
+          case OK =>
+            response.json.as[SubmissionValidationResult] match {
+              case x: SubmissionValidationSuccess =>
+                Right(x.messageSpecData)
+              case x: SubmissionValidationFailure =>
+                Left(x.validationErrors)
+            }
+          case status =>
+            logger.warn(s"Unexpected response status $status: ${response.body}")
+            Left(NonFatalErrors(s"Unexpected response status $status: ${response.body}"))
+        }
       }
-      .recover {
-        case NonFatal(e) =>
-          if (e.getMessage contains "Invalid XML") {
-            logger.warn(s"XML parsing failed. The XML parser in country-by-country-reporting backend has thrown the exception: $e")
-            Left(InvalidXmlError(e.getMessage))
-          } else {
-            logger.error(s"Remote service timed out. The XML parser in country-by-country-reporting backend backend has thrown the exception", e)
-            Left(NonFatalErrors(e.getMessage))
-          }
+      .recover { case NonFatal(e) =>
+        if (e.getMessage contains "Invalid XML") {
+          logger.warn(s"XML parsing failed. The XML parser in country-by-country-reporting backend has thrown the exception: $e")
+          Left(InvalidXmlError(e.getMessage))
+        } else {
+          logger.error(s"Remote service timed out. The XML parser in country-by-country-reporting backend backend has thrown the exception", e)
+          Left(NonFatalErrors(e.getMessage))
+        }
       }
 }

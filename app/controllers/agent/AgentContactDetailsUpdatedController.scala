@@ -39,20 +39,19 @@ class AgentContactDetailsUpdatedController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      for {
-        a <- Future.fromTry(request.userAnswers.remove(JourneyInProgressPage))
-        b <- Future.fromTry(a.set(IsMigratedAgentContactUpdatedPage, true))
-        _ <-
-          if (request.userAnswers.get(IsMigratedAgentContactUpdatedPage).isDefined) {
-            sessionRepository.set(b)
-          } else {
-            sessionRepository.set(a)
-          }
-      } yield {
-        val clientSelected = request.userAnswers.get(AgentClientIdPage).isDefined
-        Ok(view(clientSelected))
-      }
+  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    for {
+      a <- Future.fromTry(request.userAnswers.remove(JourneyInProgressPage))
+      b <- Future.fromTry(a.set(IsMigratedAgentContactUpdatedPage, true))
+      _ <-
+        if (request.userAnswers.get(IsMigratedAgentContactUpdatedPage).isDefined) {
+          sessionRepository.set(b)
+        } else {
+          sessionRepository.set(a)
+        }
+    } yield {
+      val clientSelected = request.userAnswers.get(AgentClientIdPage).isDefined
+      Ok(view(clientSelected))
+    }
   }
 }

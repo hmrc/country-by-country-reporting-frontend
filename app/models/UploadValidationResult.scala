@@ -23,9 +23,7 @@ case class GenericError(lineNumber: Int, message: Message)
 object GenericError {
 
   implicit def orderByLineNumber[A <: GenericError]: Ordering[A] =
-    Ordering.by(
-      ge => (ge.lineNumber, ge.message.messageKey)
-    )
+    Ordering.by(ge => (ge.lineNumber, ge.message.messageKey))
 
   implicit val format: OFormat[GenericError] = Json.format[GenericError]
 }

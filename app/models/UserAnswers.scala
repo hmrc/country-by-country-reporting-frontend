@@ -45,10 +45,9 @@ final case class UserAnswers(
         Failure(JsResultException(errors))
     }
 
-    updatedData.flatMap {
-      d =>
-        val updatedAnswers = copy(data = d)
-        page.cleanup(Some(value), updatedAnswers)
+    updatedData.flatMap { d =>
+      val updatedAnswers = copy(data = d)
+      page.cleanup(Some(value), updatedAnswers)
     }
   }
 
@@ -61,10 +60,9 @@ final case class UserAnswers(
         Success(data)
     }
 
-    updatedData.flatMap {
-      d =>
-        val updatedAnswers = copy(data = d)
-        page.cleanup(None, updatedAnswers)
+    updatedData.flatMap { d =>
+      val updatedAnswers = copy(data = d)
+      page.cleanup(None, updatedAnswers)
     }
   }
 }
@@ -72,29 +70,24 @@ final case class UserAnswers(
 object UserAnswers {
 
   def mongoFormat(encryptionEnabled: Boolean)(implicit crypto: Encrypter with Decrypter): OFormat[UserAnswers] = {
-    implicit val sensitiveFormat: Format[SensitiveJsObject] = {
+    implicit val sensitiveFormat: Format[SensitiveJsObject] =
       if (encryptionEnabled) {
         JsonEncryption.sensitiveEncrypterDecrypter(SensitiveJsObject.apply)
       } else {
         Json.format[SensitiveJsObject]
       }
-    }
     val reads: Reads[UserAnswers] =
       (
         (__ \ "_id").read[String] and
           (__ \ "data").read[SensitiveJsObject] and
           (__ \ "lastUpdated").read(MongoJavatimeFormats.instantFormat)
-      )(
-        (id, data, lastUpdated) => UserAnswers(id, data.decryptedValue, lastUpdated)
-      )
+      )((id, data, lastUpdated) => UserAnswers(id, data.decryptedValue, lastUpdated))
     val writes: OWrites[UserAnswers] =
       (
         (__ \ "_id").write[String] and
           (__ \ "data").write[SensitiveJsObject] and
           (__ \ "lastUpdated").write(MongoJavatimeFormats.instantFormat)
-      )(
-        ua => (ua.id, SensitiveJsObject(ua.data), ua.lastUpdated)
-      )
+      )(ua => (ua.id, SensitiveJsObject(ua.data), ua.lastUpdated))
     OFormat(reads, writes)
   }
 }

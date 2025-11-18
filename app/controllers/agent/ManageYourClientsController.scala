@@ -49,40 +49,35 @@ class ManageYourClientsController @Inject() (
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData.apply).async {
-    implicit request =>
-      Future.fromTry(request.userAnswers.getOrElse(UserAnswers(request.userId)).set(JourneyInProgressPage, true)).flatMap {
-        ua =>
-          sessionRepository.set(ua).flatMap {
-            _ =>
-              agentSubscriptionService.getAgentContactDetails(ua) flatMap {
-                case Some(agentUserAnswers) =>
-                  sessionRepository.set(agentUserAnswers).map {
-                    _ =>
-                      val preparedForm = ua.get(ManageYourClientsPage) match {
-                        case None        => form
-                        case Some(value) => form.fill(value)
-                      }
-                      Ok(view(preparedForm, mode))
-                  }
-                case _ =>
-                  Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData()).async { implicit request =>
+    Future.fromTry(request.userAnswers.getOrElse(UserAnswers(request.userId)).set(JourneyInProgressPage, true)).flatMap { ua =>
+      sessionRepository.set(ua).flatMap { _ =>
+        agentSubscriptionService.getAgentContactDetails(ua) flatMap {
+          case Some(agentUserAnswers) =>
+            sessionRepository.set(agentUserAnswers).map { _ =>
+              val preparedForm = ua.get(ManageYourClientsPage) match {
+                case None        => form
+                case Some(value) => form.fill(value)
               }
-          }
+              Ok(view(preparedForm, mode))
+            }
+          case _ =>
+            Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+        }
       }
+    }
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData.apply andThen requireData).async {
-    implicit request =>
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ManageYourClientsPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(ManageYourClientsPage, mode, updatedAnswers))
-        )
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ManageYourClientsPage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(ManageYourClientsPage, mode, updatedAnswers))
+      )
   }
 }

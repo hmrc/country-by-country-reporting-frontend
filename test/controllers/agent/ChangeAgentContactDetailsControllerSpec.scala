@@ -43,9 +43,9 @@ class ChangeAgentContactDetailsControllerSpec extends SpecBase with BeforeAndAft
     .withPage(AgentSecondContactEmailPage, "t2@test.com")
     .withPage(AgentSecondContactHavePhonePage, false)
 
-  override def beforeEach: Unit = {
+  override def beforeEach(): Unit = {
     reset(mockAgentSubscriptionService)
-    super.beforeEach
+    super.beforeEach()
   }
 
   "changeAgentContactDetails Controller" - {

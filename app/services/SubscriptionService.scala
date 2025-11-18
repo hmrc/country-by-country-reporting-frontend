@@ -39,16 +39,14 @@ class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnecto
         responseDetail.secondaryContact.get.organisationDetails.organisationName.toLowerCase.contains(migratedUserName))
 
   def getContactDetails(userAnswers: UserAnswers, subscriptionId: String)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] =
-    subscriptionConnector.readSubscription(subscriptionId: String) map {
-      responseOpt =>
-        responseOpt.flatMap {
-          responseDetail =>
-            if (isUserVisitingAfterMigration(responseDetail)) {
-              storePrimaryContactInfo(userAnswers, responseDetail)
-            } else {
-              populateUserAnswers(responseDetail, userAnswers)
-            }
+    subscriptionConnector.readSubscription(subscriptionId: String) map { responseOpt =>
+      responseOpt.flatMap { responseDetail =>
+        if (isUserVisitingAfterMigration(responseDetail)) {
+          storePrimaryContactInfo(userAnswers, responseDetail)
+        } else {
+          populateUserAnswers(responseDetail, userAnswers)
         }
+      }
     }
 
   private def storePrimaryContactInfo(userAnswers: UserAnswers, responseDetail: ResponseDetail): Option[UserAnswers] = (for {
@@ -124,13 +122,12 @@ class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnecto
   }
 
   private def populateUserAnswers(responseDetail: ResponseDetail, userAnswers: UserAnswers): Option[UserAnswers] =
-    populateContactInfo[PrimaryContactDetailsPages](userAnswers, responseDetail.primaryContact, isSecondaryContact = false) map {
-      uaWithPrimaryContact =>
-        responseDetail.secondaryContact
-          .flatMap {
-            sc => populateContactInfo[SecondaryContactDetailsPages](uaWithPrimaryContact, sc, isSecondaryContact = true)
-          }
-          .getOrElse(uaWithPrimaryContact)
+    populateContactInfo[PrimaryContactDetailsPages](userAnswers, responseDetail.primaryContact, isSecondaryContact = false) map { uaWithPrimaryContact =>
+      responseDetail.secondaryContact
+        .flatMap { sc =>
+          populateContactInfo[SecondaryContactDetailsPages](uaWithPrimaryContact, sc, isSecondaryContact = true)
+        }
+        .getOrElse(uaWithPrimaryContact)
     }
 
   private def populateContactInfo[T <: ContactTypePage](userAnswers: UserAnswers, contactInformation: ContactInformation, isSecondaryContact: Boolean)(implicit

@@ -51,7 +51,7 @@ class SessionRepositoryISpec
   private val userAnswers = UserAnswers("id", Json.obj("foo" -> "bar"), Instant.ofEpochSecond(1))
 
   private val mockAppConfig = mock[FrontendAppConfig]
-  when(mockAppConfig.cacheTtl) thenReturn 1
+  when(mockAppConfig.cacheTtl) thenReturn 1L
 
   when(mockAppConfig.encryptionEnabled) thenReturn true
 
@@ -63,7 +63,7 @@ class SessionRepositoryISpec
 
   implicit val crypto: Encrypter with Decrypter = new CryptoProvider(Configuration("crypto.key" -> randomAesKey)).get()
 
-  override protected val repository = new SessionRepository(
+  override protected val repository: SessionRepository = new SessionRepository(
     mongoComponent = mongoComponent,
     appConfig = mockAppConfig,
     clock = stubClock

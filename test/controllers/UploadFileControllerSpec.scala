@@ -152,11 +152,10 @@ class UploadFileControllerSpec extends SpecBase with Injecting with ScalaCheckPr
       status(result) mustEqual OK
       contentAsString(result) mustEqual view(form(), UpscanInitiateResponse(Reference(""), "target", Map.empty))(request, messages(application)).toString
 
-      verify(mockSessionRepository).set(argThat {
-        answers: UserAnswers =>
-          answers.get(FileReferencePage).isDefined &&
-          answers.get(UploadIDPage).isDefined &&
-          answers.get(ValidXMLPage).isEmpty
+      verify(mockSessionRepository).set(argThat { (answers: UserAnswers) =>
+        answers.get(FileReferencePage).isDefined &&
+        answers.get(UploadIDPage).isDefined &&
+        answers.get(ValidXMLPage).isEmpty
       })
     }
 

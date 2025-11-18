@@ -44,18 +44,17 @@ class CheckYourFileDetailsController @Inject() (
     with I18nSupport
     with Logging {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData andThen validateDataAction) {
-    implicit request =>
-      request.userAnswers.get(ValidXMLPage) match {
-        case Some(details) =>
-          val detailsList = SummaryListViewModel(getSummaryRows(details))
-            .withoutBorders()
-            .withCssClass("govuk-!-margin-bottom-0")
-          Ok(view(detailsList))
-        case _ =>
-          logger.warn("CheckYourFileDetailsController: Unable to retrieve XML information from UserAnswers")
-          Redirect(routes.FileProblemSomeInformationMissingController.onPageLoad())
-      }
+  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData andThen validateDataAction) { implicit request =>
+    request.userAnswers.get(ValidXMLPage) match {
+      case Some(details) =>
+        val detailsList = SummaryListViewModel(getSummaryRows(details))
+          .withoutBorders()
+          .withCssClass("govuk-!-margin-bottom-0")
+        Ok(view(detailsList))
+      case _ =>
+        logger.warn("CheckYourFileDetailsController: Unable to retrieve XML information from UserAnswers")
+        Redirect(routes.FileProblemSomeInformationMissingController.onPageLoad())
+    }
   }
 
   private def getSummaryRows(fileDetails: ValidatedFileData)(implicit request: DataRequest[AnyContent]): Seq[SummaryListRow] =

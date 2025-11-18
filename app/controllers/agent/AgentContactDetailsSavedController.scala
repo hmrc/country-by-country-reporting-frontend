@@ -39,17 +39,16 @@ class AgentContactDetailsSavedController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      for {
-        a <- Future.fromTry(request.userAnswers.remove(JourneyInProgressPage))
-        b <- Future.fromTry(a.set(IsMigratedAgentContactUpdatedPage, true))
-        _ <-
-          if (request.userAnswers.get(IsMigratedAgentContactUpdatedPage).isDefined) {
-            sessionRepository.set(b)
-          } else {
-            sessionRepository.set(a)
-          }
-      } yield Ok(view())
+  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    for {
+      a <- Future.fromTry(request.userAnswers.remove(JourneyInProgressPage))
+      b <- Future.fromTry(a.set(IsMigratedAgentContactUpdatedPage, true))
+      _ <-
+        if (request.userAnswers.get(IsMigratedAgentContactUpdatedPage).isDefined) {
+          sessionRepository.set(b)
+        } else {
+          sessionRepository.set(a)
+        }
+    } yield Ok(view())
   }
 }

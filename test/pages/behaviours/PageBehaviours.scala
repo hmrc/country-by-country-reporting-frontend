@@ -43,9 +43,8 @@ trait PageBehaviours extends AnyFreeSpec with Matchers with ScalaCheckPropertyCh
               userAnswers <- arbitrary[UserAnswers]
             } yield (page, userAnswers.remove(page).success.value)
 
-            forAll(gen) {
-              case (page, userAnswers) =>
-                userAnswers.get(page) must be(empty)
+            forAll(gen) { case (page, userAnswers) =>
+              userAnswers.get(page) must be(empty)
             }
           }
         }
@@ -60,9 +59,8 @@ trait PageBehaviours extends AnyFreeSpec with Matchers with ScalaCheckPropertyCh
               userAnswers <- arbitrary[UserAnswers]
             } yield (page, savedValue, userAnswers.set(page, savedValue).success.value)
 
-            forAll(gen) {
-              case (page, savedValue, userAnswers) =>
-                userAnswers.get(page).value mustEqual savedValue
+            forAll(gen) { case (page, savedValue, userAnswers) =>
+              userAnswers.get(page).value mustEqual savedValue
             }
           }
         }
@@ -80,10 +78,9 @@ trait PageBehaviours extends AnyFreeSpec with Matchers with ScalaCheckPropertyCh
           userAnswers <- arbitrary[UserAnswers]
         } yield (page, newValue, userAnswers)
 
-        forAll(gen) {
-          case (page, newValue, userAnswers) =>
-            val updatedAnswers = userAnswers.set(page, newValue).success.value
-            updatedAnswers.get(page).value mustEqual newValue
+        forAll(gen) { case (page, newValue, userAnswers) =>
+          val updatedAnswers = userAnswers.set(page, newValue).success.value
+          updatedAnswers.get(page).value mustEqual newValue
         }
       }
   }
@@ -99,10 +96,9 @@ trait PageBehaviours extends AnyFreeSpec with Matchers with ScalaCheckPropertyCh
           userAnswers <- arbitrary[UserAnswers]
         } yield (page, userAnswers.set(page, savedValue).success.value)
 
-        forAll(gen) {
-          case (page, userAnswers) =>
-            val updatedAnswers = userAnswers.remove(page).success.value
-            updatedAnswers.get(page) must be(empty)
+        forAll(gen) { case (page, userAnswers) =>
+          val updatedAnswers = userAnswers.remove(page).success.value
+          updatedAnswers.get(page) must be(empty)
         }
       }
   }

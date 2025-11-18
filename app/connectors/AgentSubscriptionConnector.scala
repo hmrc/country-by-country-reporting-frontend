@@ -25,6 +25,7 @@ import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
 import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
+import play.api.libs.ws.JsonBodyWritables._
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -47,10 +48,9 @@ class AgentSubscriptionConnector @Inject() (val config: FrontendAppConfig, val h
           logger.warn(s"Unable to create an agent subscription to ETMP. ${response.status} response status")
           None
       }
-      .recover {
-        case e: Exception =>
-          logger.error(s"An Error  has been thrown when create agent subscription was called", e)
-          None
+      .recover { case e: Exception =>
+        logger.error(s"An Error  has been thrown when create agent subscription was called", e)
+        None
       }
   }
 
@@ -69,10 +69,9 @@ class AgentSubscriptionConnector @Inject() (val config: FrontendAppConfig, val h
           logger.warn(s"checkSubscriptionExists: Status $otherStatus has been thrown when read agent subscription was called")
           None
       }
-      .recover {
-        case e: Exception =>
-          logger.error(s"checkSubscriptionExists: An error has been thrown when read agent subscription was called", e)
-          None
+      .recover { case e: Exception =>
+        logger.error(s"checkSubscriptionExists: An error has been thrown when read agent subscription was called", e)
+        None
       }
   }
 
@@ -90,10 +89,9 @@ class AgentSubscriptionConnector @Inject() (val config: FrontendAppConfig, val h
           logger.warn(s"readSubscription: Status $otherStatus has been thrown when read agent subscription was called")
           None
       }
-      .recover {
-        case e: Exception =>
-          logger.error(s"readSubscription: An error has been thrown when read agent subscription was called", e)
-          None
+      .recover { case e: Exception =>
+        logger.error(s"readSubscription: An error has been thrown when read agent subscription was called", e)
+        None
       }
   }
 
@@ -104,10 +102,9 @@ class AgentSubscriptionConnector @Inject() (val config: FrontendAppConfig, val h
       .post(url)
       .withBody(Json.toJson(requestDetail))
       .execute[HttpResponse]
-      .map {
-        responseMessage =>
-          logger.warn(s"updateSubscription: Status ${responseMessage.status} has been received when update agent subscription was called")
-          is2xx(responseMessage.status)
+      .map { responseMessage =>
+        logger.warn(s"updateSubscription: Status ${responseMessage.status} has been received when update agent subscription was called")
+        is2xx(responseMessage.status)
       }
   }
 

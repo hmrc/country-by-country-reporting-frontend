@@ -75,9 +75,7 @@ trait Formatters {
               nonFatalCatch
                 .either(s.toInt)
                 .left
-                .map(
-                  _ => Seq(FormError(key, nonNumericKey, args))
-                )
+                .map(_ => Seq(FormError(key, nonNumericKey, args)))
           }
 
       override def unbind(key: String, value: Int) =
@@ -92,11 +90,10 @@ trait Formatters {
       private val baseFormatter = stringFormatter(requiredKey, args)
 
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], A] =
-        baseFormatter.bind(key, data).right.flatMap {
-          str =>
-            ev.withName(str)
-              .map(Right.apply)
-              .getOrElse(Left(Seq(FormError(key, invalidKey, args))))
+        baseFormatter.bind(key, data).right.flatMap { str =>
+          ev.withName(str)
+            .map(Right.apply)
+            .getOrElse(Left(Seq(FormError(key, invalidKey, args))))
         }
 
       override def unbind(key: String, value: A): Map[String, String] =

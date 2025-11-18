@@ -45,42 +45,39 @@ class ChangeClientContactDetailsController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] =
-    (identify andThen getData.apply andThen requireData andThen checkForSubmission()
+    (identify andThen getData() andThen requireData andThen checkForSubmission()
       andThen validationSubmissionDataAction())
-      .async {
-        implicit request =>
-          val checkUserAnswersHelper = ClientCheckYourAnswersHelper(request.userAnswers)
+      .async { implicit request =>
+        val checkUserAnswersHelper = ClientCheckYourAnswersHelper(request.userAnswers)
 
-          val primaryContactList = SummaryListViewModel(
-            rows = checkUserAnswersHelper.getPrimaryContactDetails
-          )
+        val primaryContactList = SummaryListViewModel(
+          rows = checkUserAnswersHelper.getPrimaryContactDetails
+        )
 
-          val secondaryContactList = SummaryListViewModel(
-            rows = checkUserAnswersHelper.getSecondaryContactDetails
-          )
+        val secondaryContactList = SummaryListViewModel(
+          rows = checkUserAnswersHelper.getSecondaryContactDetails
+        )
 
-          subscriptionService.isContactInformationUpdated(request.userAnswers, request.subscriptionId) map {
-            case Some((hasChanged, isFirstVisitAfterMigration)) =>
-              Ok(
-                view(primaryContactList, secondaryContactList, hasChanged, isFirstVisitAfterMigration)
-              )
-            case _ => InternalServerError(errorView())
-          }
+        subscriptionService.isContactInformationUpdated(request.userAnswers, request.subscriptionId) map {
+          case Some((hasChanged, isFirstVisitAfterMigration)) =>
+            Ok(
+              view(primaryContactList, secondaryContactList, hasChanged, isFirstVisitAfterMigration)
+            )
+          case _ => InternalServerError(errorView())
+        }
       }
 
-  def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      subscriptionService.doContactDetailsExist(request.subscriptionId) flatMap {
-        contactDetailsExist =>
-          subscriptionService.updateContactDetails(request.userAnswers, request.subscriptionId) map {
-            case true =>
-              contactDetailsExist match {
-                case Some(true)  => Redirect(routes.ClientDetailsUpdatedController.onPageLoad())
-                case Some(false) => Redirect(routes.ClientContactDetailsSavedController.onPageLoad())
-                case _           => InternalServerError(errorView())
-              }
-            case false => InternalServerError(errorView())
+  def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    subscriptionService.doContactDetailsExist(request.subscriptionId) flatMap { contactDetailsExist =>
+      subscriptionService.updateContactDetails(request.userAnswers, request.subscriptionId) map {
+        case true =>
+          contactDetailsExist match {
+            case Some(true)  => Redirect(routes.ClientDetailsUpdatedController.onPageLoad())
+            case Some(false) => Redirect(routes.ClientContactDetailsSavedController.onPageLoad())
+            case _           => InternalServerError(errorView())
           }
+        case false => InternalServerError(errorView())
       }
+    }
   }
 }

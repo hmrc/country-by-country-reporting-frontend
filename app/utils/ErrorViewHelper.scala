@@ -25,11 +25,10 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.table.TableRow
 class ErrorViewHelper @Inject() () {
 
   def generateTable(error: Seq[GenericError])(implicit messages: Messages): Seq[Seq[TableRow]] =
-    error.map {
-      er =>
-        Seq(
-          TableRow(content = Text(er.lineNumber.toString), classes = "govuk-table__cell--numeric", attributes = Map("id" -> s"lineNumber_${er.lineNumber}")),
-          TableRow(content = Text(messages(er.message.messageKey, er.message.args: _*)), attributes = Map("id" -> s"errorMessage_${er.lineNumber}"))
-        )
+    error.map { er =>
+      Seq(
+        TableRow(content = Text(er.lineNumber.toString), classes = "govuk-table__cell--numeric", attributes = Map("id" -> s"lineNumber_${er.lineNumber}")),
+        TableRow(content = Text(messages(er.message.messageKey, er.message.args: _*)), attributes = Map("id" -> s"errorMessage_${er.lineNumber}"))
+      )
     }
 }

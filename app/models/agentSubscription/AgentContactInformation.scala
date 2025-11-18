@@ -29,7 +29,7 @@ object AgentDetails {
   }
 
   implicit val writes: Writes[AgentDetails] =
-    (__ \ "organisation" \ "organisationName").write[String] contramap unlift(AgentDetails.unapply)
+    (__ \ "organisation" \ "organisationName").write[String] contramap unlift(a => Some(a.organisationName))
 
 }
 
@@ -54,6 +54,6 @@ object AgentContactInformation {
         (__ \ "email").write[String] and
         (__ \ "phone").writeNullable[String] and
         (__ \ "mobile").writeNullable[String]
-    )(unlift(AgentContactInformation.unapply))
+    )(a => (a.agentDetails, a.email, a.phone, a.mobile))
   }
 }

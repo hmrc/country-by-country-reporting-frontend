@@ -6,7 +6,7 @@ import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
 lazy val appName: String = "country-by-country-reporting-frontend"
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.16"
+ThisBuild / scalaVersion := "3.3.5"
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
@@ -52,7 +52,8 @@ lazy val root = (project in file("."))
       ".*ControllerConfiguration",
       ".*LanguageSwitchController",
       ".*handlers.*",
-      ".*utils.*",
+      ".*/utils/.*",
+      ".*/models/.*",
       ".*Repository.*",
       ".*repositories.*",
       ".*components.*",
@@ -62,7 +63,7 @@ lazy val root = (project in file("."))
     ScoverageKeys.coverageMinimumStmtTotal := 85,
     ScoverageKeys.coverageFailOnMinimum    := true,
     ScoverageKeys.coverageHighlighting     := true,
-    scalacOptions ++= Seq("-feature", "-Xlint:-byname-implicit"),
+    scalacOptions ++= Seq("-feature"),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged := true,
     // concatenate js
@@ -87,17 +88,17 @@ lazy val root = (project in file("."))
     uglify / includeFilter := GlobFilter("application.js")
   )
   .settings(
-    scalacOptions ++= Seq("-Ypatmat-exhaust-depth", "off"),
     scalacOptions ++= Seq(
-      "-Wconf:cat=unused-imports&site=.*views\\.html.*:s",
-      "-Wconf:src=.+/test/.+:s",
-      "-Wconf:cat=deprecation&msg=\\.*()\\.*:s",
-      "-Wconf:cat=unused-imports&site=<empty>:s",
-      "-Wconf:cat=unused&src=.*RoutesPrefix\\.scala:s",
-      "-Wconf:cat=unused&src=.*Routes\\.scala:s",
-      "-Wconf:cat=unused&src=.*ReverseRoutes\\.scala:s",
-      "-Wconf:cat=unused&src=.*JavaScriptReverseRoutes\\.scala:s"
-    )
+      "-release", "11",
+      "-Wconf:src=views/.*:s",
+      "-Wconf:src=routes/.*:s",
+      "-Wconf:src=.*/Routes.scala:s",
+      "-Wconf:src=.*/RoutesPrefix.scala:s",
+      "-Wconf:src=.*/ReverseRoutes.scala:s",
+      "-Wconf:src=.*/test/.*:s",
+      "-Wconf:cat=deprecation:s"
+    ),
+    scalacOptions := scalacOptions.value.distinct
   )
 
 lazy val testSettings: Seq[Def.Setting[_]] = Seq(
@@ -105,11 +106,11 @@ lazy val testSettings: Seq[Def.Setting[_]] = Seq(
   javaOptions ++= Seq(
     "-Dconfig.resource=test.application.conf"
   ),
-  unmanagedSourceDirectories += baseDirectory.value / "test-utils"
+  Test / unmanagedSourceDirectories += baseDirectory.value / "test-utils"
 )
 
 lazy val it = project
   .enablePlugins(PlayScala)
   .dependsOn(root % "test->test")
-  .settings(DefaultBuildSettings.itSettings())
+  .settings(DefaultBuildSettings.itSettings(), scalacOptions := scalacOptions.value.distinct)
   .settings(libraryDependencies ++= AppDependencies.itDependencies)

@@ -119,9 +119,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
 
         stubPostResponse(readSubscriptionUrl, OK, agentResponseDetailString)
 
-        whenReady(connector.checkSubscriptionExists()) {
-          result =>
-            result mustBe Some(true)
+        whenReady(connector.checkSubscriptionExists()) { result =>
+          result mustBe Some(true)
         }
       }
 
@@ -130,9 +129,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
 
         stubPostResponse(readSubscriptionUrl, NOT_FOUND)
 
-        whenReady(connector.checkSubscriptionExists()) {
-          result =>
-            result mustBe Some(false)
+        whenReady(connector.checkSubscriptionExists()) { result =>
+          result mustBe Some(false)
         }
       }
 
@@ -141,9 +139,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
 
         stubPostResponse(readSubscriptionUrl, INTERNAL_SERVER_ERROR)
 
-        whenReady(connector.readSubscription()) {
-          result =>
-            result mustBe None
+        whenReady(connector.readSubscription()) { result =>
+          result mustBe None
         }
       }
     }
@@ -154,9 +151,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
 
         stubPostResponse(readSubscriptionUrl, OK, agentResponseDetailString)
 
-        whenReady(connector.readSubscription()) {
-          result =>
-            result mustBe Some(agentResponseDetail)
+        whenReady(connector.readSubscription()) { result =>
+          result mustBe Some(agentResponseDetail)
         }
       }
 
@@ -165,9 +161,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
 
         stubPostResponse(readSubscriptionUrl, INTERNAL_SERVER_ERROR)
 
-        whenReady(connector.readSubscription()) {
-          result =>
-            result mustBe None
+        whenReady(connector.readSubscription()) { result =>
+          result mustBe None
         }
       }
     }
@@ -179,9 +174,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
         val agentRequestDetails = Arbitrary.arbitrary[AgentRequestDetailForUpdate].sample.value
         stubPostResponse(updateSubscriptionUrl, OK)
 
-        whenReady(connector.updateSubscription(agentRequestDetails)) {
-          result =>
-            result mustBe true
+        whenReady(connector.updateSubscription(agentRequestDetails)) { result =>
+          result mustBe true
         }
       }
 
@@ -193,9 +187,8 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
         val errorCode = errorCodes.sample.value
         stubPostResponse(updateSubscriptionUrl, errorCode)
 
-        whenReady(connector.updateSubscription(agentRequestDetails)) {
-          result =>
-            result mustBe false
+        whenReady(connector.updateSubscription(agentRequestDetails)) { result =>
+          result mustBe false
         }
       }
     }

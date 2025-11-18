@@ -48,36 +48,32 @@ class AgentIsThisYourClientController @Inject() (
 
   val form = formProvider()
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      val preparedForm = request.userAnswers.get(AgentIsThisYourClientPage) match {
-        case None        => form
-        case Some(value) => form.fill(value)
-      }
+  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    val preparedForm = request.userAnswers.get(AgentIsThisYourClientPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      for {
-        _           <- removeClient(request.userAnswers)
-        tradingName <- subscriptionService.getTradingName(request.subscriptionId)
-      } yield Ok(view(preparedForm, request.subscriptionId, tradingName.getOrElse("")))
+    for {
+      _           <- removeClient(request.userAnswers)
+      tradingName <- subscriptionService.getTradingName(request.subscriptionId)
+    } yield Ok(view(preparedForm, request.subscriptionId, tradingName.getOrElse("")))
   }
 
-  def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-
-    implicit request =>
-      subscriptionService.getTradingName(request.subscriptionId).flatMap {
-        tradingName =>
-          form
-            .bindFromRequest()
-            .fold(
-              formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.subscriptionId, tradingName.getOrElse("")))),
-              value =>
-                for {
-                  updatedAnswers       <- Future.fromTry(request.userAnswers.set(AgentIsThisYourClientPage, value))
-                  updatedClientDetails <- setClient(value, request.subscriptionId, tradingName, updatedAnswers)
-                  _                    <- sessionRepository.set(updatedClientDetails)
-                } yield Redirect(navigator.nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers))
-            )
-      }
+  def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    subscriptionService.getTradingName(request.subscriptionId).flatMap { tradingName =>
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.subscriptionId, tradingName.getOrElse("")))),
+          value =>
+            for {
+              updatedAnswers       <- Future.fromTry(request.userAnswers.set(AgentIsThisYourClientPage, value))
+              updatedClientDetails <- setClient(value, request.subscriptionId, tradingName, updatedAnswers)
+              _                    <- sessionRepository.set(updatedClientDetails)
+            } yield Redirect(navigator.nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers))
+        )
+    }
   }
 
   private def setClient(isThisYourClient: Boolean, subscriptionId: String, tradingName: Option[String], userAnswers: UserAnswers): Future[UserAnswers] =

@@ -69,9 +69,8 @@ class SubscriptionConnectorSpec extends Connector {
 
         stubPostResponse(readSubscriptionUrl, OK, responseDetailString)
 
-        whenReady(connector.readSubscription(cbcId)) {
-          result =>
-            result mustBe Some(responseDetail)
+        whenReady(connector.readSubscription(cbcId)) { result =>
+          result mustBe Some(responseDetail)
         }
       }
 
@@ -80,9 +79,8 @@ class SubscriptionConnectorSpec extends Connector {
 
         stubPostResponse(readSubscriptionUrl, INTERNAL_SERVER_ERROR)
 
-        whenReady(connector.readSubscription(cbcId)) {
-          result =>
-            result mustBe None
+        whenReady(connector.readSubscription(cbcId)) { result =>
+          result mustBe None
         }
       }
     }
@@ -94,9 +92,8 @@ class SubscriptionConnectorSpec extends Connector {
         val requestDetails = Arbitrary.arbitrary[RequestDetailForUpdate].sample.value
         stubPostResponse(updateSubscriptionUrl, OK)
 
-        whenReady(connector.updateSubscription(requestDetails)) {
-          result =>
-            result mustBe true
+        whenReady(connector.updateSubscription(requestDetails)) { result =>
+          result mustBe true
         }
       }
 
@@ -108,9 +105,8 @@ class SubscriptionConnectorSpec extends Connector {
         val errorCode = errorCodes.sample.value
         stubPostResponse(updateSubscriptionUrl, errorCode)
 
-        whenReady(connector.updateSubscription(requestDetails)) {
-          result =>
-            result mustBe false
+        whenReady(connector.updateSubscription(requestDetails)) { result =>
+          result mustBe false
         }
       }
     }

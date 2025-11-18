@@ -37,8 +37,8 @@ object AgentClientDetailsViewModel {
         actions = Seq(
           ActionItemViewModel(
             content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
-              "manageYourClients.change.hidden"
-            )}</span>"""),
+                "manageYourClients.change.hidden"
+              )}</span>"""),
             href = controllers.agent.routes.ManageYourClientsController.onPageLoad().url
           )
             .withAttribute(("id", "change"))

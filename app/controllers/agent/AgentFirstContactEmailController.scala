@@ -48,27 +48,25 @@ class AgentFirstContactEmailController @Inject() (
 
   val form = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.get(AgentFirstContactEmailPage) match {
-        case None        => form
-        case Some(value) => form.fill(value)
-      }
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) { implicit request =>
+    val preparedForm = request.userAnswers.get(AgentFirstContactEmailPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      Ok(view(preparedForm, mode, getAgentFirstContactName(request.userAnswers)))
+    Ok(view(preparedForm, mode, getAgentFirstContactName(request.userAnswers)))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, contactName = getAgentFirstContactName(request.userAnswers)))),
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentFirstContactEmailPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(AgentFirstContactEmailPage, mode, updatedAnswers))
-        )
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, contactName = getAgentFirstContactName(request.userAnswers)))),
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentFirstContactEmailPage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(AgentFirstContactEmailPage, mode, updatedAnswers))
+      )
   }
 }

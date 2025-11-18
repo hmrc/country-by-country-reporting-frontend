@@ -167,9 +167,8 @@ object BusinessRuleErrorCode {
     ReportingRoleOECD0IsNotTheSame2
   )
 
-  implicit val writes: Writes[BusinessRuleErrorCode] = Writes[BusinessRuleErrorCode] {
-    x =>
-      JsString(x.code)
+  implicit val writes: Writes[BusinessRuleErrorCode] = Writes[BusinessRuleErrorCode] { x =>
+    JsString(x.code)
   }
 
   implicit val reads: Reads[BusinessRuleErrorCode] = __.read[String].map {

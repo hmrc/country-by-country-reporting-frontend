@@ -18,7 +18,7 @@ package utils
 
 import base.SpecBase
 import models.CheckMode
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalatest.matchers.should.Matchers._
 import pages._
 
 class CheckYourAnswersValidatorSpec extends SpecBase {

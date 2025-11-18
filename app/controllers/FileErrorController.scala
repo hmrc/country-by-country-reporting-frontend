@@ -39,14 +39,13 @@ class FileErrorController @Inject() (
     with I18nSupport
     with Logging {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      request.userAnswers.get(InvalidXMLPage) match {
-        case Some(fileName) =>
-          Future.successful(Ok(view(fileName)))
-        case None =>
-          logger.error("File name missing for file error page")
-          Future.successful(InternalServerError(errorView()))
-      }
+  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    request.userAnswers.get(InvalidXMLPage) match {
+      case Some(fileName) =>
+        Future.successful(Ok(view(fileName)))
+      case None =>
+        logger.error("File name missing for file error page")
+        Future.successful(InternalServerError(errorView()))
+    }
   }
 }

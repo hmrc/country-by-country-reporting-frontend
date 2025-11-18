@@ -37,16 +37,15 @@ class AgentSomeInformationMissingController @Inject() (
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) {
-    implicit request =>
-      val answers  = request.userAnswers
-      val validate = AgentCheckYourAnswersValidator(answers)
-      val mode     = if (answers.get(JourneyInProgressPage).getOrElse(false)) CheckMode else NormalMode
+  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) { implicit request =>
+    val answers  = request.userAnswers
+    val validate = AgentCheckYourAnswersValidator(answers)
+    val mode     = if (answers.get(JourneyInProgressPage).getOrElse(false)) CheckMode else NormalMode
 
-      val redirectUrl = validate.changeAnswersRedirectUrl(mode) match {
-        case Some(value) => value
-        case None        => controllers.agent.routes.AgentFirstContactNameController.onPageLoad(NormalMode).url
-      }
-      Ok(view(redirectUrl))
+    val redirectUrl = validate.changeAnswersRedirectUrl(mode) match {
+      case Some(value) => value
+      case None        => controllers.agent.routes.AgentFirstContactNameController.onPageLoad(NormalMode).url
+    }
+    Ok(view(redirectUrl))
   }
 }
