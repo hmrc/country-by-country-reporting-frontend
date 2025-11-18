@@ -28,6 +28,7 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.xml.transform.{RewriteRule, RuleTransformer}
 import scala.xml.{Elem, Node, NodeSeq}
+import play.api.libs.ws.DefaultBodyWritables._
 
 class TestSubmissionConnector @Inject() (httpClient: HttpClientV2, config: FrontendAppConfig) extends Logging {
 

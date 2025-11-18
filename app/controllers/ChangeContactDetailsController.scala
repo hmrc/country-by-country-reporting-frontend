@@ -50,31 +50,29 @@ class ChangeContactDetailsController @Inject() (
   private def isOrganisationAndFirstVisitAfterMigration(isFirstVisitAfterMigration: Boolean)(implicit request: DataRequest[AnyContent]): Boolean =
     (request.userType == AffinityGroup.Organisation) & isFirstVisitAfterMigration
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData.apply
-    andThen requireData andThen checkForSubmission() andThen validationSubmissionDataAction()).async {
-    implicit request =>
-      val checkUserAnswersHelper = CheckYourAnswersHelper(request.userAnswers)
-      val primaryContactList = SummaryListViewModel(
-        rows = checkUserAnswersHelper.getPrimaryContactDetails
-      )
-      val secondaryContactList = SummaryListViewModel(
-        rows = checkUserAnswersHelper.getSecondaryContactDetails
-      )
+  def onPageLoad: Action[AnyContent] = (identify andThen getData()
+    andThen requireData andThen checkForSubmission() andThen validationSubmissionDataAction()).async { implicit request =>
+    val checkUserAnswersHelper = CheckYourAnswersHelper(request.userAnswers)
+    val primaryContactList = SummaryListViewModel(
+      rows = checkUserAnswersHelper.getPrimaryContactDetails
+    )
+    val secondaryContactList = SummaryListViewModel(
+      rows = checkUserAnswersHelper.getSecondaryContactDetails
+    )
 
-      subscriptionService.isContactInformationUpdated(request.userAnswers, request.subscriptionId) map {
-        case Some((hasChanged, isFirstVisitAfterMigration)) =>
-          Ok(
-            view(primaryContactList, secondaryContactList, frontendAppConfig, hasChanged, isOrganisationAndFirstVisitAfterMigration(isFirstVisitAfterMigration))
-          )
-        case _ => InternalServerError(errorView())
-      }
+    subscriptionService.isContactInformationUpdated(request.userAnswers, request.subscriptionId) map {
+      case Some((hasChanged, isFirstVisitAfterMigration)) =>
+        Ok(
+          view(primaryContactList, secondaryContactList, frontendAppConfig, hasChanged, isOrganisationAndFirstVisitAfterMigration(isFirstVisitAfterMigration))
+        )
+      case _ => InternalServerError(errorView())
+    }
   }
 
-  def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      subscriptionService.updateContactDetails(request.userAnswers, request.subscriptionId) map {
-        case true  => Redirect(routes.DetailsUpdatedController.onPageLoad())
-        case false => InternalServerError(errorView())
-      }
+  def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    subscriptionService.updateContactDetails(request.userAnswers, request.subscriptionId) map {
+      case true  => Redirect(routes.DetailsUpdatedController.onPageLoad())
+      case false => InternalServerError(errorView())
+    }
   }
 }

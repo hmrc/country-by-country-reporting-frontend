@@ -40,11 +40,10 @@ class FileStatusController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      fileConnector.getAllFileDetails(request.subscriptionId) map {
-        case Some(allFiles) => Ok(view(FileStatusViewModel.createStatusTable(allFiles)))
-        case _              => InternalServerError(errorView())
-      }
+  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    fileConnector.getAllFileDetails(request.subscriptionId) map {
+      case Some(allFiles) => Ok(view(FileStatusViewModel.createStatusTable(allFiles)))
+      case _              => InternalServerError(errorView())
+    }
   }
 }

@@ -64,11 +64,10 @@ class AgentSubscriptionRequestSpec extends SpecBase {
 
       val result = AgentSubscriptionRequest.createAgentSubscriptionRequest(arnValue, userAnswers)
 
-      inside(result) {
-        case Right(agentSubscriptionRequest) =>
-          agentSubscriptionRequest.requestCommon mustBe a[AgentRequestCommonForSubscription]
-          agentSubscriptionRequest.requestDetail mustBe
-            AgentRequestDetail(arn, arnValue, None, isGBUser = true, AgentContactInformation(AgentDetails(name), email, Some(phone), None), None)
+      inside(result) { case Right(agentSubscriptionRequest) =>
+        agentSubscriptionRequest.requestCommon mustBe a[AgentRequestCommonForSubscription]
+        agentSubscriptionRequest.requestDetail mustBe
+          AgentRequestDetail(arn, arnValue, None, isGBUser = true, AgentContactInformation(AgentDetails(name), email, Some(phone), None), None)
       }
     }
 
@@ -105,18 +104,17 @@ class AgentSubscriptionRequestSpec extends SpecBase {
 
       val result = AgentSubscriptionRequest.createAgentSubscriptionRequest(arnValue, userAnswers)
 
-      inside(result) {
-        case Right(agentSubscriptionRequest) =>
-          agentSubscriptionRequest.requestCommon mustBe a[AgentRequestCommonForSubscription]
-          agentSubscriptionRequest.requestDetail mustBe
-            AgentRequestDetail(
-              arn,
-              arnValue,
-              None,
-              isGBUser = true,
-              AgentContactInformation(AgentDetails(name), email, Some(phone), None),
-              Some(AgentContactInformation(AgentDetails(name), email, Some(phone), None))
-            )
+      inside(result) { case Right(agentSubscriptionRequest) =>
+        agentSubscriptionRequest.requestCommon mustBe a[AgentRequestCommonForSubscription]
+        agentSubscriptionRequest.requestDetail mustBe
+          AgentRequestDetail(
+            arn,
+            arnValue,
+            None,
+            isGBUser = true,
+            AgentContactInformation(AgentDetails(name), email, Some(phone), None),
+            Some(AgentContactInformation(AgentDetails(name), email, Some(phone), None))
+          )
       }
     }
 

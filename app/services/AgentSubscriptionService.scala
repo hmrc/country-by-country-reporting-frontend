@@ -41,17 +41,16 @@ class AgentSubscriptionService @Inject() (agentSubscriptionConnector: AgentSubsc
     }
 
   def getAgentContactDetails(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[UserAnswers]] =
-    agentSubscriptionConnector.readSubscription map {
-      responseOpt =>
-        responseOpt.fold {
-          Option(userAnswers)
-        } {
-          responseDetail => populateUserAnswers(responseDetail, userAnswers)
-        }
+    agentSubscriptionConnector.readSubscription() map { responseOpt =>
+      responseOpt.fold {
+        Option(userAnswers)
+      } { responseDetail =>
+        populateUserAnswers(responseDetail, userAnswers)
+      }
     }
 
   def updateAgentContactDetails(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Boolean] =
-    agentSubscriptionConnector.readSubscription flatMap {
+    agentSubscriptionConnector.readSubscription() flatMap {
       case Some(agentResponseDetails) =>
         AgentRequestDetailForUpdate.convertToRequestDetails(agentResponseDetails, userAnswers) match {
           case Some(agentRequestDetails) => agentSubscriptionConnector.updateSubscription(agentRequestDetails)
@@ -65,10 +64,10 @@ class AgentSubscriptionService @Inject() (agentSubscriptionConnector: AgentSubsc
     }
 
   def doAgentContactDetailsExist()(implicit hc: HeaderCarrier): Future[Option[Boolean]] =
-    agentSubscriptionConnector.checkSubscriptionExists
+    agentSubscriptionConnector.checkSubscriptionExists()
 
   def isAgentContactInformationUpdated(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Option[Boolean]] =
-    agentSubscriptionConnector.readSubscription map {
+    agentSubscriptionConnector.readSubscription() map {
       case Some(responseDetail) =>
         val secondaryContact =
           (userAnswers.get(AgentHaveSecondContactPage), responseDetail.secondaryContact, userAnswers.get(AgentSecondContactNamePage)) match {
@@ -112,13 +111,12 @@ class AgentSubscriptionService @Inject() (agentSubscriptionConnector: AgentSubsc
   }
 
   private def populateUserAnswers(responseDetail: AgentResponseDetail, userAnswers: UserAnswers): Option[UserAnswers] =
-    populateContactInfo[PrimaryAgentContactDetailsPages](userAnswers, responseDetail.primaryContact, isSecondaryContact = false) map {
-      uaWithPrimaryContact =>
-        responseDetail.secondaryContact
-          .flatMap {
-            sc => populateContactInfo[SecondaryAgentContactDetailsPages](uaWithPrimaryContact, sc, isSecondaryContact = true)
-          }
-          .getOrElse(uaWithPrimaryContact)
+    populateContactInfo[PrimaryAgentContactDetailsPages](userAnswers, responseDetail.primaryContact, isSecondaryContact = false) map { uaWithPrimaryContact =>
+      responseDetail.secondaryContact
+        .flatMap { sc =>
+          populateContactInfo[SecondaryAgentContactDetailsPages](uaWithPrimaryContact, sc, isSecondaryContact = true)
+        }
+        .getOrElse(uaWithPrimaryContact)
     }
 
   private def populateContactInfo[T <: AgentContactTypePage](userAnswers: UserAnswers,

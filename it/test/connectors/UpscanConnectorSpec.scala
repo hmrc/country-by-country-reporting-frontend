@@ -48,9 +48,8 @@ class UpscanConnectorSpec extends Connector {
 
         stubPostResponse(connector.upscanInitiatePath, OK, Json.toJson(body).toString())
 
-        whenReady(connector.getUpscanFormData(uploadId)) {
-          result =>
-            result mustBe body.toUpscanInitiateResponse
+        whenReady(connector.getUpscanFormData(uploadId)) { result =>
+          result mustBe body.toUpscanInitiateResponse
         }
 
       }
@@ -64,11 +63,10 @@ class UpscanConnectorSpec extends Connector {
 
         val result = connector.getUpscanFormData(uploadId)
 
-        whenReady(result.failed) {
-          e =>
-            e mustBe an[UpstreamErrorResponse]
-            val error = e.asInstanceOf[UpstreamErrorResponse]
-            error.statusCode mustBe BAD_REQUEST
+        whenReady(result.failed) { e =>
+          e mustBe an[UpstreamErrorResponse]
+          val error = e.asInstanceOf[UpstreamErrorResponse]
+          error.statusCode mustBe BAD_REQUEST
         }
       }
 
@@ -78,11 +76,10 @@ class UpscanConnectorSpec extends Connector {
         stubPostResponse(connector.upscanInitiatePath, SERVICE_UNAVAILABLE)
 
         val result = connector.getUpscanFormData(uploadId)
-        whenReady(result.failed) {
-          e =>
-            e mustBe an[UpstreamErrorResponse]
-            val error = e.asInstanceOf[UpstreamErrorResponse]
-            error.statusCode mustBe SERVICE_UNAVAILABLE
+        whenReady(result.failed) { e =>
+          e mustBe an[UpstreamErrorResponse]
+          val error = e.asInstanceOf[UpstreamErrorResponse]
+          error.statusCode mustBe SERVICE_UNAVAILABLE
         }
       }
     }
@@ -101,9 +98,8 @@ class UpscanConnectorSpec extends Connector {
 
         stubGetResponse("/country-by-country-reporting/upscan/details/12345", OK, Json.toJson(body).toString())
 
-        whenReady(connector.getUploadDetails(uploadId)) {
-          result =>
-            result mustBe Some(body)
+        whenReady(connector.getUploadDetails(uploadId)) { result =>
+          result mustBe Some(body)
         }
 
       }
@@ -115,9 +111,8 @@ class UpscanConnectorSpec extends Connector {
 
         stubGetResponse("/country-by-country-reporting/upscan/details/12345", OK, Json.obj().toString())
 
-        whenReady(connector.getUploadDetails(uploadId)) {
-          result =>
-            result mustBe None
+        whenReady(connector.getUploadDetails(uploadId)) { result =>
+          result mustBe None
         }
 
       }
@@ -141,9 +136,8 @@ class UpscanConnectorSpec extends Connector {
 
         stubGetResponse("/country-by-country-reporting/upscan/status/12345", OK, body)
 
-        whenReady(connector.getUploadStatus(uploadId)) {
-          result =>
-            result mustBe Some(UploadedSuccessfully("name", "downloadUrl", FileSize, "MD5:123"))
+        whenReady(connector.getUploadStatus(uploadId)) { result =>
+          result mustBe Some(UploadedSuccessfully("name", "downloadUrl", FileSize, "MD5:123"))
         }
       }
 
@@ -158,9 +152,8 @@ class UpscanConnectorSpec extends Connector {
 
         stubGetResponse("/country-by-country-reporting/upscan/status/12345", OK, body)
 
-        whenReady(connector.getUploadStatus(uploadId)) {
-          result =>
-            result mustBe Some(NotStarted)
+        whenReady(connector.getUploadStatus(uploadId)) { result =>
+          result mustBe Some(NotStarted)
         }
       }
 
@@ -175,9 +168,8 @@ class UpscanConnectorSpec extends Connector {
 
         stubGetResponse("/country-by-country-reporting/upscan/status/12345", OK, body)
 
-        whenReady(connector.getUploadStatus(uploadId)) {
-          result =>
-            result mustBe Some(InProgress)
+        whenReady(connector.getUploadStatus(uploadId)) { result =>
+          result mustBe Some(InProgress)
         }
       }
 
@@ -192,9 +184,8 @@ class UpscanConnectorSpec extends Connector {
 
         stubGetResponse("/country-by-country-reporting/upscan/status/12345", OK, body)
 
-        whenReady(connector.getUploadStatus(uploadId)) {
-          result =>
-            result mustBe Some(Failed)
+        whenReady(connector.getUploadStatus(uploadId)) { result =>
+          result mustBe Some(Failed)
         }
       }
 
@@ -209,9 +200,8 @@ class UpscanConnectorSpec extends Connector {
 
         stubGetResponse("/country-by-country-reporting/upscan/status/12345", OK, body)
 
-        whenReady(connector.getUploadStatus(uploadId)) {
-          result =>
-            result mustBe Some(Quarantined)
+        whenReady(connector.getUploadStatus(uploadId)) { result =>
+          result mustBe Some(Quarantined)
         }
       }
     }
@@ -222,9 +212,8 @@ class UpscanConnectorSpec extends Connector {
 
         stubGetResponse("/country-by-country-reporting/upscan/status/12345", OK, Json.obj().toString())
 
-        whenReady(connector.getUploadStatus(uploadId)) {
-          result =>
-            result mustBe None
+        whenReady(connector.getUploadStatus(uploadId)) { result =>
+          result mustBe None
         }
 
       }

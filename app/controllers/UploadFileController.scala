@@ -60,9 +60,8 @@ class UploadFileController @Inject() (
 
   def onPageLoad: Action[AnyContent] =
     (identify andThen getData() andThen requireData
-      andThen validateDataAction).async {
-      implicit request =>
-        toResponse(form)
+      andThen validateDataAction).async { implicit request =>
+      toResponse(form)
     }
 
   private def toResponse(preparedForm: Form[String])(implicit request: DataRequest[AnyContent], hc: HeaderCarrier): Future[Result] = {
@@ -78,10 +77,9 @@ class UploadFileController @Inject() (
       )
       _ <- sessionRepository.set(updatedAnswers)
     } yield Ok(view(preparedForm, upscanInitiateResponse)))
-      .recover {
-        case e: Exception =>
-          logger.error(s"UploadFileController: An exception occurred when contacting Upscan:", e)
-          Redirect(routes.ThereIsAProblemController.onPageLoad())
+      .recover { case e: Exception =>
+        logger.error(s"UploadFileController: An exception occurred when contacting Upscan:", e)
+        Redirect(routes.ThereIsAProblemController.onPageLoad())
       }
   }
 
@@ -103,33 +101,32 @@ class UploadFileController @Inject() (
       }
   }
 
-  def getStatus(uploadId: UploadId): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      // Delay the call to make sure the backend db has been populated by the upscan callback first
-      pekko.pattern.after(config.upscanCallbackDelayInSeconds.seconds, actorSystem.scheduler) {
-        upscanConnector.getUploadStatus(uploadId) map {
-          case Some(_: UploadedSuccessfully) =>
-            Redirect(routes.FileValidationController.onPageLoad().url)
-          case Some(r: UploadRejected) =>
-            if (r.details.message.contains("octet-stream")) {
-              logger.warn(s"Show errorForm on rejection $r")
-              val errorReason = r.details.failureReason
-              Redirect(routes.UploadFileController.showError("OctetStream", errorReason, "").url)
-            } else {
-              logger.warn(s"Upload rejected. Error details: ${r.details}")
-              Redirect(routes.FileProblemNotXmlController.onPageLoad().url)
-            }
-          case Some(Quarantined) =>
-            Redirect(routes.FileProblemVirusController.onPageLoad().url)
-          case Some(Failed) =>
-            logger.warn("File upload returned failed status")
-            Redirect(routes.ThereIsAProblemController.onPageLoad().url)
-          case Some(_) =>
-            Redirect(routes.UploadFileController.getStatus(uploadId).url)
-          case None =>
-            logger.warn("Unable to retrieve file upload status from Upscan")
-            Redirect(routes.ThereIsAProblemController.onPageLoad().url)
-        }
+  def getStatus(uploadId: UploadId): Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    // Delay the call to make sure the backend db has been populated by the upscan callback first
+    pekko.pattern.after(config.upscanCallbackDelayInSeconds.seconds, actorSystem.scheduler) {
+      upscanConnector.getUploadStatus(uploadId) map {
+        case Some(_: UploadedSuccessfully) =>
+          Redirect(routes.FileValidationController.onPageLoad().url)
+        case Some(r: UploadRejected) =>
+          if (r.details.message.contains("octet-stream")) {
+            logger.warn(s"Show errorForm on rejection $r")
+            val errorReason = r.details.failureReason
+            Redirect(routes.UploadFileController.showError("OctetStream", errorReason, "").url)
+          } else {
+            logger.warn(s"Upload rejected. Error details: ${r.details}")
+            Redirect(routes.FileProblemNotXmlController.onPageLoad().url)
+          }
+        case Some(Quarantined) =>
+          Redirect(routes.FileProblemVirusController.onPageLoad().url)
+        case Some(Failed) =>
+          logger.warn("File upload returned failed status")
+          Redirect(routes.ThereIsAProblemController.onPageLoad().url)
+        case Some(_) =>
+          Redirect(routes.UploadFileController.getStatus(uploadId).url)
+        case None =>
+          logger.warn("Unable to retrieve file upload status from Upscan")
+          Redirect(routes.ThereIsAProblemController.onPageLoad().url)
       }
+    }
   }
 }

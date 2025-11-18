@@ -50,32 +50,29 @@ class FileValidationController @Inject() (
     with I18nSupport
     with Logging {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      extractIds(request.userAnswers) match {
-        case Some((uploadId, fileReference)) =>
-          {
-            upscanConnector.getUploadDetails(uploadId) map {
-              uploadSessions =>
-                getDownloadUrl(uploadSessions).fold {
-                  logger.error(s"Failed to upload file with upload Id: [${uploadId.value}]")
-                  Future.successful(InternalServerError(errorView()))
-                } {
-                  downloadDetails: ExtractedFileStatus =>
-                    val trimmedFileName = downloadDetails.name.stripSuffix(".xml")
-                    (isFileNameLengthInvalid(trimmedFileName), isDisallowedCharactersPresent(trimmedFileName)) match {
-                      case (true, _) => navigateToErrorPage(uploadId, invalidFileNameLength)
-                      case (_, true) => navigateToErrorPage(uploadId, disallowedCharacters)
-                      case _         => handleFileValidation(downloadDetails, uploadId, fileReference)
-                    }
-                }
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    extractIds(request.userAnswers) match {
+      case Some((uploadId, fileReference)) =>
+        {
+          upscanConnector.getUploadDetails(uploadId) map { uploadSessions =>
+            getDownloadUrl(uploadSessions).fold {
+              logger.error(s"Failed to upload file with upload Id: [${uploadId.value}]")
+              Future.successful(InternalServerError(errorView()))
+            } { (downloadDetails: ExtractedFileStatus) =>
+              val trimmedFileName = downloadDetails.name.stripSuffix(".xml")
+              (isFileNameLengthInvalid(trimmedFileName), isDisallowedCharactersPresent(trimmedFileName)) match {
+                case (true, _) => navigateToErrorPage(uploadId, invalidFileNameLength)
+                case (_, true) => navigateToErrorPage(uploadId, disallowedCharacters)
+                case _         => handleFileValidation(downloadDetails, uploadId, fileReference)
+              }
             }
-          }.flatten
+          }
+        }.flatten
 
-        case None =>
-          logger.error("Missing Upload ID or File Reference from user answers")
-          Future.successful(InternalServerError(errorView()))
-      }
+      case None =>
+        logger.error("Missing Upload ID or File Reference from user answers")
+        Future.successful(InternalServerError(errorView()))
+    }
   }
 
   private def handleFileValidation(

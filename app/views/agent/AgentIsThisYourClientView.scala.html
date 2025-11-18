@@ -42,7 +42,7 @@
 
 @layout(pageTitle = title(form, messages("agentIsThisYourClient.title"))) {
 
-    @formHelper(action = controllers.agent.routes.AgentIsThisYourClientController.onSubmit, 'autoComplete -> "off") {
+    @formHelper(action = controllers.agent.routes.AgentIsThisYourClientController.onSubmit, Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

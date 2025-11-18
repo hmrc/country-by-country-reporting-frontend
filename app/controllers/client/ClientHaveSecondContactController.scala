@@ -48,27 +48,25 @@ class ClientHaveSecondContactController @Inject() (
 
   val form = formProvider("clientHaveSecondContact")
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.get(HaveSecondContactPage) match {
-        case Some(value) => form.fill(value)
-        case None        => form
-      }
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) { implicit request =>
+    val preparedForm = request.userAnswers.get(HaveSecondContactPage) match {
+      case Some(value) => form.fill(value)
+      case None        => form
+    }
 
-      Ok(view(preparedForm, mode, getFirstContactName(request.userAnswers)))
+    Ok(view(preparedForm, mode, getFirstContactName(request.userAnswers)))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getFirstContactName(request.userAnswers)))),
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(HaveSecondContactPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(HaveSecondContactPage, mode, updatedAnswers))
-        )
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getFirstContactName(request.userAnswers)))),
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(HaveSecondContactPage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(HaveSecondContactPage, mode, updatedAnswers))
+      )
   }
 }

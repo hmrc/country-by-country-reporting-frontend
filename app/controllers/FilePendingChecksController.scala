@@ -19,7 +19,7 @@ package controllers
 import config.FrontendAppConfig
 import connectors.FileDetailsConnector
 import controllers.actions._
-import models.fileDetails.{FileValidationErrors, Pending, Rejected, RejectedSDES, RejectedSDESVirus, Accepted => FileStatusAccepted}
+import models.fileDetails.{Accepted => FileStatusAccepted, FileValidationErrors, Pending, Rejected, RejectedSDES, RejectedSDESVirus}
 import models.{UserAnswers, ValidatedFileData}
 import pages.{ConversationIdPage, FileReferencePage, UploadIDPage, ValidXMLPage}
 import play.api.i18n.Lang.logger
@@ -49,31 +49,31 @@ class FilePendingChecksController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(ConversationIdPage)) match {
-        case (Some(xmlDetails), Some(conversationId)) =>
-          fileConnector.getStatus(conversationId) flatMap {
-            case Some(FileStatusAccepted) =>
-              Future.successful(Redirect(routes.FilePassedChecksController.onPageLoad()))
-            case Some(Rejected(errors)) =>
-              slowJourneyErrorRoute(
-                errors,
-                Future.successful(Redirect(routes.FileFailedChecksController.onPageLoad()))
-              )
-            case Some(Pending) => handlePendingFile(xmlDetails, request.userAnswers, request.isAgent)
-            case Some(RejectedSDES) =>
-              Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
-            case Some(RejectedSDESVirus) =>
-              Future.successful(Redirect(routes.FileProblemVirusController.onPageLoad()))
-            case _ =>
-              logger.warn("Unable to get Status")
-              Future.successful(InternalServerError(errorView()))
-          }
-        case _ =>
-          logger.warn("Unable to retrieve fileName & conversationId")
-          Future.successful(InternalServerError(errorView()))
-      }
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(ConversationIdPage)) match {
+      case (Some(xmlDetails), Some(conversationId)) =>
+        fileConnector.getStatus(conversationId) flatMap {
+          case Some(FileStatusAccepted) =>
+            Future.successful(Redirect(routes.FilePassedChecksController.onPageLoad()))
+          case Some(Rejected(errors)) =>
+            slowJourneyErrorRoute(
+              errors,
+              Future.successful(Redirect(routes.FileFailedChecksController.onPageLoad()))
+            )
+          case Some(Pending) =>
+            handlePendingFile(xmlDetails, request.userAnswers, request.isAgent)
+          case Some(RejectedSDES) =>
+            Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+          case Some(RejectedSDESVirus) =>
+            Future.successful(Redirect(routes.FileProblemVirusController.onPageLoad()))
+          case _ =>
+            logger.warn("Unable to get Status")
+            Future.successful(InternalServerError(errorView()))
+        }
+      case _ =>
+        logger.warn("Unable to retrieve fileName & conversationId")
+        Future.successful(InternalServerError(errorView()))
+    }
   }
 
   private def handlePendingFile(xmlDetails: ValidatedFileData, userAnswers: UserAnswers, isAgent: Boolean)(implicit request: RequestHeader) = {

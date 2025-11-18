@@ -26,7 +26,7 @@
 @if(showBackLink) {
     @govukBackLink(BackLinkViewModel(href = "#").withCssClass("js-enabled govuk-!-display-none-print"))
 }
-@getAgentClientDetails.map { acd =>
+@getAgentClientDetails().map { acd =>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             @govukSummaryList(AgentClientDetailsViewModel.getSummaryListViewModel(AgentClientDetailsViewModel.getSummaryRows(acd)))

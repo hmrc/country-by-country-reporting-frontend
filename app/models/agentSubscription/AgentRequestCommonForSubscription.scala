@@ -47,7 +47,7 @@ object AgentRequestCommonForSubscription {
   def createAgentRequestCommonForSubscription(): AgentRequestCommonForSubscription = {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
 
-    //Generate a 32 chars UUID without hyphens
+    // Generate a 32 chars UUID without hyphens
     val acknowledgementReference = UUID.randomUUID().toString.replace("-", "")
 
     AgentRequestCommonForSubscription(

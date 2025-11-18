@@ -47,19 +47,16 @@ class TestAgentAddDelegatedAuthAction @Inject() (
     authorised()
       .retrieve(Retrievals.internalId) {
         case Some(userId) =>
-          Future.fromTry(UserAnswers(userId).set(AgentClientIdPage, "XACBC0000123778")).flatMap {
-            updatedAnswers =>
-              sessionRepository.set(updatedAnswers).flatMap {
-                _ =>
-                  block(request)
-              }
+          Future.fromTry(UserAnswers(userId).set(AgentClientIdPage, "XACBC0000123778")).flatMap { updatedAnswers =>
+            sessionRepository.set(updatedAnswers).flatMap { _ =>
+              block(request)
+            }
           }
         case _ =>
           logger.warn("AgentIdentifierAction: Unable to retrieve internal id")
           Future.successful(Redirect(routes.UnauthorisedController.onPageLoad))
-      } recover {
-      case _ =>
-        Redirect(routes.UnauthorisedController.onPageLoad)
+      } recover { case _ =>
+      Redirect(routes.UnauthorisedController.onPageLoad)
     }
   }
 }

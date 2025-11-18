@@ -48,14 +48,10 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
   }
 
   def intsLargerThanMaxValue: Gen[BigInt] =
-    arbitrary[BigInt] suchThat (
-      x => x > Int.MaxValue
-    )
+    arbitrary[BigInt] suchThat (x => x > Int.MaxValue)
 
   def intsSmallerThanMinValue: Gen[BigInt] =
-    arbitrary[BigInt] suchThat (
-      x => x < Int.MinValue
-    )
+    arbitrary[BigInt] suchThat (x => x < Int.MinValue)
 
   def nonNumerics: Gen[String] =
     alphaStr suchThat (_.size > 0)
@@ -73,9 +69,7 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
     arbitrary[Int] suchThat (_ > value)
 
   def intsOutsideRange(min: Int, max: Int): Gen[Int] =
-    arbitrary[Int] suchThat (
-      x => x < min || x > max
-    )
+    arbitrary[Int] suchThat (x => x < min || x > max)
 
   def nonBooleans: Gen[String] =
     nonEmptyString
@@ -116,9 +110,8 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
     def toMillis(date: LocalDate): Long =
       date.atStartOfDay.atZone(ZoneOffset.UTC).toInstant.toEpochMilli
 
-    Gen.choose(toMillis(min), toMillis(max)).map {
-      millis =>
-        Instant.ofEpochMilli(millis).atOffset(ZoneOffset.UTC).toLocalDate
+    Gen.choose(toMillis(min), toMillis(max)).map { millis =>
+      Instant.ofEpochMilli(millis).atOffset(ZoneOffset.UTC).toLocalDate
     }
   }
 
@@ -130,9 +123,7 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
   }
 
   def validPhoneNumberWithinLength(maxlength: Int): Gen[String] = RegexpGen.from(phoneRegex) retryUntil
-    (
-      phoneNumber => phoneNumber.length < maxlength
-    )
+    (phoneNumber => phoneNumber.length < maxlength)
 
   def validPhoneNumberTooLong(minLength: Int): Gen[String] = for {
     maxLength <- (minLength * 2).max(100)

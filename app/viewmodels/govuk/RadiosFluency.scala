@@ -49,9 +49,7 @@ trait RadiosFluency {
       Radios(
         fieldset = Some(fieldset),
         name = field.name,
-        items = items map (
-          item => item copy (checked = field.value.isDefined && field.value == item.value)
-        ),
+        items = items map (item => item copy (checked = field.value.isDefined && field.value == item.value)),
         errorMessage = errorMessage(field)
       )
 

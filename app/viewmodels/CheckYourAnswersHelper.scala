@@ -33,38 +33,36 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def getSecondaryContactDetails: Seq[SummaryListRow] =
     Seq(hasSecondContactPage(), secondaryContactNamePage(), secondaryContactEmailPage(), secondaryContactPhonePage()).flatten
 
-  def contactNamePage(): Option[SummaryListRow] = userAnswers.get(ContactNamePage) map {
-    x =>
-      SummaryListRowViewModel(
-        key = "contactName.checkYourAnswersLabel",
-        value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
-        actions = Seq(
-          ActionItemViewModel(
-            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+  def contactNamePage(): Option[SummaryListRow] = userAnswers.get(ContactNamePage) map { x =>
+    SummaryListRowViewModel(
+      key = "contactName.checkYourAnswersLabel",
+      value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
+      actions = Seq(
+        ActionItemViewModel(
+          content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
               "contactName.change.hidden"
             )}</span>"""),
-            href = routes.ContactNameController.onPageLoad(CheckMode).url
-          )
-            .withAttribute(("id", "contact-name"))
+          href = routes.ContactNameController.onPageLoad(CheckMode).url
         )
+          .withAttribute(("id", "contact-name"))
       )
+    )
   }
 
-  def contactEmailPage(): Option[SummaryListRow] = userAnswers.get(ContactEmailPage) map {
-    x =>
-      SummaryListRowViewModel(
-        key = "contactEmail.checkYourAnswersLabel",
-        value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
-        actions = Seq(
-          ActionItemViewModel(
-            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+  def contactEmailPage(): Option[SummaryListRow] = userAnswers.get(ContactEmailPage) map { x =>
+    SummaryListRowViewModel(
+      key = "contactEmail.checkYourAnswersLabel",
+      value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
+      actions = Seq(
+        ActionItemViewModel(
+          content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
               "contactEmail.change.hidden"
             )}</span>"""),
-            href = routes.ContactEmailController.onPageLoad(CheckMode).url
-          )
-            .withAttribute(("id", "contact-email"))
+          href = routes.ContactEmailController.onPageLoad(CheckMode).url
         )
+          .withAttribute(("id", "contact-email"))
       )
+    )
   }
 
   def contactPhonePage(): Option[SummaryListRow] = {
@@ -75,8 +73,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         actions = Seq(
           ActionItemViewModel(
             content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
-              "contactPhone.change.hidden"
-            )}</span>"""),
+                "contactPhone.change.hidden"
+              )}</span>"""),
             href = routes.HaveTelephoneController.onPageLoad(CheckMode).url
           )
             .withAttribute(("id", "contact-phone"))
@@ -99,8 +97,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         actions = Seq(
           ActionItemViewModel(
             content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
-              "haveSecondContact.change.hidden"
-            )}</span>"""),
+                "haveSecondContact.change.hidden"
+              )}</span>"""),
             href = routes.HaveSecondContactController.onPageLoad(CheckMode).url
           )
             .withAttribute(("id", "second-contact"))
@@ -120,38 +118,36 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
 
   }
 
-  def secondaryContactNamePage(): Option[SummaryListRow] = userAnswers.get(SecondContactNamePage) map {
-    x =>
-      SummaryListRowViewModel(
-        key = "secondContactName.checkYourAnswersLabel",
-        value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
-        actions = Seq(
-          ActionItemViewModel(
-            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+  def secondaryContactNamePage(): Option[SummaryListRow] = userAnswers.get(SecondContactNamePage) map { x =>
+    SummaryListRowViewModel(
+      key = "secondContactName.checkYourAnswersLabel",
+      value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
+      actions = Seq(
+        ActionItemViewModel(
+          content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
               "secondContactName.change.hidden"
             )}</span>"""),
-            href = routes.SecondContactNameController.onPageLoad(CheckMode).url
-          )
-            .withAttribute(("id", "snd-contact-name"))
+          href = routes.SecondContactNameController.onPageLoad(CheckMode).url
         )
+          .withAttribute(("id", "snd-contact-name"))
       )
+    )
   }
 
-  def secondaryContactEmailPage(): Option[SummaryListRow] = userAnswers.get(SecondContactEmailPage) map {
-    x =>
-      SummaryListRowViewModel(
-        key = "secondContactEmail.checkYourAnswersLabel",
-        value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
-        actions = Seq(
-          ActionItemViewModel(
-            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+  def secondaryContactEmailPage(): Option[SummaryListRow] = userAnswers.get(SecondContactEmailPage) map { x =>
+    SummaryListRowViewModel(
+      key = "secondContactEmail.checkYourAnswersLabel",
+      value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
+      actions = Seq(
+        ActionItemViewModel(
+          content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
               "secondContactEmail.change.hidden"
             )}</span>"""),
-            href = routes.SecondContactEmailController.onPageLoad(CheckMode).url
-          )
-            .withAttribute(("id", "snd-contact-email"))
+          href = routes.SecondContactEmailController.onPageLoad(CheckMode).url
         )
+          .withAttribute(("id", "snd-contact-email"))
       )
+    )
   }
 
   def secondaryContactPhonePage(): Option[SummaryListRow] = {
@@ -162,8 +158,8 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
         actions = Seq(
           ActionItemViewModel(
             content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
-              "secondContactPhone.change.hidden"
-            )}</span>"""),
+                "secondContactPhone.change.hidden"
+              )}</span>"""),
             href = routes.SecondContactHavePhoneController.onPageLoad(CheckMode).url
           )
             .withAttribute(("id", "snd-contact-phone"))

@@ -40,8 +40,8 @@ object ViewUtils {
   def getAgentClientDetails()(implicit request: RequestHeader): Option[AgentClientDetails] =
     request match {
       case odr: OptionalDataRequest[_] =>
-        odr.userAnswers flatMap {
-          ua => ua.get(AgentClientDetailsPage)
+        odr.userAnswers flatMap { ua =>
+          ua.get(AgentClientDetailsPage)
         }
       case dr: DataRequest[_]       => dr.userAnswers.get(AgentClientDetailsPage)
       case adr: AgentDataRequest[_] => adr.userAnswers.get(AgentClientDetailsPage)

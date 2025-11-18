@@ -46,15 +46,14 @@ object AgentRequestDetailForUpdate {
         case _ => None
       }
 
-    primaryContact map {
-      primaryContact =>
-        AgentRequestDetailForUpdate("ARN",
-                                    agentResponseDetail.subscriptionID,
-                                    agentResponseDetail.tradingName,
-                                    agentResponseDetail.isGBUser,
-                                    primaryContact,
-                                    secondaryContact
-        )
+    primaryContact map { primaryContact =>
+      AgentRequestDetailForUpdate("ARN",
+                                  agentResponseDetail.subscriptionID,
+                                  agentResponseDetail.tradingName,
+                                  agentResponseDetail.isGBUser,
+                                  primaryContact,
+                                  secondaryContact
+      )
     }
   }
 

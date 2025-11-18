@@ -19,13 +19,16 @@ package utils
 import models.UserAnswers
 import org.scalatestplus.play.PlaySpec
 import pages.AgentClientIdPage
-import play.api.http.Status._
+import play.api.http.Status.*
 import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.libs.ws.{DefaultWSCookie, WSClient}
 import play.api.mvc.{Cookie, Session, SessionCookieBaker}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 
 trait ISpecBehaviours extends PlaySpec with ISpecBase {
+
+  export play.api.libs.ws.DefaultBodyWritables.*
+  export play.api.libs.ws.DefaultBodyReadables.readableAsString
 
   lazy val wsClient: WSClient                = app.injector.instanceOf[WSClient]
   val session: Session                       = Session(Map("authToken" -> "abc123"))

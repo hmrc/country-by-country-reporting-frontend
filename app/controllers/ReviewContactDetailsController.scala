@@ -51,45 +51,43 @@ class ReviewContactDetailsController @Inject() (
 
   val form: Form[Boolean] = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      val preparedForm = request.userAnswers.get(ReviewContactDetailsPage) match {
-        case None        => form
-        case Some(value) => form.fill(value)
-      }
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    val preparedForm = request.userAnswers.get(ReviewContactDetailsPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      subscriptionService.getContactDetails(request.userAnswers, request.subscriptionId).map {
-        case Some(userAnswers) =>
-          userAnswers.get(PrimaryClientContactInformationPage) match {
-            case Some(migratedContactDetails) => Ok(view(preparedForm, migratedContactDetails))
-            case None =>
-              Redirect(routes.ThereIsAProblemController.onPageLoad())
-          }
-        case None =>
-          Redirect(routes.ThereIsAProblemController.onPageLoad())
-      }
+    subscriptionService.getContactDetails(request.userAnswers, request.subscriptionId).map {
+      case Some(userAnswers) =>
+        userAnswers.get(PrimaryClientContactInformationPage) match {
+          case Some(migratedContactDetails) => Ok(view(preparedForm, migratedContactDetails))
+          case None =>
+            Redirect(routes.ThereIsAProblemController.onPageLoad())
+        }
+      case None =>
+        Redirect(routes.ThereIsAProblemController.onPageLoad())
+    }
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      subscriptionService.getContactDetails(request.userAnswers, request.subscriptionId).flatMap {
-        _.flatMap(_.get(PrimaryClientContactInformationPage)) match {
-          case Some(migratedContactDetails) =>
-            form
-              .bindFromRequest()
-              .fold(
-                formWithErrors => Future.successful(BadRequest(view(formWithErrors, migratedContactDetails))),
-                value =>
-                  for {
-                    updatedAnswers <- Future.fromTry(request.userAnswers.set(ReviewContactDetailsPage, value))
-                    populatedAnswers = populateUserAnswers(updatedAnswers, value)
-                    _ <- sessionRepository.set(populatedAnswers)
-                  } yield Redirect(navigator.nextPage(ReviewContactDetailsPage, NormalMode, updatedAnswers))
-              )
+  def onSubmit(): Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    subscriptionService.getContactDetails(request.userAnswers, request.subscriptionId).flatMap {
+      _.flatMap(_.get(PrimaryClientContactInformationPage)) match {
+        case Some(migratedContactDetails) =>
+          form
+            .bindFromRequest()
+            .fold(
+              formWithErrors => Future.successful(BadRequest(view(formWithErrors, migratedContactDetails))),
+              value =>
+                for {
+                  updatedAnswers <- Future.fromTry(request.userAnswers.set(ReviewContactDetailsPage, value))
+                  populatedAnswers = populateUserAnswers(updatedAnswers, value)
+                  _ <- sessionRepository.set(populatedAnswers)
+                } yield Redirect(navigator.nextPage(ReviewContactDetailsPage, NormalMode, updatedAnswers))
+            )
 
-          case None => Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
-        }
+        case None => Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
       }
+    }
 
   }
 
