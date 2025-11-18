@@ -114,24 +114,22 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach with Auth
 
   protected def getWireMockAppConfig(endpointNames: Seq[String]): Map[String, Any] =
     endpointNames
-      .flatMap(
-        endpointName =>
-          Seq(
-            s"$endpointConfigurationPath.$endpointName.host" -> wireMockHost,
-            s"$endpointConfigurationPath.$endpointName.port" -> wireMockPort
-          )
+      .flatMap(endpointName =>
+        Seq(
+          s"$endpointConfigurationPath.$endpointName.host" -> wireMockHost,
+          s"$endpointConfigurationPath.$endpointName.port" -> wireMockPort
+        )
       )
       .toMap
 
   protected def getWireMockAppConfigWithRetry(endpointNames: Seq[String]): Map[String, Any] =
     endpointNames
-      .flatMap(
-        endpointName =>
-          Seq(
-            s"$endpointConfigurationPath.$endpointName.host"   -> wireMockHost,
-            s"$endpointConfigurationPath.$endpointName.port"   -> wireMockPort,
-            s"$endpointConfigurationPath.retry.retry-attempts" -> 1
-          )
+      .flatMap(endpointName =>
+        Seq(
+          s"$endpointConfigurationPath.$endpointName.host"   -> wireMockHost,
+          s"$endpointConfigurationPath.$endpointName.port"   -> wireMockPort,
+          s"$endpointConfigurationPath.retry.retry-attempts" -> 1
+        )
       )
       .toMap
 
@@ -143,8 +141,8 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach with Auth
 
   private def urlWithParameters(url: String, parameters: Seq[(String, String)]) = {
     val queryParams = parameters
-      .map {
-        case (k, v) => s"$k=$v"
+      .map { case (k, v) =>
+        s"$k=$v"
       }
       .mkString("&")
 
@@ -191,9 +189,8 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach with Auth
     headers: Seq[(String, String)] = Seq.empty
   ): Unit = {
     val requestPattern = getRequestedFor(urlEqualTo(urlWithParameters(url, parameters)))
-    val requestPatternWithHeaders = headers.foldLeft(requestPattern) {
-      (pattern, header) =>
-        pattern.withHeader(header._1, new EqualToPattern(header._2))
+    val requestPatternWithHeaders = headers.foldLeft(requestPattern) { (pattern, header) =>
+      pattern.withHeader(header._1, new EqualToPattern(header._2))
     }
     server.verify(requestPatternWithHeaders)
   }
@@ -215,7 +212,5 @@ trait WireMockHelper extends BeforeAndAfterAll with BeforeAndAfterEach with Auth
 
   def verifyPutWithRetry(url: String): Unit =
     server.verify(2, putRequestedFor(urlEqualTo(stripToPath(url))))
-
-  //UPSCAN
 
 }

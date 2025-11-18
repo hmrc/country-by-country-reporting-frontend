@@ -40,17 +40,16 @@ class FileDataErrorController @Inject() (
     with I18nSupport
     with Logging {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData) {
-    implicit request =>
-      (request.userAnswers.get(GenericErrorPage), request.userAnswers.get(InvalidXMLPage)) match {
-        case (Some(errors), Some(fileName)) =>
-          val xmlErrors = for {
-            error <- errors.sorted
-          } yield error
-          Ok(view(fileName, errorViewHelper.generateTable(xmlErrors)))
-        case _ =>
-          logger.warn("FileDataErrorController: Unable to retrieve either Invalid XML information or GenericErrors from UserAnswers")
-          InternalServerError(errorView())
-      }
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData) { implicit request =>
+    (request.userAnswers.get(GenericErrorPage), request.userAnswers.get(InvalidXMLPage)) match {
+      case (Some(errors), Some(fileName)) =>
+        val xmlErrors = for {
+          error <- errors.sorted
+        } yield error
+        Ok(view(fileName, errorViewHelper.generateTable(xmlErrors)))
+      case _ =>
+        logger.warn("FileDataErrorController: Unable to retrieve either Invalid XML information or GenericErrors from UserAnswers")
+        InternalServerError(errorView())
+    }
   }
 }

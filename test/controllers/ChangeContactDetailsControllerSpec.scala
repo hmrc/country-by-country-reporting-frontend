@@ -35,9 +35,9 @@ class ChangeContactDetailsControllerSpec extends SpecBase with BeforeAndAfterEac
 
   val mockSubscriptionService: SubscriptionService = mock[SubscriptionService]
 
-  override def beforeEach: Unit = {
+  override def beforeEach(): Unit = {
     reset(mockSubscriptionService)
-    super.beforeEach
+    super.beforeEach()
   }
 
   "ChangeContactDetails Controller" - {

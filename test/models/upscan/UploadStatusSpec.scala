@@ -26,14 +26,13 @@ class UploadStatusSpec extends AnyWordSpec with Matchers {
 
   "UploadStatus json Reads" must {
 
-    statuses.foreach {
-      status =>
-        s"return $status" when {
-          s"_type is $status" in {
-            val json = s"""{"_type": "$status"}"""
-            Json.parse(json).as[UploadStatus] mustBe status
-          }
+    statuses.foreach { status =>
+      s"return $status" when {
+        s"_type is $status" in {
+          val json = s"""{"_type": "$status"}"""
+          Json.parse(json).as[UploadStatus] mustBe status
         }
+      }
     }
 
     "return UploadedSuccessfully" when {
@@ -70,14 +69,13 @@ class UploadStatusSpec extends AnyWordSpec with Matchers {
 
     "UploadStatus writes" must {
 
-      statuses.foreach {
-        status =>
-          s"set _type as $status" when {
-            s"status is $status" in {
-              val expectedJson = s"""{"_type":"$status"}"""
-              Json.toJson(status).toString() mustBe expectedJson
-            }
+      statuses.foreach { status =>
+        s"set _type as $status" when {
+          s"status is $status" in {
+            val expectedJson = s"""{"_type":"$status"}"""
+            Json.toJson(status).toString() mustBe expectedJson
           }
+        }
       }
 
       "set _type as UploadedSuccessfully with name, downloadUrl, size, and checksum in json" when {

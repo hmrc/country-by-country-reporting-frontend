@@ -66,7 +66,7 @@ class ChangeAgentContactDetailsController @Inject() (
       )
       agentSubscriptionService.isAgentContactInformationUpdated(request.userAnswers) flatMap {
         case Some(hasContactDetailsChanged) =>
-          agentSubscriptionService.doAgentContactDetailsExist map {
+          agentSubscriptionService.doAgentContactDetailsExist() map {
             case Some(doContactDetailsExist) =>
               Ok(view(agentPrimaryContactList, agentSecondaryContactList, hasContactDetailsChanged, doContactDetailsExist, clientSelected))
             case _ => InternalServerError(errorView())
@@ -75,20 +75,19 @@ class ChangeAgentContactDetailsController @Inject() (
       }
   }
 
-  def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      agentSubscriptionService.doAgentContactDetailsExist flatMap {
-        case Some(true) =>
-          agentSubscriptionService.updateAgentContactDetails(request.userAnswers) map {
-            case true => Redirect(routes.AgentContactDetailsUpdatedController.onPageLoad())
-            case _    => InternalServerError(errorView())
-          }
-        case Some(false) =>
-          agentSubscriptionService.createAgentContactDetails(request.arn, request.userAnswers) map {
-            case true => Redirect(routes.AgentContactDetailsSavedController.onPageLoad())
-            case _    => InternalServerError(errorView())
-          }
-        case _ => Future.successful(InternalServerError(errorView()))
-      }
+  def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    agentSubscriptionService.doAgentContactDetailsExist() flatMap {
+      case Some(true) =>
+        agentSubscriptionService.updateAgentContactDetails(request.userAnswers) map {
+          case true => Redirect(routes.AgentContactDetailsUpdatedController.onPageLoad())
+          case _    => InternalServerError(errorView())
+        }
+      case Some(false) =>
+        agentSubscriptionService.createAgentContactDetails(request.arn, request.userAnswers) map {
+          case true => Redirect(routes.AgentContactDetailsSavedController.onPageLoad())
+          case _    => InternalServerError(errorView())
+        }
+      case _ => Future.successful(InternalServerError(errorView()))
+    }
   }
 }

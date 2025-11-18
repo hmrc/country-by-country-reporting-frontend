@@ -42,9 +42,8 @@ object RequestDetailForUpdate {
       case _ => None
     }
 
-    primaryContact map {
-      primaryContact =>
-        RequestDetailForUpdate("CBC", responseDetail.subscriptionID, responseDetail.tradingName, responseDetail.isGBUser, primaryContact, secondaryContact)
+    primaryContact map { primaryContact =>
+      RequestDetailForUpdate("CBC", responseDetail.subscriptionID, responseDetail.tradingName, responseDetail.isGBUser, primaryContact, secondaryContact)
     }
   }
 

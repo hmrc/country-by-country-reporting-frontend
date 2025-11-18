@@ -21,7 +21,7 @@ import play.api.mvc.QueryStringBindable
 
 import java.util.UUID
 
-case class UploadId(value: String) extends AnyVal
+case class UploadId(value: String)
 
 object UploadId {
   def generate = UploadId(UUID.randomUUID().toString)
@@ -33,7 +33,5 @@ object UploadId {
 
   implicit def readsUploadId: Reads[UploadId] = Reads.StringReads.map(UploadId(_))
 
-  implicit def writesUploadId: Writes[UploadId] = Writes[UploadId](
-    x => JsString(x.value)
-  )
+  implicit def writesUploadId: Writes[UploadId] = Writes[UploadId](x => JsString(x.value))
 }

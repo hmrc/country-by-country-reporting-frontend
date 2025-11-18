@@ -40,7 +40,7 @@ class FileValidationControllerSpec extends SpecBase with Injecting with BeforeAn
 
   val mockValidationConnector: ValidationConnector = mock[ValidationConnector]
 
-  override def beforeEach: Unit =
+  override def beforeEach(): Unit =
     reset(mockSessionRepository, mockValidationConnector)
 
   "FileValidationController" - {
@@ -131,22 +131,21 @@ class FileValidationControllerSpec extends SpecBase with Injecting with BeforeAn
         )
         .build()
       val disallowedCharacters: Set[Char] = Set('<', '>', ':', '"', '/', '\\', '|', '?', '*')
-      disallowedCharacters.foreach {
-        ch =>
-          val uploadDetails = UploadSessionDetails(
-            new ObjectId(),
-            uploadId,
-            Reference("123"),
-            UploadedSuccessfully(s"filenamecontains$ch.xml", downloadURL, FileSize, "MD5:123")
-          )
+      disallowedCharacters.foreach { ch =>
+        val uploadDetails = UploadSessionDetails(
+          new ObjectId(),
+          uploadId,
+          Reference("123"),
+          UploadedSuccessfully(s"filenamecontains$ch.xml", downloadURL, FileSize, "MD5:123")
+        )
 
-          fakeUpscanConnector.setDetails(uploadDetails)
+        fakeUpscanConnector.setDetails(uploadDetails)
 
-          val request                = FakeRequest(GET, routes.FileValidationController.onPageLoad().url)
-          val result: Future[Result] = route(application, request).value
+        val request                = FakeRequest(GET, routes.FileValidationController.onPageLoad().url)
+        val result: Future[Result] = route(application, request).value
 
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result).value mustEqual routes.UploadFileController.showError("InvalidArgument", "DisallowedCharacters", "123").url
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result).value mustEqual routes.UploadFileController.showError("InvalidArgument", "DisallowedCharacters", "123").url
       }
     }
 
@@ -186,7 +185,7 @@ class FileValidationControllerSpec extends SpecBase with Injecting with BeforeAn
         .build()
       val errors: Seq[GenericError]                      = Seq(GenericError(1, Message("error")))
       val userAnswersCaptor: ArgumentCaptor[UserAnswers] = ArgumentCaptor.forClass(classOf[UserAnswers])
-      val expectedData                                   = Json.obj("invalidXML" -> "afile", "errors" -> errors, "uploadID" -> uploadId, "FileReference" -> fileReferenceId)
+      val expectedData = Json.obj("invalidXML" -> "afile", "errors" -> errors, "uploadID" -> uploadId, "FileReference" -> fileReferenceId)
 
       fakeUpscanConnector.setDetails(uploadDetails)
 
@@ -215,7 +214,7 @@ class FileValidationControllerSpec extends SpecBase with Injecting with BeforeAn
       val expectedData                                   = Json.obj("invalidXML" -> "afile", "uploadID" -> UploadId("123"), "FileReference" -> fileReferenceId)
 
       fakeUpscanConnector.setDetails(uploadDetails)
-      //noinspection ScalaStyle
+      // noinspection ScalaStyle
 
       when(mockValidationConnector.sendForValidation(any())(any(), any())).thenReturn(Future.successful(Left(InvalidXmlError("sax exception"))))
       when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))

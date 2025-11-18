@@ -46,22 +46,20 @@ class AgentClientIdController @Inject() (
 
   val form = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = (identifier andThen getData() andThen requireData) {
-    implicit request =>
-      Ok(view(form))
+  def onPageLoad(): Action[AnyContent] = (identifier andThen getData() andThen requireData) { implicit request =>
+    Ok(view(form))
   }
 
-  def onSubmit(): Action[AnyContent] = (identifier andThen getData() andThen requireData).async {
-    implicit request =>
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest((view(formWithErrors)))),
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentClientIdPage, value.toUpperCase))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(routes.AgentIsThisYourClientController.onPageLoad)
-        )
+  def onSubmit(): Action[AnyContent] = (identifier andThen getData() andThen requireData).async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AgentClientIdPage, value.toUpperCase))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(routes.AgentIsThisYourClientController.onPageLoad)
+      )
   }
 }

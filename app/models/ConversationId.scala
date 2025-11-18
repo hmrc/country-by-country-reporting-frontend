@@ -27,9 +27,7 @@ object ConversationId {
 
   implicit val reads: Reads[ConversationId] = __
     .read[String]
-    .map(
-      id => ConversationId(id)
-    )
+    .map(id => ConversationId(id))
 
   implicit lazy val pathBindable: PathBindable[ConversationId] = new PathBindable[ConversationId] {
 

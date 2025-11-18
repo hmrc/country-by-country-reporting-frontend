@@ -34,7 +34,7 @@ class PhaseBannerSpec extends SpecBase with Injecting with ViewHelper {
         .build()
 
       running(testApp) {
-        val view = testApp.injector.instanceOf[IndexView] //first page in service
+        val view = testApp.injector.instanceOf[IndexView] // first page in service
 
         val html = view(showRecentFiles = false, "testCbcId", isAgent = false)(FakeRequest(), stubMessages())
         val doc  = Jsoup.parse(html.body)

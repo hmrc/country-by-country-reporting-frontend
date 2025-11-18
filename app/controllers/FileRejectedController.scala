@@ -44,15 +44,14 @@ class FileRejectedController @Inject() (
     with I18nSupport
     with Logging {
 
-  def onPageLoad(conversationId: ConversationId): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      fileDetailsConnector.getFileDetails(conversationId) map {
-        case Some(details) =>
-          details.status match {
-            case Rejected(validationErrors) => Ok(view(details.name, FileRejectedViewModel(validationErrors)))
-            case _                          => InternalServerError(errorView())
-          }
-        case _ => InternalServerError(errorView())
-      }
+  def onPageLoad(conversationId: ConversationId): Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    fileDetailsConnector.getFileDetails(conversationId) map {
+      case Some(details) =>
+        details.status match {
+          case Rejected(validationErrors) => Ok(view(details.name, FileRejectedViewModel(validationErrors)))
+          case _                          => InternalServerError(errorView())
+        }
+      case _ => InternalServerError(errorView())
+    }
   }
 }

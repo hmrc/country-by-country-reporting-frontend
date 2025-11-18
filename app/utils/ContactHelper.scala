@@ -33,90 +33,76 @@ import play.api.i18n.Messages
 trait ContactHelper {
 
   def getContactEmails()(implicit request: DataRequest[_]): Option[ContactEmails] =
-    request.userAnswers.get(ContactEmailPage) map {
-      firstContactEmail =>
-        ContactEmails(firstContactEmail, request.userAnswers.get(SecondContactEmailPage))
+    request.userAnswers.get(ContactEmailPage) map { firstContactEmail =>
+      ContactEmails(firstContactEmail, request.userAnswers.get(SecondContactEmailPage))
     }
 
   def getAgentContactEmails()(implicit request: DataRequest[_]): Option[ContactEmails] =
-    request.userAnswers.get(AgentFirstContactEmailPage) map {
-      firstContactEmail =>
-        ContactEmails(firstContactEmail, request.userAnswers.get(AgentSecondContactEmailPage))
+    request.userAnswers.get(AgentFirstContactEmailPage) map { firstContactEmail =>
+      ContactEmails(firstContactEmail, request.userAnswers.get(AgentSecondContactEmailPage))
     }
 
   def getFirstContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
     userAnswers
       .get(ContactNamePage)
-      .fold(messages("default.firstContact.name"))(
-        contactName => contactName
-      )
+      .fold(messages("default.firstContact.name"))(contactName => contactName)
 
   def getSecondContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
     userAnswers
       .get(SecondContactNamePage)
-      .fold(messages("default.secondContact.name"))(
-        contactName => contactName
-      )
+      .fold(messages("default.secondContact.name"))(contactName => contactName)
 
   def getPluralFirstContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
     userAnswers
       .get(ContactNamePage)
-      .fold(messages("contact.name.plural", messages("default.firstContact.name")))(
-        contactName =>
-          if (contactName.toLowerCase.endsWith("s")) {
-            messages("contact.name.plural.withS", contactName)
-          } else {
-            messages("contact.name.plural", contactName)
-          }
+      .fold(messages("contact.name.plural", messages("default.firstContact.name")))(contactName =>
+        if (contactName.toLowerCase.endsWith("s")) {
+          messages("contact.name.plural.withS", contactName)
+        } else {
+          messages("contact.name.plural", contactName)
+        }
       )
 
   def getPluralSecondContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
     userAnswers
       .get(SecondContactNamePage)
-      .fold(messages("contact.name.plural", messages("default.secondContact.name")))(
-        contactName =>
-          if (contactName.toLowerCase.endsWith("s")) {
-            messages("contact.name.plural.withS", contactName)
-          } else {
-            messages("contact.name.plural", contactName)
-          }
+      .fold(messages("contact.name.plural", messages("default.secondContact.name")))(contactName =>
+        if (contactName.toLowerCase.endsWith("s")) {
+          messages("contact.name.plural.withS", contactName)
+        } else {
+          messages("contact.name.plural", contactName)
+        }
       )
 
   def getAgentFirstContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
     userAnswers
       .get(AgentFirstContactNamePage)
-      .fold(messages("default.firstContact.name"))(
-        contactName => contactName
-      )
+      .fold(messages("default.firstContact.name"))(contactName => contactName)
 
   def getAgentSecondContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
     userAnswers
       .get(AgentSecondContactNamePage)
-      .fold(messages("default.secondContact.name"))(
-        contactName => contactName
-      )
+      .fold(messages("default.secondContact.name"))(contactName => contactName)
 
   def getPluralAgentFirstContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
     userAnswers
       .get(AgentFirstContactNamePage)
-      .fold(messages("contact.name.plural", messages("default.firstContact.name")))(
-        contactName =>
-          if (contactName.toLowerCase.endsWith("s")) {
-            messages("contact.name.plural.withS", contactName)
-          } else {
-            messages("contact.name.plural", contactName)
-          }
+      .fold(messages("contact.name.plural", messages("default.firstContact.name")))(contactName =>
+        if (contactName.toLowerCase.endsWith("s")) {
+          messages("contact.name.plural.withS", contactName)
+        } else {
+          messages("contact.name.plural", contactName)
+        }
       )
 
   def getPluralAgentSecondContactName(userAnswers: UserAnswers)(implicit messages: Messages): String =
     userAnswers
       .get(AgentSecondContactNamePage)
-      .fold(messages("contact.name.plural", messages("default.secondContact.name")))(
-        contactName =>
-          if (contactName.toLowerCase.endsWith("s")) {
-            messages("contact.name.plural.withS", contactName)
-          } else {
-            messages("contact.name.plural", contactName)
-          }
+      .fold(messages("contact.name.plural", messages("default.secondContact.name")))(contactName =>
+        if (contactName.toLowerCase.endsWith("s")) {
+          messages("contact.name.plural.withS", contactName)
+        } else {
+          messages("contact.name.plural", contactName)
+        }
       )
 }

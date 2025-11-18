@@ -27,6 +27,7 @@ import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
 import uk.gov.hmrc.http.HttpReads.Implicits._
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
+import play.api.libs.ws.JsonBodyWritables._
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -58,47 +59,45 @@ class UpscanConnector @Inject() (configuration: FrontendAppConfig, httpClient: H
 
   def requestUpload(uploadId: UploadId, fileReference: Reference)(implicit hc: HeaderCarrier): Future[UploadId] = {
     val uploadUrl = url"$backendUrl/upscan/upload"
-    httpClient.post(uploadUrl).withBody(Json.toJson(UpscanIdentifiers(uploadId, fileReference))).execute[http.HttpResponse] map {
-      _ => uploadId
+    httpClient.post(uploadUrl).withBody(Json.toJson(UpscanIdentifiers(uploadId, fileReference))).execute[http.HttpResponse] map { _ =>
+      uploadId
     }
   }
 
   def getUploadDetails(uploadId: UploadId)(implicit hc: HeaderCarrier): Future[Option[UploadSessionDetails]] = {
     val detailsUrl = url"$backendUrl/upscan/details/${uploadId.value}"
-    httpClient.get(detailsUrl).execute[http.HttpResponse] map {
-      response =>
-        response.status match {
-          case status if is2xx(status) =>
-            response.json.validate[UploadSessionDetails] match {
-              case JsSuccess(details, _) => Some(details)
-              case JsError(_) =>
-                logger.warn(s"GetUploadDetails: not a valid json")
-                None
-            }
-          case _ =>
-            logger.warn(s"Failed to getUploadDetails")
-            None
-        }
+    httpClient.get(detailsUrl).execute[http.HttpResponse] map { response =>
+      response.status match {
+        case status if is2xx(status) =>
+          response.json.validate[UploadSessionDetails] match {
+            case JsSuccess(details, _) => Some(details)
+            case JsError(_) =>
+              logger.warn(s"GetUploadDetails: not a valid json")
+              None
+          }
+        case _ =>
+          logger.warn(s"Failed to getUploadDetails")
+          None
+      }
     }
   }
 
   def getUploadStatus(uploadId: UploadId)(implicit hc: HeaderCarrier): Future[Option[UploadStatus]] = {
     val statusUrl = url"$backendUrl/upscan/status/${uploadId.value}"
-    httpClient.get(statusUrl).execute[HttpResponse] map {
-      response =>
-        response.status match {
-          case OK =>
-            response.json.validate[UploadStatus] match {
-              case JsSuccess(status, _) =>
-                Some(status)
-              case JsError(_) =>
-                logger.warn(s"GetUploadStatus: not a valid json")
-                None
-            }
-          case _ =>
-            logger.error(s"Failed to getUploadStatus")
-            None
-        }
+    httpClient.get(statusUrl).execute[HttpResponse] map { response =>
+      response.status match {
+        case OK =>
+          response.json.validate[UploadStatus] match {
+            case JsSuccess(status, _) =>
+              Some(status)
+            case JsError(_) =>
+              logger.warn(s"GetUploadStatus: not a valid json")
+              None
+          }
+        case _ =>
+          logger.error(s"Failed to getUploadStatus")
+          None
+      }
     }
   }
 

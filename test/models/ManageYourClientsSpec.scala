@@ -32,9 +32,8 @@ class ManageYourClientsSpec extends AnyFreeSpec with Matchers with ScalaCheckPro
 
       val gen = Gen.oneOf(ManageYourClients.values.toSeq)
 
-      forAll(gen) {
-        manageYourClients =>
-          JsString(manageYourClients.toString).validate[ManageYourClients].asOpt.value mustEqual manageYourClients
+      forAll(gen) { manageYourClients =>
+        JsString(manageYourClients.toString).validate[ManageYourClients].asOpt.value mustEqual manageYourClients
       }
     }
 
@@ -42,9 +41,8 @@ class ManageYourClientsSpec extends AnyFreeSpec with Matchers with ScalaCheckPro
 
       val gen = arbitrary[String] suchThat (!ManageYourClients.values.map(_.toString).contains(_))
 
-      forAll(gen) {
-        invalidValue =>
-          JsString(invalidValue).validate[ManageYourClients] mustEqual JsError("error.invalid")
+      forAll(gen) { invalidValue =>
+        JsString(invalidValue).validate[ManageYourClients] mustEqual JsError("error.invalid")
       }
     }
 
@@ -52,9 +50,8 @@ class ManageYourClientsSpec extends AnyFreeSpec with Matchers with ScalaCheckPro
 
       val gen = Gen.oneOf(ManageYourClients.values.toSeq)
 
-      forAll(gen) {
-        manageYourClients =>
-          Json.toJson(manageYourClients) mustEqual JsString(manageYourClients.toString)
+      forAll(gen) { manageYourClients =>
+        Json.toJson(manageYourClients) mustEqual JsString(manageYourClients.toString)
       }
     }
   }

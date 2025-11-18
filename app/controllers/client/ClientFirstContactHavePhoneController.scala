@@ -48,27 +48,25 @@ class ClientFirstContactHavePhoneController @Inject() (
 
   val form = formProvider("clientFirstContactHavePhone")
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.get(HaveTelephonePage) match {
-        case None        => form
-        case Some(value) => form.fill(value)
-      }
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) { implicit request =>
+    val preparedForm = request.userAnswers.get(HaveTelephonePage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      Ok(view(preparedForm, mode, getFirstContactName(request.userAnswers)))
+    Ok(view(preparedForm, mode, getFirstContactName(request.userAnswers)))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getFirstContactName(request.userAnswers)))),
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(HaveTelephonePage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(HaveTelephonePage, mode, updatedAnswers))
-        )
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getFirstContactName(request.userAnswers)))),
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(HaveTelephonePage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(HaveTelephonePage, mode, updatedAnswers))
+      )
   }
 }

@@ -52,54 +52,52 @@ class FileReceivedController @Inject() (
     with ContactHelper
     with Logging {
 
-  def onPageLoad(conversationId: ConversationId): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      fileDetailsConnector.getFileDetails(conversationId) flatMap {
-        fileDetails =>
-          (for {
-            emails  <- getContactEmails
-            details <- fileDetails
-          } yield request.userType match {
-            case AffinityGroup.Agent =>
-              getAgentContactEmails match {
-                case Some(agentContactEmails) =>
-                  for {
-                    updatedAnswers <- Future.fromTry(request.userAnswers.remove(UploadIDPage).flatMap(_.remove(FileReferencePage)))
-                    _              <- sessionRepository.set(updatedAnswers)
-                  } yield Ok(
-                    agentView(
-                      FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getAgentSummaryRows(details)),
-                      details.submitted.format(timeFormatter).toLowerCase,
-                      details.submitted.format(dateFormatter),
-                      emails.firstContact,
-                      emails.secondContact,
-                      agentContactEmails.firstContact,
-                      agentContactEmails.secondContact
-                    )
-                  )
-                case None =>
-                  logger.warn("FileReceivedController: Agent detected but cannot retrieve agent email")
-                  Future.successful(InternalServerError(errorView()))
-              }
-            case Organisation =>
+  def onPageLoad(conversationId: ConversationId): Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    fileDetailsConnector.getFileDetails(conversationId) flatMap { fileDetails =>
+      (for {
+        emails  <- getContactEmails()
+        details <- fileDetails
+      } yield request.userType match {
+        case AffinityGroup.Agent =>
+          getAgentContactEmails() match {
+            case Some(agentContactEmails) =>
               for {
                 updatedAnswers <- Future.fromTry(request.userAnswers.remove(UploadIDPage).flatMap(_.remove(FileReferencePage)))
                 _              <- sessionRepository.set(updatedAnswers)
               } yield Ok(
-                view(
-                  FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getSummaryRows(details)),
+                agentView(
+                  FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getAgentSummaryRows(details)),
                   details.submitted.format(timeFormatter).toLowerCase,
                   details.submitted.format(dateFormatter),
                   emails.firstContact,
-                  emails.secondContact
+                  emails.secondContact,
+                  agentContactEmails.firstContact,
+                  agentContactEmails.secondContact
                 )
               )
-            case _ =>
-              logger.warn("FileReceivedController: The User is neither an Organisation or an Agent")
+            case None =>
+              logger.warn("FileReceivedController: Agent detected but cannot retrieve agent email")
               Future.successful(InternalServerError(errorView()))
-          }).getOrElse {
-            Future.successful(InternalServerError(errorView()))
           }
+        case Organisation =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.remove(UploadIDPage).flatMap(_.remove(FileReferencePage)))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Ok(
+            view(
+              FileReceivedViewModel.formattedSummaryListView(FileReceivedViewModel.getSummaryRows(details)),
+              details.submitted.format(timeFormatter).toLowerCase,
+              details.submitted.format(dateFormatter),
+              emails.firstContact,
+              emails.secondContact
+            )
+          )
+        case _ =>
+          logger.warn("FileReceivedController: The User is neither an Organisation or an Agent")
+          Future.successful(InternalServerError(errorView()))
+      }).getOrElse {
+        Future.successful(InternalServerError(errorView()))
       }
+    }
   }
 }

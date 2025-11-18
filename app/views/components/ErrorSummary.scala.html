@@ -14,18 +14,24 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.errorsummary.{ErrorSummary => VmErrorSummary, ErrorLink}
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{Text, Empty}
+@import uk.gov.hmrc.govukfrontend.views.html.components.GovukErrorSummary
+@import uk.gov.hmrc.govukfrontend.views.Implicits.RichFormErrors
 
 @this(
-    govUkErrorSummary: GovukErrorSummary
+        govUkErrorSummary: GovukErrorSummary
 )
 
 @(errors: Seq[FormError])(implicit messages: Messages)
 
 @if(errors.nonEmpty) {
-    @govUkErrorSummary(ErrorSummary(
-        errorList = errors.asTextErrorLinks,
-        title = Text(messages("error.summary.title")),
-        attributes = Map("id"-> "error-summary")
-    ))
+    @govUkErrorSummary(
+        new VmErrorSummary(
+            errors.asTextErrorLinks,
+            "",
+            Map("id" -> "error-summary"),
+            Text(messages("error.summary.title")),
+        )
+    )
 }

@@ -144,17 +144,17 @@ class AuthenticatedIdentifierAction @Inject() (
                   case e: AuthorisationException =>
                     if (e.reason.contains(NO_ASSIGNMENT)) {
                       logger.warn("IdentifierAction: Agent does not belong to access group that has access to the Client.")
-                      Left(Redirect(controllers.client.routes.ProblemClientAccessController.onPageLoad))
+                      Left(Redirect(controllers.client.routes.ProblemClientAccessController.onPageLoad()))
                     } else {
                       logger.warn("IdentifierAction: Agent does not have delegated authority for Client. Redirecting to /agent/client-not-identified")
-                      Left(Redirect(controllers.client.routes.ProblemCBCIdController.onPageLoad))
+                      Left(Redirect(controllers.client.routes.ProblemCBCIdController.onPageLoad()))
                     }
                 }
             }
         }
       case _ =>
         logger.warn(s"IdentifierAction: Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments. Redirecting to /agent/use-agent-services")
-        Future.successful(Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad)))
+        Future.successful(Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad())))
     }
 
   private def redirectForAgentContactDetails[A](request: Request[A], internalId: String)(implicit hc: HeaderCarrier): Future[Result] =

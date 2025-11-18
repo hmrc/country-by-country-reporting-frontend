@@ -30,7 +30,7 @@
 
 @layout(pageTitle = title(form, messages("manageYourClients.title"))) {
 
-    @formHelper(action = controllers.agent.routes.ManageYourClientsController.onSubmit(), 'autoComplete -> "off") {
+    @formHelper(action = controllers.agent.routes.ManageYourClientsController.onSubmit(), Symbol("autoComplete") -> "off") {
 
     <h1 class="govuk-heading-l">@messages("manageYourClients.heading")</h1>
 

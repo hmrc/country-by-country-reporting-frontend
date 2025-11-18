@@ -39,17 +39,16 @@ class FilePassedChecksController @Inject() (
     with I18nSupport
     with Logging {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) {
-    implicit request =>
-      (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(ConversationIdPage)) match {
-        case (Some(xmlDetails), Some(conversationId)) =>
-          val action  = routes.FileReceivedController.onPageLoad(conversationId).url
-          val summary = FileCheckViewModel.createFileSummary(xmlDetails.messageSpecData.messageRefId, "Accepted")
-          Ok(view(summary, action))
+  def onPageLoad: Action[AnyContent] = (identify andThen getData() andThen requireData) { implicit request =>
+    (request.userAnswers.get(ValidXMLPage), request.userAnswers.get(ConversationIdPage)) match {
+      case (Some(xmlDetails), Some(conversationId)) =>
+        val action  = routes.FileReceivedController.onPageLoad(conversationId).url
+        val summary = FileCheckViewModel.createFileSummary(xmlDetails.messageSpecData.messageRefId, "Accepted")
+        Ok(view(summary, action))
 
-        case _ =>
-          logger.warn("FilePassedChecksController: Unable to retrieve either XML information or ConversationId from UserAnswers")
-          InternalServerError(errorView())
-      }
+      case _ =>
+        logger.warn("FilePassedChecksController: Unable to retrieve either XML information or ConversationId from UserAnswers")
+        InternalServerError(errorView())
+    }
   }
 }

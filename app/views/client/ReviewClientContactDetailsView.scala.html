@@ -28,7 +28,7 @@
 
 @layout(pageTitle = title(form, messages("reviewClientContactDetails.title")), showAgentHeader = true) {
 
-    @formHelper(action = controllers.client.routes.ReviewClientContactDetailsController.onSubmit(), 'autoComplete -> "off") {
+    @formHelper(action = controllers.client.routes.ReviewClientContactDetailsController.onSubmit(), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

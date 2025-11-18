@@ -22,16 +22,17 @@ import javax.inject.Inject
 import config.FrontendAppConfig
 import controllers.routes
 import models.UserAnswers
-import org.mockito.ArgumentMatchers.{any, eq => mockEq}
+import models.requests.IdentifierRequest
+import org.mockito.ArgumentMatchers.{any, eq as mockEq}
 import pages.AgentClientIdPage
 import play.api.inject
 import play.api.mvc.{BodyParsers, Results}
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import services.AgentSubscriptionService
 import uk.gov.hmrc.auth.core.AffinityGroup.{Individual, Organisation}
 import uk.gov.hmrc.auth.core.AuthProvider.GovernmentGateway
-import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.{~, Retrieval}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -43,8 +44,8 @@ class AuthActionSpec extends SpecBase {
 
   class Harness(authAction: IdentifierAction) {
 
-    def onPageLoad() = authAction {
-      _ => Results.Ok
+    def onPageLoad() = authAction { (_: IdentifierRequest[_]) =>
+      Results.Ok
     }
   }
 
@@ -209,7 +210,7 @@ class AuthActionSpec extends SpecBase {
           val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, mockAgentSubscriptionService, bodyParsers, mockSessionRepository)
           val controller = new Harness(authAction)
           val result     = controller.onPageLoad()(FakeRequest())
-          redirectLocation(result) mustBe Some(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad.url)
+          redirectLocation(result) mustBe Some(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad().url)
         }
       }
 
@@ -330,15 +331,17 @@ class AuthActionSpec extends SpecBase {
       }
 
       "must allow the user enrolment to continue the journey when AGENT and delegated auth rule passes for HMRC-CBC-ORG enrolment" in {
-        val authRetrievals: RetrievalType = new ~(new ~(Some("userId"),
-                                                        Enrolments(
-                                                          Set(
-                                                            Enrolment("HMRC-AS-AGENT").withIdentifier("AgentReferenceNumber", "arn123"),
-                                                            Enrolment("HMRC-CBC-ORG").withIdentifier("cbcid", "cbcid1234").withDelegatedAuthRule("cbc-auth")
-                                                          )
-                                                        )
-                                                  ),
-                                                  Some(AffinityGroup.Agent)
+        val authRetrievals: RetrievalType = new ~(
+          new ~(
+            Some("userId"),
+            Enrolments(
+              Set(
+                Enrolment("HMRC-AS-AGENT").withIdentifier("AgentReferenceNumber", "arn123"),
+                Enrolment("HMRC-CBC-ORG").withIdentifier("cbcid", "cbcid1234").withDelegatedAuthRule("cbc-auth")
+              )
+            )
+          ),
+          Some(AffinityGroup.Agent)
         )
 
         val mockAuthConnector = mock[AuthConnector]
@@ -372,17 +375,19 @@ class AuthActionSpec extends SpecBase {
         }
       }
       "must allow the user enrolment to continue the journey when AGENT and delegated auth rule passes for HMRC-CBC-NONUK-ORG enrolment" in {
-        val authRetrievals: RetrievalType = new ~(new ~(Some("userId"),
-                                                        Enrolments(
-                                                          Set(
-                                                            Enrolment("HMRC-AS-AGENT").withIdentifier("AgentReferenceNumber", "arn123"),
-                                                            Enrolment("HMRC-CBC-NONUK-ORG")
-                                                              .withIdentifier("cbcid", "cbcid1234")
-                                                              .withDelegatedAuthRule("cbc-auth")
-                                                          )
-                                                        )
-                                                  ),
-                                                  Some(AffinityGroup.Agent)
+        val authRetrievals: RetrievalType = new ~(
+          new ~(
+            Some("userId"),
+            Enrolments(
+              Set(
+                Enrolment("HMRC-AS-AGENT").withIdentifier("AgentReferenceNumber", "arn123"),
+                Enrolment("HMRC-CBC-NONUK-ORG")
+                  .withIdentifier("cbcid", "cbcid1234")
+                  .withDelegatedAuthRule("cbc-auth")
+              )
+            )
+          ),
+          Some(AffinityGroup.Agent)
         )
 
         val mockAuthConnector = mock[AuthConnector]
@@ -443,7 +448,7 @@ class AuthActionSpec extends SpecBase {
           val result     = controller.onPageLoad()(FakeRequest())
 
           status(result) mustBe SEE_OTHER
-          redirectLocation(result) mustBe Some(routes.IndividualSignInProblemController.onPageLoad.url)
+          redirectLocation(result) mustBe Some(routes.IndividualSignInProblemController.onPageLoad().url)
         }
       }
 
@@ -533,14 +538,15 @@ class AuthActionSpec extends SpecBase {
     "the user has sufficient enrolments" - {
 
       "when using HMRC-CBC-ORG enrolment must allow the user to continue" in {
-        val authRetrievals: RetrievalType = new ~(new ~(Some("userId"),
-                                                        Enrolments(
-                                                          Set(
-                                                            Enrolment("HMRC-CBC-ORG").withIdentifier("cbcid", "cbcid1234").withDelegatedAuthRule("cbc-auth")
-                                                          )
-                                                        )
-                                                  ),
-                                                  Some(AffinityGroup.Organisation)
+        val authRetrievals: RetrievalType = new ~(
+          new ~(Some("userId"),
+                Enrolments(
+                  Set(
+                    Enrolment("HMRC-CBC-ORG").withIdentifier("cbcid", "cbcid1234").withDelegatedAuthRule("cbc-auth")
+                  )
+                )
+          ),
+          Some(AffinityGroup.Organisation)
         )
 
         val mockAuthConnector = mock[AuthConnector]
@@ -567,14 +573,15 @@ class AuthActionSpec extends SpecBase {
 
       "when using HMRC-CBC-NONUK-ORG enrolment must allow the user to continue" in {
         val authRetrievals: RetrievalType =
-          new ~(new ~(Some("userId"),
-                      Enrolments(
-                        Set(
-                          Enrolment("HMRC-CBC-NONUK-ORG").withIdentifier("cbcid", "cbcid1234").withDelegatedAuthRule("cbc-auth")
-                        )
-                      )
-                ),
-                Some(AffinityGroup.Organisation)
+          new ~(
+            new ~(Some("userId"),
+                  Enrolments(
+                    Set(
+                      Enrolment("HMRC-CBC-NONUK-ORG").withIdentifier("cbcid", "cbcid1234").withDelegatedAuthRule("cbc-auth")
+                    )
+                  )
+            ),
+            Some(AffinityGroup.Organisation)
           )
 
         val mockAuthConnector = mock[AuthConnector]

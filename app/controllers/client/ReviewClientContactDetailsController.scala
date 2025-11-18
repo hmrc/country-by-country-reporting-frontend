@@ -48,42 +48,40 @@ class ReviewClientContactDetailsController @Inject() (
 
   val form = formProvider()
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.get(ReviewClientContactDetailsPage) match {
-        case None        => form
-        case Some(value) => form.fill(value)
-      }
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData() andThen requireData) { implicit request =>
+    val preparedForm = request.userAnswers.get(ReviewClientContactDetailsPage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      request.userAnswers.get(PrimaryClientContactInformationPage) match {
-        case None =>
-          logger.warn("Contact information is not available")
-          Redirect(controllers.routes.ThereIsAProblemController.onPageLoad())
-        case Some(contactDetails) => Ok(view(preparedForm, contactDetails, NormalMode))
-      }
+    request.userAnswers.get(PrimaryClientContactInformationPage) match {
+      case None =>
+        logger.warn("Contact information is not available")
+        Redirect(controllers.routes.ThereIsAProblemController.onPageLoad())
+      case Some(contactDetails) => Ok(view(preparedForm, contactDetails, NormalMode))
+    }
 
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors =>
-            request.userAnswers
-              .get(PrimaryClientContactInformationPage)
-              .fold {
-                Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
-              } {
-                contactInformation => Future.successful(BadRequest(view(formWithErrors, contactInformation, NormalMode)))
-              },
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ReviewClientContactDetailsPage, value))
-              populatedAnswers = populateUserAnswers(updatedAnswers, value)
-              _ <- sessionRepository.set(populatedAnswers)
-            } yield Redirect(navigator.nextPage(ReviewClientContactDetailsPage, NormalMode, populatedAnswers))
-        )
+  def onSubmit(): Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors =>
+          request.userAnswers
+            .get(PrimaryClientContactInformationPage)
+            .fold {
+              Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+            } { contactInformation =>
+              Future.successful(BadRequest(view(formWithErrors, contactInformation, NormalMode)))
+            },
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ReviewClientContactDetailsPage, value))
+            populatedAnswers = populateUserAnswers(updatedAnswers, value)
+            _ <- sessionRepository.set(populatedAnswers)
+          } yield Redirect(navigator.nextPage(ReviewClientContactDetailsPage, NormalMode, populatedAnswers))
+      )
   }
 
 }

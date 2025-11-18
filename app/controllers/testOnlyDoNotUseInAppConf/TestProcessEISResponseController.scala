@@ -31,20 +31,16 @@ class TestProcessEISResponseController @Inject() (
     extends FrontendBaseController
     with Logging {
 
-  def processEISResponse(): Action[NodeSeq] = Action(parse.xml).async {
-    implicit request =>
-      request.headers
-        .get("x-conversation-id")
-        .fold {
-          Future.successful(BadRequest("conversation ID is missing from headers"))
-        } {
-          conversationId =>
-            logger.info(s"testing EIS process submission endpoint with conversation ID $conversationId and submission: ${request.body}")
-            connector
-              .submitEISResponse(conversationId, request.body)
-              .map(
-                response => Status(response.status)
-              )
-        }
+  def processEISResponse(): Action[NodeSeq] = Action(parse.xml).async { implicit request =>
+    request.headers
+      .get("x-conversation-id")
+      .fold {
+        Future.successful(BadRequest("conversation ID is missing from headers"))
+      } { conversationId =>
+        logger.info(s"testing EIS process submission endpoint with conversation ID $conversationId and submission: ${request.body}")
+        connector
+          .submitEISResponse(conversationId, request.body)
+          .map(response => Status(response.status))
+      }
   }
 }

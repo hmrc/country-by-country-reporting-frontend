@@ -34,9 +34,9 @@ import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 trait ISpecBase extends GuiceOneServerPerSuite with DefaultPlayMongoRepositorySupport[UserAnswers] with ScalaFutures with WireMockHelper with Generators {
 
-  lazy val repository: SessionRepository = app.injector.instanceOf[SessionRepository]
-  implicit val hc: HeaderCarrier         = HeaderCarrier()
-  val emptyUserAnswers: UserAnswers      = UserAnswers("internalId")
+  val repository: SessionRepository = app.injector.instanceOf[SessionRepository]
+  implicit val hc: HeaderCarrier    = HeaderCarrier()
+  val emptyUserAnswers: UserAnswers = UserAnswers("internalId")
 
   val userAnswersWithContactDetails: UserAnswers = emptyUserAnswers
     .withPage(ContactNamePage, "test")
@@ -53,8 +53,8 @@ trait ISpecBase extends GuiceOneServerPerSuite with DefaultPlayMongoRepositorySu
     "microservice.services.upscan.port"                       -> WireMockConstants.stubPort.toString,
     "mongodb.uri"                                             -> mongoUri,
     "play.filters.csrf.header.bypassHeaders.Csrf-Token"       -> "nocheck"
-    //"logger.root"                                             -> "INFO",
-    //"logger.controllers"                                      -> "DEBUG"
+    // "logger.root"                                             -> "INFO",
+    // "logger.controllers"                                      -> "DEBUG"
   )
 
   def buildClient(path: Option[String] = None): WSRequest = {

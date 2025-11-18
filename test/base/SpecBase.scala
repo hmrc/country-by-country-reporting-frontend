@@ -16,15 +16,15 @@
 
 package base
 
-import controllers.actions._
-import controllers.actions.agent._
+import controllers.actions.*
+import controllers.actions.agent.*
 import generators.Generators
 import models.UserAnswers
-import org.mockito.MockitoSugar
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{OptionValues, TryValues}
+import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.guice.{GuiceOneAppPerSuite, GuiceOneAppPerTest}
 import play.api.Application
 import play.api.i18n.{Messages, MessagesApi}
@@ -49,6 +49,8 @@ trait SpecBase
     with ScalaFutures
     with IntegrationPatience
     with Generators {
+
+  export org.mockito.Mockito.{never, reset, times, verify, when}
 
   val userAnswersId: String = "id"
 
