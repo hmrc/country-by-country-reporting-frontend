@@ -19,10 +19,10 @@ package controllers.actions
 import config.FrontendAppConfig
 import controllers.routes
 import models.requests.agent.SignOutRequest
+import play.api.mvc.*
 import play.api.mvc.Results.Redirect
-import play.api.mvc._
+import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.auth.core.AuthProvider.GovernmentGateway
-import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
@@ -48,6 +48,8 @@ class AuthenticatedSignOutAction @Inject() (
       .retrieve(Retrievals.internalId) {
         case Some(userId) =>
           block(SignOutRequest(request, userId))
+        case _ =>
+          Future.successful(Redirect(routes.UnauthorisedController.onPageLoad))
       } recover {
       case _: NoActiveSession =>
         Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl)))

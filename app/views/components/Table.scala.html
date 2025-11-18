@@ -14,18 +14,25 @@
  * limitations under the License.
  *@
 
-@this(govukTable : GovukTable)
+@import uk.gov.hmrc.govukfrontend.views.viewmodels.table.{Table => VmTable, TableRow => VmTableRow, HeadCell => VmHeadCell}
+@import uk.gov.hmrc.govukfrontend.views.html.components.GovukTable
 
-@(rows: Seq[Seq[TableRow]], head: Option[Seq[HeadCell]] = None, caption: Option[String] = None)
+@this(govukTable: GovukTable)
 
-@govukTable(Table(
- caption = caption,
- captionClasses = "govuk-heading-m",
- head = head,
- rows = rows,
- firstCellIsHeader = false
-))
+@(rows: Seq[Seq[VmTableRow]], head: Option[Seq[VmHeadCell]] = None, caption: Option[String] = None)
+
+@govukTable(
+    new VmTable(
+        rows,
+        head,
+        caption,
+        "govuk-heading-m",
+        false,
+        "",
+        Map.empty[String, String]
+    )
+)
 
 @{
-//$COVERAGE-OFF$
+    //$COVERAGE-OFF$
 }

@@ -16,8 +16,7 @@
 
 package models.fileDetails
 
-import julienrf.json.derived
-import play.api.libs.json.OFormat
+import play.api.libs.json.*
 
 sealed trait FileStatus
 
@@ -32,5 +31,43 @@ case class Rejected(error: FileValidationErrors) extends FileStatus {
 }
 
 object FileStatus {
-  implicit val format: OFormat[FileStatus] = derived.oformat()
+  given Format[FileStatus] = Format(
+    Reads {
+      case obj: JsObject if obj.keys == Set("Pending") =>
+        JsSuccess(Pending)
+
+      case obj: JsObject if obj.keys == Set("Accepted") =>
+        JsSuccess(Accepted)
+
+      case obj: JsObject if obj.keys == Set("RejectedSDES") =>
+        JsSuccess(RejectedSDES)
+
+      case obj: JsObject if obj.keys == Set("RejectedSDESVirus") =>
+        JsSuccess(RejectedSDESVirus)
+
+      case obj: JsObject if obj.keys == Set("Rejected") =>
+        (obj("Rejected") \ "error")
+          .validate[FileValidationErrors]
+          .map(Rejected.apply)
+
+      case other =>
+        JsError(s"Invalid FileStatus JSON: $other")
+    },
+    Writes {
+      case Pending =>
+        Json.obj("Pending" -> Json.obj())
+
+      case Accepted =>
+        Json.obj("Accepted" -> Json.obj())
+
+      case RejectedSDES =>
+        Json.obj("RejectedSDES" -> Json.obj())
+
+      case RejectedSDESVirus =>
+        Json.obj("RejectedSDESVirus" -> Json.obj())
+
+      case Rejected(err) =>
+        Json.obj("Rejected" -> Json.obj("error" -> Json.toJson(err)))
+    }
+  )
 }

@@ -24,6 +24,7 @@ import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
 import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
+import play.api.libs.ws.JsonBodyWritables._
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -44,10 +45,9 @@ class SubscriptionConnector @Inject() (val config: FrontendAppConfig, val http: 
           logger.warn(s"readSubscription: Status $otherStatus has been thrown when display subscription was called")
           None
       }
-      .recover {
-        case e: Exception =>
-          logger.error(s"readSubscription: S${e.getMessage} has been thrown when display subscription was called", e)
-          None
+      .recover { case e: Exception =>
+        logger.error(s"readSubscription: S${e.getMessage} has been thrown when display subscription was called", e)
+        None
       }
   }
 
@@ -58,10 +58,9 @@ class SubscriptionConnector @Inject() (val config: FrontendAppConfig, val http: 
       .post(url)
       .withBody(Json.toJson(requestDetail))
       .execute[HttpResponse]
-      .map {
-        responseMessage =>
-          logger.warn(s"updateSubscription: Status ${responseMessage.status} has been received when update subscription was called")
-          is2xx(responseMessage.status)
+      .map { responseMessage =>
+        logger.warn(s"updateSubscription: Status ${responseMessage.status} has been received when update subscription was called")
+        is2xx(responseMessage.status)
       }
   }
 

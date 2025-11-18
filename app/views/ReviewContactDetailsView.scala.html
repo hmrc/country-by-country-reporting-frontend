@@ -30,7 +30,7 @@
 
 @layout(pageTitle = title(form, messages("reviewContactDetails.title"))) {
 
-    @formHelper(action = routes.ReviewContactDetailsController.onSubmit(), 'autoComplete -> "off") {
+    @formHelper(action = routes.ReviewContactDetailsController.onSubmit(), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

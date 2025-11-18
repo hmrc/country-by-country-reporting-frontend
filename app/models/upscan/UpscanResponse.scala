@@ -31,16 +31,14 @@ object UpscanInitiateResponse {
   implicit val format: OFormat[UpscanInitiateResponse] = Json.format[UpscanInitiateResponse]
 }
 
-case class Reference(value: String) extends AnyVal
+case class Reference(value: String)
 
 case class UploadForm(href: String, fields: Map[String, String])
 
 object Reference {
   implicit val referenceReader: Reads[Reference] = Reads.StringReads.map(Reference(_))
 
-  implicit val referenceWrites: Writes[Reference] = Writes[Reference](
-    x => JsString(x.value)
-  )
+  implicit val referenceWrites: Writes[Reference] = Writes[Reference](x => JsString(x.value))
 }
 
 case class PreparedUpload(reference: Reference, uploadRequest: UploadForm) {
@@ -96,22 +94,19 @@ case class ReadyCallbackBody(
 
 object ReadyCallbackBody {
 
-  implicit val writes: OWrites[ReadyCallbackBody] = OWrites {
-    readyCallbackBody =>
-      Json.obj(
-        "reference"     -> Json.toJsFieldJsValueWrapper(readyCallbackBody.reference),
-        "downloadUrl"   -> readyCallbackBody.downloadUrl,
-        "uploadDetails" -> Json.toJsFieldJsValueWrapper(readyCallbackBody.uploadDetails)
-      )
+  implicit val writes: OWrites[ReadyCallbackBody] = OWrites { readyCallbackBody =>
+    Json.obj(
+      "reference"     -> Json.toJsFieldJsValueWrapper(readyCallbackBody.reference),
+      "downloadUrl"   -> readyCallbackBody.downloadUrl,
+      "uploadDetails" -> Json.toJsFieldJsValueWrapper(readyCallbackBody.uploadDetails)
+    )
   }
 
   implicit val reads: Reads[ReadyCallbackBody] = (
     (__ \ "reference").read[Reference] and
       (__ \ "downloadUrl").read[String] and
       (__ \ "uploadDetails").read[UploadDetails]
-  )(
-    (ref, url, ud) => ReadyCallbackBody(ref, url, ud)
-  )
+  )((ref, url, ud) => ReadyCallbackBody(ref, url, ud))
 }
 
 case class FailedCallbackBody(reference: Reference, failureDetails: ErrorDetails) extends CallbackBody

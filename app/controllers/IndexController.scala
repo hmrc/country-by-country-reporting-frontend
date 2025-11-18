@@ -46,46 +46,39 @@ class IndexController @Inject() (
     with I18nSupport
     with Logging {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData.apply) async {
-    implicit request =>
-      setContactDetailsFlag(request.userAnswers.getOrElse(UserAnswers(request.userId))).flatMap {
-        ua =>
-          if (request.isAgent) {
-            checkForAgentContactDetails(request.subscriptionId, ua)
-          } else {
-            checkForOrgContactDetails(request.subscriptionId, ua)
-          }
+  def onPageLoad: Action[AnyContent] = (identify andThen getData()) async { implicit request =>
+    setContactDetailsFlag(request.userAnswers.getOrElse(UserAnswers(request.userId))).flatMap { ua =>
+      if (request.isAgent) {
+        checkForAgentContactDetails(request.subscriptionId, ua)
+      } else {
+        checkForOrgContactDetails(request.subscriptionId, ua)
       }
+    }
   }
 
   private def checkForAgentContactDetails(subscriptionId: String, ua: UserAnswers)(implicit hc: HeaderCarrier, request: RequestHeader): Future[Result] =
-    agentSubscriptionService.getAgentContactDetails(ua) flatMap {
-      agentContactDetails =>
-        subscriptionService.getContactDetails(agentContactDetails.getOrElse(ua), subscriptionId) flatMap {
-          clientContactDetails =>
-            (agentContactDetails, clientContactDetails) match {
-              case (Some(agentUserAnswers), Some(clientUserAnswers)) =>
-                val (updatedAgentUA, updatedClientUA) = setContactMigrationFlag(agentUserAnswers, clientUserAnswers)
-                sessionRepository.set(updatedAgentUA).flatMap {
-                  _ =>
-                    sessionRepository.set(updatedClientUA).flatMap {
-                      _ =>
-                        if (updatedAgentUA.get(AgentFirstContactNamePage).isEmpty) {
-                          Future.successful(Redirect(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad()))
-                        } else if (updatedClientUA.get(ContactNamePage).isEmpty) {
-                          Future.successful(Redirect(controllers.client.routes.ClientContactDetailsNeededController.onPageLoad()))
-                        } else {
-                          fileConnector.getAllFileDetails(subscriptionId) map {
-                            fileDetails =>
-                              Ok(view(fileDetails.isDefined, subscriptionId, isAgent = true))
-                          }
-                        }
-                    }
+    agentSubscriptionService.getAgentContactDetails(ua) flatMap { agentContactDetails =>
+      subscriptionService.getContactDetails(agentContactDetails.getOrElse(ua), subscriptionId) flatMap { clientContactDetails =>
+        (agentContactDetails, clientContactDetails) match {
+          case (Some(agentUserAnswers), Some(clientUserAnswers)) =>
+            val (updatedAgentUA, updatedClientUA) = setContactMigrationFlag(agentUserAnswers, clientUserAnswers)
+            sessionRepository.set(updatedAgentUA).flatMap { _ =>
+              sessionRepository.set(updatedClientUA).flatMap { _ =>
+                if (updatedAgentUA.get(AgentFirstContactNamePage).isEmpty) {
+                  Future.successful(Redirect(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad()))
+                } else if (updatedClientUA.get(ContactNamePage).isEmpty) {
+                  Future.successful(Redirect(controllers.client.routes.ClientContactDetailsNeededController.onPageLoad()))
+                } else {
+                  fileConnector.getAllFileDetails(subscriptionId) map { fileDetails =>
+                    Ok(view(fileDetails.isDefined, subscriptionId, isAgent = true))
+                  }
                 }
-              case _ =>
-                Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+              }
             }
+          case _ =>
+            Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
         }
+      }
     }
 
   private def setContactMigrationFlag(agentUA: UserAnswers, clientUA: UserAnswers): (UserAnswers, UserAnswers) =
@@ -108,27 +101,24 @@ class IndexController @Inject() (
   private def checkForOrgContactDetails(subscriptionId: String, ua: UserAnswers)(implicit hc: HeaderCarrier, request: RequestHeader): Future[Result] =
     subscriptionService.getContactDetails(ua, subscriptionId) flatMap {
       case Some(userAnswers) =>
-        sessionRepository.set(userAnswers) flatMap {
-          _ =>
-            if (userAnswers.get(ContactNamePage).isEmpty) {
-              Future.successful(Redirect(routes.ContactDetailsNeededController.onPageLoad()))
-            } else {
-              fileConnector.getAllFileDetails(subscriptionId) map {
-                fileDetails =>
-                  Ok(view(fileDetails.isDefined, subscriptionId, isAgent = false))
-              }
+        sessionRepository.set(userAnswers) flatMap { _ =>
+          if (userAnswers.get(ContactNamePage).isEmpty) {
+            Future.successful(Redirect(routes.ContactDetailsNeededController.onPageLoad()))
+          } else {
+            fileConnector.getAllFileDetails(subscriptionId) map { fileDetails =>
+              Ok(view(fileDetails.isDefined, subscriptionId, isAgent = false))
             }
+          }
         }
       case _ =>
         Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
     }
 
   private def setContactDetailsFlag(userAnswers: UserAnswers): Future[UserAnswers] =
-    Future.fromTry(userAnswers.set(JourneyInProgressPage, true)).flatMap {
-      ua =>
-        sessionRepository.set(ua).map {
-          _ => ua
-        }
+    Future.fromTry(userAnswers.set(JourneyInProgressPage, true)).flatMap { ua =>
+      sessionRepository.set(ua).map { _ =>
+        ua
+      }
     }
 
 }

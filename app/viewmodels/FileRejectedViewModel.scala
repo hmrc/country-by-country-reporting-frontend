@@ -22,15 +22,11 @@ case class FileRejectedViewModel(validationErrors: FileValidationErrors) {
 
   def getErrors: Seq[FileRejectedError] = {
     val fileErrors = validationErrors.fileError.map(
-      _.map(
-        error => FileRejectedError(error.code.code, Nil)
-      )
+      _.map(error => FileRejectedError(error.code.code, Nil))
     )
 
     val recordErrors = validationErrors.recordError.map(
-      _.map(
-        error => FileRejectedError(error.code.code, error.docRefIDInError.getOrElse(Nil))
-      )
+      _.map(error => FileRejectedError(error.code.code, error.docRefIDInError.getOrElse(Nil)))
     )
     (fileErrors ++ recordErrors).flatten.toSeq
   }

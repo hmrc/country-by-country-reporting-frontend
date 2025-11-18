@@ -40,8 +40,8 @@ class AgentIdentifierActionSpec extends SpecBase with TableDrivenPropertyChecks 
 
   class Harness(identifier: AgentIdentifierAction) {
 
-    def onPageLoad(): Action[AnyContent] = identifier {
-      _ => Results.Ok
+    def onPageLoad(): Action[AnyContent] = identifier { _ =>
+      Results.Ok
     }
   }
 
@@ -116,7 +116,7 @@ class AgentIdentifierActionSpec extends SpecBase with TableDrivenPropertyChecks 
           val result     = controller.onPageLoad()(FakeRequest())
 
           status(result) mustBe SEE_OTHER
-          redirectLocation(result).value mustBe controllers.agent.routes.AgentUseAgentServicesController.onPageLoad.url
+          redirectLocation(result).value mustBe controllers.agent.routes.AgentUseAgentServicesController.onPageLoad().url
         }
       }
 
@@ -183,36 +183,35 @@ class AgentIdentifierActionSpec extends SpecBase with TableDrivenPropertyChecks 
 
     "the user has an unsupported affinity group" - {
 
-      forAll(Table("userAffinityType", Individual, Organisation)) {
-        userAffinityType =>
-          s"must redirect the user to the index page when $userAffinityType" in {
+      forAll(Table("userAffinityType", Individual, Organisation)) { userAffinityType =>
+        s"must redirect the user to the index page when $userAffinityType" in {
 
-            type RetrievalType = Option[String] ~ Enrolments ~ Option[AffinityGroup]
-            val authRetrievals = Future.successful(new ~(new ~(Some("id"), Enrolments(Set.empty[Enrolment])), Some(userAffinityType)))
+          type RetrievalType = Option[String] ~ Enrolments ~ Option[AffinityGroup]
+          val authRetrievals = Future.successful(new ~(new ~(Some("id"), Enrolments(Set.empty[Enrolment])), Some(userAffinityType)))
 
-            val mockAuthConnector = mock[AuthConnector]
-            val application = applicationBuilder(userAnswers = None)
-              .overrides(
-                inject.bind[AuthConnector].toInstance(mockAuthConnector)
-              )
-              .build()
+          val mockAuthConnector = mock[AuthConnector]
+          val application = applicationBuilder(userAnswers = None)
+            .overrides(
+              inject.bind[AuthConnector].toInstance(mockAuthConnector)
+            )
+            .build()
 
-            when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]])(any(), any()))
-              .thenReturn(authRetrievals)
+          when(mockAuthConnector.authorise(any(), any[Retrieval[RetrievalType]])(any(), any()))
+            .thenReturn(authRetrievals)
 
-            running(application) {
-              val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
-              val appConfig   = application.injector.instanceOf[FrontendAppConfig]
-              val view        = application.injector.instanceOf[AgentUseAgentServicesView]
+          running(application) {
+            val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+            val appConfig   = application.injector.instanceOf[FrontendAppConfig]
+            val view        = application.injector.instanceOf[AgentUseAgentServicesView]
 
-              val authAction = new AuthenticatedAgentIdentifierAction(mockAuthConnector, appConfig, bodyParsers)
-              val controller = new Harness(authAction)
-              val result     = controller.onPageLoad()(FakeRequest())
+            val authAction = new AuthenticatedAgentIdentifierAction(mockAuthConnector, appConfig, bodyParsers)
+            val controller = new Harness(authAction)
+            val result     = controller.onPageLoad()(FakeRequest())
 
-              status(result) mustBe SEE_OTHER
-              redirectLocation(result) mustBe Some(routes.IndexController.onPageLoad.url)
-            }
+            status(result) mustBe SEE_OTHER
+            redirectLocation(result) mustBe Some(routes.IndexController.onPageLoad.url)
           }
+        }
       }
 
       "must redirect the user to the unauthorised page" in {

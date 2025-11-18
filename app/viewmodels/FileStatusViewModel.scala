@@ -60,14 +60,13 @@ object FileStatusViewModel {
 
   def createStatusTable(allFileDetails: Seq[FileDetails])(implicit messages: Messages): Table = {
 
-    val tableRow: Seq[Seq[TableRow]] = allFileDetails.sortBy(_.submitted)(Ordering[LocalDateTime].reverse) map {
-      fileDetails =>
-        Seq(
-          TableRow(content = Text(fileDetails.name), classes = "cbc-table-filename"),
-          TableRow(Text(DateTimeFormatUtil.dateFormatted(fileDetails.submitted))),
-          TableRow(htmlStatus(fileDetails.status)),
-          buildTableRow(fileDetails.status, fileDetails.conversationId)
-        )
+    val tableRow: Seq[Seq[TableRow]] = allFileDetails.sortBy(_.submitted)(Ordering[LocalDateTime].reverse) map { fileDetails =>
+      Seq(
+        TableRow(content = Text(fileDetails.name), classes = "cbc-table-filename"),
+        TableRow(Text(DateTimeFormatUtil.dateFormatted(fileDetails.submitted))),
+        TableRow(htmlStatus(fileDetails.status)),
+        buildTableRow(fileDetails.status, fileDetails.conversationId)
+      )
     }
 
     val header = Some(

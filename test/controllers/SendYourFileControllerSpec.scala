@@ -58,30 +58,29 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
     "onPageLoad" - {
 
       "must return OK and the correct view for a GET with a new report submission" in {
-        forAll {
-          submissionDetails: SubmissionDetails =>
-            val fileData = ValidatedFileData(
-              submissionDetails.fileName,
-              submissionDetails.messageSpecData.copy(reportType = NewInformation),
-              submissionDetails.fileSize,
-              submissionDetails.checksum
-            )
+        forAll { (submissionDetails: SubmissionDetails) =>
+          val fileData = ValidatedFileData(
+            submissionDetails.fileName,
+            submissionDetails.messageSpecData.copy(reportType = NewInformation),
+            submissionDetails.fileSize,
+            submissionDetails.checksum
+          )
 
-            val userAnswers = userAnswersWithContactDetails.withPage(ValidXMLPage, fileData)
+          val userAnswers = userAnswersWithContactDetails.withPage(ValidXMLPage, fileData)
 
-            val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+          val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-            running(application) {
-              val request   = FakeRequest(GET, routes.SendYourFileController.onPageLoad().url)
-              val appConfig = application.injector.instanceOf[FrontendAppConfig]
+          running(application) {
+            val request   = FakeRequest(GET, routes.SendYourFileController.onPageLoad().url)
+            val appConfig = application.injector.instanceOf[FrontendAppConfig]
 
-              val result = route(application, request).value
+            val result = route(application, request).value
 
-              val view = application.injector.instanceOf[SendYourFileView]
+            val view = application.injector.instanceOf[SendYourFileView]
 
-              status(result) mustEqual OK
-              contentAsString(result) mustEqual view(appConfig, None)(request, messages(application)).toString
-            }
+            status(result) mustEqual OK
+            contentAsString(result) mustEqual view(appConfig, None)(request, messages(application)).toString
+          }
         }
       }
 
@@ -122,76 +121,74 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
     "onSubmit" - {
 
       "redirect to still-checking-your-file page on successful submission" in {
-        forAll {
-          submissionDetails: SubmissionDetails =>
-            val mockSubmissionConnector = mock[SubmissionConnector]
+        forAll { (submissionDetails: SubmissionDetails) =>
+          val mockSubmissionConnector = mock[SubmissionConnector]
 
-            val fileData = ValidatedFileData(
-              submissionDetails.fileName,
-              submissionDetails.messageSpecData,
-              submissionDetails.fileSize,
-              submissionDetails.checksum
-            )
+          val fileData = ValidatedFileData(
+            submissionDetails.fileName,
+            submissionDetails.messageSpecData,
+            submissionDetails.fileSize,
+            submissionDetails.checksum
+          )
 
-            val userAnswers = UserAnswers("Id")
-              .withPage(ValidXMLPage, fileData)
-              .withPage(URLPage, submissionDetails.documentUrl)
-              .withPage(UploadIDPage, submissionDetails.uploadId)
-              .withPage(FileReferencePage, submissionDetails.fileReference)
+          val userAnswers = UserAnswers("Id")
+            .withPage(ValidXMLPage, fileData)
+            .withPage(URLPage, submissionDetails.documentUrl)
+            .withPage(UploadIDPage, submissionDetails.uploadId)
+            .withPage(FileReferencePage, submissionDetails.fileReference)
 
-            val application = applicationBuilder(userAnswers = Some(userAnswers))
-              .overrides(bind[SubmissionConnector].toInstance(mockSubmissionConnector))
-              .build()
+          val application = applicationBuilder(userAnswers = Some(userAnswers))
+            .overrides(bind[SubmissionConnector].toInstance(mockSubmissionConnector))
+            .build()
 
-            when(mockSubmissionConnector.submitDocument(submissionDetailsArgCaptor.capture())(any[HeaderCarrier], any[ExecutionContext]))
-              .thenReturn(Future.successful(Some(ConversationId("conversationId"))))
+          when(mockSubmissionConnector.submitDocument(submissionDetailsArgCaptor.capture())(any[HeaderCarrier], any[ExecutionContext]))
+            .thenReturn(Future.successful(Some(ConversationId("conversationId"))))
 
-            running(application) {
-              val request = FakeRequest(POST, routes.SendYourFileController.onSubmit().url)
+          running(application) {
+            val request = FakeRequest(POST, routes.SendYourFileController.onSubmit().url)
 
-              val result = route(application, request).value
+            val result = route(application, request).value
 
-              status(result) mustEqual SEE_OTHER
-              redirectLocation(result) mustBe Some(controllers.routes.FilePendingChecksController.onPageLoad().url)
+            status(result) mustEqual SEE_OTHER
+            redirectLocation(result) mustBe Some(controllers.routes.FilePendingChecksController.onPageLoad().url)
 
-              verifySubmissionDetails(submissionDetails)
-            }
+            verifySubmissionDetails(submissionDetails)
+          }
         }
       }
 
       "return INTERNAL_SERVER_ERROR on failing to submit document" in {
-        forAll {
-          submissionDetails: SubmissionDetails =>
-            val mockSubmissionConnector = mock[SubmissionConnector]
+        forAll { (submissionDetails: SubmissionDetails) =>
+          val mockSubmissionConnector = mock[SubmissionConnector]
 
-            val fileData = ValidatedFileData(
-              submissionDetails.fileName,
-              submissionDetails.messageSpecData,
-              submissionDetails.fileSize,
-              submissionDetails.checksum
-            )
-            val userAnswers = UserAnswers("Id")
-              .withPage(ValidXMLPage, fileData)
-              .withPage(URLPage, submissionDetails.documentUrl)
-              .withPage(UploadIDPage, submissionDetails.uploadId)
-              .withPage(FileReferencePage, submissionDetails.fileReference)
+          val fileData = ValidatedFileData(
+            submissionDetails.fileName,
+            submissionDetails.messageSpecData,
+            submissionDetails.fileSize,
+            submissionDetails.checksum
+          )
+          val userAnswers = UserAnswers("Id")
+            .withPage(ValidXMLPage, fileData)
+            .withPage(URLPage, submissionDetails.documentUrl)
+            .withPage(UploadIDPage, submissionDetails.uploadId)
+            .withPage(FileReferencePage, submissionDetails.fileReference)
 
-            val application = applicationBuilder(userAnswers = Some(userAnswers))
-              .overrides(bind[SubmissionConnector].toInstance(mockSubmissionConnector))
-              .build()
+          val application = applicationBuilder(userAnswers = Some(userAnswers))
+            .overrides(bind[SubmissionConnector].toInstance(mockSubmissionConnector))
+            .build()
 
-            when(mockSubmissionConnector.submitDocument(submissionDetailsArgCaptor.capture())(any[HeaderCarrier], any[ExecutionContext]))
-              .thenReturn(Future.successful(None))
+          when(mockSubmissionConnector.submitDocument(submissionDetailsArgCaptor.capture())(any[HeaderCarrier], any[ExecutionContext]))
+            .thenReturn(Future.successful(None))
 
-            running(application) {
-              val request = FakeRequest(POST, routes.SendYourFileController.onSubmit().url)
+          running(application) {
+            val request = FakeRequest(POST, routes.SendYourFileController.onSubmit().url)
 
-              val result = route(application, request).value
+            val result = route(application, request).value
 
-              status(result) mustEqual INTERNAL_SERVER_ERROR
+            status(result) mustEqual INTERNAL_SERVER_ERROR
 
-              verifySubmissionDetails(submissionDetails)
-            }
+            verifySubmissionDetails(submissionDetails)
+          }
         }
       }
     }
@@ -328,7 +325,7 @@ class SendYourFileControllerSpec extends SpecBase with Generators with ScalaChec
       "must return OK and load the page 'ThereIsAProblemView' when the file status is 'Rejected' with expected business rules errors" in {
 
         val mockFileDetailsConnector = mock[FileDetailsConnector]
-        val validationErrors         = FileValidationErrors(Some(Seq(FileErrors(InvalidMessageRefIDFormat, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
+        val validationErrors = FileValidationErrors(Some(Seq(FileErrors(InvalidMessageRefIDFormat, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
 
         val userAnswers = UserAnswers("Id")
           .withPage(ConversationIdPage, conversationId)

@@ -145,33 +145,32 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
 
     val problemFileErrorCodes = Table("fileErrorCode", Seq(BusinessRuleErrorCode.UnknownErrorCode("something wrong")): _*)
 
-    forAll(problemFileErrorCodes) {
-      fileErrorCode =>
-        s"must redirect to File Problem Page when REJECTED status returned with $fileErrorCode errors" in {
+    forAll(problemFileErrorCodes) { fileErrorCode =>
+      s"must redirect to File Problem Page when REJECTED status returned with $fileErrorCode errors" in {
 
-          val validationErrors = FileValidationErrors(Some(Seq(FileErrors(fileErrorCode, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
+        val validationErrors = FileValidationErrors(Some(Seq(FileErrors(fileErrorCode, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
 
-          val userAnswers: UserAnswers = emptyUserAnswers
-            .withPage(ConversationIdPage, conversationId)
-            .withPage(ValidXMLPage, validXmlDetails)
+        val userAnswers: UserAnswers = emptyUserAnswers
+          .withPage(ConversationIdPage, conversationId)
+          .withPage(ValidXMLPage, validXmlDetails)
 
-          when(mockFileDetailsConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(Some(Rejected(validationErrors))))
+        when(mockFileDetailsConnector.getStatus(any())(any(), any())).thenReturn(Future.successful(Some(Rejected(validationErrors))))
 
-          val application = applicationBuilder(userAnswers = Some(userAnswers))
-            .overrides(
-              bind[FileDetailsConnector].toInstance(mockFileDetailsConnector)
-            )
-            .build()
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
+          .overrides(
+            bind[FileDetailsConnector].toInstance(mockFileDetailsConnector)
+          )
+          .build()
 
-          running(application) {
+        running(application) {
 
-            val request = FakeRequest(GET, routes.FilePendingChecksController.onPageLoad().url)
-            val result  = route(application, request).value
+          val request = FakeRequest(GET, routes.FilePendingChecksController.onPageLoad().url)
+          val result  = route(application, request).value
 
-            status(result) mustEqual SEE_OTHER
-            redirectLocation(result).value mustEqual routes.FileProblemController.onPageLoad().url
-          }
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.FileProblemController.onPageLoad().url
         }
+      }
     }
 
     "must redirect to File Problem Page when REJECTED status returned with regular errors" in {

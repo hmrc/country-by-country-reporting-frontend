@@ -26,9 +26,9 @@ object FileProblemHelper {
     val errorCodes: Seq[String] =
       Seq(errors.fileError.map(_.map(_.code.code)).getOrElse(Nil), errors.recordError.map(_.map(_.code.code)).getOrElse(Nil)).flatten
 
-    (errorCodes.exists(
+    errorCodes.exists(
       !expectedErrorCodes.contains(_)
-    ))
+    )
   }
 
 }

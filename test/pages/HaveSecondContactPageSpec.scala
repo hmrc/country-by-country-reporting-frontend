@@ -33,52 +33,50 @@ class HaveSecondContactPageSpec extends PageBehaviours {
     "cleanup" - {
 
       "must remove SecondContactPages when there is a change of the answer from 'Yes' to 'No'" in {
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-            val result = userAnswers
-              .set(HaveSecondContactPage, true)
-              .success
-              .value
-              .set(SecondContactNamePage, "name")
-              .success
-              .value
-              .set(SecondContactEmailPage, "test@gmail.com")
-              .success
-              .value
-              .set(SecondContactPhonePage, "112233445566")
-              .success
-              .value
-              .set(HaveSecondContactPage, false)
-              .success
-              .value
+        forAll(arbitrary[UserAnswers]) { userAnswers =>
+          val result = userAnswers
+            .set(HaveSecondContactPage, true)
+            .success
+            .value
+            .set(SecondContactNamePage, "name")
+            .success
+            .value
+            .set(SecondContactEmailPage, "test@gmail.com")
+            .success
+            .value
+            .set(SecondContactPhonePage, "112233445566")
+            .success
+            .value
+            .set(HaveSecondContactPage, false)
+            .success
+            .value
 
-            result.get(SecondContactNamePage) must not be defined
-            result.get(SecondContactEmailPage) must not be defined
-            result.get(SecondContactPhonePage) must not be defined
+          result.get(SecondContactNamePage) must not be defined
+          result.get(SecondContactEmailPage) must not be defined
+          result.get(SecondContactPhonePage) must not be defined
         }
       }
 
       "must retain SecondContactPages when there is a change of the answer to 'Yes'" in {
 
-        forAll(arbitrary[UserAnswers]) {
-          userAnswers =>
-            val result = userAnswers
-              .set(SecondContactNamePage, "name")
-              .success
-              .value
-              .set(SecondContactEmailPage, "test@gmail.com")
-              .success
-              .value
-              .set(SecondContactPhonePage, "112233445566")
-              .success
-              .value
-              .set(HaveSecondContactPage, true)
-              .success
-              .value
+        forAll(arbitrary[UserAnswers]) { userAnswers =>
+          val result = userAnswers
+            .set(SecondContactNamePage, "name")
+            .success
+            .value
+            .set(SecondContactEmailPage, "test@gmail.com")
+            .success
+            .value
+            .set(SecondContactPhonePage, "112233445566")
+            .success
+            .value
+            .set(HaveSecondContactPage, true)
+            .success
+            .value
 
-            result.get(SecondContactNamePage) mustBe defined
-            result.get(SecondContactEmailPage) mustBe defined
-            result.get(SecondContactPhonePage) mustBe defined
+          result.get(SecondContactNamePage) mustBe defined
+          result.get(SecondContactEmailPage) mustBe defined
+          result.get(SecondContactPhonePage) mustBe defined
         }
       }
     }

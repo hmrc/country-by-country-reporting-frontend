@@ -26,7 +26,7 @@
 
 @layout(pageTitle = title(form, messages("agentHaveSecondContact.title"))) {
 
-    @formHelper(action = controllers.agent.routes.AgentHaveSecondContactController.onSubmit(mode), 'autoComplete -> "off") {
+    @formHelper(action = controllers.agent.routes.AgentHaveSecondContactController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

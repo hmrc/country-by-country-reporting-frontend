@@ -48,27 +48,25 @@ class SecondContactHavePhoneController @Inject() (
 
   val form = formProvider("secondContactHavePhone")
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.get(SecondContactHavePhonePage) match {
-        case None        => form
-        case Some(value) => form.fill(value)
-      }
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData) { implicit request =>
+    val preparedForm = request.userAnswers.get(SecondContactHavePhonePage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      Ok(view(preparedForm, mode, getSecondContactName(request.userAnswers)))
+    Ok(view(preparedForm, mode, getSecondContactName(request.userAnswers)))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getSecondContactName(request.userAnswers)))),
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(SecondContactHavePhonePage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(SecondContactHavePhonePage, mode, updatedAnswers))
-        )
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, getSecondContactName(request.userAnswers)))),
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SecondContactHavePhonePage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(SecondContactHavePhonePage, mode, updatedAnswers))
+      )
   }
 }

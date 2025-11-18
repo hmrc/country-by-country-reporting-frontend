@@ -34,19 +34,16 @@ object ManageYourClients extends Enumerable.Implicits {
     ChangeYourCBCAgentContactDetails
   )
 
-  def options(implicit messages: Messages): Seq[RadioItem] = values.zipWithIndex.map {
-    case (value, index) =>
-      RadioItem(
-        content = Text(messages(s"manageYourClients.${value.toString}")),
-        value = Some(value.toString),
-        id = Some(s"value_$index")
-      )
+  def options(implicit messages: Messages): Seq[RadioItem] = values.zipWithIndex.map { case (value, index) =>
+    RadioItem(
+      content = Text(messages(s"manageYourClients.${value.toString}")),
+      value = Some(value.toString),
+      id = Some(s"value_$index")
+    )
   }
 
   implicit val enumerable: Enumerable[ManageYourClients] =
     Enumerable(
-      values.map(
-        v => v.toString -> v
-      ): _*
+      values.map(v => v.toString -> v): _*
     )
 }

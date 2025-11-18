@@ -20,7 +20,7 @@ import config.FrontendAppConfig
 import connectors.{FileDetailsConnector, SubmissionConnector}
 import controllers.actions._
 import models.ValidatedFileData
-import models.fileDetails.{FileValidationErrors, Pending, Rejected, RejectedSDES, RejectedSDESVirus, Accepted => FileStatusAccepted}
+import models.fileDetails.{Accepted => FileStatusAccepted, FileValidationErrors, Pending, Rejected, RejectedSDES, RejectedSDESVirus}
 import models.submission.SubmissionDetails
 import models.upscan.URL
 import pages._
@@ -57,67 +57,63 @@ class SendYourFileController @Inject() (
   def onPageLoad: Action[AnyContent] = (identify andThen getData()
     andThen requireData
     andThen validateDataAction
-    andThen checkForSubmission(true)).async {
-    implicit request =>
-      request.userAnswers
-        .get(ValidXMLPage)
-        .fold(
-          Future.successful(Redirect(controllers.routes.FileProblemSomeInformationMissingController.onPageLoad()))
-        ) {
-          validXMLData =>
-            val reportType = validXMLData.messageSpecData.reportType
-            Future.successful(Ok(view(appConfig, SendYourFileViewModel.getWarningText(reportType))))
+    andThen checkForSubmission(true)).async { implicit request =>
+    request.userAnswers
+      .get(ValidXMLPage)
+      .fold(
+        Future.successful(Redirect(controllers.routes.FileProblemSomeInformationMissingController.onPageLoad()))
+      ) { validXMLData =>
+        val reportType = validXMLData.messageSpecData.reportType
+        Future.successful(Ok(view(appConfig, SendYourFileViewModel.getWarningText(reportType))))
+      }
+  }
+
+  def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    (request.userAnswers.get(ValidXMLPage),
+     request.userAnswers.get(URLPage),
+     request.userAnswers.get(UploadIDPage),
+     request.userAnswers.get(FileReferencePage)
+    ) match {
+      case (Some(ValidatedFileData(fileName, messageSpecData, fileSize, checksum)), Some(fileUrl), Some(uploadId), Some(fileReference)) =>
+        val submissionDetails = SubmissionDetails(fileName, uploadId, request.subscriptionId, fileSize, fileUrl, checksum, messageSpecData, fileReference)
+        submissionConnector.submitDocument(submissionDetails)(hc, ec) flatMap {
+          case Some(conversationId) =>
+            for {
+              userAnswers <- Future.fromTry(request.userAnswers.set(ConversationIdPage, conversationId))
+              _           <- sessionRepository.set(userAnswers)
+            } yield Redirect(controllers.routes.FilePendingChecksController.onPageLoad())
+          case _ => Future.successful(InternalServerError)
         }
+      case _ =>
+        Future.successful(InternalServerError)
+    }
   }
 
-  def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      (request.userAnswers.get(ValidXMLPage),
-       request.userAnswers.get(URLPage),
-       request.userAnswers.get(UploadIDPage),
-       request.userAnswers.get(FileReferencePage)
-      ) match {
-        case (Some(ValidatedFileData(fileName, messageSpecData, fileSize, checksum)), Some(fileUrl), Some(uploadId), Some(fileReference)) =>
-          val submissionDetails = SubmissionDetails(fileName, uploadId, request.subscriptionId, fileSize, fileUrl, checksum, messageSpecData, fileReference)
-          submissionConnector.submitDocument(submissionDetails)(hc, ec) flatMap {
-            case Some(conversationId) =>
-              for {
-                userAnswers <- Future.fromTry(request.userAnswers.set(ConversationIdPage, conversationId))
-                _           <- sessionRepository.set(userAnswers)
-              } yield Redirect(controllers.routes.FilePendingChecksController.onPageLoad())
-            case _ => Future.successful(InternalServerError)
-          }
-        case _ =>
-          Future.successful(InternalServerError)
-      }
-  }
-
-  def getStatus: Action[AnyContent] = (identify andThen getData() andThen requireData).async {
-    implicit request =>
-      request.userAnswers.get(ConversationIdPage) match {
-        case Some(conversationId) =>
-          fileDetailsConnector.getStatus(conversationId) flatMap {
-            case Some(FileStatusAccepted) =>
-              Future.successful(Ok(Json.toJson(URL(routes.FileReceivedController.onPageLoad(conversationId).url))))
-            case Some(Rejected(errors)) =>
-              fastJourneyErrorRoute(
-                errors,
-                Future.successful(Ok(Json.toJson(URL(routes.FileRejectedController.onPageLoad(conversationId).url))))
-              )
-            case Some(Pending) =>
-              Future.successful(NoContent)
-            case Some(RejectedSDES) =>
-              Future.successful(Ok(Json.toJson(URL(routes.ThereIsAProblemController.onPageLoad().url))))
-            case Some(RejectedSDESVirus) =>
-              Future.successful(Ok(Json.toJson(URL(routes.FileProblemVirusController.onPageLoad().url))))
-            case None =>
-              logger.warn("getStatus: no status returned")
-              Future.successful(InternalServerError)
-          }
-        case None =>
-          logger.warn("UserAnswers.ConversationId is empty")
-          Future.successful(InternalServerError)
-      }
+  def getStatus: Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
+    request.userAnswers.get(ConversationIdPage) match {
+      case Some(conversationId) =>
+        fileDetailsConnector.getStatus(conversationId) flatMap {
+          case Some(FileStatusAccepted) =>
+            Future.successful(Ok(Json.toJson(URL(routes.FileReceivedController.onPageLoad(conversationId).url))))
+          case Some(Rejected(errors)) =>
+            fastJourneyErrorRoute(
+              errors,
+              Future.successful(Ok(Json.toJson(URL(routes.FileRejectedController.onPageLoad(conversationId).url))))
+            )
+          case Some(Pending) =>
+            Future.successful(NoContent)
+          case Some(RejectedSDES) =>
+            Future.successful(Ok(Json.toJson(URL(routes.ThereIsAProblemController.onPageLoad().url))))
+          case Some(RejectedSDESVirus) =>
+            Future.successful(Ok(Json.toJson(URL(routes.FileProblemVirusController.onPageLoad().url))))
+          case None =>
+            logger.warn("getStatus: no status returned")
+            Future.successful(InternalServerError)
+        }
+      case None =>
+        logger.warn("UserAnswers.ConversationId is empty")
+        Future.successful(InternalServerError)
+    }
   }
 
   private def fastJourneyErrorRoute(errors: FileValidationErrors, result: Future[Result]): Future[Result] =

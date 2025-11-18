@@ -40,26 +40,24 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
       }
 
       "must go from AgentIsYourClientPage to landing page when Yes" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            val updatedAnswers =
-              answers.set(AgentIsThisYourClientPage, true).success.value
+        forAll(arbitrary[UserAnswers]) { answers =>
+          val updatedAnswers =
+            answers.set(AgentIsThisYourClientPage, true).success.value
 
-            navigator
-              .nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers)
-              .mustBe(controllers.routes.IndexController.onPageLoad)
+          navigator
+            .nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers)
+            .mustBe(controllers.routes.IndexController.onPageLoad)
         }
       }
 
       "must go from AgentIsYourClientPage to ClientNotIdentified when No" in {
-        forAll(arbitrary[UserAnswers]) {
-          answers =>
-            val updatedAnswers =
-              answers.set(AgentIsThisYourClientPage, false).success.value
+        forAll(arbitrary[UserAnswers]) { answers =>
+          val updatedAnswers =
+            answers.set(AgentIsThisYourClientPage, false).success.value
 
-            navigator
-              .nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers)
-              .mustBe(controllers.client.routes.ProblemCBCIdController.onPageLoad())
+          navigator
+            .nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers)
+            .mustBe(controllers.client.routes.ProblemCBCIdController.onPageLoad())
         }
       }
 
