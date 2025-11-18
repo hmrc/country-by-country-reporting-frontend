@@ -53,6 +53,7 @@ lazy val root = (project in file("."))
       ".*LanguageSwitchController",
       ".*handlers.*",
       ".*/utils/.*",
+      ".*/models/.*",
       ".*Repository.*",
       ".*repositories.*",
       ".*components.*",
