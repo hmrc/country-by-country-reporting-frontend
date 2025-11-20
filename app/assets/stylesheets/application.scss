@@ -84,4 +84,8 @@ body:not(.js-enabled) .js-enabled {
 
 .govuk-summary-list__value {
       width: 50%;
-  }
+}
+
+.govuk-body {
+    word-wrap: break-word;
+}
