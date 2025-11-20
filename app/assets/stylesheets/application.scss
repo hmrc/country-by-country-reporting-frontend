@@ -83,5 +83,11 @@ body:not(.js-enabled) .js-enabled {
 }
 
 .govuk-summary-list__value {
-      width: 50%;
-  }
+    width: 50%;
+}
+
+.govuk-list > li {
+    min-height: 24px;
+}
+
+
