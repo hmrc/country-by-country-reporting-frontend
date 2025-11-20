@@ -57,7 +57,7 @@ class AgentIsThisYourClientController @Inject() (
     for {
       _           <- removeClient(request.userAnswers)
       tradingName <- subscriptionService.getTradingName(request.subscriptionId)
-    } yield Ok(view(preparedForm, request.subscriptionId, tradingName.getOrElse("")))
+    } yield Ok(view(preparedForm, request.subscriptionId, tradingName))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
@@ -65,7 +65,7 @@ class AgentIsThisYourClientController @Inject() (
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.subscriptionId, tradingName.getOrElse("")))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.subscriptionId, tradingName))),
           value =>
             for {
               updatedAnswers       <- Future.fromTry(request.userAnswers.set(AgentIsThisYourClientPage, value))
@@ -76,7 +76,7 @@ class AgentIsThisYourClientController @Inject() (
     }
   }
 
-  private def setClient(isThisYourClient: Boolean, subscriptionId: String, tradingName: Option[String], userAnswers: UserAnswers): Future[UserAnswers] =
+  private def setClient(isThisYourClient: Boolean, subscriptionId: String, tradingName: String, userAnswers: UserAnswers): Future[UserAnswers] =
     if (isThisYourClient) {
       Future.fromTry(userAnswers.set(AgentClientDetailsPage, AgentClientDetails(subscriptionId, tradingName)))
     } else { Future.successful(userAnswers) }
