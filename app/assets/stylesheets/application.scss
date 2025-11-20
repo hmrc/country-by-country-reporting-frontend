@@ -3,7 +3,7 @@ $hmrc-assets-path: "/disclose-cross-border-arrangements/upload/assets/lib/hmrc-f
 @import "partials/spinner";
 
 .text-overflow{
-    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .remove-end-whitespace{
@@ -84,4 +84,12 @@ body:not(.js-enabled) .js-enabled {
 
 .govuk-summary-list__value {
       width: 50%;
-  }
+}
+
+.govuk-body {
+    word-wrap: break-word;
+}
+
+.govuk-heading-l {
+    overflow-wrap: break-word;
+}
