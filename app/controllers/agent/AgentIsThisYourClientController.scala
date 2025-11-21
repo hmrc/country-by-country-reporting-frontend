@@ -76,9 +76,9 @@ class AgentIsThisYourClientController @Inject() (
     }
   }
 
-  private def setClient(isThisYourClient: Boolean, subscriptionId: String, tradingName: String, userAnswers: UserAnswers): Future[UserAnswers] =
+  private def setClient(isThisYourClient: Boolean, subscriptionId: String, businessName: String, userAnswers: UserAnswers): Future[UserAnswers] =
     if (isThisYourClient) {
-      Future.fromTry(userAnswers.set(AgentClientDetailsPage, AgentClientDetails(subscriptionId, tradingName)))
+      Future.fromTry(userAnswers.set(AgentClientDetailsPage, AgentClientDetails(subscriptionId, businessName)))
     } else { Future.successful(userAnswers) }
 
   private def removeClient(userAnswers: UserAnswers): Future[UserAnswers] =
