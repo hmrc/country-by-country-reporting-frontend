@@ -22,8 +22,8 @@ import play.api.libs.json.Json
 class AgentClientDetailsSpec extends SpecBase {
   "AgentClientDetails" - {
     "must serialised and de-serialise AgentClientDetails" in {
-      val clientDetails   = AgentClientDetails("idx", Some("name"))
-      val agentDetailJson = Json.parse("""{"id":"idx","tradingName":"name"}""")
+      val clientDetails   = AgentClientDetails("idx", "name")
+      val agentDetailJson = Json.parse("""{"id":"idx","businessName":"name"}""")
       Json.toJson(clientDetails) mustBe agentDetailJson
       agentDetailJson.as[AgentClientDetails] mustBe clientDetails
     }

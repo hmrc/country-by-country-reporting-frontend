@@ -55,30 +55,30 @@ class AgentIsThisYourClientController @Inject() (
     }
 
     for {
-      _           <- removeClient(request.userAnswers)
-      tradingName <- subscriptionService.getTradingName(request.subscriptionId)
-    } yield Ok(view(preparedForm, request.subscriptionId, tradingName.getOrElse("")))
+      _            <- removeClient(request.userAnswers)
+      businessName <- subscriptionService.getBusinessName(request.subscriptionId)
+    } yield Ok(view(preparedForm, request.subscriptionId, businessName))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
-    subscriptionService.getTradingName(request.subscriptionId).flatMap { tradingName =>
+    subscriptionService.getBusinessName(request.subscriptionId).flatMap { businessName =>
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.subscriptionId, tradingName.getOrElse("")))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.subscriptionId, businessName))),
           value =>
             for {
               updatedAnswers       <- Future.fromTry(request.userAnswers.set(AgentIsThisYourClientPage, value))
-              updatedClientDetails <- setClient(value, request.subscriptionId, tradingName, updatedAnswers)
+              updatedClientDetails <- setClient(value, request.subscriptionId, businessName, updatedAnswers)
               _                    <- sessionRepository.set(updatedClientDetails)
             } yield Redirect(navigator.nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers))
         )
     }
   }
 
-  private def setClient(isThisYourClient: Boolean, subscriptionId: String, tradingName: Option[String], userAnswers: UserAnswers): Future[UserAnswers] =
+  private def setClient(isThisYourClient: Boolean, subscriptionId: String, businessName: String, userAnswers: UserAnswers): Future[UserAnswers] =
     if (isThisYourClient) {
-      Future.fromTry(userAnswers.set(AgentClientDetailsPage, AgentClientDetails(subscriptionId, tradingName)))
+      Future.fromTry(userAnswers.set(AgentClientDetailsPage, AgentClientDetails(subscriptionId, businessName)))
     } else { Future.successful(userAnswers) }
 
   private def removeClient(userAnswers: UserAnswers): Future[UserAnswers] =

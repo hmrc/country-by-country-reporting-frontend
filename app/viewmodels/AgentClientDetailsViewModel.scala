@@ -21,7 +21,7 @@ import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.govuk.summarylist._
+import viewmodels.govuk.summarylist.*
 
 object AgentClientDetailsViewModel {
 
@@ -29,8 +29,13 @@ object AgentClientDetailsViewModel {
     .withoutBorders()
     .withCssClass("govuk-!-margin-bottom-0")
 
-  def getSummaryRows(acd: AgentClientDetails)(implicit messages: Messages): Seq[SummaryListRow] = {
-    val idRow = Seq(
+  def getSummaryRows(acd: AgentClientDetails)(implicit messages: Messages): Seq[SummaryListRow] =
+    Seq(
+      SummaryListRowViewModel(
+        key = "agentClientDetails.name",
+        value = ValueViewModel(HtmlFormat.escape(s"${acd.businessName}").toString),
+        actions = Seq()
+      ),
       SummaryListRowViewModel(
         key = "agentClientDetails.id",
         value = ValueViewModel(HtmlFormat.escape(s"${acd.id}").toString),
@@ -45,15 +50,4 @@ object AgentClientDetailsViewModel {
         )
       )
     )
-    if (acd.tradingName.isDefined) {
-      Seq(
-        SummaryListRowViewModel(
-          key = "agentClientDetails.name",
-          value = ValueViewModel(HtmlFormat.escape(s"${acd.tradingName.get}").toString),
-          actions = Seq()
-        )
-      ) ++ idRow
-    } else { idRow }
-
-  }
 }
