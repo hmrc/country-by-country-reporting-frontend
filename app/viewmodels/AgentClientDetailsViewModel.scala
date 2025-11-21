@@ -32,6 +32,11 @@ object AgentClientDetailsViewModel {
   def getSummaryRows(acd: AgentClientDetails)(implicit messages: Messages): Seq[SummaryListRow] =
     Seq(
       SummaryListRowViewModel(
+        key = "agentClientDetails.name",
+        value = ValueViewModel(HtmlFormat.escape(s"${acd.businessName}").toString),
+        actions = Seq()
+      ),
+      SummaryListRowViewModel(
         key = "agentClientDetails.id",
         value = ValueViewModel(HtmlFormat.escape(s"${acd.id}").toString),
         actions = Seq(
@@ -43,11 +48,6 @@ object AgentClientDetailsViewModel {
           )
             .withAttribute(("id", "change"))
         )
-      ),
-      SummaryListRowViewModel(
-        key = "agentClientDetails.name",
-        value = ValueViewModel(HtmlFormat.escape(s"${acd.tradingName}").toString),
-        actions = Seq()
       )
     )
 }

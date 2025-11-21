@@ -55,21 +55,21 @@ class AgentIsThisYourClientController @Inject() (
     }
 
     for {
-      _           <- removeClient(request.userAnswers)
-      tradingName <- subscriptionService.getTradingName(request.subscriptionId)
-    } yield Ok(view(preparedForm, request.subscriptionId, tradingName))
+      _            <- removeClient(request.userAnswers)
+      businessName <- subscriptionService.getBusinessName(request.subscriptionId)
+    } yield Ok(view(preparedForm, request.subscriptionId, businessName))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
-    subscriptionService.getTradingName(request.subscriptionId).flatMap { tradingName =>
+    subscriptionService.getBusinessName(request.subscriptionId).flatMap { businessName =>
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.subscriptionId, tradingName))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.subscriptionId, businessName))),
           value =>
             for {
               updatedAnswers       <- Future.fromTry(request.userAnswers.set(AgentIsThisYourClientPage, value))
-              updatedClientDetails <- setClient(value, request.subscriptionId, tradingName, updatedAnswers)
+              updatedClientDetails <- setClient(value, request.subscriptionId, businessName, updatedAnswers)
               _                    <- sessionRepository.set(updatedClientDetails)
             } yield Redirect(navigator.nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers))
         )

@@ -53,7 +53,7 @@ class AgentIsThisYourClientControllerSpec extends SpecBase {
         )
         .build()
 
-      when(mockSubscriptionService.getTradingName(any[String])(any[HeaderCarrier])).thenReturn(Future.successful(Some(tradingName)))
+      when(mockSubscriptionService.getBusinessName(any[String])(any[HeaderCarrier])).thenReturn(Future.successful(tradingName))
 
       running(application) {
         val request = FakeRequest(GET, agentIsThisYourClientRoute)
@@ -82,7 +82,7 @@ class AgentIsThisYourClientControllerSpec extends SpecBase {
         )
         .build()
 
-      when(mockSubscriptionService.getTradingName(any[String])(any[HeaderCarrier])).thenReturn(Future.successful(Some(tradingName)))
+      when(mockSubscriptionService.getBusinessName(any[String])(any[HeaderCarrier])).thenReturn(Future.successful(tradingName))
 
       running(application) {
         val request = FakeRequest(GET, agentIsThisYourClientRoute)
@@ -115,7 +115,7 @@ class AgentIsThisYourClientControllerSpec extends SpecBase {
         )
         .build()
 
-      when(mockSubscriptionService.getTradingName(any[String])(any[HeaderCarrier])).thenReturn(Future.successful(Some(tradingName)))
+      when(mockSubscriptionService.getBusinessName(any[String])(any[HeaderCarrier])).thenReturn(Future.successful(tradingName))
 
       running(application) {
         val request =
@@ -145,7 +145,7 @@ class AgentIsThisYourClientControllerSpec extends SpecBase {
         )
         .build()
 
-      when(mockSubscriptionService.getTradingName(any[String])(any[HeaderCarrier])).thenReturn(Future.successful(Some(tradingName)))
+      when(mockSubscriptionService.getBusinessName(any[String])(any[HeaderCarrier])).thenReturn(Future.successful(tradingName))
 
       running(application) {
         val request =

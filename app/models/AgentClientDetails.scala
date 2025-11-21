@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
-case class AgentClientDetails(id: String, tradingName: String)
+case class AgentClientDetails(id: String, businessName: String)
 
 object AgentClientDetails {
   implicit val format: OFormat[AgentClientDetails] = Json.format[AgentClientDetails]
