@@ -35,9 +35,9 @@ trait ModelGenerators {
   implicit lazy val arbitraryAgentClientDetails: Arbitrary[AgentClientDetails] =
     Arbitrary {
       for {
-        clientID    <- nonEmptyString
-        tradingName <- nonEmptyString
-      } yield AgentClientDetails(clientID, Some(tradingName))
+        clientID     <- nonEmptyString
+        businessName <- nonEmptyString
+      } yield AgentClientDetails(clientID, businessName)
     }
 
   implicit lazy val arbitraryWhatToDoNext: Arbitrary[ManageYourClients] =

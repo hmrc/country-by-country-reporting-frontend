@@ -19,7 +19,7 @@ package services
 import config.FrontendAppConfig
 import connectors.SubscriptionConnector
 import models.UserAnswers
-import models.subscription._
+import models.subscription.*
 import pages.{HaveSecondContactPage, IsMigratedUserContactUpdatedPage, PrimaryClientContactInformationPage, SecondContactNamePage}
 import play.api.Logging
 import uk.gov.hmrc.http.HeaderCarrier
@@ -141,9 +141,14 @@ class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnecto
       updatedAnswers      <- uaWithHaveTelephone.set(contactTypePage.contactNamePage, contactInformation.organisationDetails.organisationName)
     } yield updatedAnswers).toOption
 
-  def getTradingName(subscriptionId: String)(implicit hc: HeaderCarrier): Future[Option[String]] =
+  def getBusinessName(subscriptionId: String)(implicit hc: HeaderCarrier): Future[String] =
     subscriptionConnector.readSubscription(subscriptionId: String) map {
-      case Some(responseDetail: ResponseDetail) => responseDetail.tradingName
-      case _                                    => None
+      case Some(responseDetail: ResponseDetail) =>
+        responseDetail.tradingName match
+          case Some(name) => name
+          case None       => responseDetail.primaryContact.organisationDetails.organisationName
+      case _ =>
+        logger.warn("getTradingName: subscriptionConnector.readSubscription call failed to fetch the a name")
+        ""
     }
 }

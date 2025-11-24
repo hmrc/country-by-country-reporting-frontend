@@ -50,7 +50,7 @@ class AgentClientDetailsViewModelSpec extends SpecBase {
         )
       )
 
-      AgentClientDetailsViewModel.getSummaryRows(AgentClientDetails("CBCXX1", Some("Trading Name")))(messages(app)) mustBe expectedSummary
+      AgentClientDetailsViewModel.getSummaryRows(AgentClientDetails("CBCXX1", "Trading Name"))(messages(app)) mustBe expectedSummary
     }
 
   }
