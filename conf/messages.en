@@ -699,8 +699,8 @@ clientContactDetailsSaved.p2.link = send a CBC report
 
 agentUseAgentServices.title = You must use agent services to send a country-by-country report
 agentUseAgentServices.h1 = You must use agent services to send a country-by-country report
-agentUseAgentServices.p1 = We have made changes to this service. You will need to {0}
-agentUseAgentServices.p1.link = create an agent services account to send country-by-country reports.
+agentUseAgentServices.p1 = We have made changes to this service. You will need to {0}.
+agentUseAgentServices.p1.link = create an agent services account to send country-by-country reports
 
 problemCBCId.title = There is a problem with your CBC ID
 problemCBCId.heading = There is a problem with your CBC ID
