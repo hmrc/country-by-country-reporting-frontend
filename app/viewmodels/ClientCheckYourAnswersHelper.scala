@@ -36,7 +36,7 @@ class ClientCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: 
   def contactNamePage(): Option[SummaryListRow] = userAnswers.get(ContactNamePage) map { x =>
     SummaryListRowViewModel(
       key = "clientFirstContactName.checkYourAnswersLabel",
-      value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
+      value = ValueViewModel(HtmlContent(s"$x")),
       actions = Seq(
         ActionItemViewModel(
           content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
@@ -52,7 +52,7 @@ class ClientCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: 
   def contactEmailPage(): Option[SummaryListRow] = userAnswers.get(ContactEmailPage) map { x =>
     SummaryListRowViewModel(
       key = "clientFirstContactEmail.checkYourAnswersLabel",
-      value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
+      value = ValueViewModel(HtmlContent(s"$x")),
       actions = Seq(
         ActionItemViewModel(
           content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
@@ -69,7 +69,7 @@ class ClientCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: 
     val summaryView = (value: String) =>
       SummaryListRowViewModel(
         key = "clientFirstContactPhone.checkYourAnswersLabel",
-        value = ValueViewModel(HtmlFormat.escape(value).toString),
+        value = ValueViewModel(HtmlContent(s"$value")),
         actions = Seq(
           ActionItemViewModel(
             content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
@@ -93,7 +93,7 @@ class ClientCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: 
     val summaryView = (yesNo: String) =>
       SummaryListRowViewModel(
         key = "clientHaveSecondContact.checkYourAnswersLabel",
-        value = ValueViewModel(HtmlFormat.escape(s"${messages(yesNo)}").toString),
+        value = ValueViewModel(HtmlContent(s"${messages(yesNo)}")),
         actions = Seq(
           ActionItemViewModel(
             content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
@@ -121,7 +121,7 @@ class ClientCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: 
   def secondaryContactNamePage(): Option[SummaryListRow] = userAnswers.get(SecondContactNamePage) map { x =>
     SummaryListRowViewModel(
       key = "clientSecondContactName.checkYourAnswersLabel",
-      value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
+      value = ValueViewModel(HtmlContent(s"$x")),
       actions = Seq(
         ActionItemViewModel(
           content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
@@ -137,7 +137,7 @@ class ClientCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: 
   def secondaryContactEmailPage(): Option[SummaryListRow] = userAnswers.get(SecondContactEmailPage) map { x =>
     SummaryListRowViewModel(
       key = "clientSecondContactEmail.checkYourAnswersLabel",
-      value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
+      value = ValueViewModel(HtmlContent(s"$x")),
       actions = Seq(
         ActionItemViewModel(
           content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
@@ -154,7 +154,7 @@ class ClientCheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: 
     val summaryView = (value: String) =>
       SummaryListRowViewModel(
         key = "clientSecondContactPhone.checkYourAnswersLabel",
-        value = ValueViewModel(HtmlFormat.escape(value).toString),
+        value = ValueViewModel(HtmlContent(s"$value")),
         actions = Seq(
           ActionItemViewModel(
             content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
