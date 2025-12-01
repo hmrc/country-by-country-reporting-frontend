@@ -18,12 +18,11 @@ package viewmodels
 
 import controllers.routes
 import models.{CheckMode, UserAnswers}
-import pages._
+import pages.*
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.govuk.summarylist._
+import viewmodels.govuk.summarylist.*
 
 class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messages) {
 
@@ -36,7 +35,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def contactNamePage(): Option[SummaryListRow] = userAnswers.get(ContactNamePage) map { x =>
     SummaryListRowViewModel(
       key = "contactName.checkYourAnswersLabel",
-      value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
+      value = ValueViewModel(HtmlContent(s"$x")),
       actions = Seq(
         ActionItemViewModel(
           content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
@@ -52,7 +51,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def contactEmailPage(): Option[SummaryListRow] = userAnswers.get(ContactEmailPage) map { x =>
     SummaryListRowViewModel(
       key = "contactEmail.checkYourAnswersLabel",
-      value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
+      value = ValueViewModel(HtmlContent(s"$x")),
       actions = Seq(
         ActionItemViewModel(
           content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
@@ -69,7 +68,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     val summaryView = (value: String) =>
       SummaryListRowViewModel(
         key = "contactPhone.checkYourAnswersLabel",
-        value = ValueViewModel(HtmlFormat.escape(value).toString),
+        value = ValueViewModel(HtmlContent(s"$value")),
         actions = Seq(
           ActionItemViewModel(
             content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
@@ -93,7 +92,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     val summaryView = (yesNo: String) =>
       SummaryListRowViewModel(
         key = "haveSecondContact.checkYourAnswersLabel",
-        value = ValueViewModel(HtmlFormat.escape(s"${messages(yesNo)}").toString),
+        value = ValueViewModel(HtmlContent(s"${messages(yesNo)}")),
         actions = Seq(
           ActionItemViewModel(
             content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
@@ -121,7 +120,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def secondaryContactNamePage(): Option[SummaryListRow] = userAnswers.get(SecondContactNamePage) map { x =>
     SummaryListRowViewModel(
       key = "secondContactName.checkYourAnswersLabel",
-      value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
+      value = ValueViewModel(HtmlContent(s"$x")),
       actions = Seq(
         ActionItemViewModel(
           content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
@@ -137,7 +136,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
   def secondaryContactEmailPage(): Option[SummaryListRow] = userAnswers.get(SecondContactEmailPage) map { x =>
     SummaryListRowViewModel(
       key = "secondContactEmail.checkYourAnswersLabel",
-      value = ValueViewModel(HtmlFormat.escape(s"$x").toString),
+      value = ValueViewModel(HtmlContent(s"$x")),
       actions = Seq(
         ActionItemViewModel(
           content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
@@ -154,7 +153,7 @@ class CheckYourAnswersHelper(userAnswers: UserAnswers)(implicit messages: Messag
     val summaryView = (value: String) =>
       SummaryListRowViewModel(
         key = "secondContactPhone.checkYourAnswersLabel",
-        value = ValueViewModel(HtmlFormat.escape(value).toString),
+        value = ValueViewModel(HtmlContent(s"$value")),
         actions = Seq(
           ActionItemViewModel(
             content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
