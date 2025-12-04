@@ -14,10 +14,13 @@
  * limitations under the License.
  *@
 
+@import config.FrontendAppConfig
+
 @this(
-  layout: templates.Layout,
-  link: components.Link,
-  printLink: components.PrintLink
+    layout: templates.Layout,
+    link: components.Link,
+    printLink: components.PrintLink,
+    appConfig: FrontendAppConfig
 )
 
 @(fileName: String)(implicit request: RequestHeader, messages: Messages)
@@ -50,7 +53,7 @@
         </div>
     </div>
 
-    <p class="govuk-body">@Html(messages("invalidXMLFile.p9", link("#", "invalidXMLFile.p9.link")))</p>
+    <p class="govuk-body">@Html(messages("invalidXMLFile.p9", link(appConfig.cbcGuidanceUrl, "invalidXMLFile.p9.link")))</p>
 
     <ul class="govuk-list">
         <li>@printLink("invalidXMLFile.print")</li>
