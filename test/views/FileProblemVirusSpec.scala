@@ -18,31 +18,25 @@ package views
 
 import base.SpecBase
 import org.jsoup.Jsoup
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages}
 import play.api.mvc.{AnyContent, MessagesControllerComponents}
 import play.api.test.{FakeRequest, Injecting}
+import play.twirl.api.HtmlFormat
 import utils.ViewHelper
-import views.html.UnauthorisedView
+import views.html.FileProblemVirusView
 
-class UnauthorisedViewSpec extends SpecBase with Injecting with ViewHelper {
+class FileProblemVirusSpec extends SpecBase with Injecting with ViewHelper {
 
   implicit private val request: FakeRequest[AnyContent] = FakeRequest()
 
   private def setupDoc = {
-    val view: UnauthorisedView                                            = inject[UnauthorisedView]
+    val view: FileProblemVirusView                                        = inject[FileProblemVirusView]
     val messagesControllerComponentsForView: MessagesControllerComponents = inject[MessagesControllerComponents]
     implicit val messages: Messages                                       = messagesControllerComponentsForView.messagesApi.preferred(Seq(Lang("en")))
     Jsoup.parse(view().body)
   }
-  "UnauthorisedView" - {
-    "should render page components" in {
-      val doc = setupDoc
-      getWindowTitle(doc) must include("You cannot access this page")
-      getPageHeading(doc) mustEqual "You cannot access this page"
-      getAllParagraph(doc).text() must include(
-        "You can email your HMRC Customer Compliance Manager or msb.countrybycountryreportingmailbox@hmrc.gov.uk if you need support with using the service."
-      )
-    }
+  "FileProblemVirusView" - {
     "should have guidance link" in {
       val elem = setupDoc.getElementById("guidance_link")
       elem.attr("href") mustEqual "https://www.gov.uk/guidance/send-a-country-by-country-report#how-to-create-your-report"

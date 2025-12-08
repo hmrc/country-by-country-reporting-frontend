@@ -33,7 +33,7 @@
 
     <ul class="govuk-list">
        <li>@link(routes.UploadFileController.onPageLoad().url, "problemPage.uploadLink")</li>
-       <li>@link(appConfig.cbcGuidanceUrl, "problemPage.CBC.guidanceLink")</li>
+       <li>@link(appConfig.cbcGuidanceUrl, "problemPage.CBC.guidanceLink", Some("guidance_link"))</li>
        <li>@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</li>
     </ul>
 }
