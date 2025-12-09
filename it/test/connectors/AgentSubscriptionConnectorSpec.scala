@@ -20,7 +20,7 @@ import generators.ModelGenerators
 import models.agentSubscription.{AgentRequestDetailForUpdate, AgentResponseDetail, CreateAgentSubscriptionRequest}
 import org.scalacheck.Arbitrary
 import play.api.Application
-import play.api.http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND, OK}
+import play.api.http.Status.{INTERNAL_SERVER_ERROR, NOT_FOUND, OK, REQUEST_TIMEOUT}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 
@@ -111,6 +111,15 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
         val result = connector.createSubscription(createAgentSubscriptionRequest)
         result.futureValue mustBe None
       }
+
+      "must return None when create subscription fails with request timeout" in {
+        lazy val connector: AgentSubscriptionConnector = inject[AgentSubscriptionConnector]
+
+        stubPostResponse(createSubscriptionUrl, REQUEST_TIMEOUT, "UNEXPECTED ERROR IN CONNECTION")
+
+        val result = connector.createSubscription(createAgentSubscriptionRequest)
+        result.futureValue mustBe None
+      }
     }
 
     "checkSubscriptionExists" - {
@@ -143,6 +152,16 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
           result mustBe None
         }
       }
+
+      "must return a None when readSubscription fails with Request Timeout" in {
+        lazy val connector: AgentSubscriptionConnector = inject[AgentSubscriptionConnector]
+
+        stubPostResponse(readSubscriptionUrl, REQUEST_TIMEOUT)
+
+        whenReady(connector.readSubscription()) { result =>
+          result mustBe None
+        }
+      }
     }
 
     "readSubscription" - {
@@ -160,6 +179,16 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
         lazy val connector: AgentSubscriptionConnector = inject[AgentSubscriptionConnector]
 
         stubPostResponse(readSubscriptionUrl, INTERNAL_SERVER_ERROR)
+
+        whenReady(connector.readSubscription()) { result =>
+          result mustBe None
+        }
+      }
+
+      "must return a None when readSubscription fails with Request Timeout" in {
+        lazy val connector: AgentSubscriptionConnector = inject[AgentSubscriptionConnector]
+
+        stubPostResponse(readSubscriptionUrl, REQUEST_TIMEOUT)
 
         whenReady(connector.readSubscription()) { result =>
           result mustBe None
@@ -186,6 +215,17 @@ class AgentSubscriptionConnectorSpec extends Connector with ModelGenerators {
 
         val errorCode = errorCodes.sample.value
         stubPostResponse(updateSubscriptionUrl, errorCode)
+
+        whenReady(connector.updateSubscription(agentRequestDetails)) { result =>
+          result mustBe false
+        }
+      }
+
+      "must return status false when updateSubscription fails with request timeout" in {
+        lazy val connector: AgentSubscriptionConnector = inject[AgentSubscriptionConnector]
+
+        val agentRequestDetails = Arbitrary.arbitrary[AgentRequestDetailForUpdate].sample.value
+        stubPostResponse(updateSubscriptionUrl, REQUEST_TIMEOUT)
 
         whenReady(connector.updateSubscription(agentRequestDetails)) { result =>
           result mustBe false

@@ -18,7 +18,7 @@ package connectors
 
 import models.submission.SubmissionDetails
 import play.api.Application
-import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, OK}
+import play.api.http.Status.{BAD_REQUEST, INTERNAL_SERVER_ERROR, OK, REQUEST_TIMEOUT}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 
@@ -62,6 +62,14 @@ class SubmissionConnectorSpec extends Connector {
 
         connector.submitDocument(submissionDetails).futureValue mustBe None
       }
+    }
+
+    "must return None when submission fails with Request Timeout" in {
+      lazy val connector: SubmissionConnector = inject[SubmissionConnector]
+      val submissionDetails = arbitrarySubmissionDetails.arbitrary.sample.value
+      stubPostResponse(submitUrl, REQUEST_TIMEOUT)
+
+      connector.submitDocument(submissionDetails).futureValue mustBe None
     }
   }
 

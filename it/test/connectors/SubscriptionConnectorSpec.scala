@@ -19,7 +19,7 @@ package connectors
 import models.subscription.{RequestDetailForUpdate, ResponseDetail}
 import org.scalacheck.Arbitrary
 import play.api.Application
-import play.api.http.Status.{INTERNAL_SERVER_ERROR, OK}
+import play.api.http.Status.{INTERNAL_SERVER_ERROR, OK, REQUEST_TIMEOUT}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
 
@@ -83,6 +83,16 @@ class SubscriptionConnectorSpec extends Connector {
           result mustBe None
         }
       }
+
+      "must return a None when readSubscription  fails with Request Timeout" in {
+        lazy val connector: SubscriptionConnector = inject[SubscriptionConnector]
+
+        stubPostResponse(readSubscriptionUrl, REQUEST_TIMEOUT)
+
+        whenReady(connector.readSubscription(cbcId)) { result =>
+          result mustBe None
+        }
+      }
     }
 
     "updateSubscription" - {
@@ -104,6 +114,18 @@ class SubscriptionConnectorSpec extends Connector {
 
         val errorCode = errorCodes.sample.value
         stubPostResponse(updateSubscriptionUrl, errorCode)
+
+        whenReady(connector.updateSubscription(requestDetails)) { result =>
+          result mustBe false
+        }
+      }
+
+      "must return false when updateSubscription fails with Request Timeout" in {
+        lazy val connector: SubscriptionConnector = inject[SubscriptionConnector]
+
+        val requestDetails = Arbitrary.arbitrary[RequestDetailForUpdate].sample.value
+
+        stubPostResponse(updateSubscriptionUrl, REQUEST_TIMEOUT)
 
         whenReady(connector.updateSubscription(requestDetails)) { result =>
           result mustBe false
