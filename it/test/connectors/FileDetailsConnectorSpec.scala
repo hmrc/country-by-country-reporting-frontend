@@ -20,7 +20,7 @@ import models.fileDetails.BusinessRuleErrorCode.{MessageRefIDHasAlreadyBeenUsed,
 import models.fileDetails._
 import models.{fileDetails, ConversationId, NewInformation}
 import play.api.Application
-import play.api.http.Status.OK
+import play.api.http.Status.{OK, REQUEST_TIMEOUT}
 import play.api.inject.guice.GuiceApplicationBuilder
 
 import java.time.LocalDateTime
@@ -109,6 +109,17 @@ class FileDetailsConnectorSpec extends Connector {
         result.futureValue mustBe None
 
       }
+
+      "must return 'None' when getAllFileDetails fails with request timeout" in {
+        lazy val connector: FileDetailsConnector = inject[FileDetailsConnector]
+
+        stubGetResponse(allFilesUrls, REQUEST_TIMEOUT)
+
+        val result = connector.getAllFileDetails(cbcId)
+
+        result.futureValue mustBe None
+
+      }
     }
 
     "getFileDetails" - {
@@ -157,6 +168,17 @@ class FileDetailsConnectorSpec extends Connector {
         result.futureValue mustBe None
 
       }
+
+      "must return 'None' when getFileDetails fails with Request Timeout" in {
+        lazy val connector: FileDetailsConnector = inject[FileDetailsConnector]
+
+        stubPostResponse(fileUrl, REQUEST_TIMEOUT)
+
+        val result = connector.getFileDetails(conversationId)
+
+        result.futureValue mustBe None
+
+      }
     }
 
     "getStatus" - {
@@ -188,6 +210,17 @@ class FileDetailsConnectorSpec extends Connector {
 
         val errorCode = errorCodes.sample.value
         stubPostResponse(fileStatusUrl, errorCode)
+
+        val result = connector.getStatus(conversationId)
+
+        result.futureValue mustBe None
+
+      }
+
+      "must return 'None' when getStatus fails with Request Timeout" in {
+        lazy val connector: FileDetailsConnector = inject[FileDetailsConnector]
+
+        stubPostResponse(fileStatusUrl, REQUEST_TIMEOUT)
 
         val result = connector.getStatus(conversationId)
 
