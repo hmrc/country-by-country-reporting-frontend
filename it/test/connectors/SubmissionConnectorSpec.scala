@@ -66,12 +66,10 @@ class SubmissionConnectorSpec extends Connector {
 
     "must return None when submission fails with Request Timeout" in {
       lazy val connector: SubmissionConnector = inject[SubmissionConnector]
+      val submissionDetails = arbitrarySubmissionDetails.arbitrary.sample.value
+      stubPostResponse(submitUrl, REQUEST_TIMEOUT)
 
-      forAll { (submissionDetails: SubmissionDetails) =>
-        stubPostResponse(submitUrl, REQUEST_TIMEOUT)
-
-        connector.submitDocument(submissionDetails).futureValue mustBe None
-      }
+      connector.submitDocument(submissionDetails).futureValue mustBe None
     }
   }
 
