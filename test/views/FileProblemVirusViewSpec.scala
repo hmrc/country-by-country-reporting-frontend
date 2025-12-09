@@ -26,7 +26,7 @@ import play.twirl.api.HtmlFormat
 import utils.ViewHelper
 import views.html.FileProblemVirusView
 
-class FileProblemVirusSpec extends SpecBase with Injecting with ViewHelper {
+class FileProblemVirusViewSpec extends SpecBase with Injecting with ViewHelper {
 
   implicit private val request: FakeRequest[AnyContent] = FakeRequest()
 
