@@ -27,7 +27,7 @@ import uk.gov.hmrc.http
 import uk.gov.hmrc.http.HttpErrorFunctions.is2xx
 import uk.gov.hmrc.http.HttpReads.Implicits.*
 import uk.gov.hmrc.http.client.HttpClientV2
-import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps, UpstreamErrorResponse}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -65,10 +65,7 @@ class UpscanConnector @Inject() (configuration: FrontendAppConfig, httpClient: H
       .execute[http.HttpResponse]
       .map(res =>
         if is2xx(res.status) then uploadId
-        else
-          val errorMessage = s"request failed with response code $res.status"
-          logger.error(errorMessage)
-          throw new IllegalArgumentException(errorMessage)
+        else throw UpstreamErrorResponse(s"Unexpected status: ${res.status}", res.status)
       )
 
   def getUploadDetails(uploadId: UploadId)(implicit hc: HeaderCarrier): Future[Option[UploadSessionDetails]] = {

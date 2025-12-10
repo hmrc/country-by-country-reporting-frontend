@@ -120,7 +120,7 @@ class UpscanConnectorSpec extends Connector {
 
         stubPostResponse("/country-by-country-reporting/upscan/upload", REQUEST_TIMEOUT)
 
-        intercept[IllegalArgumentException](await(connector.requestUpload(uploadId, reference)))
+        intercept[UpstreamErrorResponse](await(connector.requestUpload(uploadId, reference)))
       }
     }
   }
