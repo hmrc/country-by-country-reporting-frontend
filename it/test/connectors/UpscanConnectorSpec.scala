@@ -16,12 +16,13 @@
 
 package connectors
 
-import models.upscan._
+import models.upscan.*
 import org.bson.types.ObjectId
 import play.api.Application
 import play.api.http.Status.{BAD_REQUEST, OK, REQUEST_TIMEOUT, SERVICE_UNAVAILABLE}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.http.UpstreamErrorResponse
 
 class UpscanConnectorSpec extends Connector {
@@ -96,6 +97,30 @@ class UpscanConnectorSpec extends Connector {
           val error = e.asInstanceOf[UpstreamErrorResponse]
           error.statusCode mustBe REQUEST_TIMEOUT
         }
+      }
+    }
+  }
+
+  "requestUpload" - {
+    "should return an UploadId" - {
+      "when backend returns a valid successful response" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
+
+        stubPostResponse("/country-by-country-reporting/upscan/upload", OK)
+
+        whenReady(connector.requestUpload(uploadId, reference)) { result =>
+          result mustBe uploadId
+        }
+      }
+    }
+
+    "throw an exception" - {
+      "when backend returns a request timeout response" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
+
+        stubPostResponse("/country-by-country-reporting/upscan/upload", REQUEST_TIMEOUT)
+
+        intercept[UpstreamErrorResponse](await(connector.requestUpload(uploadId, reference)))
       }
     }
   }
