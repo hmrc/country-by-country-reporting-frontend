@@ -42,6 +42,8 @@ class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig:
   val guidanceAgentService: String        = configuration.get[String]("urls.guidance.agentService")
   val agentServiceHomeUrl: String         = configuration.get[String]("urls.agentServiceHome")
   val agentServiceNoAssignmentUrl: String = configuration.get[String]("urls.agentServiceNoAssignment")
+  lazy val cbcGuidanceUrl: String         = configuration.get[String]("urls.cbcGuidance")
+  lazy val businessRulesDocUrl: String    = configuration.get[String]("urls.businessRulesDoc")
 
   val upscanInitiateHost: String        = servicesConfig.baseUrl("upscan")
   val upscanBucketHost: String          = servicesConfig.baseUrl("upscan")

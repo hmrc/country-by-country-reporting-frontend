@@ -14,9 +14,12 @@
  * limitations under the License.
  *@
 
+@import config.FrontendAppConfig
+
 @this(
         layout: templates.Layout,
-        link: components.Link
+        link: components.Link,
+        config: FrontendAppConfig
 )
 
 @()(implicit request: RequestHeader, messages: Messages)
@@ -29,7 +32,7 @@
 
     <ul class="govuk-list">
         <li>@link(routes.UploadFileController.onPageLoad().url, "problemPage.uploadLink")</li>
-        <li>@link("#", "problemPage.CBC.guidanceLink")</li>
+        <li>@link(config.cbcGuidanceUrl, "problemPage.CBC.guidanceLink", Some("guidance_link"))</li>
         <li>@link(routes.IndexController.onPageLoad.url, "site.backToReportPage")</li>
     </ul>
 }

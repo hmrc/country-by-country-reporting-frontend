@@ -35,6 +35,6 @@
         @Html(messages("unauthorised.guidance", link(s"mailto:${appConfig.emailEnquiries}", appConfig.emailEnquiries)))
     </p>
 
-    <p class="govuk-body">@link("#", "unauthorised.guidance.link")</p>@*TODO: Add link to guidance page when known*@
+    <p class="govuk-body">@link(appConfig.cbcGuidanceUrl, "unauthorised.guidance.link", Some("guidance_link"))</p>
 
 }
