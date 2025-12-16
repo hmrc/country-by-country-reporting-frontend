@@ -16,12 +16,13 @@
 
 package connectors
 
-import models.upscan._
+import models.upscan.*
 import org.bson.types.ObjectId
 import play.api.Application
-import play.api.http.Status.{BAD_REQUEST, OK, SERVICE_UNAVAILABLE}
+import play.api.http.Status.{BAD_REQUEST, OK, REQUEST_TIMEOUT, SERVICE_UNAVAILABLE}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Json
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.http.UpstreamErrorResponse
 
 class UpscanConnectorSpec extends Connector {
@@ -39,12 +40,13 @@ class UpscanConnectorSpec extends Connector {
 
   val request: UpscanInitiateRequest = UpscanInitiateRequest("callbackUrl")
 
+  private val reference = Reference("Reference")
   "getUpscanFormData" - {
     "should return an UpscanInitiateResponse" - {
       "when upscan returns a valid successful response" in {
         lazy val connector: UpscanConnector = inject[UpscanConnector]
 
-        val body = PreparedUpload(Reference("Reference"), UploadForm("downloadUrl", Map("formKey" -> "formValue")))
+        val body = PreparedUpload(reference, UploadForm("downloadUrl", Map("formKey" -> "formValue")))
 
         stubPostResponse(connector.upscanInitiatePath, OK, Json.toJson(body).toString())
 
@@ -82,6 +84,44 @@ class UpscanConnectorSpec extends Connector {
           error.statusCode mustBe SERVICE_UNAVAILABLE
         }
       }
+
+      "when upscan returns a Request timeout response" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
+
+        stubPostResponse(connector.upscanInitiatePath, REQUEST_TIMEOUT)
+
+        val result = connector.getUpscanFormData(uploadId)
+
+        whenReady(result.failed) { e =>
+          e mustBe an[UpstreamErrorResponse]
+          val error = e.asInstanceOf[UpstreamErrorResponse]
+          error.statusCode mustBe REQUEST_TIMEOUT
+        }
+      }
+    }
+  }
+
+  "requestUpload" - {
+    "should return an UploadId" - {
+      "when backend returns a valid successful response" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
+
+        stubPostResponse("/country-by-country-reporting/upscan/upload", OK)
+
+        whenReady(connector.requestUpload(uploadId, reference)) { result =>
+          result mustBe uploadId
+        }
+      }
+    }
+
+    "throw an exception" - {
+      "when backend returns a request timeout response" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
+
+        stubPostResponse("/country-by-country-reporting/upscan/upload", REQUEST_TIMEOUT)
+
+        intercept[UpstreamErrorResponse](await(connector.requestUpload(uploadId, reference)))
+      }
     }
   }
 
@@ -92,7 +132,7 @@ class UpscanConnectorSpec extends Connector {
 
         val body = UploadSessionDetails(_id = ObjectId.get(),
                                         uploadId = UploadId("12345"),
-                                        reference = Reference("Reference"),
+                                        reference = reference,
                                         status = UploadedSuccessfully("name", "downloadUrl", FileSize, "MD5:123")
         )
 
@@ -110,6 +150,17 @@ class UpscanConnectorSpec extends Connector {
         lazy val connector: UpscanConnector = inject[UpscanConnector]
 
         stubGetResponse("/country-by-country-reporting/upscan/details/12345", OK, Json.obj().toString())
+
+        whenReady(connector.getUploadDetails(uploadId)) { result =>
+          result mustBe None
+        }
+
+      }
+
+      "when an request timeout response is returned" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
+
+        stubGetResponse("/country-by-country-reporting/upscan/details/12345", REQUEST_TIMEOUT)
 
         whenReady(connector.getUploadDetails(uploadId)) { result =>
           result mustBe None
@@ -211,6 +262,17 @@ class UpscanConnectorSpec extends Connector {
         lazy val connector: UpscanConnector = inject[UpscanConnector]
 
         stubGetResponse("/country-by-country-reporting/upscan/status/12345", OK, Json.obj().toString())
+
+        whenReady(connector.getUploadStatus(uploadId)) { result =>
+          result mustBe None
+        }
+
+      }
+
+      "when an request timeout response is returned" in {
+        lazy val connector: UpscanConnector = inject[UpscanConnector]
+
+        stubGetResponse("/country-by-country-reporting/upscan/status/12345", REQUEST_TIMEOUT)
 
         whenReady(connector.getUploadStatus(uploadId)) { result =>
           result mustBe None
