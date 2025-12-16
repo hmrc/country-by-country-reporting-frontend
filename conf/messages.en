@@ -172,7 +172,7 @@ fileProblemVirus.heading = There is a virus in your file
 fileProblemVirus.p1 = We cannot accept this file as it contains a virus.
 
 problemPage.uploadLink = Upload a different file
-problemPage.CBC.guidanceLink = Read the CBC technical guidance for XML files
+problemPage.CBC.guidanceLink = Refer to the guidance on how to create your report
 
 fileProblemTooLarge.title = There is a problem with the size of your file
 fileProblemTooLarge.heading = There is a problem with the size of your file
@@ -255,7 +255,7 @@ invalidXMLFile.p8 = In the second namespace, {0} can be anything if it matches t
 invalidXMLFile.p8Stf = stf
 invalidXMLFile.p8Example = <stf:DocTypeIndic>OECD1</stf:DocTypeIndic>
 invalidXMLFile.p9 = To make sure your XML is formatted correctly, {0}.
-invalidXMLFile.p9.link = refer to the CBC technical guidance for XML files
+invalidXMLFile.p9.link = refer to the guidance on how to create your report
 invalidXMLFile.uploadLink = Upload a different file
 invalidXMLFile.print = Print this page
 
@@ -331,7 +331,7 @@ fileDataError.subheading1 = What you can do next
 fileDataError.bullet1 = Print this page
 fileDataError.bullet2 = View the errors on this page
 fileDataError.bullet3 = {0} and update your file
-fileDataError.bullet3.link = Refer to the CBC technical guidance for XML files
+fileDataError.bullet3.link = Refer to the guidance on how to create your report
 fileDataError.bullet4 = Upload the file
 fileDataError.tableCaption = Errors
 fileDataError.tableHeading1 = Line
