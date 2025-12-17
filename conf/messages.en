@@ -384,8 +384,8 @@ xml.addressFix.error = AddressFix must be placed before AddressFree
 
 label.file = File
 
-fileRejected.title = There is a problem with your file
-fileRejected.heading = There is a problem with your file
+fileRejected.title = There is a problem with your file data
+fileRejected.heading = There is a problem with your file data
 fileRejected.p1 = We cannot accept the file {0} because it does not meet the CBC business rules.
 fileRejected.subheading1 = What you can do next
 fileRejected.bullet1 = Print this page
