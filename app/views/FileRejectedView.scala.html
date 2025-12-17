@@ -30,7 +30,7 @@
 
 @(fileName: String, viewModel: FileRejectedViewModel)(implicit request: RequestHeader, messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("fileRejected.title")), showAgentHeader = true, fullWidthLayout = true) {
+@layout(pageTitle = titleNoForm(messages("fileRejected.title")), showAgentHeader = true, fullWidthLayout = true, showBackLink = false) {
 
     <div class="govuk-!-width-two-thirds">
 
