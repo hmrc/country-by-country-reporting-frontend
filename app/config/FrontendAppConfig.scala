@@ -20,20 +20,21 @@ import com.google.inject.{Inject, Singleton}
 import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.mvc.RequestHeader
-import uk.gov.hmrc.play.bootstrap.binders.{AbsoluteWithHostnameFromAllowlist, OnlyRelative, RedirectUrl, SafeRedirectUrl}
-import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl.idFunctor
+import uk.gov.hmrc.play.bootstrap.binders.{AbsoluteWithHostnameFromAllowlist, OnlyRelative, RedirectUrl}
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 @Singleton
 class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig: ServicesConfig) {
 
   val host: String    = configuration.get[String]("host")
   val appName: String = configuration.get[String]("appName")
 
-  private val contactHost                  = configuration.get[String]("contact-frontend.host")
-  private val contactFormServiceIdentifier = "country-by-country-reporting-frontend"
+  private val contactHost                      = configuration.get[String]("contact-frontend.host")
+  private val contactFormServiceIdentifier     = "country-by-country-reporting-frontend"
+  private val allowedRedirectUrls: Seq[String] = configuration.get[Seq[String]]("urls.allowedRedirects")
 
   def feedbackUrl(implicit request: RequestHeader): String = {
-    val redirectUrlPolicy   = AbsoluteWithHostnameFromAllowlist(Seq("localhost").toSet) | OnlyRelative
+    val redirectUrlPolicy   = AbsoluteWithHostnameFromAllowlist(allowedRedirectUrls.toSet) | OnlyRelative
     val redirectUrl: String = RedirectUrl(host + request.uri).get(redirectUrlPolicy).encodedUrl
     s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=$redirectUrl"
   }
