@@ -20,9 +20,9 @@ import com.google.inject.{Inject, Singleton}
 import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.mvc.RequestHeader
-import uk.gov.hmrc.play.bootstrap.binders.SafeRedirectUrl
+import uk.gov.hmrc.play.bootstrap.binders.{AbsoluteWithHostnameFromAllowlist, OnlyRelative, RedirectUrl, SafeRedirectUrl}
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
-
+import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl.idFunctor
 @Singleton
 class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig: ServicesConfig) {
 
@@ -32,8 +32,11 @@ class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig:
   private val contactHost                  = configuration.get[String]("contact-frontend.host")
   private val contactFormServiceIdentifier = "country-by-country-reporting-frontend"
 
-  def feedbackUrl(implicit request: RequestHeader): String =
-    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${SafeRedirectUrl(host + request.uri).encodedUrl}" // TODO update deprecation
+  def feedbackUrl(implicit request: RequestHeader): String = {
+    val redirectUrlPolicy   = AbsoluteWithHostnameFromAllowlist(Seq("localhost").toSet) | OnlyRelative
+    val redirectUrl: String = RedirectUrl(host + request.uri).get(redirectUrlPolicy).encodedUrl
+    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=$redirectUrl"
+  }
 
   val loginUrl: String                    = configuration.get[String]("urls.login")
   val loginContinueUrl: String            = configuration.get[String]("urls.loginContinue")
