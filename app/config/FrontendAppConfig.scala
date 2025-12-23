@@ -33,11 +33,11 @@ class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig:
   private val contactFormServiceIdentifier = "country-by-country-reporting-frontend"
 
   def feedbackUrl(implicit request: RequestHeader): String =
-    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${SafeRedirectUrl(host + request.uri).encodedUrl}"
+    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${SafeRedirectUrl(host + request.uri).encodedUrl}" // TODO update deprecation
 
   val loginUrl: String                    = configuration.get[String]("urls.login")
   val loginContinueUrl: String            = configuration.get[String]("urls.loginContinue")
-  val signOutUrl: String                  = configuration.get[String]("urls.signOut")
+  val signOutFeedbackUrl: String          = configuration.get[String]("urls.signOut")
   val registerUrl: String                 = configuration.get[String]("urls.register")
   val guidanceAgentService: String        = configuration.get[String]("urls.guidance.agentService")
   val agentServiceHomeUrl: String         = configuration.get[String]("urls.agentServiceHome")
@@ -56,9 +56,6 @@ class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig:
 
   val migratedUserName: String  = configuration.get[String]("migrated-user.name")
   val migratedUserEmail: String = configuration.get[String]("migrated-user.email")
-
-  private val feedbackSurveyBaseUrl: String = configuration.get[Service]("microservice.services.feedback-frontend").baseUrl
-  val feedbackSurveyUrl: String             = s"$feedbackSurveyBaseUrl/feedback-survey/send-a-country-by-country-report/beta"
 
   val cbcUrl: String = servicesConfig.baseUrl("country-by-country-reporting")
 

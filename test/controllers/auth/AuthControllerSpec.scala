@@ -48,7 +48,7 @@ class AuthControllerSpec extends SpecBase {
 
         val result = route(application, request).value
 
-        val expectedRedirectUrl = s"${appConfig.signOutUrl}"
+        val expectedRedirectUrl = s"${appConfig.signOutFeedbackUrl}"
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual expectedRedirectUrl
@@ -77,7 +77,7 @@ class AuthControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         val encodedContinueUrl  = URLEncoder.encode(routes.SignedOutController.onPageLoad.url, "UTF-8")
-        val expectedRedirectUrl = s"${appConfig.signOutUrl}?continue=$encodedContinueUrl"
+        val expectedRedirectUrl = s"${appConfig.signOutFeedbackUrl}?continue=$encodedContinueUrl"
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual expectedRedirectUrl
