@@ -39,7 +39,7 @@ class AuthController @Inject() (
     sessionRepository
       .clear(request.userId)
       .map { _ =>
-        Redirect(config.signOutUrl).withSession()
+        Redirect(config.signOutFeedbackUrl).withSession()
       }
   }
 
@@ -47,7 +47,7 @@ class AuthController @Inject() (
     sessionRepository
       .clear(request.userId)
       .map { _ =>
-        Redirect(config.signOutUrl, Map("continue" -> Seq(routes.SignedOutController.onPageLoad.url)))
+        Redirect(config.signOutFeedbackUrl, Map("continue" -> Seq(routes.SignedOutController.onPageLoad.url)))
       }
   }
 }
