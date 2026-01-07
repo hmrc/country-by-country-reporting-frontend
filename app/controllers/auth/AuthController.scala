@@ -17,7 +17,7 @@
 package controllers.auth
 
 import config.FrontendAppConfig
-import controllers.actions.SignOutAction
+import controllers.actions.{IdentifierAction, SignOutAction}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -39,7 +39,7 @@ class AuthController @Inject() (
     sessionRepository
       .clear(request.userId)
       .map { _ =>
-        Redirect(config.signOutFeedbackUrl).withSession()
+        Redirect(config.signOutFeedbackUrl).withNewSession
       }
   }
 
@@ -47,7 +47,7 @@ class AuthController @Inject() (
     sessionRepository
       .clear(request.userId)
       .map { _ =>
-        Redirect(config.signOutFeedbackUrl, Map("continue" -> Seq(routes.SignedOutController.onPageLoad.url)))
+        Redirect(config.signOutFeedbackUrl, Map("continue" -> Seq(routes.SignedOutController.onPageLoad.url))).withNewSession
       }
   }
 }
