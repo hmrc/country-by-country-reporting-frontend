@@ -6,7 +6,7 @@ import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
 lazy val appName: String = "country-by-country-reporting-frontend"
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "3.3.5"
+ThisBuild / scalaVersion := "3.3.6"
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
