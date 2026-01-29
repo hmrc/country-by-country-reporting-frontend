@@ -48,6 +48,8 @@ class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig:
   val agentServiceNoAssignmentUrl: String = configuration.get[String]("urls.agentServiceNoAssignment")
   lazy val cbcGuidanceUrl: String         = configuration.get[String]("urls.cbcGuidance")
   lazy val businessRulesDocUrl: String    = configuration.get[String]("urls.businessRulesDoc")
+  lazy val agentServiceLink: String       = configuration.get[String]("urls.clientAuthoriseLink")
+  lazy val clientAuthoriseLink: String    = configuration.get[String]("urls.clientAuthoriseLink")
 
   val upscanInitiateHost: String        = servicesConfig.baseUrl("upscan")
   val upscanBucketHost: String          = servicesConfig.baseUrl("upscan")
@@ -56,7 +58,8 @@ class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig:
   val upscanCallbackDelayInSeconds: Int = configuration.get[Int]("microservice.services.upscan.callbackDelayInSeconds")
   val upscanMaxFileSize: Int            = configuration.get[Int]("microservice.services.upscan.max-file-size-in-mb")
 
-  val emailEnquiries: String = configuration.get[String]("urls.emailEnquiries")
+  val emailEnquiries: String  = configuration.get[String]("urls.emailEnquiries")
+  val emailForSession: String = configuration.get[String]("urls.emailForSession")
 
   val migratedUserName: String  = configuration.get[String]("migrated-user.name")
   val migratedUserEmail: String = configuration.get[String]("migrated-user.email")
