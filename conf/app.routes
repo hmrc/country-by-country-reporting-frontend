@@ -246,4 +246,4 @@ POST        /change-contact/review-contact-details                              
 
 GET         /agent/problem/client-access                                          controllers.client.ProblemClientAccessController.onPageLoad()
 
-GET         /problem/email-us-for-access                                          controllers.InteruptPageController.onPageLoad()
+GET         /problem/email-us-for-access                                          controllers.InterruptPageController.onPageLoad()

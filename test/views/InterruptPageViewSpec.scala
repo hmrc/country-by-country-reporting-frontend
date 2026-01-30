@@ -18,21 +18,20 @@ package views
 
 import base.SpecBase
 import org.jsoup.Jsoup
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages}
 import play.api.mvc.{AnyContent, MessagesControllerComponents}
 import play.api.test.{FakeRequest, Injecting}
 import play.twirl.api.HtmlFormat
 import utils.ViewHelper
-import views.html.{InteruptPageView, ThereIsAProblemView}
+import views.html.InterruptPageView
 
-class InterputPageViewSpec extends SpecBase with Injecting with ViewHelper {
+class InterruptPageViewSpec extends SpecBase with Injecting with ViewHelper {
 
   implicit private val request: FakeRequest[AnyContent] = FakeRequest()
 
   "InteruptPageView" - {
     "should render page components" in {
-      val view1: InteruptPageView                                           = inject[InteruptPageView]
+      val view1: InterruptPageView                                          = inject[InterruptPageView]
       val messagesControllerComponentsForView: MessagesControllerComponents = inject[MessagesControllerComponents]
       implicit val messages: Messages                                       = messagesControllerComponentsForView.messagesApi.preferred(Seq(Lang("en")))
 
