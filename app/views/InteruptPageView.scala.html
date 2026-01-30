@@ -24,7 +24,7 @@
 
 @()(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("interuptPage.title"))) {
+@layout(pageTitle = titleNoForm(messages("interuptPage.title")), showBackLink = false) {
 
     <h1 class="govuk-heading-l">@messages("interuptPage.heading")</h1>
     <p class="govuk-body">@messages("interuptPage.p1")</p>
@@ -37,7 +37,7 @@
     <p class="govuk-body">
         @Html(messages("interuptPage.p6", link(s"mailto:${appConfig.emailForSession}", appConfig.emailForSession)))
     </p>
-    <p class="govuk-body govuk-!-margin-bottom-2">@messages("interuptPage.p7")</p>
+    <p class="govuk-body govuk-!-margin-bottom-1">@messages("interuptPage.p7")</p>
     <ul class="govuk-list govuk-list--bullet">
         <li>@Html(messages("interuptPage.bullet1", link(appConfig.agentServiceLink, "interuptPage.bullet1.link")))</li>
         <li>@Html(messages("interuptPage.bullet2", link(appConfig.clientAuthoriseLink, "interuptPage.bullet2.link")))</li>
