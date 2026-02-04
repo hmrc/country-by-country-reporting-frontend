@@ -245,3 +245,5 @@ GET         /change-contact/review-contact-details                              
 POST        /change-contact/review-contact-details                                controllers.ReviewContactDetailsController.onSubmit()
 
 GET         /agent/problem/client-access                                          controllers.client.ProblemClientAccessController.onPageLoad()
+
+GET         /problem/email-us-for-access                                          controllers.InterruptPageController.onPageLoad()
