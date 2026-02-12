@@ -84,4 +84,8 @@ class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig:
   val maxNormalFileSize: Long         = configuration.get[Long]("max-normal-file-size-bytes")
   val normalFileWaitTime: String      = configuration.get[String]("normal-file-wait-time")
   val largeFileWaitTime: String       = configuration.get[String]("large-file-wait-time")
+
+  lazy val excludedInterruptsPaths: Seq[String] = configuration.get[Seq[String]]("interrupt.excludedPaths")
+  lazy val interruptPageEnabled: Boolean        = configuration.get[Boolean]("interrupt.enabled")
+  lazy val allowedIpList: Seq[String]           = configuration.get[Seq[String]]("interrupt.allowlist.ips")
 }
