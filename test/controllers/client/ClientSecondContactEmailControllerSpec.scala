@@ -33,11 +33,11 @@ import scala.concurrent.Future
 
 class ClientSecondContactEmailControllerSpec extends SpecBase with MockitoSugar {
 
-  val formProvider = new SecondContactEmailFormProvider()
-  val form         = formProvider("clientSecondContactEmail")
-  val name         = "Second client contact name"
+  private val formProvider = new SecondContactEmailFormProvider()
+  private val form         = formProvider("clientSecondContactEmail")
+  private val name         = "Second client contact name"
 
-  lazy val secondContactEmailRoute: String = routes.ClientSecondContactEmailController.onPageLoad(NormalMode).url
+  private lazy val secondContactEmailRoute: String = routes.ClientSecondContactEmailController.onPageLoad(NormalMode).url
 
   "ClientSecondContactEmail Controller" - {
 

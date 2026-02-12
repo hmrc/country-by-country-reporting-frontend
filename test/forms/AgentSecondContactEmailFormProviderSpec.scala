@@ -35,13 +35,13 @@ class AgentSecondContactEmailFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      validEmailAddress
     )
 
-    behave like fieldWithInvalidData(
+    behave like fieldWithInvalidEmail(
       form,
       fieldName,
-      invalidString = "not a valid email",
+      invalidString = invalidEmailAddress,
       error = FormError(fieldName, invalidKey)
     )
 

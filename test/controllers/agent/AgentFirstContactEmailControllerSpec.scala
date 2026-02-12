@@ -32,9 +32,10 @@ import views.html.agent.AgentFirstContactEmailView
 import scala.concurrent.Future
 
 class AgentFirstContactEmailControllerSpec extends SpecBase with MockitoSugar {
-  val formProvider = new AgentFirstContactEmailFormProvider()
-  val form         = formProvider()
-  val contactName  = "first contact name"
+  val formProvider       = new AgentFirstContactEmailFormProvider()
+  val form               = formProvider()
+  val contactName        = "first contact name"
+  private val validEmail = validEmailAddress.sample.get
 
   lazy val agentFirstContactEmailRoute: String = routes.AgentFirstContactEmailController.onPageLoad(NormalMode).url
 
@@ -60,7 +61,7 @@ class AgentFirstContactEmailControllerSpec extends SpecBase with MockitoSugar {
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId)
-        .set(AgentFirstContactEmailPage, "answer")
+        .set(AgentFirstContactEmailPage, validEmail)
         .success
         .value
         .set(AgentFirstContactNamePage, contactName)
@@ -77,7 +78,7 @@ class AgentFirstContactEmailControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode, contactName)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validEmail), NormalMode, contactName)(request, messages(application)).toString
       }
     }
 
@@ -96,7 +97,7 @@ class AgentFirstContactEmailControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, agentFirstContactEmailRoute)
-            .withFormUrlEncodedBody(("value", "answer@b.com"))
+            .withFormUrlEncodedBody(("value", validEmail))
 
         val result = route(application, request).value
 
