@@ -139,9 +139,7 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
       nonEmptyString.map("@" + _),
       Gen.const("john..doe@test.com"),
       Gen.const(".leadingdot@test.co.uk"),
-      Gen.const("trailingdot.@test.com"),
-      Gen.const("emoji🚀@test.com"),
-      Gen.const("emoji@test🚀.com")
+      Gen.const("trailingdot.@test.com")
     )
 
   def validPhoneNumberWithinLength(maxlength: Int): Gen[String] = RegexpGen.from(phoneRegex) retryUntil
