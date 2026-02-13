@@ -17,10 +17,12 @@
 package forms
 
 import forms.mappings.Mappings
+import play.api.data.Form
+import play.api.data.Forms.mapping
+import play.api.data.validation.{Constraint, Invalid, Valid}
+import utils.RegExConstants
 
 import javax.inject.Inject
-import play.api.data.Form
-import utils.RegExConstants
 
 class AgentFirstContactEmailFormProvider @Inject() extends Mappings with RegExConstants {
 
@@ -28,12 +30,22 @@ class AgentFirstContactEmailFormProvider @Inject() extends Mappings with RegExCo
 
   def apply(): Form[String] =
     Form(
-      "value" -> validatedText(
-        "agentFirstContactEmail.error.required",
-        "agentFirstContactEmail.error.invalid",
-        "agentFirstContactEmail.error.length",
-        emailRegex,
-        maxLength
-      )
+      mapping(
+        "value" -> text("agentFirstContactEmail.error.required")
+          .verifying(secondContactEmailConstraint())
+      )(identity)(Some(_))
     )
+
+  private def secondContactEmailConstraint(): Constraint[String] =
+    Constraint("constraint.agentFirstContactEmail") { value =>
+      if (value.length > maxLength) {
+        Invalid("agentFirstContactEmail.error.length")
+      } else if (value.codePoints().anyMatch(_ >= 0x1f000)) { // Matches emoji codepoints
+        Invalid("agentFirstContactEmail.error.invalid")
+      } else if (!value.matches(emailRegex)) {
+        Invalid("agentFirstContactEmail.error.invalid")
+      } else {
+        Valid
+      }
+    }
 }

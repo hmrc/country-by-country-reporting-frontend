@@ -16,9 +16,11 @@
 
 package forms.behaviours
 
+import generators.Generators
+import org.scalacheck.Gen
 import play.api.data.{Form, FormError}
 
-trait StringFieldBehaviours extends FieldBehaviours {
+trait StringFieldBehaviours extends FieldBehaviours with Generators {
 
   def fieldWithMaxLength(form: Form[_], fieldName: String, maxLength: Int, lengthError: FormError): Unit =
     s"not bind strings longer than $maxLength characters" in {
@@ -62,4 +64,13 @@ trait StringFieldBehaviours extends FieldBehaviours {
         result.errors mustEqual Seq(lengthError)
       }
     }
+
+  def fieldWithInvalidEmail(form: Form[_], fieldName: String, invalidString: Gen[String], error: FormError): Unit =
+    "reject invalid email addresses" in {
+      forAll(invalidEmailAddress -> "invalidEmail") { email =>
+        val result = form.bind(Map("value" -> email)).apply("value")
+        result.errors mustEqual Seq(error)
+      }
+    }
+
 }

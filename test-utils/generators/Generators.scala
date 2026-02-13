@@ -16,12 +16,13 @@
 
 package generators
 
-import java.time.{Instant, LocalDate, ZoneOffset}
-import org.scalacheck.Arbitrary._
-import org.scalacheck.Gen._
+import org.scalacheck.Arbitrary.*
+import org.scalacheck.Gen.*
 import org.scalacheck.{Gen, Shrink}
 import utils.RegExConstants
 import wolfendale.scalacheck.regexp.RegexpGen
+
+import java.time.{Instant, LocalDate, ZoneOffset}
 
 trait Generators extends UserAnswersGenerator with PageGenerators with ModelGenerators with UserAnswersEntryGenerators with RegExConstants {
 
@@ -117,10 +118,31 @@ trait Generators extends UserAnswersGenerator with PageGenerators with ModelGene
 
   def validOrganisationName: Gen[String] = RegexpGen.from(orgNameRegex)
 
-  def validEmailAddressToLong(maxLength: Int): Gen[String] = {
-    val validEmailAddress: Gen[String] = RegexpGen.from(emailRegex)
-    validEmailAddress suchThat (_.length > maxLength)
-  }
+  def validEmailAddressToLong(maxLength: Int): Gen[String] =
+    for {
+      part <- listOfN(maxLength, Gen.alphaChar).map(_.mkString)
+
+    } yield s"$part.$part@$part.$part"
+
+  def validEmailAddress: Gen[String] = for {
+    user   <- Gen.choose(2, 10).flatMap(n => Gen.listOfN(n, Gen.alphaNumChar)).map(_.mkString)
+    domain <- Gen.choose(2, 10).flatMap(n => Gen.listOfN(n, Gen.alphaNumChar)).map(_.mkString)
+    tld    <- Gen.oneOf("com", "org", "io", "gov", "co.uk")
+
+  } yield s"$user@$domain.$tld"
+
+  def invalidEmailAddress: Gen[String] =
+    val nonEmptyString: Gen[String] = Gen.alphaStr.suchThat(_.nonEmpty)
+    Gen.oneOf(
+      nonEmptyString,
+      nonEmptyString.map(_ + "@"),
+      nonEmptyString.map("@" + _),
+      Gen.const("john..doe@test.com"),
+      Gen.const(".leadingdot@test.co.uk"),
+      Gen.const("trailingdot.@test.com"),
+      Gen.const("emoji🚀@test.com"),
+      Gen.const("emoji@test🚀.com")
+    )
 
   def validPhoneNumberWithinLength(maxlength: Int): Gen[String] = RegexpGen.from(phoneRegex) retryUntil
     (phoneNumber => phoneNumber.length < maxlength)

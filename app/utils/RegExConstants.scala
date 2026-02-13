@@ -18,8 +18,8 @@ package utils
 
 trait RegExConstants {
 
-  final val emailRegex = "^(?:[a-zA-Z0-9!#$%&*+\\/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&*+\\/=?^_`{|}~-]+)*)" +
-    "@(?:[a-zA-Z0-9!#$%&*+\\/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&*+\\/=?^_`{|}~-]+)*)$"
+  final val emailRegex: String =
+    """^(?!\.)("([^"\r\\]|\\["\r\\])*"|([-a-zA-Z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"""
   final val orgNameRegex = """^[a-zA-Z0-9 &`\-\'\\\^]*$"""
   final val phoneRegex   = """^[0-9 )/(\-*#+]*$""".stripMargin
   final val cbcIdRegex   = """^[xX][a-zA-Z]CBC[0-9]{10}$""".stripMargin
