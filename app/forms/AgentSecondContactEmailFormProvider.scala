@@ -40,8 +40,6 @@ class AgentSecondContactEmailFormProvider @Inject() extends Mappings with RegExC
     Constraint("constraint.AgentSecondContactEmail") { value =>
       if (value.length > maxLength) {
         Invalid("agentSecondContactEmail.error.length")
-      } else if (value.codePoints().anyMatch(_ >= 0x1f000)) { // Matches emoji codepoints
-        Invalid("agentSecondContactEmail.error.invalid")
       } else if (!value.matches(emailRegex)) {
         Invalid("agentSecondContactEmail.error.invalid")
       } else {
