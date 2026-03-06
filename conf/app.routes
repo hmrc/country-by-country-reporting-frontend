@@ -247,3 +247,7 @@ POST        /change-contact/review-contact-details                              
 GET         /agent/problem/client-access                                          controllers.client.ProblemClientAccessController.onPageLoad()
 
 GET         /problem/email-us-for-access                                          controllers.InterruptPageController.onPageLoad()
+
+GET         /report/file-upload-access-code                                       controllers.PrivateBetaAccessCodeController.onPageLoad()
+POST        /report/file-upload-access-code                                       controllers.PrivateBetaAccessCodeController.onSubmit()
+

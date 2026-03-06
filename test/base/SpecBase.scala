@@ -59,7 +59,7 @@ trait SpecBase
   def onwardRoute: Call = Call("GET", "/foo")
 
   final val mockDataRetrievalAction: DataRetrievalAction = mock[DataRetrievalAction]
-  final val mockSessionRepository: SessionRepository     = mock[SessionRepository]
+  val mockSessionRepository: SessionRepository           = mock[SessionRepository]
 
   def emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
 
