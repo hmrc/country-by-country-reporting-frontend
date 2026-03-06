@@ -37,7 +37,7 @@ trait ControllerMockFixtures extends Matchers with GuiceOneAppPerSuite with Mock
 
   def onwardRoute: Call                                  = Call("GET", "/foo")
   final val mockDataRetrievalAction: DataRetrievalAction = mock[DataRetrievalAction]
-  final val mockSessionRepository: SessionRepository     = mock[SessionRepository]
+  val mockSessionRepository: SessionRepository           = mock[SessionRepository]
   final val mockFrontendAppConfig                        = mock[FrontendAppConfig]
 
   def fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("", "")
