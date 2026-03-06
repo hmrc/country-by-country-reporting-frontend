@@ -54,8 +54,9 @@ class InterruptPageViewSpec extends SpecBase with Injecting with ViewHelper {
       paragraphValues must include(
         "These sessions are optional, unless you need to send a report soon. We’ll be offering support in the sessions, as well as asking for feedback."
       )
-      paragraphValues must include("To arrange a session, email cbcdigital@digital.hmrc.gov.uk with a preferred date and time.")
-      paragraphValues must include("If you’re an agent, you must do the following before your session:")
+      paragraphValues must include("To arrange a session, email cbcdigital@hmrc.gov.uk with a preferred date and time.")
+      elementText(doc, "h3") must include("Arranging a session as an agent")
+      paragraphValues must include("If you’re an agent, you must do the following before your online session:")
       elementText(doc, "li") must include("create an agent services account, if you do not have one already")
       elementText(doc, "li") must include("ask your client to authorise you for country-by-country reporting")
       elementText(doc, "a") must include("ask your client to authorise you")
