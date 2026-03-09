@@ -786,3 +786,7 @@ interuptPage.bullet1 = {0}, if you do not have one already
 interuptPage.bullet1.link = create an agent services account
 interuptPage.bullet2 = {0} for country-by-country reporting
 interuptPage.bullet2.link = ask your client to authorise you
+
+privateBetaAccessCode.title = What is your access code for this user research session?
+privateBetaAccessCode.heading = What is your access code for this user research session?
+privateBetaAccessCode.error.required = What is your access code for this user research session?

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-package models.requests
+package forms
 
-import play.api.mvc.{Request, WrappedRequest}
-import uk.gov.hmrc.auth.core.AffinityGroup
+import forms.mappings.Mappings
 
-case class IdentifierRequest[A](request: Request[A], userId: String, subscriptionId: String, userType: AffinityGroup, arn: Option[String] = None)
-    extends WrappedRequest[A](request)
+import javax.inject.Inject
+import play.api.data.Form
 
-case class InterruptPageRequest[A](request: Request[A], userId: String) extends WrappedRequest[A](request)
+class PrivateBetaAccessCodeFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("privateBetaAccessCode.error.required")
+    )
+}

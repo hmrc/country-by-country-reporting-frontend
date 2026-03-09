@@ -20,16 +20,16 @@ import config.FrontendAppConfig
 import controllers.routes
 import models.UserAnswers
 import models.requests.IdentifierRequest
-import pages.{AgentClientIdPage, IsMigratedAgentContactUpdatedPage, JourneyInProgressPage}
+import pages.{AgentClientIdPage, IsMigratedAgentContactUpdatedPage, JourneyInProgressPage, PrivateBetaAccessCodePage}
 import play.api.Logging
 import play.api.libs.json.Json
-import play.api.mvc.Results._
-import play.api.mvc._
+import play.api.mvc.Results.*
+import play.api.mvc.*
 import repositories.SessionRepository
 import services.AgentSubscriptionService
 import uk.gov.hmrc.auth.core.AffinityGroup.{Agent, Individual}
 import uk.gov.hmrc.auth.core.AuthProvider.GovernmentGateway
-import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.~
@@ -97,14 +97,17 @@ class AuthenticatedIdentifierAction @Inject() (
       id             <- nonUKEnrolment.getIdentifier(cbcIdentifier)
       subscriptionId <- if (id.value.nonEmpty) Some(id.value) else None
     } yield subscriptionId
-
-    if (subscriptionId.isDefined) {
-      Future.successful(Right(IdentifierRequest(request, internalId, subscriptionId.get, affinityGroup)))
-    } else if (nonUKSubscriptionId.isDefined) {
-      Future.successful(Right(IdentifierRequest(request, internalId, nonUKSubscriptionId.get, affinityGroup)))
-    } else {
-      logger.warn("Unable to retrieve CBC id from Enrolments")
-      Future.successful(Left(Redirect(config.registerUrl)))
+    isAuthorisedPrivateBetaUser(internalId).flatMap {
+      case true =>
+        if (subscriptionId.isDefined) {
+          Future.successful(Right(IdentifierRequest(request, internalId, subscriptionId.get, affinityGroup)))
+        } else if (nonUKSubscriptionId.isDefined) {
+          Future.successful(Right(IdentifierRequest(request, internalId, nonUKSubscriptionId.get, affinityGroup)))
+        } else {
+          logger.warn("Unable to retrieve CBC id from Enrolments")
+          Future.successful(Left(Redirect(config.registerUrl)))
+        }
+      case false => Future.successful(Left(Redirect(routes.InterruptPageController.onPageLoad())))
     }
   }
 
@@ -122,40 +125,57 @@ class AuthenticatedIdentifierAction @Inject() (
   ): Future[Either[Result, IdentifierRequest[A]]] =
     enrolments.getEnrolment("HMRC-AS-AGENT") match {
       case Some(Enrolment("HMRC-AS-AGENT", Seq(EnrolmentIdentifier(_, arn)), _, _)) =>
-        sessionRepository.get(internalId).flatMap {
-          case None =>
-            redirectForAgentContactDetails(request, internalId).map(Left(_))
-          case Some(userAnswers) =>
-            userAnswers.get(AgentClientIdPage) match {
+        isAuthorisedPrivateBetaUser(internalId).flatMap { isPrivateBetaUser =>
+          if (isPrivateBetaUser) {
+            sessionRepository.get(internalId).flatMap {
               case None =>
-                logger.info(
-                  s"IdentifierAction: Agent with HMRC-AS-AGENT Enrolment. No ClientId in UserAnswers in SessionRepository. Redirecting to /agent/client-id. ${request.headers}"
-                )
-                Future.successful(Left(Redirect(controllers.agent.routes.ManageYourClientsController.onPageLoad())))
-              case Some(clientId) => // clientId is cbcid
-                logger.info(s"IdentifierAction: Attempting Agent authorisation checking with ${cbcDelegatedAuthRule(clientId)}")
-                authorised(cbcDelegatedAuthRule(clientId)) {
-                  logger.info("IdentifierAction: Agent with HMRC-AS-AGENT Enrolment and Authorised with cbc-auth Delegated Auth Rule")
-                  Future.successful(Right(IdentifierRequest(request, internalId, clientId, Agent, Some(arn))))
-                } recover {
-                  case _: NoActiveSession =>
-                    logger.debug("IdentifierAction: Agent does not have an active session, rendering Session Timeout")
-                    Left(Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl))))
-                  case e: AuthorisationException =>
-                    if (e.reason.contains(NO_ASSIGNMENT)) {
-                      logger.warn("IdentifierAction: Agent does not belong to access group that has access to the Client.")
-                      Left(Redirect(controllers.client.routes.ProblemClientAccessController.onPageLoad()))
-                    } else {
-                      logger.warn("IdentifierAction: Agent does not have delegated authority for Client. Redirecting to /agent/client-not-identified")
-                      Left(Redirect(controllers.client.routes.ProblemCBCIdController.onPageLoad()))
+                redirectForAgentContactDetails(request, internalId).map(Left(_))
+              case Some(userAnswers) =>
+                userAnswers.get(AgentClientIdPage) match {
+                  case None =>
+                    logger.info(
+                      s"IdentifierAction: Agent with HMRC-AS-AGENT Enrolment. No ClientId in UserAnswers in SessionRepository. Redirecting to /agent/client-id. ${request.headers}"
+                    )
+                    Future.successful(Left(Redirect(controllers.agent.routes.ManageYourClientsController.onPageLoad())))
+                  case Some(clientId) => // clientId is cbcid
+                    logger.info(s"IdentifierAction: Attempting Agent authorisation checking with ${cbcDelegatedAuthRule(clientId)}")
+                    authorised(cbcDelegatedAuthRule(clientId)) {
+                      logger.info("IdentifierAction: Agent with HMRC-AS-AGENT Enrolment and Authorised with cbc-auth Delegated Auth Rule")
+                      Future.successful(Right(IdentifierRequest(request, internalId, clientId, Agent, Some(arn))))
+                    } recover {
+                      case _: NoActiveSession =>
+                        logger.debug("IdentifierAction: Agent does not have an active session, rendering Session Timeout")
+                        Left(Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl))))
+                      case e: AuthorisationException =>
+                        if (e.reason.contains(NO_ASSIGNMENT)) {
+                          logger.warn("IdentifierAction: Agent does not belong to access group that has access to the Client.")
+                          Left(Redirect(controllers.client.routes.ProblemClientAccessController.onPageLoad()))
+                        } else {
+                          logger.warn("IdentifierAction: Agent does not have delegated authority for Client. Redirecting to /agent/client-not-identified")
+                          Left(Redirect(controllers.client.routes.ProblemCBCIdController.onPageLoad()))
+                        }
                     }
                 }
             }
+          } else {
+            Future.successful(Left(Redirect(routes.InterruptPageController.onPageLoad())))
+          }
         }
+
       case _ =>
         logger.warn(s"IdentifierAction: Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments. Redirecting to /agent/use-agent-services")
         Future.successful(Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad())))
     }
+
+  private def knowsPrivateBetaPassword(userId: String): Future[Boolean] =
+    val passKey = config.privateBetaPassword
+    sessionRepository
+      .get(userId)
+      .map(_.exists(_.get(PrivateBetaAccessCodePage).contains(passKey)))
+
+  private def isAuthorisedPrivateBetaUser(userId: String): Future[Boolean] =
+    if (!config.privateBetaEnabled) Future.successful(true)
+    else knowsPrivateBetaPassword(userId)
 
   private def redirectForAgentContactDetails[A](request: Request[A], internalId: String)(implicit hc: HeaderCarrier): Future[Result] =
     agentSubscriptionService.getAgentContactDetails(UserAnswers(internalId)) flatMap {

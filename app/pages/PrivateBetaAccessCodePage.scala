@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package models.requests
+package pages
 
-import play.api.mvc.{Request, WrappedRequest}
-import uk.gov.hmrc.auth.core.AffinityGroup
+import play.api.libs.json.JsPath
 
-case class IdentifierRequest[A](request: Request[A], userId: String, subscriptionId: String, userType: AffinityGroup, arn: Option[String] = None)
-    extends WrappedRequest[A](request)
+case object PrivateBetaAccessCodePage extends QuestionPage[String] {
 
-case class InterruptPageRequest[A](request: Request[A], userId: String) extends WrappedRequest[A](request)
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "privateBetaAccessCode"
+}
