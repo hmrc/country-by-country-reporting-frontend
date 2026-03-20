@@ -16,8 +16,8 @@
 
 package models.agentSubscription
 
-import models.UserAnswers
-import pages.{AgentHaveSecondContactPage, AgentSecondContactNamePage}
+import models.{AgentClientDetails, UserAnswers}
+import pages.{AgentClientDetailsPage, AgentHaveSecondContactPage, AgentSecondContactNamePage}
 import play.api.libs.json.{Json, Writes}
 
 case class AgentRequestDetailForUpdate(IDType: String,
@@ -25,13 +25,16 @@ case class AgentRequestDetailForUpdate(IDType: String,
                                        tradingName: Option[String],
                                        isGBUser: Boolean,
                                        primaryContact: AgentContactInformation,
-                                       secondaryContact: Option[AgentContactInformation]
+                                       secondaryContact: Option[AgentContactInformation],
+                                       cbcId: Option[String] = None,
+                                       agentClient: Option[String] = None
 )
 
 object AgentRequestDetailForUpdate {
   implicit lazy val writes: Writes[AgentRequestDetailForUpdate] = Json.writes[AgentRequestDetailForUpdate]
 
   def convertToRequestDetails(agentResponseDetail: AgentResponseDetail, userAnswers: UserAnswers): Option[AgentRequestDetailForUpdate] = {
+    val agentClientDetails: Option[AgentClientDetails] = userAnswers.get(AgentClientDetailsPage)
     val primaryContact =
       getAgentContactInformation[PrimaryAgentContactDetailsPages](agentResponseDetail.primaryContact.agentDetails,
                                                                   agentResponseDetail.primaryContact.mobile,
@@ -47,12 +50,15 @@ object AgentRequestDetailForUpdate {
       }
 
     primaryContact map { primaryContact =>
-      AgentRequestDetailForUpdate("ARN",
-                                  agentResponseDetail.subscriptionID,
-                                  agentResponseDetail.tradingName,
-                                  agentResponseDetail.isGBUser,
-                                  primaryContact,
-                                  secondaryContact
+      AgentRequestDetailForUpdate(
+        "ARN",
+        agentResponseDetail.subscriptionID,
+        agentResponseDetail.tradingName,
+        agentResponseDetail.isGBUser,
+        primaryContact,
+        secondaryContact,
+        cbcId = agentClientDetails.map(_.id),
+        agentClient = agentClientDetails.map(_.businessName)
       )
     }
   }
