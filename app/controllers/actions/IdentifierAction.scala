@@ -174,7 +174,7 @@ class AuthenticatedIdentifierAction @Inject() (
       .map(_.exists(_.get(PrivateBetaAccessCodePage).contains(passKey)))
 
   private def isAuthorisedPrivateBetaUser(userId: String): Future[Boolean] =
-    if (!config.privateBetaEnabled) Future.successful(true)
+    if (!config.privateBetaEnabled) Future.successful(false)
     else knowsPrivateBetaPassword(userId)
 
   private def redirectForAgentContactDetails[A](request: Request[A], internalId: String)(implicit hc: HeaderCarrier): Future[Result] =

@@ -30,7 +30,7 @@ class FileRejectedControllerISpec extends ISpecBehaviours {
       stubAuthorised("cbcId")
       stubGetResponse(fileUrl, OK, rejectedFile)
 
-      await(repository.set(emptyUserAnswers))
+      await(repository.set(userAnswersWithPrivateBetaPassKey))
 
       val response = await(
         buildClient(pageUrl)

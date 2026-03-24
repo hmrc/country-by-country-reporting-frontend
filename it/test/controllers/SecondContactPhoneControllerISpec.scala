@@ -32,7 +32,7 @@ class SecondContactPhoneControllerISpec extends ISpecBehaviours {
   "POST SecondContactPhoneController.onSubmit" must {
     val requestBody: Map[String, Seq[String]] = Map("value" -> Seq("66662212"))
 
-    val ua: UserAnswers = emptyUserAnswers
+    val ua: UserAnswers = userAnswersWithPrivateBetaPassKey
       .withPage(ContactNamePage, "test")
 
     behave like pageSubmits(pageUrl, "/change-contact/details", ua, requestBody)

@@ -16,7 +16,10 @@
 
 package controllers
 
+import config.FrontendAppConfig
 import models.UserAnswers
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.{ContactEmailPage, ContactNamePage, ContactPhonePage, HaveSecondContactPage, HaveTelephonePage, JourneyInProgressPage}
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
@@ -24,14 +27,15 @@ import utils.ISpecBehaviours
 
 class ChangeContactDetailsControllerISpec extends ChangeContactDetailsControllerTestContext {
 
-  private val pageUrl: Option[String] = Some("/change-contact/details")
+  private val pageUrl: Option[String]        = Some("/change-contact/details")
+  private val mockAppConf: FrontendAppConfig = mock[FrontendAppConfig]
 
   "GET ChangeContactDetailsController pageload" in {
     stubAuthorised("testId")
     stubPostResponse(readSubscriptionUrl, OK, responseDetailString)
 
     await(repository.set(userAnswersWithContactDetails.withPage(JourneyInProgressPage, true)))
-
+    when(mockAppConf.privateBetaEnabled).thenReturn(true)
     val response = await(
       buildClient(pageUrl)
         .addCookies(wsSessionCookie)
@@ -57,7 +61,7 @@ class ChangeContactDetailsControllerISpec extends ChangeContactDetailsController
     stubAuthorised("testId")
     stubPostResponse(readSubscriptionUrl, OK, responseDetailString)
     stubPostResponse(updateSubscriptionUrl, OK)
-
+    when(mockAppConf.privateBetaEnabled).thenReturn(true)
     await(repository.set(ua))
 
     val response = await(
@@ -76,9 +80,8 @@ class ChangeContactDetailsControllerISpec extends ChangeContactDetailsController
 }
 
 trait ChangeContactDetailsControllerTestContext extends ISpecBehaviours {
-  def answers: UserAnswers = UserAnswers("internalId")
 
-  val ua: UserAnswers = answers
+  val ua: UserAnswers = userAnswersWithPrivateBetaPassKey
     .withPage(ContactNamePage, "test")
     .withPage(ContactEmailPage, "test@test.com")
     .withPage(HaveTelephonePage, true)

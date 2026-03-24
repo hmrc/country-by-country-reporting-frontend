@@ -33,7 +33,7 @@ class CheckYourFileDetailsControllerISpec extends ISpecBehaviours {
       20L,
       "testChecksum"
     )
-    val userAnswersWithContactDetails: UserAnswers = emptyUserAnswers
+    val userAnswersWithContactDetails: UserAnswers = userAnswersWithPrivateBetaPassKey
       .withPage(ContactNamePage, "test")
       .withPage(ContactEmailPage, "test@test.com")
       .withPage(HaveTelephonePage, true)

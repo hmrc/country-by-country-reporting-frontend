@@ -16,8 +16,11 @@
 
 package controllers
 
+import config.FrontendAppConfig
 import models.UserAnswers
 import models.subscription.{ContactInformation, OrganisationDetails}
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.PrimaryClientContactInformationPage
 import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
@@ -25,8 +28,8 @@ import utils.ISpecBehaviours
 
 class ReviewContactDetailsControllerISpec extends ReviewContactDetailsControllerTestContext {
 
-  private val pageUrl: Option[String] = Some("/change-contact/review-contact-details")
-
+  private val pageUrl: Option[String]        = Some("/change-contact/review-contact-details")
+  private val mockAppConf: FrontendAppConfig = mock[FrontendAppConfig]
   "GET ReviewContactDetailsController pageRedirectsWhenNotAuthorised" must {
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
@@ -34,7 +37,7 @@ class ReviewContactDetailsControllerISpec extends ReviewContactDetailsController
   "GET ReviewContactDetailsController pageLoad" in {
     stubAuthorised("testId")
     stubPostResponse(readSubscriptionUrl, OK, responseDetailString)
-
+    when(mockAppConf.privateBetaEnabled).thenReturn(true)
     await(repository.set(ua))
 
     val response = await(
@@ -88,7 +91,7 @@ trait ReviewContactDetailsControllerTestContext extends ISpecBehaviours {
   )
   def answers: UserAnswers = UserAnswers("internalId")
 
-  val ua: UserAnswers = answers
+  val ua: UserAnswers = userAnswersWithPrivateBetaPassKey
     .withPage(PrimaryClientContactInformationPage, contactInfo)
 
   val readSubscriptionUrl   = s"/country-by-country-reporting/subscription/read-subscription/testId"

@@ -31,7 +31,7 @@ class ContactNameControllerISpec extends ISpecBehaviours {
   "POST ContactNameController.onSubmit" must {
     val requestBody: Map[String, Seq[String]] = Map("value" -> Seq("some name"))
 
-    val ua: UserAnswers = emptyUserAnswers
+    val ua: UserAnswers = userAnswersWithPrivateBetaPassKey
 
     behave like standardOnSubmit(pageUrl, requestBody)
     behave like pageSubmits(pageUrl, "/change-contact/email", ua, requestBody)

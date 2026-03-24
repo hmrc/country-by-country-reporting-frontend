@@ -32,7 +32,7 @@ class HaveTelephoneControllerISpec extends ISpecBehaviours {
   "POST HaveTelephoneController.onSubmit" must {
     val requestBody: Map[String, Seq[String]] = Map("value" -> Seq("true"))
 
-    val ua: UserAnswers = emptyUserAnswers
+    val ua: UserAnswers = userAnswersWithPrivateBetaPassKey
       .withPage(ContactNamePage, "test")
 
     behave like pageSubmits(pageUrl, "/change-contact/phone", ua, requestBody)
