@@ -33,7 +33,7 @@ class FilePassedChecksControllerISpec extends ISpecBehaviours {
       20L,
       "testChecksum"
     )
-    val ua = emptyUserAnswers
+    val ua = userAnswersWithPrivateBetaPassKey
       .withPage(ValidXMLPage, vfd)
       .withPage(ConversationIdPage, ConversationId("testId"))
 

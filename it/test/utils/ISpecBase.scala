@@ -21,7 +21,7 @@ import models.UserAnswers
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.time.{Seconds, Span}
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import pages.{ContactEmailPage, ContactNamePage, ContactPhonePage, HaveSecondContactPage, HaveTelephonePage}
+import pages.{ContactEmailPage, ContactNamePage, ContactPhonePage, HaveSecondContactPage, HaveTelephonePage, PrivateBetaAccessCodePage}
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.Writes
@@ -34,11 +34,11 @@ import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 trait ISpecBase extends GuiceOneServerPerSuite with DefaultPlayMongoRepositorySupport[UserAnswers] with ScalaFutures with WireMockHelper with Generators {
 
-  val repository: SessionRepository = app.injector.instanceOf[SessionRepository]
-  implicit val hc: HeaderCarrier    = HeaderCarrier()
-  val emptyUserAnswers: UserAnswers = UserAnswers("internalId")
+  val repository: SessionRepository                  = app.injector.instanceOf[SessionRepository]
+  implicit val hc: HeaderCarrier                     = HeaderCarrier()
+  val userAnswersWithPrivateBetaPassKey: UserAnswers = UserAnswers("internalId").set(PrivateBetaAccessCodePage, "password").success.value
 
-  val userAnswersWithContactDetails: UserAnswers = emptyUserAnswers
+  val userAnswersWithContactDetails: UserAnswers = userAnswersWithPrivateBetaPassKey
     .withPage(ContactNamePage, "test")
     .withPage(ContactEmailPage, "test@test.com")
     .withPage(HaveTelephonePage, true)
@@ -52,6 +52,7 @@ trait ISpecBase extends GuiceOneServerPerSuite with DefaultPlayMongoRepositorySu
     "microservice.services.country-by-country-reporting.port" -> WireMockConstants.stubPort.toString,
     "microservice.services.upscan.port"                       -> WireMockConstants.stubPort.toString,
     "mongodb.uri"                                             -> mongoUri,
+    "features.privateBetaEnabled"                             -> "true",
     "play.filters.csrf.header.bypassHeaders.Csrf-Token"       -> "nocheck"
     // "logger.root"                                             -> "INFO",
     // "logger.controllers"                                      -> "DEBUG"

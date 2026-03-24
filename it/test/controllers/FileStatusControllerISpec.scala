@@ -29,7 +29,7 @@ class FileStatusControllerISpec extends ISpecBehaviours {
       stubAuthorised("cbcId")
       stubGetResponse(allFilesUrls, OK, allFiles)
 
-      await(repository.set(emptyUserAnswers))
+      await(repository.set(userAnswersWithPrivateBetaPassKey))
 
       val response = await(
         buildClient(pageUrl)

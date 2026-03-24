@@ -231,6 +231,7 @@ class AuthActionSpec extends SpecBase {
           .overrides(
             inject.bind[AuthConnector].toInstance(mockAuthConnector)
           )
+          .configure(conf = "features.privateBetaEnabled" -> true)
           .build()
 
         when(
@@ -254,9 +255,15 @@ class AuthActionSpec extends SpecBase {
         when(mockSessionRepository.get("userId"))
           .thenReturn(
             Future.successful(
-              UserAnswers("userId")
-                .set(AgentClientIdPage, "NonMatchingId")
-                .fold(_ => None, userAnswers => Some(userAnswers))
+              Some(
+                UserAnswers("userId")
+                  .set(AgentClientIdPage, "NonMatchingId")
+                  .success
+                  .value
+                  .set(PrivateBetaAccessCodePage, "password")
+                  .success
+                  .value
+              )
             )
           )
 
@@ -288,6 +295,7 @@ class AuthActionSpec extends SpecBase {
           .overrides(
             inject.bind[AuthConnector].toInstance(mockAuthConnector)
           )
+          .configure(conf = "features.privateBetaEnabled" -> true)
           .build()
 
         when(
@@ -311,9 +319,15 @@ class AuthActionSpec extends SpecBase {
         when(mockSessionRepository.get("userId"))
           .thenReturn(
             Future.successful(
-              UserAnswers("userId")
-                .set(AgentClientIdPage, "NonMatchingId")
-                .fold(_ => None, userAnswers => Some(userAnswers))
+              Some(
+                UserAnswers("userId")
+                  .set(AgentClientIdPage, "NonMatchingId")
+                  .success
+                  .value
+                  .set(PrivateBetaAccessCodePage, "password")
+                  .success
+                  .value
+              )
             )
           )
 
@@ -348,6 +362,7 @@ class AuthActionSpec extends SpecBase {
           .overrides(
             inject.bind[AuthConnector].toInstance(mockAuthConnector)
           )
+          .configure(conf = "features.privateBetaEnabled" -> true)
           .build()
 
         when(mockAuthConnector.authorise(any(), any[Retrieval[Any]])(any(), any()))
@@ -355,9 +370,15 @@ class AuthActionSpec extends SpecBase {
         when(mockSessionRepository.get("userId"))
           .thenReturn(
             Future.successful(
-              UserAnswers("userId")
-                .set(AgentClientIdPage, "cbcid1234")
-                .fold(_ => None, userAnswers => Some(userAnswers))
+              Some(
+                UserAnswers("userId")
+                  .set(AgentClientIdPage, "cbcid1234")
+                  .success
+                  .value
+                  .set(PrivateBetaAccessCodePage, "password")
+                  .success
+                  .value
+              )
             )
           )
 
@@ -497,6 +518,9 @@ class AuthActionSpec extends SpecBase {
           .overrides(
             inject.bind[AuthConnector].toInstance(mockAuthConnector)
           )
+          .configure(
+            "features.privateBetaEnabled" -> true
+          )
           .build()
 
         when(mockAuthConnector.authorise(any(), any[Retrieval[Any]])(any(), any()))
@@ -505,9 +529,15 @@ class AuthActionSpec extends SpecBase {
         when(mockSessionRepository.get("userId"))
           .thenReturn(
             Future.successful(
-              UserAnswers("userId")
-                .set(AgentClientIdPage, "cbcid1234")
-                .fold(_ => None, userAnswers => Some(userAnswers))
+              Some(
+                UserAnswers("userId")
+                  .set(AgentClientIdPage, "cbcid1234")
+                  .success
+                  .value
+                  .set(PrivateBetaAccessCodePage, "password")
+                  .success
+                  .value
+              )
             )
           )
 
@@ -650,11 +680,15 @@ class AuthActionSpec extends SpecBase {
           ),
           Some(AffinityGroup.Organisation)
         )
-        when(mockSessionRepository.get(any())).thenReturn(Future.successful(None))
+        when(mockSessionRepository.get(any()))
+          .thenReturn(Future.successful(Some(UserAnswers("userId").set(PrivateBetaAccessCodePage, "password").success.value)))
         val mockAuthConnector = mock[AuthConnector]
         val application = applicationBuilder(userAnswers = None)
           .overrides(
             inject.bind[AuthConnector].toInstance(mockAuthConnector)
+          )
+          .configure(
+            "features.privateBetaEnabled" -> true
           )
           .build()
 
@@ -729,7 +763,12 @@ class AuthActionSpec extends SpecBase {
           .overrides(
             inject.bind[AuthConnector].toInstance(mockAuthConnector)
           )
+          .configure(
+            conf = "features.privateBetaEnabled" -> true
+          )
           .build()
+        when(mockSessionRepository.get(any()))
+          .thenReturn(Future.successful(Some(UserAnswers("userId").set(PrivateBetaAccessCodePage, "password").success.value)))
         when(mockAuthConnector.authorise(any(), any[Retrieval[Any]])(any(), any()))
           .thenReturn(Future.successful(authRetrievals), Future.successful(()))
         running(application) {

@@ -16,11 +16,17 @@
 
 package controllers
 
-import play.api.http.Status._
+import config.FrontendAppConfig
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
+import play.api.http.Status.*
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
+import repositories.SessionRepository
 import utils.ISpecBehaviours
 
 class IndexControllerISpec extends ISpecBehaviours {
+  private val mockAppConf: FrontendAppConfig           = mock[FrontendAppConfig]
+  private val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
   "GET / IndexController.onPageLoad" must {
     "return OK when the user is authorised" in {
@@ -52,6 +58,9 @@ class IndexControllerISpec extends ISpecBehaviours {
           |}""".stripMargin
 
       stubPostResponse(readSubscriptionUrl, OK, responseDetailString)
+      when(mockAppConf.privateBetaEnabled).thenReturn(true)
+
+      await(repository.set(userAnswersWithPrivateBetaPassKey))
       val response = await(
         buildClient()
           .withFollowRedirects(false)

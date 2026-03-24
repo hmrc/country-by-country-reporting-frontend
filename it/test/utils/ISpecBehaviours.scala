@@ -63,7 +63,7 @@ trait ISpecBehaviours extends PlaySpec with ISpecBase {
     }
 
     "redirect to /problem/client-access when agent does not belong to access-group of the client" in {
-      val userAnswers = emptyUserAnswers
+      val userAnswers = userAnswersWithPrivateBetaPassKey
         .set(AgentClientIdPage, "testClientId")
         .success
         .value
@@ -85,7 +85,7 @@ trait ISpecBehaviours extends PlaySpec with ISpecBase {
     }
   }
 
-  def pageLoads(pageUrl: Option[String], pageTitle: String = "", userAnswers: UserAnswers = emptyUserAnswers): Unit =
+  def pageLoads(pageUrl: Option[String], pageTitle: String = "", userAnswers: UserAnswers = userAnswersWithPrivateBetaPassKey): Unit =
     "load relative page" in {
       stubAuthorised("cbcId")
 

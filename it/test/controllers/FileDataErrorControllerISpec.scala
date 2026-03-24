@@ -25,7 +25,7 @@ class FileDataErrorControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some("/problem/data-errors")
 
   "FileDataErrorController" must {
-    val ua = emptyUserAnswers
+    val ua = userAnswersWithPrivateBetaPassKey
       .withPage(InvalidXMLPage, "test.xml")
       .withPage(GenericErrorPage, Seq(GenericError(1, Message("testError"))))
     behave like pageLoads(pageUrl, "fileDataError.title", ua)

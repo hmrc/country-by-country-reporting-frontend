@@ -24,7 +24,7 @@ class FileErrorControllerISpec extends ISpecBehaviours {
   private val pageUrl: Option[String] = Some("/problem/invalid-xml")
 
   "FileErrorController" must {
-    behave like pageLoads(pageUrl, "invalidXMLFile.title", emptyUserAnswers.withPage(InvalidXMLPage, "test.xml"))
+    behave like pageLoads(pageUrl, "invalidXMLFile.title", userAnswersWithPrivateBetaPassKey.withPage(InvalidXMLPage, "test.xml"))
     behave like pageRedirectsWhenNotAuthorised(pageUrl)
   }
 
