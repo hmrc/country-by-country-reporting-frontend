@@ -130,6 +130,8 @@ class AuthenticatedIdentifierAction @Inject() (
             sessionRepository.get(internalId).flatMap {
               case None =>
                 redirectForAgentContactDetails(request, internalId).map(Left(_))
+              case Some(userAnswers) if isPrivateBetaPageOnly(userAnswers) =>
+                redirectForAgentContactDetailsWithPrivateBetaCode(request, userAnswers).map(Left(_))
               case Some(userAnswers) =>
                 userAnswers.get(AgentClientIdPage) match {
                   case None =>
@@ -167,6 +169,8 @@ class AuthenticatedIdentifierAction @Inject() (
         Future.successful(Left(Redirect(controllers.agent.routes.AgentUseAgentServicesController.onPageLoad())))
     }
 
+  private def isPrivateBetaPageOnly(userAnswers: UserAnswers): Boolean = userAnswers.data.keys == Set("privateBetaAccessCode")
+
   private def knowsPrivateBetaPassword(userId: String): Future[Boolean] =
     val passKey = config.privateBetaPassword
     sessionRepository
@@ -180,6 +184,22 @@ class AuthenticatedIdentifierAction @Inject() (
   private def redirectForAgentContactDetails[A](request: Request[A], internalId: String)(implicit hc: HeaderCarrier): Future[Result] =
     agentSubscriptionService.getAgentContactDetails(UserAnswers(internalId)) flatMap {
       case Some(agentUserAnswers) if agentUserAnswers.data == Json.obj() =>
+        for {
+          a <- Future.fromTry(agentUserAnswers.set(JourneyInProgressPage, true))
+          b <- Future.fromTry(a.set(IsMigratedAgentContactUpdatedPage, false))
+          _ <- sessionRepository.set(b)
+        } yield Redirect(controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad())
+      case Some(_) =>
+        logger.info(
+          s"IdentifierAction: Agent with HMRC-AS-AGENT Enrolment. No UserAnswers in SessionRepository. Redirecting to /agent/client-id. ${request.headers}"
+        )
+        Future.successful(Redirect(controllers.agent.routes.ManageYourClientsController.onPageLoad()))
+      case _ => Future.successful(Redirect(routes.ThereIsAProblemController.onPageLoad()))
+    }
+
+  private def redirectForAgentContactDetailsWithPrivateBetaCode[A](request: Request[A], userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[Result] =
+    agentSubscriptionService.getAgentContactDetails(userAnswers) flatMap {
+      case Some(agentUserAnswers) if isPrivateBetaPageOnly(agentUserAnswers) =>
         for {
           a <- Future.fromTry(agentUserAnswers.set(JourneyInProgressPage, true))
           b <- Future.fromTry(a.set(IsMigratedAgentContactUpdatedPage, false))
