@@ -97,7 +97,7 @@ class AuthenticatedIdentifierAction @Inject() (
       id             <- nonUKEnrolment.getIdentifier(cbcIdentifier)
       subscriptionId <- if (id.value.nonEmpty) Some(id.value) else None
     } yield subscriptionId
-    isAuthorisedPrivateBetaUser(internalId).flatMap {
+    passesPrivateBetaCheck(internalId).flatMap {
       case true =>
         if (subscriptionId.isDefined) {
           Future.successful(Right(IdentifierRequest(request, internalId, subscriptionId.get, affinityGroup)))
@@ -125,8 +125,8 @@ class AuthenticatedIdentifierAction @Inject() (
   ): Future[Either[Result, IdentifierRequest[A]]] =
     enrolments.getEnrolment("HMRC-AS-AGENT") match {
       case Some(Enrolment("HMRC-AS-AGENT", Seq(EnrolmentIdentifier(_, arn)), _, _)) =>
-        isAuthorisedPrivateBetaUser(internalId).flatMap { isPrivateBetaUser =>
-          if (isPrivateBetaUser) {
+        passesPrivateBetaCheck(internalId).flatMap { isAllowed =>
+          if (isAllowed) {
             sessionRepository.get(internalId).flatMap {
               case None =>
                 redirectForAgentContactDetails(request, internalId).map(Left(_))
@@ -177,9 +177,11 @@ class AuthenticatedIdentifierAction @Inject() (
       .get(userId)
       .map(_.exists(_.get(PrivateBetaAccessCodePage).contains(passKey)))
 
-  private def isAuthorisedPrivateBetaUser(userId: String): Future[Boolean] =
-    if (!config.privateBetaEnabled) Future.successful(false)
-    else knowsPrivateBetaPassword(userId)
+  private def passesPrivateBetaCheck(userId: String): Future[Boolean] =
+    if (config.privateBetaEnabled)
+      knowsPrivateBetaPassword(userId)
+    else
+      Future.successful(true)
 
   private def redirectForAgentContactDetails[A](request: Request[A], internalId: String)(implicit hc: HeaderCarrier): Future[Result] =
     agentSubscriptionService.getAgentContactDetails(UserAnswers(internalId)) flatMap {

@@ -497,6 +497,60 @@ class AuthActionSpec extends SpecBase {
         }
       }
 
+      "must allow agent to proceed of the private beta toggle is off" in {
+        val authRetrievals: RetrievalType = new ~(
+          new ~(
+            Some("userId"),
+            Enrolments(
+              Set(
+                Enrolment("HMRC-AS-AGENT").withIdentifier("AgentReferenceNumber", "arn123"),
+                Enrolment("HMRC-CBC-ORG").withIdentifier("cbcid", "cbcid1234").withDelegatedAuthRule("cbc-auth")
+              )
+            )
+          ),
+          Some(AffinityGroup.Agent)
+        )
+
+        val mockAuthConnector = mock[AuthConnector]
+        val application = applicationBuilder(userAnswers = None)
+          .overrides(
+            inject.bind[AuthConnector].toInstance(mockAuthConnector)
+          )
+          .configure(
+            "features.privateBetaEnabled" -> false
+          )
+          .build()
+
+        when(mockAuthConnector.authorise(any(), any[Retrieval[Any]])(any(), any()))
+          .thenReturn(Future.successful(authRetrievals), Future.successful(()))
+        val userAnswers = UserAnswers("userId")
+          .set(PrivateBetaAccessCodePage, "password")
+          .success
+          .value
+        when(mockSessionRepository.get("userId"))
+          .thenReturn(
+            Future.successful(
+              Some(
+                userAnswers
+              )
+            )
+          )
+
+        running(application) {
+          val bodyParsers                  = application.injector.instanceOf[BodyParsers.Default]
+          val appConfig                    = application.injector.instanceOf[FrontendAppConfig]
+          val mockAgentSubscriptionService = mock[AgentSubscriptionService]
+          when(mockAgentSubscriptionService.getAgentContactDetails(any())(any())).thenReturn(Future.successful(Some(userAnswers)))
+          when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
+
+          val authAction = new AuthenticatedIdentifierAction(mockAuthConnector, appConfig, mockAgentSubscriptionService, bodyParsers, mockSessionRepository)
+          val controller = new Harness(authAction)
+          val result     = controller.onPageLoad()(FakeRequest())
+          status(result) mustBe SEE_OTHER
+          redirectLocation(result).value mustEqual controllers.agent.routes.AgentContactDetailsNeededController.onPageLoad().url
+        }
+      }
+
       "must allow the user enrolment to continue the journey when AGENT and delegated auth rule passes for HMRC-CBC-NONUK-ORG enrolment" in {
         val authRetrievals: RetrievalType = new ~(
           new ~(
