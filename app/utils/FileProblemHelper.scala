@@ -16,9 +16,10 @@
 
 package utils
 
-import models.fileDetails._
+import models.fileDetails.*
+import play.api.Logging
 
-object FileProblemHelper {
+object FileProblemHelper extends Logging {
 
   private val expectedErrorCodes: Seq[String] = BusinessRuleErrorCode.values.map(_.code)
 
@@ -26,9 +27,11 @@ object FileProblemHelper {
     val errorCodes: Seq[String] =
       Seq(errors.fileError.map(_.map(_.code.code)).getOrElse(Nil), errors.recordError.map(_.map(_.code.code)).getOrElse(Nil)).flatten
 
-    errorCodes.exists(
+    val unknownErrors = errorCodes.filter(
       !expectedErrorCodes.contains(_)
     )
+    logger.warn(s"File Rejected with unknown errors codes: ${unknownErrors.mkString(" and ")}")
+    unknownErrors.nonEmpty
   }
 
 }
