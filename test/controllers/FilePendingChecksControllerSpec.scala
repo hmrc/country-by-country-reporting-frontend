@@ -18,17 +18,18 @@ package controllers
 
 import base.SpecBase
 import connectors.FileDetailsConnector
-import controllers.actions._
-import models.fileDetails.BusinessRuleErrorCode._
-import models.fileDetails.{Accepted => FileStatusAccepted, _}
+import controllers.actions.*
+import models.fileDetails.BusinessRuleErrorCode.*
+import models.fileDetails.{Accepted as FileStatusAccepted, *}
 import models.{CBC401, ConversationId, MessageSpecData, TestData, UserAnswers, ValidatedFileData}
 import org.mockito.ArgumentMatchers.any
 import org.scalatest.prop.TableDrivenPropertyChecks
 import pages.{ConversationIdPage, ValidXMLPage}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import viewmodels.FileCheckViewModel
 import views.html.FilePendingChecksView
 
@@ -143,7 +144,11 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
       }
     }
 
-    val problemFileErrorCodes = Table("fileErrorCode", Seq(BusinessRuleErrorCode.UnknownErrorCode("something wrong")): _*)
+    val UnknownErrorCodeFor500012: BusinessRuleErrorCode = Json.parse("\"50012\"").as[BusinessRuleErrorCode]
+    val UnknownErrorCodeFor22a: BusinessRuleErrorCode    = Json.parse("\"CBC Error Code 22a\"").as[BusinessRuleErrorCode]
+    val UnknownErrorCodeFor22b: BusinessRuleErrorCode    = Json.parse("\"CBC Error Code 22b\"").as[BusinessRuleErrorCode]
+    val problemFileErrorCodes =
+      Table("fileErrorCode", Seq(UnknownErrorCode("something wrong"), UnknownErrorCodeFor500012, UnknownErrorCodeFor22a, UnknownErrorCodeFor22b): _*)
 
     forAll(problemFileErrorCodes) { fileErrorCode =>
       s"must redirect to File Problem Page when REJECTED status returned with $fileErrorCode errors" in {
