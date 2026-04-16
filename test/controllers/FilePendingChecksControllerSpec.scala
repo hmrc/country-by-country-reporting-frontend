@@ -144,16 +144,15 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
       }
     }
 
-    val UnknownErrorCodeFor500012: BusinessRuleErrorCode = Json.parse("\"50012\"").as[BusinessRuleErrorCode]
-    val UnknownErrorCodeFor22a: BusinessRuleErrorCode    = Json.parse("\"CBC Error Code 22a\"").as[BusinessRuleErrorCode]
-    val UnknownErrorCodeFor22b: BusinessRuleErrorCode    = Json.parse("\"CBC Error Code 22b\"").as[BusinessRuleErrorCode]
     val problemFileErrorCodes =
-      Table("fileErrorCode", Seq(UnknownErrorCode("something wrong"), UnknownErrorCodeFor500012, UnknownErrorCodeFor22a, UnknownErrorCodeFor22b): _*)
+      Table("fileErrorCode", Seq("SomeError", "50012", "CBC Error Code 22a", "CBC Error Code 22b"): _*)
 
     forAll(problemFileErrorCodes) { fileErrorCode =>
-      s"must redirect to File Problem Page when REJECTED status returned with $fileErrorCode errors" in {
+      s"must redirect to File Problem Page when REJECTED status returned with $fileErrorCode error code" in {
 
-        val validationErrors = FileValidationErrors(Some(Seq(FileErrors(fileErrorCode, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
+        val validationErrors = FileValidationErrors(Some(Seq(FileErrors(Json.parse(s"\"$fileErrorCode\"").as[BusinessRuleErrorCode], None))),
+                                                    Some(Seq(RecordError(DocRefIDFormat, None, None)))
+        )
 
         val userAnswers: UserAnswers = emptyUserAnswers
           .withPage(ConversationIdPage, conversationId)
