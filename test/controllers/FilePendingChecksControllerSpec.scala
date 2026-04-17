@@ -18,17 +18,18 @@ package controllers
 
 import base.SpecBase
 import connectors.FileDetailsConnector
-import controllers.actions._
-import models.fileDetails.BusinessRuleErrorCode._
-import models.fileDetails.{Accepted => FileStatusAccepted, _}
+import controllers.actions.*
+import models.fileDetails.BusinessRuleErrorCode.*
+import models.fileDetails.{Accepted as FileStatusAccepted, *}
 import models.{CBC401, ConversationId, MessageSpecData, TestData, UserAnswers, ValidatedFileData}
 import org.mockito.ArgumentMatchers.any
 import org.scalatest.prop.TableDrivenPropertyChecks
 import pages.{ConversationIdPage, ValidXMLPage}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import viewmodels.FileCheckViewModel
 import views.html.FilePendingChecksView
 
@@ -143,12 +144,15 @@ class FilePendingChecksControllerSpec extends SpecBase with TableDrivenPropertyC
       }
     }
 
-    val problemFileErrorCodes = Table("fileErrorCode", Seq(BusinessRuleErrorCode.UnknownErrorCode("something wrong")): _*)
+    val problemFileErrorCodes =
+      Table("fileErrorCode", Seq("SomeError", "50012", "CBC Error Code 22a", "CBC Error Code 22b"): _*)
 
     forAll(problemFileErrorCodes) { fileErrorCode =>
-      s"must redirect to File Problem Page when REJECTED status returned with $fileErrorCode errors" in {
+      s"must redirect to File Problem Page when REJECTED status returned with $fileErrorCode error code" in {
 
-        val validationErrors = FileValidationErrors(Some(Seq(FileErrors(fileErrorCode, None))), Some(Seq(RecordError(DocRefIDFormat, None, None))))
+        val validationErrors = FileValidationErrors(Some(Seq(FileErrors(Json.parse(s"\"$fileErrorCode\"").as[BusinessRuleErrorCode], None))),
+                                                    Some(Seq(RecordError(DocRefIDFormat, None, None)))
+        )
 
         val userAnswers: UserAnswers = emptyUserAnswers
           .withPage(ConversationIdPage, conversationId)

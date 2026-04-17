@@ -25,7 +25,6 @@ object BusinessRuleErrorCode {
   case object InvalidMessageRefIDFormat extends BusinessRuleErrorCode("50008")
   case object MessageRefIDHasAlreadyBeenUsed extends BusinessRuleErrorCode("50009")
   case object FileContainsTestDataForProductionEnvironment extends BusinessRuleErrorCode("50010")
-  case object NotMeantToBeReceivedByTheIndicatedJurisdiction extends BusinessRuleErrorCode("50012")
   case object DocRefIDAlreadyUsed extends BusinessRuleErrorCode("80000")
   case object DocRefIDFormat extends BusinessRuleErrorCode("80001")
   case object CorrDocRefIdUnknown extends BusinessRuleErrorCode("80002")
@@ -63,8 +62,6 @@ object BusinessRuleErrorCode {
   case object ReportingEntityTINFormat extends BusinessRuleErrorCode("20")
   case object ConstEntityMatchInitial extends BusinessRuleErrorCode("21a")
   case object ConstEntityMatchCorrection extends BusinessRuleErrorCode("21b")
-  case object DuplicationOfConstEntity extends BusinessRuleErrorCode("22a")
-  case object DuplicationOfConstEntity2 extends BusinessRuleErrorCode("22b")
   case object CurrencyCodeInitial extends BusinessRuleErrorCode("23a")
   case object CurrencyCodeCorrection extends BusinessRuleErrorCode("23b")
   case object ConstEntitiesRoleInitial extends BusinessRuleErrorCode("24a")
@@ -98,7 +95,6 @@ object BusinessRuleErrorCode {
   val values: Seq[BusinessRuleErrorCode] = Seq(
     InvalidMessageRefIDFormat,
     MessageRefIDHasAlreadyBeenUsed,
-    NotMeantToBeReceivedByTheIndicatedJurisdiction,
     FileContainsTestDataForProductionEnvironment,
     DocRefIDAlreadyUsed,
     DocRefIDFormat,
@@ -136,8 +132,6 @@ object BusinessRuleErrorCode {
     ReportingEntityTINFormat,
     ConstEntityMatchInitial,
     ConstEntityMatchCorrection,
-    DuplicationOfConstEntity,
-    DuplicationOfConstEntity2,
     CurrencyCodeInitial,
     CurrencyCodeCorrection,
     ConstEntitiesRoleInitial,
@@ -175,7 +169,6 @@ object BusinessRuleErrorCode {
     case "50008"              => InvalidMessageRefIDFormat
     case "50009"              => MessageRefIDHasAlreadyBeenUsed
     case "50010"              => FileContainsTestDataForProductionEnvironment
-    case "50012"              => NotMeantToBeReceivedByTheIndicatedJurisdiction
     case "80000"              => DocRefIDAlreadyUsed
     case "80001"              => DocRefIDFormat
     case "80002"              => CorrDocRefIdUnknown
@@ -212,8 +205,6 @@ object BusinessRuleErrorCode {
     case "CBC Error Code 20"  => ReportingEntityTINFormat
     case "CBC Error Code 21a" => ConstEntityMatchInitial
     case "CBC Error Code 21b" => ConstEntityMatchCorrection
-    case "CBC Error Code 22a" => DuplicationOfConstEntity
-    case "CBC Error Code 22b" => DuplicationOfConstEntity2
     case "CBC Error Code 23a" => CurrencyCodeInitial
     case "CBC Error Code 23b" => CurrencyCodeCorrection
     case "CBC Error Code 24a" => ConstEntitiesRoleInitial
