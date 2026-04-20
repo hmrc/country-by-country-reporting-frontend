@@ -400,11 +400,11 @@ fileRejected.error = Error
 
 fileRejected.50008.intro = MessageRefId must be 100 characters or less and follow this structure in the order referenced:
 fileRejected.50008.bullet1 = ‘GB’
-fileRejected.50008.bullet2 = the same value as the year in the MessageSpec ReportingPeriod in the format ''YYYY''
+fileRejected.50008.bullet2 = the same value as the year in the MessageSpec ReportingPeriod in the format ‘YYYY’
 fileRejected.50008.bullet3 = ‘GB’
 fileRejected.50008.bullet4 = your 15-character CBC ID
-fileRejected.50008.bullet5 = the same value as the MessageTypeIndic, either ''CBC401'' or ''CBC402''
-fileRejected.50008.bullet6 = the same value as the Timestamp in the format '''YYYYMMDDThhmmss'' or ''YYYYMMDDThhmmssnnn''
+fileRejected.50008.bullet5 = the same value as the MessageTypeIndic, either ‘CBC401’ or ‘CBC402’
+fileRejected.50008.bullet6 = the same value as the Timestamp in the format ‘YYYYMMDDThhmmss’ or ‘YYYYMMDDThhmmssnnn’
 fileRejected.50008.bullet7 = from 3 to 53 characters of your choice if the Timestamp includes milliseconds, or from 3 to 56 characters if it does not include milliseconds
 fileRejected.50008.example = For example, ''GB2022GBXACBC0000999999CBC40120230523T140000123456789''.
 fileRejected.50008.disallowed.characters = MessageRefId must also not include less than signs (<), greater than signs (>), colons (:), straight double quotes ("), forward slashes (/), backslashes (\), vertical bars (|), question marks (?) or asterisks (*).
