@@ -25,8 +25,7 @@ import repositories.SessionRepository
 import utils.ISpecBehaviours
 
 class IndexControllerISpec extends ISpecBehaviours {
-  private val mockAppConf: FrontendAppConfig           = mock[FrontendAppConfig]
-  private val mockSessionRepository: SessionRepository = mock[SessionRepository]
+  private val mockAppConf: FrontendAppConfig = mock[FrontendAppConfig]
 
   "GET / IndexController.onPageLoad" must {
     "return OK when the user is authorised" in {

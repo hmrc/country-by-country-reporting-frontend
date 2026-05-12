@@ -88,6 +88,7 @@ lazy val root = (project in file("."))
     uglify / includeFilter := GlobFilter("application.js")
   )
   .settings(
+    maintainer := "PLACEHOLDER@digital.hmrc.gov.uk",
     scalacOptions ++= Seq(
       "-release", "11",
       "-Wconf:src=views/.*:s",
