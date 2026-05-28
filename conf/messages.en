@@ -264,7 +264,7 @@ fileCheck.p1 = We are checking your file
 
 sendYourFile.title = Send your file
 sendYourFile.heading = Send your file
-sendYourFile.p1 = We will now automatically check your file for business rule errors and send you to another page once completed. These checks could take a few minutes.
+sendYourFile.p1 = We will now automatically check your file for business rule errors and send you to another page once completed.
 sendYourFile.p2 = By sending this file, you are confirming that the information is correct and complete to the best of your knowledge.
 sendYourFile.status.p1 = We are checking your file
 sendYourFile.warning.TestData = We cannot complete all checks on test data or accept the file.
