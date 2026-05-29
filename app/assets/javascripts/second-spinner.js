@@ -9,7 +9,7 @@ $("#sendYourFileForm").submit(function(e){
 
         function addSpinner(){
             $("#processing").empty();
-            $("#processing").append('<p>' + $("#processingMessage").val() + '</p><div><svg class="ccms-loader" height="100" width="100"><circle cx="50" cy="50" r="40"  fill="none"/></svg></div>')
+            $("#processing").append('<p style="font-size: 19px; color: #0b0c0c; font-family: GDS Transport, arial, sans-serif; font-weight: 400;">'+ $("#processingMessage").val() + '</p><div><svg class="ccms-loader" height="100" width="100"><circle cx="50" cy="50" r="40"  fill="none"/></svg></div>')
             $("#processing").removeClass("govuk-visually-hidden");
             $("#submit").remove()
         };
@@ -44,9 +44,9 @@ $("#sendYourFileForm").submit(function(e){
 // =====================================================
 function refreshToCheckStatusPage(){
     var refreshUrl = $("#fileStatusRefreshUrl").val();
-    var minDurationSeconds = parseInt($("#minSpinnerDuration").val() || 10); // Default 10 seconds
-    var maxDurationSeconds = parseInt($("#maxSpinnerDuration").val() || 120); // Default 2 minutes
-    var pollIntervalMs = 3000; // Poll every 3 seconds
+    var minDurationSeconds = parseInt($("#minSpinnerDuration").val());
+    var maxDurationSeconds = parseInt($("#maxSpinnerDuration").val());
+    var pollIntervalMs = 3000;
 
     var startTime = Date.now();
     var minDurationMs = minDurationSeconds * 1000;
