@@ -14,9 +14,12 @@
  * limitations under the License.
  *@
 
+@import config.FrontendAppConfig
+
 @this(
     layout: templates.Layout,
-    link: components.Link
+    link: components.Link,
+    appConfig: FrontendAppConfig
 )
 
 @()(implicit request: RequestHeader, messages: Messages)
@@ -30,7 +33,10 @@
 
     <h1 class="govuk-heading-l">@messages("signedOut.heading")</h1>
 
+     <p class="govuk-body">
+         @messages("signedOut.p1")
+     </p>
     <p class="govuk-body">
-        @link(routes.IndexController.onPageLoad.url, "site.backToReportPage")
+        @link(appConfig.loginUrl, "signedOut.signin.again.link.text")
     </p>
 }
