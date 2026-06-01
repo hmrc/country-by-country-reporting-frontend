@@ -61,6 +61,8 @@ checkYourAnswers.heading = Check Your Answers
 
 signedOut.title = For your security, we signed you out
 signedOut.heading = For your security, we signed you out
+signedOut.p1 = If you have sent a file, you can view results of checks by signing back in to the service.
+signedOut.signin.again.link.text = Sign in again to use the service
 
 unauthorised.title = You cannot access this page
 unauthorised.heading = You cannot access this page
