@@ -79,7 +79,8 @@ class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig:
 
   val cacheTtl: Long = configuration.get[Long]("mongodb.timeToLiveInSeconds")
 
-  val spinnerCounter: Int = configuration.get[Int]("spinner.counter")
+  val minSpinnerCounter: Int = configuration.get[Int]("min.spinner.counter")
+  val maxSpinnerCounter: Int = configuration.get[Int]("max.spinner.counter")
 
   lazy val encryptionEnabled: Boolean = configuration.get[Boolean]("mongodb.encryptionEnabled")
   val maxNormalFileSize: Long         = configuration.get[Long]("max-normal-file-size-bytes")

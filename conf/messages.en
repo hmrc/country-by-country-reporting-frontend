@@ -61,6 +61,8 @@ checkYourAnswers.heading = Check Your Answers
 
 signedOut.title = For your security, we signed you out
 signedOut.heading = For your security, we signed you out
+signedOut.p1 = If you have sent a file, you can view results of checks by signing back in to the service.
+signedOut.signin.again.link.text = Sign in again to use the service
 
 unauthorised.title = You cannot access this page
 unauthorised.heading = You cannot access this page
@@ -264,9 +266,9 @@ fileCheck.p1 = We are checking your file
 
 sendYourFile.title = Send your file
 sendYourFile.heading = Send your file
-sendYourFile.p1 = We will now automatically check your file for business rule errors and send you to another page once completed. These checks could take a few minutes.
+sendYourFile.p1 = We will now automatically check your file for business rule errors and send you to another page once completed.
 sendYourFile.p2 = By sending this file, you are confirming that the information is correct and complete to the best of your knowledge.
-sendYourFile.status.p1 = We are checking your file
+sendYourFile.status.p1 = We are checking your file. This could take a few minutes.
 sendYourFile.warning.TestData = We cannot complete all checks on test data or accept the file.
 sendYourFile.warning.DeletionOfAllInformation = This will permanently delete all information for the reporting period.
 sendYourFile.warning.CorrectionForExistingReport = This will permanently change your reported information.
@@ -311,8 +313,8 @@ fileSummary.refresh = Refresh for updates
 fileSummary.viewErrors = Check errors
 
 
-filePendingChecks.title = We need a few minutes to check your file
-filePendingChecks.heading = We need a few minutes to check your file
+filePendingChecks.title = We need a few more minutes to check your file
+filePendingChecks.heading = We need a few more minutes to check your file
 filePendingChecks.p1 = You need to refresh the page for updates on the status of our automatic checks.
 filePendingChecks.p2 = If you have been refreshing for more than {0} minutes, {1}. We will email you
 filePendingChecks.p2.organisation = to tell you
