@@ -166,8 +166,8 @@ contactDetailsNeeded.p1 = To send a country-by-country report, you must provide 
 
 thereIsAProblem.title = Sorry, there is a problem with the service
 thereIsAProblem.heading = Sorry, there is a problem with the service
-thereIsAProblem.p1 = Try again later.
-thereIsAProblem.p2 = You can email your HMRC Customer Compliance Manager or {0} if you have any questions about this service.
+thereIsAProblem.p1 = Try again later. If you have sent a file, you can view results of checks in the service later.
+thereIsAProblem.p2 = You can also email your HMRC Customer Compliance Manager or {0} if you have any questions about this service.
 
 fileProblemVirus.title = There is a virus in your file
 fileProblemVirus.heading = There is a virus in your file

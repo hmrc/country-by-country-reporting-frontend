@@ -43,9 +43,9 @@ class ThereIsAProblemViewSpec extends SpecBase with Injecting with ViewHelper {
       getWindowTitle(doc) must include("Sorry, there is a problem with the service")
       getPageHeading(doc) mustEqual "Sorry, there is a problem with the service"
       val paragraphValues = getAllParagraph(doc).text()
-      paragraphValues must include("Try again later.")
+      paragraphValues must include("Try again later. If you have sent a file, you can view results of checks in the service later.")
       paragraphValues must include(
-        "You can email your HMRC Customer Compliance Manager or msb.countrybycountryreportingmailbox@hmrc.gov.uk if you have any questions about this service."
+        "You can also email your HMRC Customer Compliance Manager or msb.countrybycountryreportingmailbox@hmrc.gov.uk if you have any questions about this service."
       )
     }
   }
