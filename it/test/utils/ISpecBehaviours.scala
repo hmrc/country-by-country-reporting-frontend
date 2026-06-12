@@ -68,7 +68,7 @@ trait ISpecBehaviours extends PlaySpec with ISpecBase {
         .success
         .value
 
-      repository.set(userAnswers)
+      await(repository.set(userAnswers))
 
       stubAuthorisedAgent()
 
