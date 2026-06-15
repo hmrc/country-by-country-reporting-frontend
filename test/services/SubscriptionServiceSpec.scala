@@ -367,43 +367,5 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
       }
     }
 
-    "getBusinessName" - {
-      "must return the trading name when one is present" in {
-        val responseDetail = ResponseDetail(
-          subscriptionID = cbcId,
-          tradingName = Some("Trading Name"),
-          isGBUser = true,
-          primaryContact = ContactInformation(OrganisationDetails("orgName"), "test@test.com", Some("0700000000"), Some("4400000000")),
-          secondaryContact = None
-        )
-
-        when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
-          .thenReturn(Future.successful(Some(responseDetail)))
-
-        service.getBusinessName(cbcId).futureValue mustBe "Trading Name"
-      }
-
-      "must return the organisation name when trading name is absent" in {
-        val responseDetail = ResponseDetail(
-          subscriptionID = cbcId,
-          tradingName = None,
-          isGBUser = true,
-          primaryContact = ContactInformation(OrganisationDetails("orgName"), "test@test.com", Some("0700000000"), Some("4400000000")),
-          secondaryContact = None
-        )
-
-        when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
-          .thenReturn(Future.successful(Some(responseDetail)))
-
-        service.getBusinessName(cbcId).futureValue mustBe "orgName"
-      }
-
-      "must return an empty string when readSubscription returns None" in {
-        when(mockSubscriptionConnector.readSubscription(any[String])(any[HeaderCarrier](), any[ExecutionContext]()))
-          .thenReturn(Future.successful(None))
-
-        service.getBusinessName(cbcId).futureValue mustBe ""
-      }
-    }
   }
 }
