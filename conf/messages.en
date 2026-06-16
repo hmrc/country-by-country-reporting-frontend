@@ -13,6 +13,7 @@ site.startAgain = Start again
 site.signIn = Sign in
 site.govuk = GOV.UK
 site.backToReportPage = Back to manage your country-by-country report
+site.warning = Warning
 
 no.phone = None
 
