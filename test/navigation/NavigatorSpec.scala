@@ -20,8 +20,9 @@ import base.SpecBase
 import controllers.agent.routes
 import controllers.routes
 import generators.Generators
-import pages._
-import models._
+import pages.*
+import models.*
+import models.ManageYourClients.{AddAClientToYourAgentServicesAccount, ChangeYourCBCAgentContactDetails, SelectAClient}
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
@@ -70,6 +71,49 @@ class NavigatorSpec extends SpecBase with ScalaCheckPropertyChecks with Generato
         }
       }
 
+    }
+  }
+
+  "whatToDoNextNavigation" - {
+
+    "must go to AgentClientIdController when SelectAClient is selected" in {
+      forAll(arbitrary[UserAnswers]) { answers =>
+        val updatedAnswers = answers.set(ManageYourClientsPage, SelectAClient).success.value
+
+        navigator
+          .whatToDoNextNavigation(updatedAnswers)
+          .mustBe(controllers.agent.routes.AgentClientIdController.onPageLoad())
+      }
+    }
+
+    "must go to ManageYourClientsController when AddAClientToYourAgentServicesAccount is selected" in {
+      forAll(arbitrary[UserAnswers]) { answers =>
+        val updatedAnswers = answers.set(ManageYourClientsPage, AddAClientToYourAgentServicesAccount).success.value
+
+        navigator
+          .whatToDoNextNavigation(updatedAnswers)
+          .mustBe(controllers.agent.routes.ManageYourClientsController.onPageLoad())
+      }
+    }
+
+    "must go to ChangeAgentContactDetailsController when ChangeYourCBCAgentContactDetails is selected" in {
+      forAll(arbitrary[UserAnswers]) { answers =>
+        val updatedAnswers = answers.set(ManageYourClientsPage, ChangeYourCBCAgentContactDetails).success.value
+
+        navigator
+          .whatToDoNextNavigation(updatedAnswers)
+          .mustBe(controllers.agent.routes.ChangeAgentContactDetailsController.onPageLoad())
+      }
+    }
+
+    "must go to ThereIsAProblemController when ManageYourClientsPage is not set" in {
+      forAll(arbitrary[UserAnswers]) { answers =>
+        val updatedAnswers = answers.remove(ManageYourClientsPage).success.value
+
+        navigator
+          .whatToDoNextNavigation(updatedAnswers)
+          .mustBe(controllers.routes.ThereIsAProblemController.onPageLoad())
+      }
     }
   }
 }

@@ -17,14 +17,14 @@
 package forms
 
 import forms.mappings.Constraints
-
-import java.time.LocalDate
 import generators.Generators
 import org.scalacheck.Gen
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.data.validation.{Invalid, Valid}
+
+import java.time.LocalDate
 
 class ConstraintsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with Generators with Constraints {
 
@@ -178,6 +178,45 @@ class ConstraintsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyC
         val result = minDate(min, "error.past", "foo")(date)
         result mustEqual Invalid("error.past", "foo")
       }
+    }
+  }
+
+  "nonEmptySet" - {
+    "must return Valid for a non-empty set" in {
+      val result = nonEmptySet("error.empty")(Set("a", "b"))
+      result mustEqual Valid
+    }
+
+    "must return Invalid for an empty set" in {
+      val result = nonEmptySet("error.empty")(Set.empty)
+      result mustEqual Invalid("error.empty")
+    }
+  }
+
+  "inRange" - {
+    "must return Valid for a number within the range" in {
+      val result = inRange(1, 10, "error.range").apply(5)
+      result mustEqual Valid
+    }
+
+    "must return Valid for a number equal to the minimum" in {
+      val result = inRange(1, 10, "error.range").apply(1)
+      result mustEqual Valid
+    }
+
+    "must return Valid for a number equal to the maximum" in {
+      val result = inRange(1, 10, "error.range").apply(10)
+      result mustEqual Valid
+    }
+
+    "must return Invalid for a number below the minimum" in {
+      val result = inRange(1, 10, "error.range").apply(0)
+      result mustEqual Invalid("error.range", 1, 10)
+    }
+
+    "must return Invalid for a number above the maximum" in {
+      val result = inRange(1, 10, "error.range").apply(11)
+      result mustEqual Invalid("error.range", 1, 10)
     }
   }
 }

@@ -366,5 +366,6 @@ class SubscriptionServiceSpec extends SpecBase with ModelGenerators {
         result.futureValue.value mustBe false
       }
     }
+
   }
 }
