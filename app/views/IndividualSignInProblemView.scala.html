@@ -44,10 +44,10 @@
         HtmlFormat.fill(Seq(
             Html(messages("individualSignInProblem.p2")),
             Html("<br>"),
-            Html(messages("individualSignInProblem.p3"))
+            Html(appConfig.taxSchemeManagementServiceLink)
         ))
     )
 
-    @paragraph(Html(messages("individualSignInProblem.p4")))
+    @paragraph(Html(messages("individualSignInProblem.p3")))
 
 }
