@@ -714,11 +714,16 @@ problemCBCId.bullet2 = Ask a client to authorise you through your {0}
 problemCBCId.bullet2.link = agent services account
 problemCBCId.bullet3 = Check whether your client has authorised you to start using the country-by-country service for them.
 
-individualSignInProblem.title = You’re unable to use this service
-individualSignInProblem.heading = You’re unable to use this service
-individualSignInProblem.p1 = You’ve signed in as an individual. Only organisations can send reports.
-individualSignInProblem.p2 = If you need to send reports for an organisation, {0}.
-individualSignInProblem.p2.link = sign in with your organisation’s Government Gateway details
+individualSignInProblem.title = You’re currently unable to access this service
+individualSignInProblem.heading = You’re currently unable to access this service
+individualSignInProblem.p1 = You have signed in as a standard user. An administrator with permission to use this service must also give you access. If they do not have permission already, then they can set this up themselves.
+individualSignInProblem.h2 = What your administrator must do next
+individualSignInProblem.l1 = Sign in with their Government Gateway user ID.
+individualSignInProblem.l2 = Register for the country-by-country reporting service, if your organisation has not already registered.
+individualSignInProblem.l3 = Give you permission to use this service through the tax and scheme management service.
+individualSignInProblem.p2 = If your administrator does not have the link for the tax and scheme management service, then you can share this link with them. The link will only work for your administrator:
+individualSignInProblem.p3 = www.tax.service.gov.uk/tax-and-scheme-management/services
+individualSignInProblem.p4 = Once your administrator has completed these steps, you will then be able to sign in with your own Government Gateway user ID to use this service.
 
 agentClientId.title = What is the CBC ID of the client you want to act on behalf of?
 agentClientId.heading = What is the CBC ID of the client you want to act on behalf of?

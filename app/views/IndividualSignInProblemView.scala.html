@@ -32,5 +32,22 @@
 
     @paragraph(Html(messages("individualSignInProblem.p1")))
 
-    @paragraph(Html(messages("individualSignInProblem.p2", link(appConfig.loginUrl, "individualSignInProblem.p2.link"))))
+    <h2 class="govuk-heading-m">@messages("individualSignInProblem.h2")</h2>
+
+    <ol class="govuk-list govuk-list--number">
+     <li>@messages("individualSignInProblem.l1")</li>
+     <li>@messages("individualSignInProblem.l2")</li>
+     <li>@messages("individualSignInProblem.l3")</li>
+    </ol>
+
+    @paragraph(
+        HtmlFormat.fill(Seq(
+            Html(messages("individualSignInProblem.p2")),
+            Html("<br>"),
+            Html(messages("individualSignInProblem.p3"))
+        ))
+    )
+
+    @paragraph(Html(messages("individualSignInProblem.p4")))
+
 }
