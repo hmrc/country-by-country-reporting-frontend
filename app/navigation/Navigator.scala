@@ -51,7 +51,7 @@ class Navigator @Inject() () {
       .map(if (_) yesCall else noCall)
       .getOrElse(controllers.routes.ThereIsAProblemController.onPageLoad())
 
-  def whatToDoNextNavigation(ua: UserAnswers) =
+  def whatToDoNextNavigation(ua: UserAnswers): Call =
     ua.get(ManageYourClientsPage)
       .map {
         case SelectAClient                        => controllers.agent.routes.AgentClientIdController.onPageLoad()
