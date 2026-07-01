@@ -17,6 +17,7 @@
 package pages
 
 import models.UserAnswers
+import models.subscription.ContactTypePage
 import play.api.libs.json.JsPath
 
 import scala.util.Try
@@ -32,6 +33,20 @@ case object AgentIsThisYourClientPage extends QuestionPage[Boolean] {
       case Some(false) =>
         userAnswers
           .remove(AgentClientIdPage)
-      case _ => super.cleanup(value, userAnswers)
+      case Some(true) =>
+        userAnswers
+          .remove(ContactTypePage.primaryContactDetailsPages.contactNamePage)
+          .flatMap(_.remove(ContactTypePage.primaryContactDetailsPages.contactTelephonePage))
+          .flatMap(_.remove(ContactTypePage.primaryContactDetailsPages.haveTelephonePage))
+          .flatMap(_.remove(ContactTypePage.primaryContactDetailsPages.contactEmailPage))
+          .flatMap(_.remove(ContactTypePage.primaryContactDetailsPages.contactEmailPage))
+          .flatMap(_.remove(HaveSecondContactPage))
+          .flatMap(_.remove(ReviewClientContactDetailsPage))
+          .flatMap(_.remove(ContactTypePage.secondaryContactDetailsPages.contactNamePage))
+          .flatMap(_.remove(ContactTypePage.secondaryContactDetailsPages.contactTelephonePage))
+          .flatMap(_.remove(ContactTypePage.secondaryContactDetailsPages.haveTelephonePage))
+          .flatMap(_.remove(ContactTypePage.secondaryContactDetailsPages.contactEmailPage))
+      case None => super.cleanup(value, userAnswers)
+
     }
 }
