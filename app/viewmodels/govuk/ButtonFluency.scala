@@ -27,7 +27,6 @@ trait ButtonFluency {
 
     def apply(content: Content): Button =
       Button(
-        element = Some("button"),
         content = content
       )
   }
@@ -36,7 +35,6 @@ trait ButtonFluency {
 
     def asLink(href: String): Button =
       Button(
-        element = Some("a"),
         href = Some(href),
         name = button.name,
         inputType = button.inputType,
@@ -51,7 +49,6 @@ trait ButtonFluency {
 
     def asInput(inputType: String): Button =
       Button(
-        element = Some("input"),
         inputType = Some(inputType),
         href = button.href,
         name = button.name,
