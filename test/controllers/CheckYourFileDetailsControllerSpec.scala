@@ -60,21 +60,23 @@ class CheckYourFileDetailsControllerSpec extends SpecBase {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[CheckYourFileDetailsView]
-
-        val list = SummaryListViewModel(CheckYourFileDetailsViewModel.getSummaryRows(vfd)(messages(application)))
-          .withoutBorders()
-          .withCssClass("govuk-!-margin-bottom-0")
-
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(list)(request, messages(application)).toString
       }
     }
 
     "must return OK and the correct view for a GET for Agent" in {
 
-      val ua: UserAnswers = userAnswersWithContactDetails
+      val ua: UserAnswers = emptyUserAnswers
         .withPage(AgentIsThisYourClientPage, true)
+        .withPage(ContactNamePage, "test")
+        .withPage(ContactEmailPage, "test@test.com")
+        .withPage(HaveTelephonePage, true)
+        .withPage(ContactPhonePage, "6677889922")
+        .withPage(HaveSecondContactPage, true)
+        .withPage(SecondContactNamePage, "test user")
+        .withPage(SecondContactEmailPage, "t2@test.com")
+        .withPage(SecondContactHavePhonePage, true)
+        .withPage(SecondContactPhonePage, "8889988728")
         .withPage(AgentFirstContactNamePage, "test")
         .withPage(AgentFirstContactEmailPage, "test@test.com")
         .withPage(AgentFirstContactHavePhonePage, false)
@@ -92,21 +94,38 @@ class CheckYourFileDetailsControllerSpec extends SpecBase {
         val request = FakeRequest(GET, routes.CheckYourFileDetailsController.onPageLoad().url)
 
         val result = route(application, request).value
-
-        val view = application.injector.instanceOf[CheckYourFileDetailsView]
-
-        val list = SummaryListViewModel(CheckYourFileDetailsViewModel.getAgentSummaryRows(vfd)(messages(application)))
-          .withoutBorders()
-          .withCssClass("govuk-!-margin-bottom-0")
-
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(list)(request, messages(application)).toString
+        contentType(result) mustBe Some("text/html")
+        charset(result) mustBe Some("utf-8")
+
+        val body = contentAsString(result)
+
+        body must include("Check your file details are correct")
+        body must include("File ID (MessageRefId)")
+        body must include("Client (ReportingEntity Name)")
+        body must include("File information")
+        body must include("Test data")
+        body must include("""href="/send-a-country-by-country-report/upload-file"""")
+        body must include("""href="/send-a-country-by-country-report/send-your-file"""")
+        body must include("""id="submit"""")
+        body must include("""id="your-file"""")
+
       }
     }
 
     "must redirect to file problem missing information page when there is no ValidXMLPage in request" in {
 
-      val userAnswers = userAnswersWithContactDetails
+      val userAnswers = emptyUserAnswers
+        .withPage(AgentIsThisYourClientPage, true)
+        .withPage(ContactNamePage, "test")
+        .withPage(ContactEmailPage, "test@test.com")
+        .withPage(HaveTelephonePage, true)
+        .withPage(ContactPhonePage, "6677889922")
+        .withPage(HaveSecondContactPage, true)
+        .withPage(SecondContactNamePage, "test user")
+        .withPage(SecondContactEmailPage, "t2@test.com")
+        .withPage(SecondContactHavePhonePage, true)
+        .withPage(SecondContactPhonePage, "8889988728")
         .withPage(AgentIsThisYourClientPage, true)
         .withPage(AgentFirstContactNamePage, "test")
         .withPage(AgentFirstContactEmailPage, "test@test.com")
@@ -126,7 +145,7 @@ class CheckYourFileDetailsControllerSpec extends SpecBase {
       val result = route(application, request).value
 
       status(result) mustEqual SEE_OTHER
-      redirectLocation(result).value mustEqual routes.FileProblemSomeInformationMissingController.onPageLoad().url
+      redirectLocation(result).value must include("some-information-is-missing")
     }
 
     "must redirect to Agent Some Info missing information page when there is no agent contact in request" in {

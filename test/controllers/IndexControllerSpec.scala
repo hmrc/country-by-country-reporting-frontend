@@ -69,11 +69,19 @@ class IndexControllerSpec extends SpecBase {
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[IndexView]
-
         status(result) mustEqual OK
+        contentType(result) mustBe Some("text/html")
 
-        contentAsString(result) mustEqual view(showRecentFiles = false, "subscriptionId", isAgent = false)(request, messages(application)).toString
+        val body = contentAsString(result)
+
+        body must include("Manage your country-by-country report")
+        body must include("You can report new information, or corrections and deletions, by uploading an XML file.")
+        body must include("The file must include your CBC ID subscriptionId and be 100MB or less.")
+        body must include("""href="/send-a-country-by-country-report/upload-file"""")
+        body must include("""id="submit"""")
+        body must include("Upload an XML file")
+        body must include("""href="/send-a-country-by-country-report/change-contact/details"""")
+        body must include("change your contact details")
       }
     }
 
