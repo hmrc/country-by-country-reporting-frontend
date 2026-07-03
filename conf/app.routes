@@ -222,7 +222,7 @@ GET         /agent/client-contact-details/details-updated                       
 
 GET         /agent/client-contact-details/details-saved                           controllers.client.ClientContactDetailsSavedController.onPageLoad()
 
-GET         /agent/use-agent-services                                             controllers.agent.AgentUseAgentServicesController.onPageLoad()
+GET         /agent/problem/use-agent-services                                     controllers.agent.AgentUseAgentServicesController.onPageLoad()
 
 GET         /agent/problem/cbc-id                                                 controllers.client.ProblemCBCIdController.onPageLoad()
 
