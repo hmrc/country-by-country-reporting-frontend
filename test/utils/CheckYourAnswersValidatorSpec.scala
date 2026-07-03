@@ -175,7 +175,7 @@ class CheckYourAnswersValidatorSpec extends SpecBase {
       val changeUrl = CheckYourAnswersValidator(answers).changeAnswersRedirectUrl(CheckMode, isAgent)
 
       changeUrl.isDefined shouldBe true
-      changeUrl.get should equal("/send-a-country-by-country-report/agent/agent-is-this-your-client")
+      changeUrl.get should equal("/send-a-country-by-country-report/agent/is-this-your-client")
     }
 
     "must return ChangeName if all mandatory values are not available for journey" in {

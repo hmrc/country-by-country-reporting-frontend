@@ -20,34 +20,45 @@ import models.AgentClientDetails
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
 import viewmodels.govuk.summarylist.*
 
 object AgentClientDetailsViewModel {
 
-  def getSummaryListViewModel(summaryRows: Seq[SummaryListRow]) = SummaryListViewModel(summaryRows)
+  def getSummaryListViewModel(summaryRows: Seq[SummaryListRow]): SummaryList = SummaryListViewModel(summaryRows)
     .withoutBorders()
     .withCssClass("govuk-!-margin-bottom-0")
 
-  def getSummaryRows(acd: AgentClientDetails)(implicit messages: Messages): Seq[SummaryListRow] =
-    Seq(
-      SummaryListRowViewModel(
-        key = "agentClientDetails.name",
-        value = ValueViewModel(HtmlFormat.escape(s"${acd.businessName}").toString),
-        actions = Seq()
-      ),
-      SummaryListRowViewModel(
-        key = "agentClientDetails.id",
-        value = ValueViewModel(HtmlFormat.escape(s"${acd.id}").toString),
-        actions = Seq(
-          ActionItemViewModel(
-            content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
-                "manageYourClients.change.hidden"
-              )}</span>"""),
-            href = controllers.agent.routes.ManageYourClientsController.onPageLoad().url
-          )
-            .withAttribute(("id", "change"))
+  private def cbcIdSummaryView(clientId: String)(implicit messages: Messages): SummaryListRow =
+    SummaryListRowViewModel(
+      key = "agentClientDetails.id",
+      value = ValueViewModel(HtmlFormat.escape(s"$clientId").toString),
+      actions = Seq(
+        ActionItemViewModel(
+          content = HtmlContent(s"""<span aria-hidden="true">${messages("site.change")}</span><span class="govuk-visually-hidden">${messages(
+              "manageYourClients.change.hidden"
+            )}</span>"""),
+          href = controllers.agent.routes.ManageYourClientsController.onPageLoad().url
         )
+          .withAttribute(("id", "change"))
       )
     )
+  def getSummaryRows(acd: AgentClientDetails)(implicit messages: Messages): Seq[SummaryListRow] =
+    acd.businessName
+      .map { businessName =>
+        Seq(
+          SummaryListRowViewModel(
+            key = "agentClientDetails.name",
+            value = ValueViewModel(HtmlFormat.escape(s"$businessName").toString),
+            actions = Seq()
+          ),
+          cbcIdSummaryView(acd.id)
+        )
+      }
+      .getOrElse {
+        Seq(
+          cbcIdSummaryView(acd.id)
+        )
+      }
+
 }
