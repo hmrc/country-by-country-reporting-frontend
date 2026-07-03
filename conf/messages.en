@@ -702,7 +702,7 @@ clientContactDetailsSaved.p2.link = send a CBC report
 
 agentUseAgentServices.title = You must use agent services to send country-by-country reports
 agentUseAgentServices.h1 = You must use agent services to send country-by-country reports
-agentUseAgentServices.p1 = You have signed in as an agent. You’ll need to {0}.
+agentUseAgentServices.p1 = You have signed in as an agent. You’ll need to {0}
 agentUseAgentServices.p1.link = create an agent services account to send country-by-country reports.
 agentUseAgentServices.p2 = If you need to report as an organisation, then you must sign in with an organisation Government Gateway user ID.
 
