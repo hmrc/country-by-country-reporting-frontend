@@ -19,6 +19,7 @@ package viewmodels
 import models.fileDetails.FileDetails
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
 import viewmodels.govuk.summarylist._
 
@@ -28,7 +29,7 @@ object FileReceivedViewModel {
     Seq(
       SummaryListRowViewModel(
         key = "fileReceived.messageRefId.key",
-        value = ValueViewModel(HtmlFormat.escape(s"${receivedFileDetails.messageRefId}").toString),
+        value = ValueViewModel(HtmlContent(HtmlFormat.escape(receivedFileDetails.messageRefId))),
         actions = Seq()
       ),
       SummaryListRowViewModel(
