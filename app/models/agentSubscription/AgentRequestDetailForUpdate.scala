@@ -58,7 +58,7 @@ object AgentRequestDetailForUpdate {
         primaryContact,
         secondaryContact,
         cbcId = agentClientDetails.map(_.id),
-        agentClient = agentClientDetails.map(_.businessName)
+        agentClient = agentClientDetails.flatMap(_.businessName)
       )
     }
   }

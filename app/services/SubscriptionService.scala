@@ -141,14 +141,7 @@ class SubscriptionService @Inject() (subscriptionConnector: SubscriptionConnecto
       updatedAnswers      <- uaWithHaveTelephone.set(contactTypePage.contactNamePage, contactInformation.organisationDetails.organisationName)
     } yield updatedAnswers).toOption
 
-  def getBusinessName(subscriptionId: String)(implicit hc: HeaderCarrier): Future[String] =
-    subscriptionConnector.readSubscription(subscriptionId: String) map {
-      case Some(responseDetail: ResponseDetail) =>
-        responseDetail.tradingName match
-          case Some(name) => name
-          case None       => responseDetail.primaryContact.organisationDetails.organisationName
-      case _ =>
-        logger.warn("getTradingName: subscriptionConnector.readSubscription call failed to fetch the a name")
-        ""
-    }
+  def getBusinessName(subscriptionId: String)(implicit hc: HeaderCarrier): Future[Option[String]] =
+    subscriptionConnector.readSubscription(subscriptionId: String).map(_.flatMap(_.tradingName))
+
 }

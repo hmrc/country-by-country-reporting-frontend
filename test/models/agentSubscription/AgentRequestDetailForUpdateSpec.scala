@@ -41,7 +41,7 @@ class AgentRequestDetailForUpdateSpec extends SpecBase with ModelGenerators {
     .withPage(AgentSecondContactEmailPage, "test1@email.com")
     .withPage(AgentSecondContactHavePhonePage, true)
     .withPage(AgentSecondContactPhonePage, "+3311211212")
-    .withPage(AgentClientDetailsPage, AgentClientDetails("cbcId-123", "Test Business"))
+    .withPage(AgentClientDetailsPage, AgentClientDetails("cbcId-123", Some("Test Business")))
 
   "AgentRequestDetailForUpdate" - {
     "must convert to AgentRequestDetailForUpdate successfully" in {

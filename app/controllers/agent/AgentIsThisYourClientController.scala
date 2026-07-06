@@ -55,28 +55,27 @@ class AgentIsThisYourClientController @Inject() (
     }
 
     for {
-      _            <- removeClient(request.userAnswers)
-      businessName <- subscriptionService.getBusinessName(request.subscriptionId)
-    } yield Ok(view(preparedForm, request.subscriptionId, businessName))
+      _                 <- removeClient(request.userAnswers)
+      maybeBusinessName <- subscriptionService.getBusinessName(request.subscriptionId)
+    } yield Ok(view(preparedForm, request.subscriptionId, maybeBusinessName))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData() andThen requireData).async { implicit request =>
-    subscriptionService.getBusinessName(request.subscriptionId).flatMap { businessName =>
+    subscriptionService.getBusinessName(request.subscriptionId).flatMap { maybeBusinessName =>
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.subscriptionId, businessName))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.subscriptionId, maybeBusinessName))),
           value =>
             for {
               updatedAnswers       <- Future.fromTry(request.userAnswers.set(AgentIsThisYourClientPage, value))
-              updatedClientDetails <- setClient(value, request.subscriptionId, businessName, updatedAnswers)
+              updatedClientDetails <- setClient(value, request.subscriptionId, maybeBusinessName, updatedAnswers)
               _                    <- sessionRepository.set(updatedClientDetails)
             } yield Redirect(navigator.nextPage(AgentIsThisYourClientPage, NormalMode, updatedAnswers))
         )
     }
   }
-
-  private def setClient(isThisYourClient: Boolean, subscriptionId: String, businessName: String, userAnswers: UserAnswers): Future[UserAnswers] =
+  private def setClient(isThisYourClient: Boolean, subscriptionId: String, businessName: Option[String], userAnswers: UserAnswers): Future[UserAnswers] =
     if (isThisYourClient) {
       Future.fromTry(userAnswers.set(AgentClientDetailsPage, AgentClientDetails(subscriptionId, businessName)))
     } else { Future.successful(userAnswers) }

@@ -37,7 +37,7 @@ trait ModelGenerators {
       for {
         clientID     <- nonEmptyString
         businessName <- nonEmptyString
-      } yield AgentClientDetails(clientID, businessName)
+      } yield AgentClientDetails(clientID, Some(businessName))
     }
 
   implicit lazy val arbitraryWhatToDoNext: Arbitrary[ManageYourClients] =
