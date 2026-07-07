@@ -17,12 +17,12 @@
 package viewmodels
 
 import controllers.routes
-import models._
+import models.*
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.govuk.summarylist._
+import viewmodels.govuk.summarylist.*
 
 object CheckYourFileDetailsViewModel {
 
@@ -31,7 +31,7 @@ object CheckYourFileDetailsViewModel {
     Seq(
       SummaryListRowViewModel(
         key = "checkYourFileDetails.messageRefId",
-        value = ValueViewModel(HtmlFormat.escape(s"${specData.messageRefId}").toString),
+        value = ValueViewModel(HtmlContent(HtmlFormat.escape(specData.messageRefId))),
         actions = Seq()
       ),
       SummaryListRowViewModel(
