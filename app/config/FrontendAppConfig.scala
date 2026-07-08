@@ -67,8 +67,6 @@ class FrontendAppConfig @Inject() (configuration: Configuration, servicesConfig:
   val cbcUrl: String              = servicesConfig.baseUrl("country-by-country-reporting")
   val privateBetaPassword: String = configuration.get[String]("features.privateBetaPass")
   val privateBetaEnabled: Boolean = configuration.get[Boolean]("features.privateBetaEnabled")
-  val betaPhaseEnabled: Boolean =
-    configuration.get[Boolean]("features.beta-phase")
 
   def languageMap: Map[String, Lang] = Map(
     "en" -> Lang("en")
