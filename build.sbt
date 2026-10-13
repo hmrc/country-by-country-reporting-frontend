@@ -92,6 +92,10 @@ lazy val root = (project in file("."))
     scalacOptions := scalacOptions.value.distinct
   )
 addCommandAlias("testAll", "; test ; it/test")
+addCommandAlias(
+  "precommit",
+  "; clean ; scalafmtAll ; coverage ; test ; it/test ; coverageReport ; coverageOff"
+)
 lazy val testSettings: Seq[Def.Setting[_]] = Seq(
   fork := true,
   javaOptions ++= Seq(
